@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>uJet</id>
+    <version>$version$</version>
+    <title>Umbraco Jet</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>http://ujet.codeplex.com/license</licenseUrl>
+    <projectUrl>http://ujet.codeplex.com</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Umbraco Jet (uJet) is a Code First approach to building MVC applications in Umbraco 7.</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright (c) 2015</copyright>
+    <tags>Umbraco, Jet, MVC, Code First, uJet</tags>
+  </metadata>
+</package>
