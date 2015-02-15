@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{2B79CB04-9
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logikfabrik.Umbraco.Jet.Test", "Logikfabrik.Umbraco.Jet.Test\Logikfabrik.Umbraco.Jet.Test.csproj", "{CB44D2D3-50FB-4751-A980-F5A2B8911B22}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{111BFDD9-F03E-4A8B-A15C-8B305BA48A82}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{B6207FFC-C63B-40E1-99F0-356F048EE0A4}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 		.nuget\NuGet.exe = .nuget\NuGet.exe
