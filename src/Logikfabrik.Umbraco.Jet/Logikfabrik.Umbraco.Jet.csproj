@@ -313,7 +313,7 @@
   </Target>
   <PropertyGroup>
     <PostBuildEvent>IF $(ConfigurationName) == Release (
-c:\utils\nuget.exe pack "$(ProjectPath)" -IncludeReferencedProjects -Prop Configuration=Release
+c:\utils\nuget.exe pack "$(ProjectPath)" -Prop Configuration=Release
 )</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
