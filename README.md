@@ -1,5 +1,7 @@
-# uJet
-Umbraco Jet (uJet) is a Code First approach to building MVC applications in Umbraco 7. Declare your document, media, and data types in code, and have uJet move them into Umbraco for you - simplifying development, deployment and versioning. uJet is capable of serving you with instances of your document types. With uJet you're no longer bound by the `RenderModel`, or by the constraints set by the built-in `ControllerActionInvoker`. uJet brings you fully typed views without requiring you to roll your own view models.
+# uJet [![Build status](https://ci.appveyor.com/api/projects/status/2ce4vbe5dexoqey7)](https://ci.appveyor.com/project/logikfabrik/ujet)
+Umbraco Jet (uJet) is a Code First approach to building MVC applications in Umbraco 7. Declare your document, media, and data types in code, and have uJet move them into Umbraco for you - simplifying development, deployment and versioning.
+
+uJet is capable of serving you with instances of your document types. With uJet you're no longer bound by the `RenderModel`, or by the constraints set by the built-in `ControllerActionInvoker`. uJet brings you fully typed views without requiring you to roll your own view models.
 
 uJet supports document types, media types, data types, and template synchronization.
 
