@@ -38,9 +38,11 @@ namespace Logikfabrik.Umbraco.Jet
         private readonly Lazy<IEnumerable<Type>> _documentTypes;
         private readonly Lazy<IEnumerable<Type>> _dataTypes;
         private readonly Lazy<IEnumerable<Type>> _mediaTypes;
+        private readonly Lazy<IEnumerable<Assembly>> _assemblies;
 
         private TypeService()
         {
+            _assemblies = new Lazy<IEnumerable<Assembly>>(GetAssemblies);
             _documentTypes = new Lazy<IEnumerable<Type>>(GetDocumentTypes);
             _dataTypes = new Lazy<IEnumerable<Type>>(GetDataTypes);
             _mediaTypes = new Lazy<IEnumerable<Type>>(GetMediaTypes);

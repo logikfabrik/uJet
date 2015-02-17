@@ -26,6 +26,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Globalization;
+using System.Web;
 using Umbraco.Core.Models;
 
 namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
@@ -66,6 +67,8 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
             public decimal FloatingDecimalPropertyAsString { get; set; }
 
             public float FloatingBinaryPropertyAsString { get; set; }
+
+            public string StringPropertyAsHtmlString { get; set; }
         }
 
         public class DocumentTypeWithoutTheDocumentTypeAttribute
@@ -101,6 +104,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
             const bool booleanProperty = true;
             const decimal floatingDecimalPropertyAsString = 1.1m;
             const float floatingBinaryPropertyAsString = 1.1f;
+            const string stringPropertyAsHtmlString = "StringPropertyAsHtmlString";
 
             var umbracoHelperWrapper = new Mock<IUmbracoHelperWrapper>();
             var typeService = new Mock<ITypeService>();
@@ -136,7 +140,8 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
                     // Returned as string as the Umbraco data model has no explicit support for floating decimal point types.
                     getProperty("FloatingDecimalPropertyAsString", floatingDecimalPropertyAsString.ToString(CultureInfo.InvariantCulture)),
                     // Returned as string as the Umbraco data model has no explicit support for floating binary point types.
-                    getProperty("FloatingBinaryPropertyAsString", floatingDecimalPropertyAsString.ToString(CultureInfo.InvariantCulture))
+                    getProperty("FloatingBinaryPropertyAsString", floatingDecimalPropertyAsString.ToString(CultureInfo.InvariantCulture)),
+                    getProperty("StringPropertyAsHtmlString", new HtmlString(stringPropertyAsHtmlString))
                 });
 
                 return content.Object;
@@ -162,6 +167,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
             Assert.AreEqual(booleanProperty, document.BooleanProperty);
             Assert.AreEqual(floatingDecimalPropertyAsString, document.FloatingDecimalPropertyAsString);
             Assert.AreEqual(floatingBinaryPropertyAsString, document.FloatingBinaryPropertyAsString);
+            Assert.AreEqual(stringPropertyAsHtmlString, document.StringPropertyAsHtmlString);
         }
     }
 }

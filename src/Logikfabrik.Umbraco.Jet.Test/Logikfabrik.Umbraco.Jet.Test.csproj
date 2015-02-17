@@ -158,6 +158,7 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Net.Http.2.0.20505.0\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.Helpers.dll</HintPath>
@@ -251,6 +252,8 @@
     <Compile Include="DefaultValueServiceTest.cs" />
     <Compile Include="DocumentTypeTest.cs" />
     <Compile Include="Web\Data\Converters\FloatingDecimalPointPropertyValueConverterTest.cs" />
+    <Compile Include="Web\Data\Converters\FloatingBinaryPointPropertyValueConverterTest.cs" />
+    <Compile Include="Web\Data\Converters\HtmlStringPropertyValueConverterTest.cs" />
     <Compile Include="Web\Data\DocumentServiceTest.cs" />
     <Compile Include="Web\Mvc\JetControllerActionInvokerTest.cs" />
     <Compile Include="Mappings\DataTypeDefinitionMappingsTest.cs" />

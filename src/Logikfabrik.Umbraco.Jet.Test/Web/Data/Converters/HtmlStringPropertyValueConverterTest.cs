@@ -22,30 +22,29 @@
 
 using Logikfabrik.Umbraco.Jet.Web.Data.Converters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Globalization;
+using System.Web;
 
 namespace Logikfabrik.Umbraco.Jet.Test.Web.Data.Converters
 {
     [TestClass]
-    public class FloatingDecimalPointPropertyValueConverterTest
+    public class HtmlStringPropertyValueConverterTest
     {
         [TestMethod]
         public void CanConvertValue()
         {
-            var converter = new FloatingDecimalPointPropertyValueConverter();
+            var converter = new HtmlStringPropertyValueConverter();
 
-            Assert.IsTrue(converter.CanConvertValue(null, typeof(string), typeof(decimal)));
-            Assert.IsTrue(converter.CanConvertValue(null, typeof(string), typeof(decimal?)));
+            Assert.IsTrue(converter.CanConvertValue(null, typeof(HtmlString), typeof(string)));
 
-            const decimal value1 = 1.1m;
-            decimal? value2 = null;
-            var propertyValue1 = value1.ToString(CultureInfo.InvariantCulture);
+            const string value1 = "Test";
+            string value2 = null;
+            var propertyValue1 = new HtmlString(value1);
             // ReSharper disable once ExpressionIsAlwaysNull
             var propertyValue2 = value2;
 
-            var convertedValue1 = converter.Convert(propertyValue1, typeof(decimal));
+            var convertedValue1 = converter.Convert(propertyValue1, typeof(string));
             // ReSharper disable once ExpressionIsAlwaysNull
-            var convertedValue2 = converter.Convert(propertyValue2, typeof(decimal?));
+            var convertedValue2 = converter.Convert(propertyValue2, typeof(string));
 
             Assert.AreEqual(value1, convertedValue1);
             // ReSharper disable once ExpressionIsAlwaysNull

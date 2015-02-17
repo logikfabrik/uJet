@@ -23,7 +23,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
 {
@@ -44,7 +43,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
         {
             return new PropertyValueConverterDictionary
                 {
-                    {typeof (HtmlString), new [] { new HtmlStringPropertyValueConverter()}},
+                    {typeof (string), new [] { new HtmlStringPropertyValueConverter()}},
                     {typeof (decimal), new [] { new FloatingDecimalPointPropertyValueConverter()}},
                     {typeof (decimal?), new [] { new FloatingDecimalPointPropertyValueConverter()}},
                     {typeof (float), new [] { new FloatingBinaryPointPropertyValueConverter()}},
