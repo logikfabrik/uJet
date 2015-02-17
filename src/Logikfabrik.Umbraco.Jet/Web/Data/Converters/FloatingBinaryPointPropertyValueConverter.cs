@@ -26,7 +26,7 @@ using System.Linq;
 
 namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
 {
-    public class FloatingDecimalPointPropertyValueConverter : IPropertyValueConverter
+    public class FloatingBinaryPointPropertyValueConverter : IPropertyValueConverter
     {
         public bool CanConvertValue(string uiHint, Type from, Type to)
         {
@@ -36,7 +36,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
             if (to == null)
                 throw new ArgumentNullException("to");
 
-            var validTypes = new[] { typeof(decimal), typeof(decimal?) };
+            var validTypes = new[] { typeof(float), typeof(float?), typeof(double), typeof(double?) };
 
             return from == typeof(string) && (validTypes.Contains(to));
         }
@@ -46,9 +46,36 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
             if (propertyValue == null)
                 return null;
 
-            decimal result;
+            if (to == typeof(float) || to == typeof(float?))
+                return ConvertToFloat(propertyValue);
 
-            if (decimal.TryParse(propertyValue.ToString(), NumberStyles.Float, CultureInfo.InvariantCulture.NumberFormat, out result))
+            if (to == typeof(double) || to == typeof(double?))
+                return ConvertToDouble(propertyValue);
+
+            return null;
+        }
+
+        private static object ConvertToFloat(object propertyValue)
+        {
+            if (propertyValue == null)
+                return null;
+
+            float result;
+
+            if (float.TryParse(propertyValue.ToString(), NumberStyles.Float, CultureInfo.InvariantCulture.NumberFormat, out result))
+                return result;
+
+            return null;
+        }
+
+        private static object ConvertToDouble(object propertyValue)
+        {
+            if (propertyValue == null)
+                return null;
+
+            double result;
+
+            if (double.TryParse(propertyValue.ToString(), NumberStyles.Float, CultureInfo.InvariantCulture.NumberFormat, out result))
                 return result;
 
             return null;

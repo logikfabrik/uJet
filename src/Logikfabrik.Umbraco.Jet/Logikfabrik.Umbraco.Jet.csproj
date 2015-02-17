@@ -248,6 +248,7 @@
     <Compile Include="DataTypeAttribute.cs" />
     <Compile Include="DataTypeSynchronizationService.cs" />
     <Compile Include="Web\Data\ContentService.cs" />
+    <Compile Include="Web\Data\Converters\FloatingBinaryPointPropertyValueConverter.cs" />
     <Compile Include="Web\Data\Converters\FloatingDecimalPointPropertyValueConverter.cs" />
     <Compile Include="Web\Data\Converters\HtmlStringPropertyValueConverter.cs" />
     <Compile Include="Web\Data\Converters\IPropertyValueConverter.cs" />

@@ -21,9 +21,7 @@
 // THE SOFTWARE.
 
 using Logikfabrik.Umbraco.Jet.Extensions;
-using Logikfabrik.Umbraco.Jet.Mappings;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Umbraco.Core.Models;
 
@@ -32,13 +30,12 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
     public class DocumentService : ContentService
     {
         public DocumentService()
-            : this(new UmbracoHelperWrapper(), Jet.TypeService.Instance, DataTypeDefinitionMappings.Mappings)
+            : this(new UmbracoHelperWrapper(), Jet.TypeService.Instance)
         {
         }
 
-        public DocumentService(IUmbracoHelperWrapper umbracoHelperWrapper, ITypeService typeService,
-            IDictionary<Type, IDataTypeDefinitionMapping> mappings)
-            : base(umbracoHelperWrapper, typeService, mappings)
+        public DocumentService(IUmbracoHelperWrapper umbracoHelperWrapper, ITypeService typeService)
+            : base(umbracoHelperWrapper, typeService)
         {
         }
 

@@ -250,6 +250,7 @@
     <Compile Include="Configuration\JetConfigurationManagerTest.cs" />
     <Compile Include="DefaultValueServiceTest.cs" />
     <Compile Include="DocumentTypeTest.cs" />
+    <Compile Include="Web\Data\Converters\FloatingDecimalPointPropertyValueConverterTest.cs" />
     <Compile Include="Web\Data\DocumentServiceTest.cs" />
     <Compile Include="Web\Mvc\JetControllerActionInvokerTest.cs" />
     <Compile Include="Mappings\DataTypeDefinitionMappingsTest.cs" />

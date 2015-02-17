@@ -20,38 +20,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System;
+using Logikfabrik.Umbraco.Jet.Web.Data.Converters;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Globalization;
-using System.Linq;
 
-namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
+namespace Logikfabrik.Umbraco.Jet.Test.Web.Data.Converters
 {
-    public class FloatingDecimalPointPropertyValueConverter : IPropertyValueConverter
+    [TestClass]
+    public class FloatingDecimalPointPropertyValueConverterTest
     {
-        public bool CanConvertValue(string uiHint, Type from, Type to)
+        [TestMethod]
+        public void CanConvertValue()
         {
-            if (from == null)
-                throw new ArgumentNullException("from");
+            var converter = new FloatingDecimalPointPropertyValueConverter();
 
-            if (to == null)
-                throw new ArgumentNullException("to");
+            Assert.IsTrue(converter.CanConvertValue(null, typeof(string), typeof(decimal)));
+            Assert.IsTrue(converter.CanConvertValue(null, typeof(string), typeof(decimal?)));
 
-            var validTypes = new[] { typeof(decimal), typeof(decimal?) };
+            const decimal value1 = 1.1m;
+            decimal? value2 = null;
+            var propertyValue1 = value1.ToString(CultureInfo.InvariantCulture);
+            var propertyValue2 = null as string;
 
-            return from == typeof(string) && (validTypes.Contains(to));
-        }
+            var convertedValue1 = converter.Convert(propertyValue1, typeof(decimal));
+            // ReSharper disable once ExpressionIsAlwaysNull
+            var convertedValue2 = converter.Convert(propertyValue2, typeof(decimal?));
 
-        public object Convert(object propertyValue, Type to)
-        {
-            if (propertyValue == null)
-                return null;
-
-            decimal result;
-
-            if (decimal.TryParse(propertyValue.ToString(), NumberStyles.Float, CultureInfo.InvariantCulture.NumberFormat, out result))
-                return result;
-
-            return null;
+            Assert.AreEqual(value1, convertedValue1);
+            // ReSharper disable once ExpressionIsAlwaysNull
+            Assert.AreEqual(value2, convertedValue2);
         }
     }
 }

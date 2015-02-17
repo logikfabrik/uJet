@@ -21,9 +21,7 @@
 // THE SOFTWARE.
 
 using Logikfabrik.Umbraco.Jet.Extensions;
-using Logikfabrik.Umbraco.Jet.Mappings;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Umbraco.Core.Models;
 
@@ -32,13 +30,12 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
     public class MediaService : ContentService
     {
         public MediaService()
-            : this(new UmbracoHelperWrapper(), Jet.TypeService.Instance, DataTypeDefinitionMappings.Mappings)
+            : this(new UmbracoHelperWrapper(), Jet.TypeService.Instance)
         {
         }
 
-        public MediaService(IUmbracoHelperWrapper umbracoHelperWrapper, ITypeService typeService,
-            IDictionary<Type, IDataTypeDefinitionMapping> mappings)
-            : base(umbracoHelperWrapper, typeService, mappings)
+        public MediaService(IUmbracoHelperWrapper umbracoHelperWrapper, ITypeService typeService)
+            : base(umbracoHelperWrapper, typeService)
         {
         }
 

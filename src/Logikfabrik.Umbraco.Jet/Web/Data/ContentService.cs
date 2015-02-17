@@ -20,10 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using Logikfabrik.Umbraco.Jet.Mappings;
 using Logikfabrik.Umbraco.Jet.Web.Data.Converters;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -35,27 +33,21 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
     {
         private readonly ITypeService _typeService;
         private readonly IUmbracoHelperWrapper _umbracoHelperWrapper;
-        private readonly IDictionary<Type, IDataTypeDefinitionMapping> _mappings;
 
         protected ITypeService TypeService { get { return _typeService; } }
 
         protected IUmbracoHelperWrapper UmbracoHelper { get { return _umbracoHelperWrapper; } }
 
-        protected ContentService(IUmbracoHelperWrapper umbracoHelperWrapper, ITypeService typeService,
-            IDictionary<Type, IDataTypeDefinitionMapping> mappings)
+        protected ContentService(IUmbracoHelperWrapper umbracoHelperWrapper, ITypeService typeService)
         {
             if (umbracoHelperWrapper == null)
                 throw new ArgumentNullException("umbracoHelperWrapper");
 
             if (typeService == null)
                 throw new ArgumentNullException("typeService");
-
-            if (mappings == null)
-                throw new ArgumentNullException("mappings");
-
+            
             _umbracoHelperWrapper = umbracoHelperWrapper;
             _typeService = typeService;
-            _mappings = mappings;
         }
 
         protected object GetContent(IPublishedContent content, Type contentType)
@@ -96,7 +88,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
             return ((MemberExpression)expression.Body).Member.Name;
         }
 
-        private string GetUIHint(PropertyInfo property)
+        private static string GetUIHint(PropertyInfo property)
         {
             if (property == null)
                 throw new ArgumentNullException("property");
@@ -105,18 +97,10 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
 
             var uiHint = attribute == null ? null : attribute.UIHint;
 
-            if (uiHint != null)
-                return uiHint;
-
-            IDataTypeDefinitionMapping mapping;
-
-            if (!_mappings.TryGetValue(property.PropertyType, out mapping) || !mapping.CanMapToDefinition(property.PropertyType))
-                return null;
-
-            return mapping.GetMappedDefinition(property.PropertyType).PropertyEditorAlias;
+            return uiHint;
         }
 
-        private void MapProperty(object model, string name, object value)
+        private static void MapProperty(object model, string name, object value)
         {
             if (model == null)
                 throw new ArgumentNullException("model");

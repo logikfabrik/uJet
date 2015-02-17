@@ -21,11 +21,11 @@
 // THE SOFTWARE.
 
 using Logikfabrik.Umbraco.Jet.Extensions;
-using Logikfabrik.Umbraco.Jet.Mappings;
 using Logikfabrik.Umbraco.Jet.Web.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Globalization;
 using Umbraco.Core.Models;
 
 namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
@@ -62,6 +62,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
             public DateTime DateTimeProperty { get; set; }
 
             public bool BooleanProperty { get; set; }
+
+            public decimal FloatingDecimalPropertyAsString { get; set; }
+
+            public float FloatingBinaryPropertyAsString { get; set; }
         }
 
         public class DocumentTypeWithoutTheDocumentTypeAttribute
@@ -76,8 +80,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
             var umbracoHelperWrapper = new Mock<IUmbracoHelperWrapper>();
             var typeService = new Mock<ITypeService>();
 
-            var documentService = new DocumentService(umbracoHelperWrapper.Object, typeService.Object,
-                DataTypeDefinitionMappings.Mappings);
+            var documentService = new DocumentService(umbracoHelperWrapper.Object, typeService.Object);
 
             documentService.GetDocument<DocumentTypeWithoutTheDocumentTypeAttribute>(id);
         }
@@ -96,6 +99,8 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
             const float floatingBinaryProperty = 1.1f;
             var dateTimeProperty = new DateTime(2015, 3, 1);
             const bool booleanProperty = true;
+            const decimal floatingDecimalPropertyAsString = 1.1m;
+            const float floatingBinaryPropertyAsString = 1.1f;
 
             var umbracoHelperWrapper = new Mock<IUmbracoHelperWrapper>();
             var typeService = new Mock<ITypeService>();
@@ -127,7 +132,11 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
                     getProperty("FloatingDecimalProperty".Alias(), floatingDecimalProperty),
                     getProperty("FloatingBinaryProperty".Alias(), floatingBinaryProperty),
                     getProperty("DateTimeProperty".Alias(), dateTimeProperty),
-                    getProperty("BooleanProperty".Alias(), booleanProperty)
+                    getProperty("BooleanProperty".Alias(), booleanProperty),
+                    // Returned as string as the Umbraco data model has no explicit support for floating decimal point types.
+                    getProperty("FloatingDecimalPropertyAsString", floatingDecimalPropertyAsString.ToString(CultureInfo.InvariantCulture)),
+                    // Returned as string as the Umbraco data model has no explicit support for floating binary point types.
+                    getProperty("FloatingBinaryPropertyAsString", floatingDecimalPropertyAsString.ToString(CultureInfo.InvariantCulture))
                 });
 
                 return content.Object;
@@ -136,8 +145,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
             typeService.Setup(m => m.DocumentTypes)
                 .Returns(new[] { typeof(DocumentTypeWithTheDocumentTypeAttribute) });
 
-            var documentService = new DocumentService(umbracoHelperWrapper.Object, typeService.Object,
-                DataTypeDefinitionMappings.Mappings);
+            var documentService = new DocumentService(umbracoHelperWrapper.Object, typeService.Object);
 
             var document = documentService.GetDocument<DocumentTypeWithTheDocumentTypeAttribute>(id);
 
@@ -152,6 +160,8 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
             Assert.AreEqual(floatingBinaryProperty, document.FloatingBinaryProperty);
             Assert.AreEqual(dateTimeProperty, document.DateTimeProperty);
             Assert.AreEqual(booleanProperty, document.BooleanProperty);
+            Assert.AreEqual(floatingDecimalPropertyAsString, document.FloatingDecimalPropertyAsString);
+            Assert.AreEqual(floatingBinaryPropertyAsString, document.FloatingBinaryPropertyAsString);
         }
     }
 }

@@ -46,7 +46,11 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
                 {
                     {typeof (HtmlString), new [] { new HtmlStringPropertyValueConverter()}},
                     {typeof (decimal), new [] { new FloatingDecimalPointPropertyValueConverter()}},
-                    {typeof (decimal?), new [] { new FloatingDecimalPointPropertyValueConverter()}}
+                    {typeof (decimal?), new [] { new FloatingDecimalPointPropertyValueConverter()}},
+                    {typeof (float), new [] { new FloatingBinaryPointPropertyValueConverter()}},
+                    {typeof (float?), new [] { new FloatingBinaryPointPropertyValueConverter()}},
+                    {typeof (double), new [] { new FloatingBinaryPointPropertyValueConverter()}},
+                    {typeof (double?), new [] { new FloatingBinaryPointPropertyValueConverter()}}
                 };
         }
 
@@ -60,9 +64,10 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
 
             IEnumerable<IPropertyValueConverter> converters;
 
-            return !_converters.TryGetValue(from, out converters)
-                ? null
-                : converters.FirstOrDefault(c => c.CanConvertValue(uiHint, from, to));
+            if (!_converters.TryGetValue(to, out converters))
+                return null;
+
+            return converters.FirstOrDefault(c => c.CanConvertValue(uiHint, from, to));
         }
     }
 }
