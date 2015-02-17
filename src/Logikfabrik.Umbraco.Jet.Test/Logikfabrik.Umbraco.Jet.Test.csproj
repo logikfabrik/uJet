@@ -247,6 +247,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Configuration\JetConfigurationManagerTest.cs" />
     <Compile Include="DefaultValueServiceTest.cs" />
     <Compile Include="DocumentTypeTest.cs" />
     <Compile Include="Web\Mvc\JetControllerActionInvokerTest.cs" />
@@ -258,6 +259,7 @@
     <Compile Include="TypeServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Views\MacroPartials\MacroPartial.cshtml" />
     <None Include="Views\Partials\Partial.cshtml" />
