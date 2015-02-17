@@ -36,7 +36,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         {
         }
 
-        public MediaService(UmbracoHelperWrapper umbracoHelperWrapper, ITypeService typeService,
+        public MediaService(IUmbracoHelperWrapper umbracoHelperWrapper, ITypeService typeService,
             IDictionary<Type, IDataTypeDefinitionMapping> mappings)
             : base(umbracoHelperWrapper, typeService, mappings)
         {

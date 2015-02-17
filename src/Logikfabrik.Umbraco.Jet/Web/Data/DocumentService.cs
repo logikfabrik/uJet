@@ -36,7 +36,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         {
         }
 
-        public DocumentService(UmbracoHelperWrapper umbracoHelperWrapper, ITypeService typeService,
+        public DocumentService(IUmbracoHelperWrapper umbracoHelperWrapper, ITypeService typeService,
             IDictionary<Type, IDataTypeDefinitionMapping> mappings)
             : base(umbracoHelperWrapper, typeService, mappings)
         {

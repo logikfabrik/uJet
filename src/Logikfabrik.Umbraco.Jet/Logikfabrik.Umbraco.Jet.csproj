@@ -254,6 +254,7 @@
     <Compile Include="Web\Data\Converters\PropertyValueConverterDictionary.cs" />
     <Compile Include="Web\Data\Converters\PropertyValueConverters.cs" />
     <Compile Include="Web\Data\DocumentService.cs" />
+    <Compile Include="Web\Data\IUmbracoHelperWrapper.cs" />
     <Compile Include="Web\Data\MediaService.cs" />
     <Compile Include="Web\Data\UmbracoHelperWrapper.cs" />
     <Compile Include="DefaultValueService.cs" />

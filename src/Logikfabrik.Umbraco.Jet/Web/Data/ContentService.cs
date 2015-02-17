@@ -34,14 +34,14 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
     public abstract class ContentService
     {
         private readonly ITypeService _typeService;
-        private readonly UmbracoHelperWrapper _umbracoHelperWrapper;
+        private readonly IUmbracoHelperWrapper _umbracoHelperWrapper;
         private readonly IDictionary<Type, IDataTypeDefinitionMapping> _mappings;
 
         protected ITypeService TypeService { get { return _typeService; } }
 
-        protected UmbracoHelperWrapper UmbracoHelper { get { return _umbracoHelperWrapper; } }
+        protected IUmbracoHelperWrapper UmbracoHelper { get { return _umbracoHelperWrapper; } }
 
-        protected ContentService(UmbracoHelperWrapper umbracoHelperWrapper, ITypeService typeService,
+        protected ContentService(IUmbracoHelperWrapper umbracoHelperWrapper, ITypeService typeService,
             IDictionary<Type, IDataTypeDefinitionMapping> mappings)
         {
             if (umbracoHelperWrapper == null)

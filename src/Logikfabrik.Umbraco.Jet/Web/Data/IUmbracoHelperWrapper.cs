@@ -20,37 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System;
 using Umbraco.Core.Models;
-using Umbraco.Web;
 
 namespace Logikfabrik.Umbraco.Jet.Web.Data
 {
-    public class UmbracoHelperWrapper : IUmbracoHelperWrapper
+    public interface IUmbracoHelperWrapper
     {
-        private readonly UmbracoHelper _umbracoHelper;
-
-        public UmbracoHelperWrapper()
-            : this(new UmbracoHelper(UmbracoContext.Current))
-        {
-        }
-
-        public UmbracoHelperWrapper(UmbracoHelper umbracoHelper)
-        {
-            if (umbracoHelper == null)
-                throw new ArgumentNullException("umbracoHelper");
-
-            _umbracoHelper = umbracoHelper;
-        }
-
-        public IPublishedContent TypedDocument(int id)
-        {
-            return _umbracoHelper.TypedContent(id);
-        }
-
-        public IPublishedContent TypedMedia(int id)
-        {
-            return _umbracoHelper.TypedMedia(id);
-        }
+        IPublishedContent TypedDocument(int id);
+        IPublishedContent TypedMedia(int id);
     }
 }
