@@ -21,26 +21,20 @@
 // THE SOFTWARE.
 
 using System;
+using Umbraco.Core.Persistence;
 
-namespace Logikfabrik.Umbraco.Jet
+namespace Logikfabrik.Umbraco.Jet.Data
 {
-    [AttributeUsage(
-        AttributeTargets.Class,
-        AllowMultiple = false,
-        Inherited = false)]
-    public class MediaTypeAttribute : ContentTypeAttribute
+    public class DatabaseWrapper
     {
-        /// <summary>
-        /// Instantiates a new media type attribute.
-        /// </summary>
-        /// <param name="name">The name to use for the new media type attribute.</param>
-        public MediaTypeAttribute(string name) : base(name) { }
+        private readonly Database _database;
 
-        /// <summary>
-        /// Instantiates a new media type attribute.
-        /// </summary>
-        /// <param name="id">The ID to use for the new media type attribute.</param>
-        /// <param name="name">The name to use for the new media type attribute.</param>
-        public MediaTypeAttribute(string id, string name) : base(id, name) { }
+        public DatabaseWrapper(Database database)
+        {
+            if (database == null)
+                throw new ArgumentNullException("database");
+
+            _database = database;
+        }
     }
 }

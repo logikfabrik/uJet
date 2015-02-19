@@ -247,6 +247,15 @@
     <Compile Include="DataType.cs" />
     <Compile Include="DataTypeAttribute.cs" />
     <Compile Include="DataTypeSynchronizationService.cs" />
+    <Compile Include="Data\ContentTypePropertyRepository.cs" />
+    <Compile Include="Data\ContentTypeRepository.cs" />
+    <Compile Include="Data\DataTypeRepository.cs" />
+    <Compile Include="Data\IContentTypePropertyRepository.cs" />
+    <Compile Include="Data\IContentTypeRepository.cs" />
+    <Compile Include="Data\IDatabaseWrapper.cs" />
+    <Compile Include="Data\DatabaseWrapper.cs" />
+    <Compile Include="Data\IDataTypeRepository.cs" />
+    <Compile Include="IdAttribute.cs" />
     <Compile Include="Web\Data\ContentService.cs" />
     <Compile Include="Web\Data\Converters\FloatingBinaryPointPropertyValueConverter.cs" />
     <Compile Include="Web\Data\Converters\FloatingDecimalPointPropertyValueConverter.cs" />

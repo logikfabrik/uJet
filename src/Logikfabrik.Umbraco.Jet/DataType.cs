@@ -28,9 +28,15 @@ namespace Logikfabrik.Umbraco.Jet
 {
     public class DataType
     {
+        private readonly Guid? _id;
         private readonly string _name;
         private readonly string _editor;
         private readonly Type _type;
+
+        /// <summary>
+        /// Gets the ID for this data type.
+        /// </summary>
+        public Guid? Id { get { return _id; } }
 
         public string Name { get { return _name; } }
 
@@ -56,8 +62,22 @@ namespace Logikfabrik.Umbraco.Jet
 
             var attribute = type.GetCustomAttribute<DataTypeAttribute>();
 
+            _id = GetId(attribute);
             _editor = GetEditor(attribute);
             _type = GetType(attribute);
+        }
+
+        /// <summary>
+        /// Gets the data type ID from the given type.
+        /// </summary>
+        /// <param name="attribute">The data type attribute of the underlying type.</param>
+        /// <returns>A data type ID.</returns>
+        private static Guid? GetId(IdAttribute attribute)
+        {
+            if (attribute == null)
+                throw new ArgumentNullException("attribute");
+
+            return attribute.Id;
         }
 
         /// <summary>

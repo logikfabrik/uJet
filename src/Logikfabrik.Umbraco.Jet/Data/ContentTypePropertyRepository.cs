@@ -22,25 +22,18 @@
 
 using System;
 
-namespace Logikfabrik.Umbraco.Jet
+namespace Logikfabrik.Umbraco.Jet.Data
 {
-    [AttributeUsage(
-        AttributeTargets.Class,
-        AllowMultiple = false,
-        Inherited = false)]
-    public class MediaTypeAttribute : ContentTypeAttribute
+    public class ContentTypePropertyRepository : IContentTypePropertyRepository
     {
-        /// <summary>
-        /// Instantiates a new media type attribute.
-        /// </summary>
-        /// <param name="name">The name to use for the new media type attribute.</param>
-        public MediaTypeAttribute(string name) : base(name) { }
+        private readonly IDatabaseWrapper _databaseWrapper;
 
-        /// <summary>
-        /// Instantiates a new media type attribute.
-        /// </summary>
-        /// <param name="id">The ID to use for the new media type attribute.</param>
-        /// <param name="name">The name to use for the new media type attribute.</param>
-        public MediaTypeAttribute(string id, string name) : base(id, name) { }
+        public ContentTypePropertyRepository(IDatabaseWrapper databaseWrapper)
+        {
+            if (databaseWrapper == null)
+                throw new ArgumentNullException("databaseWrapper");
+
+            _databaseWrapper = databaseWrapper;
+        }
     }
 }

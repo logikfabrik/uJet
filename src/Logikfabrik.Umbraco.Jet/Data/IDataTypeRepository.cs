@@ -20,27 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System;
-
-namespace Logikfabrik.Umbraco.Jet
+namespace Logikfabrik.Umbraco.Jet.Data
 {
-    [AttributeUsage(
-        AttributeTargets.Class,
-        AllowMultiple = false,
-        Inherited = false)]
-    public class MediaTypeAttribute : ContentTypeAttribute
+    public interface IDataTypeRepository
     {
-        /// <summary>
-        /// Instantiates a new media type attribute.
-        /// </summary>
-        /// <param name="name">The name to use for the new media type attribute.</param>
-        public MediaTypeAttribute(string name) : base(name) { }
-
-        /// <summary>
-        /// Instantiates a new media type attribute.
-        /// </summary>
-        /// <param name="id">The ID to use for the new media type attribute.</param>
-        /// <param name="name">The name to use for the new media type attribute.</param>
-        public MediaTypeAttribute(string id, string name) : base(id, name) { }
     }
 }

@@ -45,5 +45,12 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="name">The name to use for the new document type attribute.</param>
         public DocumentTypeAttribute(string name) : base(name) { }
+
+        /// <summary>
+        /// Instantiates a new document type attribute.
+        /// </summary>
+        /// <param name="id">The ID to use for the new document type attribute.</param>
+        /// <param name="name">The name to use for the new document type attribute.</param>
+        public DocumentTypeAttribute(string id, string name) : base(id, name) { }
     }
 }

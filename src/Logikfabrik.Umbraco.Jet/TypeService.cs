@@ -72,7 +72,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// Gets the document types within the current application domain.
         /// </summary>
         /// <returns>Document types.</returns>
-        private static IEnumerable<Type> GetDocumentTypes()
+        private IEnumerable<Type> GetDocumentTypes()
         {
             return GetTypesByAttribute(TypeExtensions.IsDocumentType);
         }
@@ -81,7 +81,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// Gets the data types within the current application domain.
         /// </summary>
         /// <returns>Data types.</returns>
-        private static IEnumerable<Type> GetDataTypes()
+        private IEnumerable<Type> GetDataTypes()
         {
             return GetTypesByAttribute(TypeExtensions.IsDataType);
         }
@@ -90,22 +90,21 @@ namespace Logikfabrik.Umbraco.Jet
         /// Gets the media types within the current application domain.
         /// </summary>
         /// <returns>Media types.</returns>
-        private static IEnumerable<Type> GetMediaTypes()
+        private IEnumerable<Type> GetMediaTypes()
         {
             return GetTypesByAttribute(TypeExtensions.IsMediaType);
         }
 
-        private static IEnumerable<Type> GetTypesByAttribute(Func<Type, bool> predicate)
+        private IEnumerable<Type> GetTypesByAttribute(Func<Type, bool> predicate)
         {
             if (predicate == null)
                 throw new ArgumentNullException("predicate");
 
             Func<Assembly, IEnumerable<Type>> getTypes = a => a.GetTypes().Where(predicate);
 
-            var assemblies = GetAssemblies();
             var types = new List<Type>();
 
-            foreach (var assembly in assemblies)
+            foreach (var assembly in _assemblies.Value)
             {
                 try
                 {

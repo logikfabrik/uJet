@@ -30,6 +30,7 @@ namespace Logikfabrik.Umbraco.Jet
 {
     public class ContentTypeProperty
     {
+        private readonly Guid? _id;
         private readonly Type _type;
         private readonly string _name;
         private readonly string _alias;
@@ -41,6 +42,11 @@ namespace Logikfabrik.Umbraco.Jet
         private readonly string _uiHint;
         private readonly object _defaultValue;
         private readonly bool _hasDefaultValue;
+
+        /// <summary>
+        /// Gets the ID of this content type.
+        /// </summary>
+        public Guid? Id { get { return _id; } }
 
         /// <summary>
         /// Gets the type of this content type property.
@@ -103,6 +109,7 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException("property");
 
             _type = property.PropertyType;
+            _id = GetId(property);
             _mandatory = GetIsMandatory(property);
             _alias = GetAlias(property);
             _regularExpression = GetRegularExpression(property);
@@ -115,6 +122,16 @@ namespace Logikfabrik.Umbraco.Jet
             _sortOrder = GetSortOrder(property, attribute);
             _description = GetDescription(property, attribute);
             _propertyGroup = GetPropertyGroup(property, attribute);
+        }
+
+        private static Guid? GetId(PropertyInfo property)
+        {
+            if (property == null)
+                throw new ArgumentNullException("property");
+
+            var attribute = property.GetCustomAttribute<IdAttribute>();
+
+            return attribute == null ? null : attribute.Id;
         }
 
         /// <summary>

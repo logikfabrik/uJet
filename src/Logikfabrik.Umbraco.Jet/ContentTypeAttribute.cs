@@ -24,7 +24,7 @@ using System;
 
 namespace Logikfabrik.Umbraco.Jet
 {
-    public abstract class ContentTypeAttribute : Attribute
+    public abstract class ContentTypeAttribute : IdAttribute
     {
         private readonly string _name;
 
@@ -63,6 +63,20 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="name">The name to use for the new content type attribute.</param>
         protected ContentTypeAttribute(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Name cannot be null or white space.", "name");
+
+            _name = name;
+        }
+
+        /// <summary>
+        /// Instantiates a new content type attribute.
+        /// </summary>
+        /// <param name="id">The ID to use for the new content type attribute.</param>
+        /// <param name="name">The name to use for the new content type attribute.</param>
+        protected ContentTypeAttribute(string id, string name)
+            : base(id)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Name cannot be null or white space.", "name");

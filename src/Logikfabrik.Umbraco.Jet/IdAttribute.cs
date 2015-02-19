@@ -24,48 +24,28 @@ using System;
 
 namespace Logikfabrik.Umbraco.Jet
 {
-    [AttributeUsage(
-        AttributeTargets.Class,
-        AllowMultiple = false,
-        Inherited = false)]
-    public class DataTypeAttribute : IdAttribute
+    public abstract class IdAttribute : Attribute
     {
-        private readonly Type _type;
-        private readonly string _editor;
+        private readonly Guid? _id;
 
         /// <summary>
-        /// Gets the name of this data type attribute.
+        /// Gets or sets the ID.
         /// </summary>
-        public string Editor { get { return _editor; } }
+        public Guid? Id { get { return _id; } }
 
-        /// <summary>
-        /// Gets the type of this data type attribute.
-        /// </summary>
-        public Type Type { get { return _type; } }
-
-        public DataTypeAttribute(Type type, string editor)
+        protected IdAttribute()
         {
-            if (type == null)
-                throw new ArgumentNullException("type");
-
-            if (string.IsNullOrWhiteSpace(editor))
-                throw new ArgumentException("Editor cannot be null or white space.", "editor");
-
-            _type = type;
-            _editor = editor;
         }
 
-        public DataTypeAttribute(string id, Type type, string editor)
-            : base(id)
+        protected IdAttribute(string id)
         {
-            if (type == null)
-                throw new ArgumentNullException("type");
+            if (string.IsNullOrWhiteSpace(id))
+                throw new ArgumentException("ID cannot be null or white space.", "id");
 
-            if (string.IsNullOrWhiteSpace(editor))
-                throw new ArgumentException("Editor cannot be null or white space.", "editor");
+            Guid result;
 
-            _type = type;
-            _editor = editor;
+            if (Guid.TryParse(id, out result))
+                _id = result;
         }
     }
 }
