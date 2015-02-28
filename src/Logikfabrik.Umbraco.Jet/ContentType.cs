@@ -32,6 +32,7 @@ namespace Logikfabrik.Umbraco.Jet
     public abstract class ContentType<T> where T : ContentTypeAttribute
     {
         private readonly Type _type;
+        private readonly Guid? _id;
         private readonly string _name;
         private readonly string _alias;
         private readonly string _description;
@@ -45,6 +46,11 @@ namespace Logikfabrik.Umbraco.Jet
         /// Gets the type of this content type.
         /// </summary>
         public Type Type { get { return _type; } }
+
+        /// <summary>
+        /// Gets the ID for this content type.
+        /// </summary>
+        public Guid? Id { get { return _id; } }
 
         /// <summary>
         /// Gets the name of this content type.
@@ -98,6 +104,7 @@ namespace Logikfabrik.Umbraco.Jet
 
             var attribute = GetAttribute();
 
+            _id = GetId(attribute);
             _icon = GetIcon(attribute);
             _thumbnail = GetThumbnail(attribute);
             _description = GetDescription(attribute);
@@ -134,6 +141,19 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException("type");
 
             return type.GetCustomAttribute<T>().Name;
+        }
+
+        /// <summary>
+        /// Gets the content type ID from the given type.
+        /// </summary>
+        /// <param name="attribute">The content type attribute of the underlying type.</param>
+        /// <returns>A content type ID.</returns>
+        private static Guid? GetId(IdAttribute attribute)
+        {
+            if (attribute == null)
+                throw new ArgumentNullException("attribute");
+
+            return attribute.Id;
         }
 
         /// <summary>

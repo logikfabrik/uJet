@@ -38,6 +38,9 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         public Guid? Id { get { return _id; } }
 
+        /// <summary>
+        /// Gets the name of this data type.
+        /// </summary>
         public string Name { get { return _name; } }
 
         /// <summary>

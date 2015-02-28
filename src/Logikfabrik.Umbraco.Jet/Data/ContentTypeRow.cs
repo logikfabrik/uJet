@@ -21,19 +21,15 @@
 // THE SOFTWARE.
 
 using System;
+using Umbraco.Core.Persistence;
 
 namespace Logikfabrik.Umbraco.Jet.Data
 {
-    public class ContentTypePropertyRepository : IContentTypePropertyRepository
+    [TableName("uJetContentType")]
+    [PrimaryKey("Id", autoIncrement = false)]
+    public class ContentTypeRow
     {
-        private readonly IDatabaseWrapper _databaseWrapper;
-
-        public ContentTypePropertyRepository(IDatabaseWrapper databaseWrapper)
-        {
-            if (databaseWrapper == null)
-                throw new ArgumentNullException("databaseWrapper");
-
-            _databaseWrapper = databaseWrapper;
-        }
+        public Guid Id { get; set; }
+        public int ContentTypeId { get; set; }
     }
 }

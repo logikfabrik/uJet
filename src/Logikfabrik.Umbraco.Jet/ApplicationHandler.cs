@@ -20,26 +20,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using Logikfabrik.Umbraco.Jet.Extensions;
-using Logikfabrik.Umbraco.Jet.Web.Mvc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Umbraco.Core;
 
-namespace Logikfabrik.Umbraco.Jet.Test.Web.Mvc
+namespace Logikfabrik.Umbraco.Jet
 {
-    [TestClass]
-    public class JetControllerActionInvokerTest
+    public abstract class ApplicationHandler : IApplicationEventHandler
     {
-        [TestMethod]
-        public void CanGetActionNameForPreviewAction()
+        protected bool IsInstalled
         {
-            Assert.AreEqual("Index",
-                JetControllerActionInvoker.GetActionName(PreviewTemplateAttribute.TemplateName.Alias()));
+            get
+            {
+                return !string.IsNullOrWhiteSpace(System.Configuration.ConfigurationManager.AppSettings["umbracoConfigurationStatus"]);
+            }
         }
 
-        [TestMethod]
-        public void CanGetActionNameForIndexAction()
+        public virtual void OnApplicationInitialized(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
         {
-            Assert.AreEqual("Index", JetControllerActionInvoker.GetActionName("Index"));
+        }
+
+        public virtual void OnApplicationStarting(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
+        {
+        }
+
+        public virtual void OnApplicationStarted(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
+        {
         }
     }
 }

@@ -60,7 +60,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
 
         public object GetMedia(int id, string mediaTypeAlias)
         {
-            var mediaType = TypeService.MediaTypes.FirstOrDefault(t => t.Name.Alias().Equals(mediaTypeAlias));
+            var mediaType = TypeService.MediaTypes.FirstOrDefault(t => t.Name.Alias() == mediaTypeAlias);
 
             if (mediaType == null)
                 throw new ArgumentException(

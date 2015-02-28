@@ -58,7 +58,7 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException("content");
 
             var type =
-                _typeService.DocumentTypes.FirstOrDefault(t => t.Name.Alias().Equals(content.ContentType.Alias));
+                _typeService.DocumentTypes.FirstOrDefault(t => t.Name.Alias() == content.ContentType.Alias);
 
             if (type == null)
                 return;
@@ -81,7 +81,7 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException("content");
 
             var type =
-                _typeService.MediaTypes.FirstOrDefault(t => t.Name.Alias().Equals(content.ContentType.Alias));
+                _typeService.MediaTypes.FirstOrDefault(t => t.Name.Alias() == content.ContentType.Alias);
 
             if (type == null)
                 return;

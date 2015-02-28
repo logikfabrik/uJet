@@ -35,5 +35,47 @@ namespace Logikfabrik.Umbraco.Jet.Data
 
             _databaseWrapper = databaseWrapper;
         }
+
+        public int? GetContentTypeId(Guid id)
+        {
+            if (!_databaseWrapper.TableExists<ContentTypeRow>())
+                return null;
+
+            var row = _databaseWrapper.GetRow<ContentTypeRow>(id);
+
+            if (row == null)
+                return null;
+
+            return row.ContentTypeId;
+        }
+
+        public int? GetPropertyTypeId(Guid id)
+        {
+            if (!_databaseWrapper.TableExists<PropertyTypeRow>())
+                return null;
+
+            var row = _databaseWrapper.GetRow<PropertyTypeRow>(id);
+
+            if (row == null)
+                return null;
+
+            return row.PropertyTypeId;
+        }
+
+        public void SetContentTypeId(Guid id, int contentTypeId)
+        {
+            var row = new ContentTypeRow { Id = id, ContentTypeId = contentTypeId };
+
+            _databaseWrapper.CreateTable<ContentTypeRow>();
+            _databaseWrapper.InsertRow(row);
+        }
+
+        public void SetPropertyTypeId(Guid id, int propertyTypeId)
+        {
+            var row = new PropertyTypeRow { Id = id, PropertyTypeId = propertyTypeId };
+
+            _databaseWrapper.CreateTable<PropertyTypeRow>();
+            _databaseWrapper.InsertRow(row);
+        }
     }
 }

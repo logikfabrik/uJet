@@ -60,7 +60,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
 
         public object GetDocument(int id, string documentTypeAlias)
         {
-            var documentType = TypeService.DocumentTypes.FirstOrDefault(t => t.Name.Alias().Equals(documentTypeAlias));
+            var documentType = TypeService.DocumentTypes.FirstOrDefault(t => t.Name.Alias() == documentTypeAlias);
 
             if (documentType == null)
                 throw new ArgumentException(

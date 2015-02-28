@@ -29,10 +29,20 @@ namespace Logikfabrik.Umbraco.Jet.Test.Configuration
     public class JetConfigurationManagerTest
     {
         [TestMethod]
-        public void CanGetSynchronize()
+        public void CanGetSynchronizationModeForDataTypes()
         {
             Assert.IsTrue(JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.DataTypes));
+        }
+
+        [TestMethod]
+        public void CanGetSynchronizationModeForDocumentTypes()
+        {
             Assert.IsTrue(JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.DocumentTypes));
+        }
+
+        [TestMethod]
+        public void CanGetSynchronizationModeForMediaTypes()
+        {
             Assert.IsTrue(JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.MediaTypes));
         }
     }

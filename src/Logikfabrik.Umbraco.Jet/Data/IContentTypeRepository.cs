@@ -20,9 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using System;
+
 namespace Logikfabrik.Umbraco.Jet.Data
 {
     public interface IContentTypeRepository
     {
+        int? GetContentTypeId(Guid id);
+        int? GetPropertyTypeId(Guid id);
+        void SetContentTypeId(Guid id, int contentTypeId);
+        void SetPropertyTypeId(Guid id, int propertyTypeId);
     }
 }

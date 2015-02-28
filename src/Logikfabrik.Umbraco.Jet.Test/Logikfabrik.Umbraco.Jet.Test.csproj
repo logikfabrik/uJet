@@ -251,6 +251,9 @@
     <Compile Include="Configuration\JetConfigurationManagerTest.cs" />
     <Compile Include="DefaultValueServiceTest.cs" />
     <Compile Include="DocumentTypeTest.cs" />
+    <Compile Include="DataTypeSynchronizationServiceTest.cs" />
+    <Compile Include="DocumentTypeSynchronizationServiceTest.cs" />
+    <Compile Include="MediaTypeSynchronizationServiceTest.cs" />
     <Compile Include="Web\Data\Converters\FloatingDecimalPointPropertyValueConverterTest.cs" />
     <Compile Include="Web\Data\Converters\FloatingBinaryPointPropertyValueConverterTest.cs" />
     <Compile Include="Web\Data\Converters\HtmlStringPropertyValueConverterTest.cs" />

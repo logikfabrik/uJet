@@ -20,9 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using System;
+using Umbraco.Core.Persistence;
+
 namespace Logikfabrik.Umbraco.Jet.Data
 {
-    public interface IContentTypePropertyRepository
+    [TableName("uJetPropertyType")]
+    [PrimaryKey("Id", autoIncrement = false)]
+    public class PropertyTypeRow
     {
+        public Guid Id { get; set; }
+        public int PropertyTypeId { get; set; }
     }
 }

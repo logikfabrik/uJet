@@ -235,6 +235,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationHandler.cs" />
     <Compile Include="Configuration\JetAssemblyElement.cs" />
     <Compile Include="Configuration\JetAssemblyElementCollection.cs" />
     <Compile Include="Configuration\JetConfigurationManager.cs" />
@@ -247,14 +248,15 @@
     <Compile Include="DataType.cs" />
     <Compile Include="DataTypeAttribute.cs" />
     <Compile Include="DataTypeSynchronizationService.cs" />
-    <Compile Include="Data\ContentTypePropertyRepository.cs" />
     <Compile Include="Data\ContentTypeRepository.cs" />
     <Compile Include="Data\DataTypeRepository.cs" />
-    <Compile Include="Data\IContentTypePropertyRepository.cs" />
+    <Compile Include="Data\ContentTypeRow.cs" />
+    <Compile Include="Data\DataTypeRow.cs" />
     <Compile Include="Data\IContentTypeRepository.cs" />
     <Compile Include="Data\IDatabaseWrapper.cs" />
     <Compile Include="Data\DatabaseWrapper.cs" />
     <Compile Include="Data\IDataTypeRepository.cs" />
+    <Compile Include="Data\PropertyTypeRow.cs" />
     <Compile Include="IdAttribute.cs" />
     <Compile Include="Web\Data\ContentService.cs" />
     <Compile Include="Web\Data\Converters\FloatingBinaryPointPropertyValueConverter.cs" />

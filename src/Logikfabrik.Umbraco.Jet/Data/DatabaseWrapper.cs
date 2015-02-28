@@ -21,11 +21,12 @@
 // THE SOFTWARE.
 
 using System;
+using System.Reflection;
 using Umbraco.Core.Persistence;
 
 namespace Logikfabrik.Umbraco.Jet.Data
 {
-    public class DatabaseWrapper
+    public class DatabaseWrapper : IDatabaseWrapper
     {
         private readonly Database _database;
 
@@ -35,6 +36,47 @@ namespace Logikfabrik.Umbraco.Jet.Data
                 throw new ArgumentNullException("database");
 
             _database = database;
+        }
+
+        public T GetRow<T>(object primaryKey)
+        {
+            if (primaryKey == null)
+                throw new ArgumentNullException("primaryKey");
+
+            return _database.SingleOrDefault<T>(primaryKey);
+        }
+
+        public void InsertRow<T>(T row) where T : class
+        {
+            if (row == null)
+                throw new ArgumentNullException("row");
+
+            _database.Insert(row);
+        }
+
+        public bool TableExists<T>()
+        {
+            var tableName = GetTableName<T>();
+
+            if (string.IsNullOrWhiteSpace(tableName))
+                throw new ArgumentException(string.Format("Table name cannot be null or white space for type {0}.", typeof(T)));
+
+            return _database.TableExist(tableName);
+        }
+
+        public void CreateTable<T>() where T : new()
+        {
+            if (TableExists<T>())
+                return;
+
+            _database.CreateTable<T>();
+        }
+
+        private static string GetTableName<T>()
+        {
+            var attribute = typeof(T).GetCustomAttribute<TableNameAttribute>();
+
+            return attribute == null ? null : attribute.Value;
         }
     }
 }

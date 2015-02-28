@@ -20,7 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using Logikfabrik.Umbraco.Jet.Data;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Umbraco.Core;
 using Umbraco.Core.Models;
@@ -30,26 +32,33 @@ namespace Logikfabrik.Umbraco.Jet
 {
     public class MediaTypeSynchronizationService : ContentTypeSynchronizationService
     {
+        private readonly IContentTypeRepository _contentTypeRepository;
         private readonly IContentTypeService _contentTypeService;
         private readonly ITypeService _typeService;
 
         public MediaTypeSynchronizationService()
             : this(
                 ApplicationContext.Current.Services.ContentTypeService,
+                new ContentTypeRepository(new DatabaseWrapper(ApplicationContext.Current.DatabaseContext.Database)),
                 TypeService.Instance) { }
 
         public MediaTypeSynchronizationService(
             IContentTypeService contentTypeService,
+            IContentTypeRepository contentTypeRepository,
             ITypeService typeService)
-            : base(contentTypeService)
+            : base(contentTypeService, contentTypeRepository)
         {
             if (contentTypeService == null)
                 throw new ArgumentNullException("contentTypeService");
+
+            if (contentTypeRepository == null)
+                throw new ArgumentNullException("contentTypeRepository");
 
             if (typeService == null)
                 throw new ArgumentNullException("typeService");
 
             _contentTypeService = contentTypeService;
+            _contentTypeRepository = contentTypeRepository;
             _typeService = typeService;
         }
 
@@ -58,18 +67,110 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         public override void Synchronize()
         {
-            var contentTypes = _contentTypeService.GetAllMediaTypes().ToArray();
             var mediaTypes = _typeService.MediaTypes.Select(t => new MediaType(t)).ToArray();
 
-            // Create and/or update media types.
-            foreach (var mediaType in mediaTypes)
-                if (contentTypes.All(ct => ct.Name != mediaType.Name))
-                    CreateMediaType(mediaType);
-                else
-                    UpdateMediaType(contentTypes.First(ct => ct.Name == mediaType.Name), mediaType);
+            ValidateMediaTypeId(mediaTypes);
+            ValidateMediaTypeName(mediaTypes);
 
-            // ReSharper disable once CoVariantArrayConversion
-            SetAllowedContentTypes(contentTypes, mediaTypes);
+            foreach (var documentType in mediaTypes.Where(dt => dt.Id.HasValue))
+                SynchronizeById(_contentTypeService.GetAllMediaTypes(), documentType);
+
+            foreach (var documentType in mediaTypes.Where(dt => !dt.Id.HasValue))
+                SynchronizeByName(_contentTypeService.GetAllMediaTypes(), documentType);
+
+            SetAllowedContentTypes(_contentTypeService.GetAllMediaTypes().Cast<IContentTypeBase>().ToArray(),
+                mediaTypes);
+        }
+
+        private static void ValidateMediaTypeId(IEnumerable<MediaType> mediaTypes)
+        {
+            if (mediaTypes == null)
+                throw new ArgumentNullException("mediaTypes");
+
+            var set = new HashSet<Guid>();
+
+            foreach (var mediaType in mediaTypes)
+            {
+                if (!mediaType.Id.HasValue)
+                    continue;
+
+                if (set.Contains(mediaType.Id.Value))
+                    throw new InvalidOperationException(
+                        string.Format("ID conflict for media type {0}. ID {1} is already in use.", mediaType.Name,
+                            mediaType.Id.Value));
+
+                set.Add(mediaType.Id.Value);
+            }
+        }
+
+        private static void ValidateMediaTypeName(IEnumerable<MediaType> mediaTypes)
+        {
+            if (mediaTypes == null)
+                throw new ArgumentNullException("mediaTypes");
+
+            var set = new HashSet<string>();
+
+            foreach (var mediaType in mediaTypes)
+            {
+                if (set.Contains(mediaType.Name))
+                    throw new InvalidOperationException(
+                        string.Format("Name conflict for media type {0}. Name {0} is already in use.", mediaType.Name));
+
+                set.Add(mediaType.Name);
+            }
+        }
+
+        private void SynchronizeByName(IEnumerable<IMediaType> contentTypes, MediaType mediaType)
+        {
+            if (contentTypes == null)
+                throw new ArgumentNullException("contentTypes");
+
+            if (mediaType == null)
+                throw new ArgumentNullException("mediaType");
+
+            if (mediaType.Id.HasValue)
+                throw new ArgumentException("Media type ID must be null.", "mediaType");
+
+            var ct = contentTypes.FirstOrDefault(type => type.Alias == mediaType.Alias);
+
+            if (ct == null)
+                CreateMediaType(mediaType);
+            else
+                UpdateMediaType(ct, mediaType);
+        }
+
+        private void SynchronizeById(IEnumerable<IMediaType> contentTypes, MediaType mediaType)
+        {
+            if (contentTypes == null)
+                throw new ArgumentNullException("contentTypes");
+
+            if (mediaType == null)
+                throw new ArgumentNullException("mediaType");
+
+            if (!mediaType.Id.HasValue)
+                throw new ArgumentException("Media type ID cannot be null.", "mediaType");
+
+            IMediaType ct = null;
+
+            var id = _contentTypeRepository.GetContentTypeId(mediaType.Id.Value);
+
+            if (id.HasValue)
+                // The media type has been synchronized before. Get the matching content type.
+                // It might have been removed using the back office.
+                ct = contentTypes.FirstOrDefault(type => type.Id == id.Value);
+
+            if (ct == null)
+            {
+                CreateMediaType(mediaType);
+
+                // Get the created media type.
+                ct = _contentTypeService.GetMediaType(mediaType.Alias);
+
+                // Connect the media type and the created content type.
+                _contentTypeRepository.SetContentTypeId(mediaType.Id.Value, ct.Id);
+            }
+            else
+                UpdateMediaType(ct, mediaType);
         }
 
         /// <summary>
@@ -82,9 +183,7 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException("mediaType");
 
             var contentType = (IMediaType)CreateContentType(() => new global::Umbraco.Core.Models.MediaType(-1), mediaType);
-
-            CreatePropertyTypes(contentType, mediaType.Properties);
-
+            
             _contentTypeService.Save(contentType);
         }
 

@@ -24,7 +24,7 @@ using System;
 
 namespace Logikfabrik.Umbraco.Jet
 {
-    public abstract class IdAttribute : Attribute
+    public class IdAttribute : Attribute
     {
         private readonly Guid? _id;
 
@@ -37,7 +37,7 @@ namespace Logikfabrik.Umbraco.Jet
         {
         }
 
-        protected IdAttribute(string id)
+        public IdAttribute(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
                 throw new ArgumentException("ID cannot be null or white space.", "id");

@@ -27,22 +27,21 @@ using Umbraco.Web.Mvc;
 
 namespace Logikfabrik.Umbraco.Jet.Web.Mvc
 {
-    public class JetMvcApplicationHandler : IApplicationEventHandler
+    public class JetMvcApplicationHandler : ApplicationHandler
     {
         private static readonly object Lock = new object();
         private static bool _configured;
-
-        public void OnApplicationInitialized(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
-        {
-        }
-
-        public void OnApplicationStarting(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
+        
+        public override void OnApplicationStarting(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
         {
             FilteredControllerFactoriesResolver.Current.InsertTypeBefore(typeof(RenderControllerFactory), typeof(JetControllerFactory));
         }
 
-        public void OnApplicationStarted(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
+        public override void OnApplicationStarted(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
         {
+            if (!IsInstalled)
+                return;
+
             if (_configured)
                 return;
 

@@ -30,7 +30,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     {
         public static string GetActionName(string name)
         {
-            return name.Equals(PreviewTemplateAttribute.TemplateName.Alias())  ? "Index" : name;
+            return name == PreviewTemplateAttribute.TemplateName.Alias() ? "Index" : name;
         }
 
         protected override ActionDescriptor FindAction(ControllerContext controllerContext, ControllerDescriptor controllerDescriptor, string actionName)

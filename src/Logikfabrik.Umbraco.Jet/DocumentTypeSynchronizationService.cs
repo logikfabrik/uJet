@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using Logikfabrik.Umbraco.Jet.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +32,7 @@ namespace Logikfabrik.Umbraco.Jet
 {
     public class DocumentTypeSynchronizationService : ContentTypeSynchronizationService
     {
+        private readonly IContentTypeRepository _contentTypeRepository;
         private readonly IContentTypeService _contentTypeService;
         private readonly IFileService _fileService;
         private readonly ITypeService _typeService;
@@ -38,17 +40,22 @@ namespace Logikfabrik.Umbraco.Jet
         public DocumentTypeSynchronizationService()
             : this(
                 ApplicationContext.Current.Services.ContentTypeService,
+                new ContentTypeRepository(new DatabaseWrapper(ApplicationContext.Current.DatabaseContext.Database)),
                 ApplicationContext.Current.Services.FileService,
                 TypeService.Instance) { }
 
         public DocumentTypeSynchronizationService(
             IContentTypeService contentTypeService,
+            IContentTypeRepository contentTypeRepository,
             IFileService fileService,
             ITypeService typeService)
-            : base(contentTypeService)
+            : base(contentTypeService, contentTypeRepository)
         {
             if (contentTypeService == null)
                 throw new ArgumentNullException("contentTypeService");
+
+            if (contentTypeRepository == null)
+                throw new ArgumentNullException("contentTypeRepository");
 
             if (fileService == null)
                 throw new ArgumentNullException("fileService");
@@ -57,6 +64,7 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException("typeService");
 
             _contentTypeService = contentTypeService;
+            _contentTypeRepository = contentTypeRepository;
             _fileService = fileService;
             _typeService = typeService;
         }
@@ -66,18 +74,110 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         public override void Synchronize()
         {
-            var contentTypes = _contentTypeService.GetAllContentTypes().ToArray();
             var documentTypes = _typeService.DocumentTypes.Select(t => new DocumentType(t)).ToArray();
 
-            // Create and/or update document types.
-            foreach (var documentType in documentTypes)
-                if (contentTypes.All(ct => ct.Alias != documentType.Alias))
-                    CreateDocumentType(documentType);
-                else
-                    UpdateDocumentType(contentTypes.First(ct => ct.Alias == documentType.Alias), documentType);
+            ValidateDocumentTypeId(documentTypes);
+            ValidateDocumentTypeName(documentTypes);
 
-            // ReSharper disable once CoVariantArrayConversion
-            SetAllowedContentTypes(contentTypes, documentTypes);
+            foreach (var documentType in documentTypes.Where(dt => dt.Id.HasValue))
+                SynchronizeById(_contentTypeService.GetAllContentTypes(), documentType);
+
+            foreach (var documentType in documentTypes.Where(dt => !dt.Id.HasValue))
+                SynchronizeByName(_contentTypeService.GetAllContentTypes(), documentType);
+
+            SetAllowedContentTypes(_contentTypeService.GetAllContentTypes().Cast<IContentTypeBase>().ToArray(),
+                documentTypes);
+        }
+
+        private static void ValidateDocumentTypeId(IEnumerable<DocumentType> documentTypes)
+        {
+            if (documentTypes == null)
+                throw new ArgumentNullException("documentTypes");
+
+            var set = new HashSet<Guid>();
+
+            foreach (var documentType in documentTypes)
+            {
+                if (!documentType.Id.HasValue)
+                    continue;
+
+                if (set.Contains(documentType.Id.Value))
+                    throw new InvalidOperationException(
+                        string.Format("ID conflict for document type {0}. ID {1} is already in use.", documentType.Name,
+                            documentType.Id.Value));
+
+                set.Add(documentType.Id.Value);
+            }
+        }
+
+        private static void ValidateDocumentTypeName(IEnumerable<DocumentType> documentTypes)
+        {
+            if (documentTypes == null)
+                throw new ArgumentNullException("documentTypes");
+
+            var set = new HashSet<string>();
+
+            foreach (var dataType in documentTypes)
+            {
+                if (set.Contains(dataType.Name))
+                    throw new InvalidOperationException(
+                        string.Format("Name conflict for document type {0}. Name {0} is already in use.", dataType.Name));
+
+                set.Add(dataType.Name);
+            }
+        }
+
+        private void SynchronizeByName(IEnumerable<IContentType> contentTypes, DocumentType documentType)
+        {
+            if (contentTypes == null)
+                throw new ArgumentNullException("contentTypes");
+
+            if (documentType == null)
+                throw new ArgumentNullException("documentType");
+
+            if (documentType.Id.HasValue)
+                throw new ArgumentException("Document type ID must be null.", "documentType");
+
+            var ct = contentTypes.FirstOrDefault(type => type.Alias == documentType.Alias);
+
+            if (ct == null)
+                CreateDocumentType(documentType);
+            else
+                UpdateDocumentType(ct, documentType);
+        }
+
+        private void SynchronizeById(IEnumerable<IContentType> contentTypes, DocumentType documentType)
+        {
+            if (contentTypes == null)
+                throw new ArgumentNullException("contentTypes");
+
+            if (documentType == null)
+                throw new ArgumentNullException("documentType");
+
+            if (!documentType.Id.HasValue)
+                throw new ArgumentException("Document type ID cannot be null.", "documentType");
+
+            IContentType ct = null;
+
+            var id = _contentTypeRepository.GetContentTypeId(documentType.Id.Value);
+
+            if (id.HasValue)
+                // The document type has been synchronized before. Get the matching content type.
+                // It might have been removed using the back office.
+                ct = contentTypes.FirstOrDefault(type => type.Id == id.Value);
+
+            if (ct == null)
+            {
+                CreateDocumentType(documentType);
+
+                // Get the created content type.
+                ct = _contentTypeService.GetContentType(documentType.Alias);
+
+                // Connect the document type and the created content type.
+                _contentTypeRepository.SetContentTypeId(documentType.Id.Value, ct.Id);
+            }
+            else
+                UpdateDocumentType(ct, documentType);
         }
 
         /// <summary>
@@ -93,8 +193,6 @@ namespace Logikfabrik.Umbraco.Jet
 
             SetTemplates(contentType, documentType);
             SetDefaultTemplate(contentType, documentType);
-
-            CreatePropertyTypes(contentType, documentType.Properties);
 
             _contentTypeService.Save(contentType);
         }

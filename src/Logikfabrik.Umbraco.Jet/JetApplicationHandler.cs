@@ -26,21 +26,16 @@ using Umbraco.Core.Services;
 
 namespace Logikfabrik.Umbraco.Jet
 {
-    public class JetApplicationHandler : IApplicationEventHandler
+    public class JetApplicationHandler : ApplicationHandler
     {
         private static readonly object Lock = new object();
         private static bool _configured;
-
-        public void OnApplicationInitialized(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
+        
+        public override void OnApplicationStarted(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
         {
-        }
+            if (!IsInstalled)
+                return;
 
-        public void OnApplicationStarting(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
-        {
-        }
-
-        public void OnApplicationStarted(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
-        {
             if (_configured)
                 return;
 

@@ -92,7 +92,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
                 throw new ArgumentNullException("contentType");
 
             var templates = GetAllowedTemplates(contentType);
-            var template = templates.First(t => t.Alias.Equals(PreviewTemplateAttribute.TemplateName.Alias()));
+            var template = templates.First(t => t.Alias == PreviewTemplateAttribute.TemplateName.Alias());
 
             contentType.AllowedTemplates = templates;
             contentType.SetDefaultTemplate(template);
@@ -110,7 +110,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
             if (contentType.AllowedTemplates != null)
                 templates.AddRange(contentType.AllowedTemplates);
 
-            if (templates.All(t => !t.Alias.Equals(PreviewTemplateAttribute.TemplateName.Alias())))
+            if (templates.All(t => t.Alias != PreviewTemplateAttribute.TemplateName.Alias()))
                 templates.Add(GetPreviewTemplate());
 
             return templates;

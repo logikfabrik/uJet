@@ -20,26 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using Logikfabrik.Umbraco.Jet.Extensions;
-using Logikfabrik.Umbraco.Jet.Web.Mvc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using Umbraco.Core.Persistence;
 
-namespace Logikfabrik.Umbraco.Jet.Test.Web.Mvc
+namespace Logikfabrik.Umbraco.Jet.Data
 {
-    [TestClass]
-    public class JetControllerActionInvokerTest
+    [TableName("uJetDataType")]
+    [PrimaryKey("Id", autoIncrement = false)]
+    public class DataTypeRow
     {
-        [TestMethod]
-        public void CanGetActionNameForPreviewAction()
-        {
-            Assert.AreEqual("Index",
-                JetControllerActionInvoker.GetActionName(PreviewTemplateAttribute.TemplateName.Alias()));
-        }
-
-        [TestMethod]
-        public void CanGetActionNameForIndexAction()
-        {
-            Assert.AreEqual("Index", JetControllerActionInvoker.GetActionName("Index"));
-        }
+        public Guid Id { get; set; }
+        public int DefinitionId { get; set; }
     }
 }

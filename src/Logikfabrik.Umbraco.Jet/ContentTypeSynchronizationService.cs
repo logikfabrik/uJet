@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using Logikfabrik.Umbraco.Jet.Data;
 using Logikfabrik.Umbraco.Jet.Extensions;
 using Logikfabrik.Umbraco.Jet.Mappings;
 using System;
@@ -33,13 +34,18 @@ namespace Logikfabrik.Umbraco.Jet
     public abstract class ContentTypeSynchronizationService : ISynchronizationService
     {
         private readonly IContentTypeService _contentTypeService;
+        private readonly IContentTypeRepository _contentTypeRepository;
 
-        protected ContentTypeSynchronizationService(IContentTypeService contentTypeService)
+        protected ContentTypeSynchronizationService(IContentTypeService contentTypeService, IContentTypeRepository contentTypeRepository)
         {
             if (contentTypeService == null)
                 throw new ArgumentNullException("contentTypeService");
 
+            if (contentTypeRepository == null)
+                throw new ArgumentNullException("contentTypeRepository");
+
             _contentTypeService = contentTypeService;
+            _contentTypeRepository = contentTypeRepository;
         }
 
         public abstract void Synchronize();
@@ -51,7 +57,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="contentTypeBaseConstructor">The content type constructor.</param>
         /// <param name="contentType">The reflected content type to create.</param>
         /// <returns>A content type.</returns>
-        protected static IContentTypeBase CreateContentType<T>(Func<IContentTypeBase> contentTypeBaseConstructor,
+        protected IContentTypeBase CreateContentType<T>(Func<IContentTypeBase> contentTypeBaseConstructor,
             ContentType<T> contentType) where T : ContentTypeAttribute
         {
             if (contentTypeBaseConstructor == null)
@@ -73,7 +79,7 @@ namespace Logikfabrik.Umbraco.Jet
             if (contentType.Thumbnail != null)
                 t.Thumbnail = contentType.Thumbnail;
 
-            CreatePropertyTypes(t, contentType.Properties);
+            SynchronizePropertyTypes(t, contentType.Properties);
 
             return t;
         }
@@ -85,7 +91,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="contentTypeBase">The content type to update.</param>
         /// <param name="contentTypeBaseConstructor">The content type constructor.</param>
         /// <param name="contentType">The reflected content type to update.</param>
-        protected static void UpdateContentType<T>(IContentTypeBase contentTypeBase,
+        protected void UpdateContentType<T>(IContentTypeBase contentTypeBase,
             Func<IContentTypeBase> contentTypeBaseConstructor, ContentType<T> contentType)
             where T : ContentTypeAttribute
         {
@@ -99,6 +105,7 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException("contentType");
 
             contentTypeBase.Name = contentType.Name;
+            contentTypeBase.Alias = contentType.Alias;
             contentTypeBase.Description = contentType.Description;
             contentTypeBase.AllowedAsRoot = contentType.AllowedAsRoot;
 
@@ -107,15 +114,10 @@ namespace Logikfabrik.Umbraco.Jet
             contentTypeBase.Icon = contentType.Icon ?? defaultContentType.Icon;
             contentTypeBase.Thumbnail = contentType.Thumbnail ?? defaultContentType.Thumbnail;
 
-            UpdatePropertyTypes(contentTypeBase, contentType.Properties);
+            SynchronizePropertyTypes(contentTypeBase, contentType.Properties);
         }
 
-        /// <summary>
-        /// Creates property types.
-        /// </summary>
-        /// <param name="contentTypeBase">The content type to add the properties to.</param>
-        /// <param name="contentTypeProperties">The reflected content type properties to create.</param>
-        protected static void CreatePropertyTypes(IContentTypeBase contentTypeBase, IEnumerable<ContentTypeProperty> contentTypeProperties)
+        protected void SynchronizePropertyTypes(IContentTypeBase contentTypeBase, IEnumerable<ContentTypeProperty> contentTypeProperties)
         {
             if (contentTypeBase == null)
                 throw new ArgumentNullException("contentTypeBase");
@@ -128,8 +130,11 @@ namespace Logikfabrik.Umbraco.Jet
             if (!p.Any())
                 return;
 
-            foreach (var property in p)
-                CreatePropertyType(contentTypeBase, property);
+            foreach (var property in p.Where(pt => pt.Id.HasValue))
+                SynchronizePropertyTypeById(contentTypeBase, property);
+
+            foreach (var property in p.Where(pt => !pt.Id.HasValue))
+                SynchronizePropertyTypeByName(contentTypeBase, property);
         }
 
         /// <summary>
@@ -165,29 +170,56 @@ namespace Logikfabrik.Umbraco.Jet
                 contentTypeBase.AddPropertyType(propertyType);
         }
 
-        /// <summary>
-        /// Updates property types.
-        /// </summary>
-        /// <param name="contentTypeBase">The content type to update.</param>
-        /// <param name="contentTypeProperties">The reflected content type properties.</param>
-        private static void UpdatePropertyTypes(IContentTypeBase contentTypeBase, IEnumerable<ContentTypeProperty> contentTypeProperties)
+        private static void SynchronizePropertyTypeByName(IContentTypeBase contentTypeBase, ContentTypeProperty contentTypeProperty)
         {
             if (contentTypeBase == null)
                 throw new ArgumentNullException("contentTypeBase");
 
-            if (contentTypeProperties == null)
-                throw new ArgumentNullException("contentTypeProperties");
+            if (contentTypeProperty == null)
+                throw new ArgumentNullException("contentTypeProperty");
 
-            var p = contentTypeProperties.ToArray();
+            if (contentTypeProperty.Id.HasValue)
+                throw new ArgumentException("Content type property ID must be null.", "contentTypeProperty");
 
-            if (!p.Any())
-                return;
+            var pt = contentTypeBase.PropertyTypes.FirstOrDefault(type => type.Alias == contentTypeProperty.Alias);
 
-            foreach (var property in p)
-                if (contentTypeBase.PropertyTypes.All(ct => ct.Alias != property.Alias))
-                    CreatePropertyType(contentTypeBase, property);
-                else
-                    UpdatePropertyType(contentTypeBase, contentTypeBase.PropertyTypes.First(ct => ct.Alias == property.Alias), property);
+            if (pt == null)
+                CreatePropertyType(contentTypeBase, contentTypeProperty);
+            else
+                UpdatePropertyType(contentTypeBase, pt, contentTypeProperty);
+        }
+
+        private void SynchronizePropertyTypeById(IContentTypeBase contentTypeBase, ContentTypeProperty contentTypeProperty)
+        {
+            if (contentTypeBase == null)
+                throw new ArgumentNullException("contentTypeBase");
+
+            if (contentTypeProperty == null)
+                throw new ArgumentNullException("contentTypeProperty");
+
+            if (!contentTypeProperty.Id.HasValue)
+                throw new ArgumentException("Content type property ID cannot be null.", "contentTypeProperty");
+
+            PropertyType pt = null;
+
+            var id = _contentTypeRepository.GetPropertyTypeId(contentTypeProperty.Id.Value);
+
+            if (id.HasValue)
+                // The content/media type property has been synchronized before. Get the matching property type.
+                // It might have been removed using the back office.
+                pt = contentTypeBase.PropertyTypes.FirstOrDefault(type => type.Id == id.Value);
+
+            if (pt == null)
+            {
+                CreatePropertyType(contentTypeBase, contentTypeProperty);
+
+                pt = contentTypeBase.PropertyTypes.Single(type => type.Alias == contentTypeProperty.Alias);
+                
+                // Connect the content/media type property and the created property type.
+                _contentTypeRepository.SetPropertyTypeId(contentTypeProperty.Id.Value, pt.Id);
+            }
+            else
+                UpdatePropertyType(contentTypeBase, pt, contentTypeProperty);
         }
 
         /// <summary>
