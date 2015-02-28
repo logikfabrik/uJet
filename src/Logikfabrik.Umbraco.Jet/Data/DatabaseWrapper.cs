@@ -46,12 +46,15 @@ namespace Logikfabrik.Umbraco.Jet.Data
             return _database.SingleOrDefault<T>(primaryKey);
         }
 
-        public void InsertRow<T>(T row) where T : class
+        public void InsertRow<T>(T row, object primaryKey) where T : class
         {
             if (row == null)
                 throw new ArgumentNullException("row");
 
-            _database.Insert(row);
+            if (!_database.Exists<T>(primaryKey))
+                _database.Insert(row);
+            else
+                _database.Update(row);
         }
 
         public bool TableExists<T>()

@@ -67,7 +67,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
             var row = new ContentTypeRow { Id = id, ContentTypeId = contentTypeId };
 
             _databaseWrapper.CreateTable<ContentTypeRow>();
-            _databaseWrapper.InsertRow(row);
+            _databaseWrapper.InsertRow(row, id);
         }
 
         public void SetPropertyTypeId(Guid id, int propertyTypeId)
@@ -75,7 +75,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
             var row = new PropertyTypeRow { Id = id, PropertyTypeId = propertyTypeId };
 
             _databaseWrapper.CreateTable<PropertyTypeRow>();
-            _databaseWrapper.InsertRow(row);
+            _databaseWrapper.InsertRow(row, id);
         }
     }
 }

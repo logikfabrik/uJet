@@ -77,7 +77,7 @@ namespace Logikfabrik.Umbraco.Jet
             var documentTypes = _typeService.DocumentTypes.Select(t => new DocumentType(t)).ToArray();
 
             ValidateDocumentTypeId(documentTypes);
-            ValidateDocumentTypeName(documentTypes);
+            ValidateDocumentTypeAlias(documentTypes);
 
             foreach (var documentType in documentTypes.Where(dt => dt.Id.HasValue))
                 SynchronizeById(_contentTypeService.GetAllContentTypes(), documentType);
@@ -110,20 +110,20 @@ namespace Logikfabrik.Umbraco.Jet
             }
         }
 
-        private static void ValidateDocumentTypeName(IEnumerable<DocumentType> documentTypes)
+        private static void ValidateDocumentTypeAlias(IEnumerable<DocumentType> documentTypes)
         {
             if (documentTypes == null)
                 throw new ArgumentNullException("documentTypes");
 
             var set = new HashSet<string>();
 
-            foreach (var dataType in documentTypes)
+            foreach (var documentType in documentTypes)
             {
-                if (set.Contains(dataType.Name))
+                if (set.Contains(documentType.Alias))
                     throw new InvalidOperationException(
-                        string.Format("Name conflict for document type {0}. Name {0} is already in use.", dataType.Name));
+                        string.Format("Alias conflict for document type {0}. Alias {0} is already in use.", documentType.Alias));
 
-                set.Add(dataType.Name);
+                set.Add(documentType.Alias);
             }
         }
 
@@ -195,6 +195,9 @@ namespace Logikfabrik.Umbraco.Jet
             SetDefaultTemplate(contentType, documentType);
 
             _contentTypeService.Save(contentType);
+
+            // Update tracking.
+            SetPropertyTypeId(_contentTypeService.GetContentType(contentType.Alias), documentType);
         }
 
         /// <summary>
@@ -215,6 +218,9 @@ namespace Logikfabrik.Umbraco.Jet
             SetDefaultTemplate(contentType, documentType);
 
             _contentTypeService.Save(contentType);
+
+            // Update tracking.
+            SetPropertyTypeId(_contentTypeService.GetContentType(contentType.Alias), documentType);
         }
 
         /// <summary>

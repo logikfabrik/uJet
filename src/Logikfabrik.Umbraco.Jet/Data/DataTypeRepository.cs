@@ -54,7 +54,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
             var row = new DataTypeRow { Id = id, DefinitionId = definitionId };
 
             _databaseWrapper.CreateTable<DataTypeRow>();
-            _databaseWrapper.InsertRow(row);
+            _databaseWrapper.InsertRow(row, id);
         }
     }
 }

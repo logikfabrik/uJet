@@ -25,7 +25,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
     public interface IDatabaseWrapper
     {
         void CreateTable<T>() where T : new();
-        void InsertRow<T>(T row) where T : class;
+        void InsertRow<T>(T row, object primaryKey) where T : class;
         T GetRow<T>(object primaryKey);
         bool TableExists<T>();
     }

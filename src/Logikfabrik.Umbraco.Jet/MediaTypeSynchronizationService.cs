@@ -70,7 +70,7 @@ namespace Logikfabrik.Umbraco.Jet
             var mediaTypes = _typeService.MediaTypes.Select(t => new MediaType(t)).ToArray();
 
             ValidateMediaTypeId(mediaTypes);
-            ValidateMediaTypeName(mediaTypes);
+            ValidateMediaTypeAlias(mediaTypes);
 
             foreach (var documentType in mediaTypes.Where(dt => dt.Id.HasValue))
                 SynchronizeById(_contentTypeService.GetAllMediaTypes(), documentType);
@@ -103,7 +103,7 @@ namespace Logikfabrik.Umbraco.Jet
             }
         }
 
-        private static void ValidateMediaTypeName(IEnumerable<MediaType> mediaTypes)
+        private static void ValidateMediaTypeAlias(IEnumerable<MediaType> mediaTypes)
         {
             if (mediaTypes == null)
                 throw new ArgumentNullException("mediaTypes");
@@ -112,11 +112,11 @@ namespace Logikfabrik.Umbraco.Jet
 
             foreach (var mediaType in mediaTypes)
             {
-                if (set.Contains(mediaType.Name))
+                if (set.Contains(mediaType.Alias))
                     throw new InvalidOperationException(
-                        string.Format("Name conflict for media type {0}. Name {0} is already in use.", mediaType.Name));
+                        string.Format("Alias conflict for media type {0}. Alias {0} is already in use.", mediaType.Alias));
 
-                set.Add(mediaType.Name);
+                set.Add(mediaType.Alias);
             }
         }
 
@@ -185,6 +185,9 @@ namespace Logikfabrik.Umbraco.Jet
             var contentType = (IMediaType)CreateContentType(() => new global::Umbraco.Core.Models.MediaType(-1), mediaType);
             
             _contentTypeService.Save(contentType);
+
+            // Update tracking.
+            SetPropertyTypeId(_contentTypeService.GetMediaType(contentType.Alias), mediaType);
         }
 
         /// <summary>
@@ -203,6 +206,9 @@ namespace Logikfabrik.Umbraco.Jet
             UpdateContentType(contentType, () => new global::Umbraco.Core.Models.MediaType(-1), mediaType);
 
             _contentTypeService.Save(contentType);
+
+            // Update tracking.
+            SetPropertyTypeId(_contentTypeService.GetMediaType(contentType.Alias), mediaType);
         }
     }
 }

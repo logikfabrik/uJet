@@ -117,7 +117,7 @@ namespace Logikfabrik.Umbraco.Jet
             SynchronizePropertyTypes(contentTypeBase, contentType.Properties);
         }
 
-        protected void SynchronizePropertyTypes(IContentTypeBase contentTypeBase, IEnumerable<ContentTypeProperty> contentTypeProperties)
+        private void SynchronizePropertyTypes(IContentTypeBase contentTypeBase, IEnumerable<ContentTypeProperty> contentTypeProperties)
         {
             if (contentTypeBase == null)
                 throw new ArgumentNullException("contentTypeBase");
@@ -210,14 +210,7 @@ namespace Logikfabrik.Umbraco.Jet
                 pt = contentTypeBase.PropertyTypes.FirstOrDefault(type => type.Id == id.Value);
 
             if (pt == null)
-            {
                 CreatePropertyType(contentTypeBase, contentTypeProperty);
-
-                pt = contentTypeBase.PropertyTypes.Single(type => type.Alias == contentTypeProperty.Alias);
-                
-                // Connect the content/media type property and the created property type.
-                _contentTypeRepository.SetPropertyTypeId(contentTypeProperty.Id.Value, pt.Id);
-            }
             else
                 UpdatePropertyType(contentTypeBase, pt, contentTypeProperty);
         }
@@ -314,6 +307,36 @@ namespace Logikfabrik.Umbraco.Jet
 
                 else if (contentType.Type.IsMediaType())
                     _contentTypeService.Save((IMediaType)contentTypeBase);
+            }
+        }
+
+        protected void SetPropertyTypeId<T>(IContentTypeBase contentTypeBase, ContentType<T> contentType)
+            where T : ContentTypeAttribute
+        {
+            if (contentTypeBase == null)
+                throw new ArgumentNullException("contentTypeBase");
+
+            foreach (var property in contentType.Properties.Where(p => p.Id.HasValue))
+            {
+                // ReSharper disable once PossibleInvalidOperationException
+                var id = _contentTypeRepository.GetPropertyTypeId(property.Id.Value);
+
+                PropertyType pt;
+
+                if (id.HasValue)
+                {
+                    pt = contentTypeBase.PropertyTypes.SingleOrDefault(type => type.Id == id.Value);
+
+                    if (pt != null)
+                        continue;
+
+                    // The content/media type property has been synchronized before, but for another content/media type.
+                    // This is possible if the property is tracked, but the content/media type is not.
+                }
+
+                pt = contentTypeBase.PropertyTypes.Single(type => type.Alias == property.Alias);
+
+                _contentTypeRepository.SetPropertyTypeId(property.Id.Value, pt.Id);
             }
         }
 
