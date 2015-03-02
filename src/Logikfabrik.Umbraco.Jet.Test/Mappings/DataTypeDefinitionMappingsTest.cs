@@ -34,7 +34,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Mappings
         [TestMethod]
         public void CanGetDataTypeDefinitionForBoolean()
         {
-            var dtdm = DataTypeDefinitionMappings.GetDefinitionMapping(null, typeof(bool));
+            var dtdm = DataTypeDefinitionMappings.GetDefinitionMapping(typeof(bool));
 
             Assert.IsTrue(dtdm.CanMapToDefinition(typeof(bool)));
         }
@@ -42,7 +42,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Mappings
         [TestMethod]
         public void CanGetDataTypeDefinitionForDateTime()
         {
-            var dtdm = DataTypeDefinitionMappings.GetDefinitionMapping(null, typeof(DateTime));
+            var dtdm = DataTypeDefinitionMappings.GetDefinitionMapping(typeof(DateTime));
 
             Assert.IsTrue(dtdm.CanMapToDefinition(typeof(DateTime)));
         }
@@ -50,7 +50,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Mappings
         [TestMethod]
         public void CanGetDataTypeDefinitionForFloatingBinary()
         {
-            var dtdm = DataTypeDefinitionMappings.GetDefinitionMapping(null, typeof(float));
+            var dtdm = DataTypeDefinitionMappings.GetDefinitionMapping(typeof(float));
 
             Assert.IsTrue(dtdm.CanMapToDefinition(typeof(float)));
         }
@@ -58,7 +58,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Mappings
         [TestMethod]
         public void CanGetDataTypeDefinitionForFloatingDecimal()
         {
-            var dtdm = DataTypeDefinitionMappings.GetDefinitionMapping(null, typeof(decimal));
+            var dtdm = DataTypeDefinitionMappings.GetDefinitionMapping(typeof(decimal));
 
             Assert.IsTrue(dtdm.CanMapToDefinition(typeof(decimal)));
         }
@@ -66,7 +66,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Mappings
         [TestMethod]
         public void CanGetDataTypeDefinitionForInteger()
         {
-            var dtdm = DataTypeDefinitionMappings.GetDefinitionMapping(null, typeof(int));
+            var dtdm = DataTypeDefinitionMappings.GetDefinitionMapping(typeof(int));
 
             Assert.IsTrue(dtdm.CanMapToDefinition(typeof(int)));
         }
@@ -74,7 +74,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Mappings
         [TestMethod]
         public void CanGetDataTypeDefinitionForString()
         {
-            var dtdm = DataTypeDefinitionMappings.GetDefinitionMapping(null, typeof(string));
+            var dtdm = DataTypeDefinitionMappings.GetDefinitionMapping(typeof(string));
 
             Assert.IsTrue(dtdm.CanMapToDefinition(typeof(string)));
         }
@@ -84,7 +84,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Mappings
         {
             DataTypeDefinitionMappings.Mappings.Add(typeof(Custom), new CustomDataTypeDefinitionMapping());
 
-            var dtdm = DataTypeDefinitionMappings.GetDefinitionMapping(null, typeof(Custom));
+            var dtdm = DataTypeDefinitionMappings.GetDefinitionMapping(typeof(Custom));
 
             Assert.IsTrue(dtdm.CanMapToDefinition(typeof(Custom)));
         }
@@ -92,12 +92,12 @@ namespace Logikfabrik.Umbraco.Jet.Test.Mappings
         [TestMethod]
         public void CanRemoveDataTypeDefinitionMapping()
         {
-            var dtdm = DataTypeDefinitionMappings.GetDefinitionMapping(null, typeof(Custom));
+            var dtdm = DataTypeDefinitionMappings.GetDefinitionMapping(typeof(Custom));
 
             if (dtdm != null)
                 DataTypeDefinitionMappings.Mappings.Remove(typeof(Custom));
 
-            dtdm = DataTypeDefinitionMappings.GetDefinitionMapping(null, typeof(Custom));
+            dtdm = DataTypeDefinitionMappings.GetDefinitionMapping(typeof(Custom));
 
             Assert.IsNull(dtdm);
         }
