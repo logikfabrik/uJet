@@ -29,7 +29,7 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
     {
         public static bool IsDocumentType(this Type t)
         {
-            if (t == null)
+            if (!IsValidType(t))
                 return false;
 
             return t.GetCustomAttribute<DocumentTypeAttribute>() != null;
@@ -37,7 +37,7 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
 
         public static bool IsDataType(this Type t)
         {
-            if (t == null)
+            if (!IsValidType(t))
                 return false;
 
             return t.GetCustomAttribute<DataTypeAttribute>() != null;
@@ -45,10 +45,21 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
 
         public static bool IsMediaType(this Type t)
         {
-            if (t == null)
+            if (!IsValidType(t))
                 return false;
 
             return t.GetCustomAttribute<MediaTypeAttribute>() != null;
+        }
+
+        private static bool IsValidType(Type t)
+        {
+            if (t == null)
+                return false;
+
+            if (t.IsAbstract)
+                return false;
+
+            return t.GetConstructor(Type.EmptyTypes) != null;
         }
     }
 }

@@ -1,4 +1,4 @@
-version: 2.3.1.{build}
+version: 3.0.0.{build}
 os: Windows Server 2012
 platform: Any CPU
 configuration: Release

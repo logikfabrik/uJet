@@ -64,10 +64,9 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// <summary>
         /// Gets a matching definition mapping.
         /// </summary>
-        /// <param name="uiHint">The UI hint to match.</param>
         /// <param name="fromType">The from type to match.</param>
         /// <returns>A definition mapping; or null if there's no match.</returns>
-        internal static IDataTypeDefinitionMapping GetDefinitionMapping(string uiHint, Type fromType)
+        internal static IDataTypeDefinitionMapping GetDefinitionMapping(Type fromType)
         {
             if (fromType == null)
                 throw new ArgumentNullException("fromType");
@@ -96,7 +95,7 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
                 if (_mappings.DefaultMapping.CanMapToDefinition(uiHint, fromType))
                     return _mappings.DefaultMapping.GetMappedDefinition(uiHint, fromType);
 
-            var mapping = GetDefinitionMapping(uiHint, fromType);
+            var mapping = GetDefinitionMapping(fromType);
 
             return mapping != null ? mapping.GetMappedDefinition(fromType) : null;
         }
