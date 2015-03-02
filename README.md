@@ -111,7 +111,7 @@ Use the `UIHintAttribute` attribute to specify the property editor used in the U
 Properties decorated using the `ScaffoldColumnAttribute` attribute (set to false) will not be available for editors through the Umbraco back office.
 
 ### Supported data types
-uJet supports the following types out-of-the-box and can be extended.
+uJet supports the following data types out-of-the-box and can be extended.
 
 * `Int16`
 * `Int32`

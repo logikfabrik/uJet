@@ -1,5 +1,12 @@
 site_name: uJet
 pages:
 - [index.md, Home]
+- [gettingStarted.md, Getting Started]
 - [license.md, License]
+- [types/DataTypes.md, Working with Types, Data Types]
+- [types/documentTypes.md, Working with Types, Document Types]
+- [types/mediaTypes.md, Working with Types, Media Types]
+- [types/properties.md, Working with Types, Properties]
+- [extending/dataTypeDefinitionMappings.md, Extending uJet, Data Type Definition Mappings]
+- [extending/propertyValueConverters.md, Extending uJet, Property Value Converters]
 theme: readthedocs
