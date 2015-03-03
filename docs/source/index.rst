@@ -4,7 +4,7 @@ Welcome to the documentation of Umbraco Jet
 
 Umbraco Jet (uJet) is a Code First approach to building MVC applications in Umbraco 7. Declare your document, media, and data types in code, and have uJet move them into Umbraco for you - simplifying development, deployment and versioning.
 
-**This documentation is under heavy development!**
+**This documentation is under heavy development.**
 
 Contents:
 
@@ -23,5 +23,4 @@ Indices and tables
 ==================
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`

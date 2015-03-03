@@ -34,7 +34,7 @@ Properties decorated using the `RegularExpressionAttribute` attribute will be va
 
 DisplayAttribute
 ^^^^^^^^^^^^^^^^
-Use the `DisplayAttribute` attribute to customize the property name and description in the Umbraco back office.
+Use the `DisplayAttribute` attribute to customize the property name and description in the Umbraco back office. The `DisplayAttribute` attribute makes it possible to set sort order (`Order`), and property group (`GroupName`) also.
 
 UIHintAttribute
 ^^^^^^^^^^^^^^^
@@ -56,11 +56,19 @@ Supported Data Types
 uJet supports the following data types out-of-the-box and can be extended.
 
 * `Int16`
+* `Int16?`
 * `Int32`
+* `Int32?`
 * `UInt16`
+* `UInt16?`
 * `UInt32`
+* `UInt32?`
 * `string`
 * `decimal`
+* `decimal?`
 * `float`
+* `float?`
 * `double`
+* `double?`
 * `DateTime`
+* `DateTime?`
