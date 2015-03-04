@@ -5,6 +5,9 @@ uJet is capable of serving you with instances of your document types. With uJet 
 
 uJet supports document types, media types, data types, and template synchronization.
 
+### Documentation
+Online documentation can be found at [http://ujet.readthedocs.org/](http://ujet.readthedocs.org/).
+
 ## How To
 uJet is easy to use. Add a reference to uJet. Then create your types and decorate them using the `DocumentType`, `MediaType`, and `DataType` attributes. Fire up your application and all of your types will now be available in the Umbraco back office.
 
