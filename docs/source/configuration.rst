@@ -16,8 +16,8 @@ uJet can be configured in `web.config`.
      </logikfabrik.umbraco.jet>
    </configuration>
 
-Configuring Types of Type Classes to Scan
------------------------------------------
+Types of Type Classes to Scan
+-----------------------------
 uJet scans assemblies, looking for all types of type classes (document, media, and data types), by default. To limit the scan it's possible to combine the constants of the `SyncronizationMode` enumeration in `web.config`, e.g. `DocumentTypes, DataTypes` to scan and synchronize document, and data types.
 
 The following constants of the `SyncronizationMode` enumeration can be set.
@@ -43,9 +43,9 @@ The following constants of the `SyncronizationMode` enumeration can be set.
      <logikfabrik.umbraco.jet synchronize="..." />
    </configuration>
 
-Configuring Assemblies to Scan
-------------------------------
-uJet scans all assemblies in the app domain, looking for all types of type classes, by default. To limit the scan it's possible to declare assemblies to scan in `web.config`.
+Assemblies to Scan
+------------------
+uJet scans all assemblies in the app domain, looking for all types of type classes, by default. To limit the scan it's possible to declare assemblies to scan in `web.config`. Assemblies are added by full name.
 
 .. code-block:: xml
 
