@@ -53,22 +53,17 @@ The data type property definition mapped will tell Umbraco how the property valu
 Supported Data Types
 --------------------
 
-uJet supports the following data types out-of-the-box and can be extended.
+uJet supports the following data types out-of-the-box.
 
-* `Int16`
-* `Int16?`
-* `Int32`
-* `Int32?`
-* `UInt16`
-* `UInt16?`
-* `UInt32`
-* `UInt32?`
+* `Int16` and `Int16?`
+* `Int32` and `Int32?`
+* `UInt16` and `UInt16?`
+* `UInt32` and `UInt32?`
 * `string`
-* `decimal`
-* `decimal?`
-* `float`
-* `float?`
-* `double`
-* `double?`
-* `DateTime`
-* `DateTime?`
+* `decimal` and `decimal?`
+* `float` and `float?`
+* `double` and `double?`
+* `DateTime` and `DateTime?`
+
+.. seealso::
+   The Umbraco Jet data type support can be extended using data type definition mappings.

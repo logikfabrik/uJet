@@ -171,3 +171,38 @@ Inherited from the `ContentTypeAttribute` attribute. The allowed child media typ
 
 Data Types
 ==========
+A data type is created by decorating a public non-abstract class, with a constructor that takes no parameters, using the `DataTypeAttribute` attribute.
+
+.. code-block:: csharp
+   
+   using Logikfabrik.Umbraco.Jet;
+
+   namespace Example.Mvc.Models.DataTypes
+   {
+       [MediaType("My Data")]
+       public class MyData
+       {
+       }
+   }
+
+.. tip::
+   Your data type classes can be concidered models. Following MVC convention, models are placed in `Models/`. It's recommended to place all data type classes in `Models/DataTypes/`.
+
+When your Umbraco application is started, uJet will scan all assemblies in the app domain, looking for data type classes. Found classes will be used as blueprints to synchronize your database.
+
+.. note::
+   Assemblies to scan can be configured. Having uJet scan all app domain assemblies will have an impact on performance. Configuring assemblies is recommended if synchronization is enabled in your production environment.
+
+DataTypeAttribute Properties
+-------------------------------
+The following data type properties can be set using the `DataTypeAttribute` attribute.
+
+Type
+^^^^
+**Required**
+The type of the data type. The type property will determine how Umbraco stores property values of this data type in the Umbraco database (`DataTypeDatabaseType.Ntext`, `DataTypeDatabaseType.Integer`, or, `DataTypeDatabaseType.Date`).
+
+Editor
+^^^^^^
+**Required**
+The editor of the data type. The editor property will determine which property editor will be used for editing property values of this data type in the Umbraco back office.

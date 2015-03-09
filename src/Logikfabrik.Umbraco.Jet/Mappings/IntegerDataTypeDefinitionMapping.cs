@@ -37,7 +37,7 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         protected override Type[] SupportedTypes
         {
             // Signed and unsigned integers are handled using the same mapping as there's no 
-            // need to differentiate the two (they're stored in the manner).
+            // need to differentiate the two (they're stored in the same way).
             get
             {
                 return new[]
