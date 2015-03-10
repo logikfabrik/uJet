@@ -46,14 +46,14 @@ Properties decorated using the `ScaffoldColumnAttribute` attribute (set to false
 
 Data Types
 ==========
-Property data types are mapped to Umbraco data type definitions using data type definition mappings.
+.NET data types are mapped to Umbraco data type definitions using data type definition mappings.
 
-The data type property definition mapped will tell Umbraco how the property value should be stored in the database and what editor to use in the back office.
+The data type property definition mapped will determine how Umbraco stores the property value in the database, and what editor to use for editing the property value in the Umbraco back office.
 
-Supported Data Types
---------------------
+Supported .NET Data Types
+-------------------------
 
-uJet supports the following data types out-of-the-box.
+uJet supports the following .NET data types out-of-the-box.
 
 * `Int16` and `Int16?`
 * `Int32` and `Int32?`
@@ -66,4 +66,4 @@ uJet supports the following data types out-of-the-box.
 * `DateTime` and `DateTime?`
 
 .. seealso::
-   The Umbraco Jet data type support can be extended using data type definition mappings.
+   The Umbraco Jet .NET data type support can be extended by writing custom data type definition mappings.

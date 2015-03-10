@@ -179,7 +179,7 @@ A data type is created by decorating a public non-abstract class, with a constru
 
    namespace Example.Mvc.Models.DataTypes
    {
-       [MediaType("My Data")]
+       [DataType(typeof(int), "Umbraco.MediaPicker")]
        public class MyData
        {
        }
@@ -194,13 +194,13 @@ When your Umbraco application is started, uJet will scan all assemblies in the a
    Assemblies to scan can be configured. Having uJet scan all app domain assemblies will have an impact on performance. Configuring assemblies is recommended if synchronization is enabled in your production environment.
 
 DataTypeAttribute Properties
--------------------------------
+----------------------------
 The following data type properties can be set using the `DataTypeAttribute` attribute.
 
 Type
 ^^^^
 **Required**
-The type of the data type. The type property will determine how Umbraco stores property values of this data type in the Umbraco database (`DataTypeDatabaseType.Ntext`, `DataTypeDatabaseType.Integer`, or, `DataTypeDatabaseType.Date`).
+The type of the data type. The type property will determine how Umbraco stores property values of this data type in the Umbraco database (`DataTypeDatabaseType.Ntext`, `DataTypeDatabaseType.Integer`, or `DataTypeDatabaseType.Date`).
 
 Editor
 ^^^^^^

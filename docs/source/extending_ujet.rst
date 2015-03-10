@@ -11,27 +11,27 @@ The following data type definition mappings are built-into Umbraco Jet.
 
 BooleanDataTypeDefinitionMapping
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Supports types `bool`, and `bool?`. Maps to Umbraco data type `TrueFalse`.
+Will map .NET types `bool`, and `bool?` to the Umbraco data type definition `TrueFalse`.
 
 DateTimeDataTypeDefinitionMapping
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Supports types `DateTime`, and `DateTime?`. Maps to Umbraco data type `DatePicker`.
+Will map .NET types `DateTime`, and `DateTime?` to the Umbraco data type definition `DatePicker`.
 
 FloatingBinaryPointDataTypeDefinitionMapping
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Supports types `float`, `float?`, `double`, and `double?`. Maps to Umbraco data type `Textstring`. Converted using property value converter `FloatingBinaryPointPropertyValueConverter`.
+Will map .NET types `float`, `float?`, `double`, and `double?` to the Umbraco data type definition `Textstring`. Converted using property value converter `FloatingBinaryPointPropertyValueConverter`.
 
 FloatingDecimalPointDataTypeDefinitionMapping
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Supports types `decimal`, and `decimal?`. Maps to Umbraco data type `Textstring`. Converted using property value converter `FloatingDecimalPointPropertyValueConverter`.
+Will map .NET types `decimal`, and `decimal?` to the Umbraco data type definition `Textstring`. Converted using property value converter `FloatingDecimalPointPropertyValueConverter`.
 
 IntegerDataTypeDefinitionMapping
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Supports types `Int16`, `Int16?`, `Int32`, `Int32?`, `UInt16`, `UInt16?`, `UInt32`, and `UInt32?`. Maps to Umbraco data type `Numeric`.
+Will map .NET types `Int16`, `Int16?`, `Int32`, `Int32?`, `UInt16`, `UInt16?`, `UInt32`, and `UInt32?` to the Umbraco data type definition `Numeric`.
 
 StringDataTypeDefinitionMapping
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Supports type `string`. Maps to Umbraco data type `Textstring`.
+Will map .NET type `string` to the Umbraco data type definition `Textstring`.
 
 Property Value Converters
 =========================
