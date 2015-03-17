@@ -26,6 +26,9 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
 {
     public class JetSection : ConfigurationSection
     {
+        /// <summary>
+        /// Gets or sets the synchronization mode.
+        /// </summary>
         [ConfigurationProperty(
             "synchronize",
             DefaultValue = "DocumentTypes,MediaTypes,DataTypes",
@@ -36,6 +39,9 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
             set { this["synchronize"] = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the full names of the assemblies to scan.
+        /// </summary>
         [ConfigurationProperty(
             "assemblies", 
             IsRequired = false, 

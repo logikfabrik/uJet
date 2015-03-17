@@ -1,7 +1,7 @@
 ******************
 Working with Types
 ******************
-Umbraco Jet supports document types, media types, and data types.
+uJet supports document types, media types, and data types.
 
 Document Types
 ==============
@@ -20,7 +20,7 @@ A document type is created by decorating a public non-abstract class, with a con
    }
 
 .. tip::
-   Your document type classes can be concidered models. Following MVC convention, models are placed in `Models/`. It's recommended to place all document type classes in `Models/DocumentTypes/`.
+   Your document type classes can be concidered models. Following MVC convention, models are placed in the `Models/` folder. It's recommended to place all document type classes in `Models/DocumentTypes/`.
 
 When your Umbraco application is started, uJet will scan all assemblies in the app domain, looking for document type classes. Found classes will be used as blueprints to synchronize your database.
 
@@ -121,7 +121,7 @@ A media type is created by decorating a public non-abstract class, with a constr
    }
 
 .. tip::
-   Your media type classes can be concidered models. Following MVC convention, models are placed in `Models/`. It's recommended to place all media type classes in `Models/MediaTypes/`.
+   Your media type classes can be concidered models. Following MVC convention, models are placed in the `Models/` folder. It's recommended to place all media type classes in `Models/MediaTypes/`.
 
 When your Umbraco application is started, uJet will scan all assemblies in the app domain, looking for media type classes. Found classes will be used as blueprints to synchronize your database.
 
@@ -186,7 +186,7 @@ A data type is created by decorating a public non-abstract class, with a constru
    }
 
 .. tip::
-   Your data type classes can be concidered models. Following MVC convention, models are placed in `Models/`. It's recommended to place all data type classes in `Models/DataTypes/`.
+   Your data type classes can be concidered models. Following MVC convention, models are placed in the `Models/` folder. It's recommended to place all data type classes in `Models/DataTypes/`.
 
 When your Umbraco application is started, uJet will scan all assemblies in the app domain, looking for data type classes. Found classes will be used as blueprints to synchronize your database.
 

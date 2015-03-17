@@ -27,9 +27,21 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
     [Flags]
     public enum SynchronizationMode
     {
+        /// <summary>
+        /// Scan and synchronize no type classes.
+        /// </summary>
         None = 0,
+        /// <summary>
+        /// Scan and synchronize document type classes.
+        /// </summary>
         DocumentTypes = 1,
+        /// <summary>
+        /// Scan and synchronize media type classes.
+        /// </summary>
         MediaTypes = 2,
+        /// <summary>
+        /// Scan and synchronize data type classes.
+        /// </summary>
         DataTypes = 4
     }
 }

@@ -1,12 +1,16 @@
 ************
 Installation
 ************
-Umbraco Jet can be installed by downloading, compiling, and referencing the uJet assembly. Or by using a precompiled assembly through NuGet.
+uJet can be installed by downloading, and compiling the uJet source code, and then referencing the uJet assembly. Or by using a precompiled assembly through NuGet.
 
 NuGet
 -----
-Umbraco Jet is available on NuGet.
+uJet is available on NuGet. Simply create a new project in Visual Studio and reference the uJet NuGet. Umbraco 7 and uJet will be set up for you.
 
 .. code-block:: bat
 
    PM> Install-Package uJet
+
+Source Code
+-----------
+You'll find `the uJet source code on GitHub <https://github.com/logikfabrik/uJet>`_. Open Visual Studio, clone the GitHub repository and compile the solution. Create a new project, reference Umbraco and the compiled uJet assembly.

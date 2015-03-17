@@ -26,6 +26,9 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
 {
     public class JetAssemblyElement : ConfigurationElement
     {
+        /// <summary>
+        /// Gets or sets the full name of the assembly.
+        /// </summary>
         [ConfigurationProperty("name", IsRequired = true, IsKey = true)]
         public string Name
         {

@@ -6,4 +6,5 @@ before_build:
 - nuget restore src/Logikfabrik.Umbraco.Jet.sln
 build:
   project: src/Logikfabrik.Umbraco.Jet.sln
-  verbosity: detailed
+  publish_nuget: true
+  verbosity: normal

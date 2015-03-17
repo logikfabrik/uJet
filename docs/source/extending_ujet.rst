@@ -4,10 +4,13 @@ Extending uJet
 
 Data Type Definition Mappings
 =============================
+.NET data types are mapped to Umbraco data type definitions using data type definition mappings. The Umbraco data type definition mapped will determine how Umbraco stores the property value in the database, and what editor to use for editing the property value in the Umbraco back office.
+
+uJet can easily be extended to support additional types by implementing the `IDataTypeDefinitionMapping` interface and adding the implementation to the list of data type definition mappings. Add implementations to the list of data type definition mappings by calling `DataTypeDefinitionMappings.Mappings.Add()`.
 
 Built-in Data Type Definition Mappings
 --------------------------------------
-The following data type definition mappings are built-into Umbraco Jet.
+The following data type definition mappings are built-into uJet.
 
 BooleanDataTypeDefinitionMapping
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -38,7 +41,7 @@ Property Value Converters
 
 Built-in Property Value Converters
 ----------------------------------
-The following property value converters are built-into Umbraco Jet.
+The following property value converters are built-into uJet.
 
 * `FloatingBinaryPointPropertyValueConverter`
 * `FloatingDecimalPointPropertyValueConverter`

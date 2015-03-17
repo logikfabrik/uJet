@@ -18,9 +18,9 @@ uJet can be configured in `web.config`.
 
 Types of Type Classes to Scan
 -----------------------------
-uJet scans assemblies, looking for all types of type classes (document, media, and data types), by default. To limit the scan it's possible to combine the constants of the `SyncronizationMode` enumeration in `web.config`, e.g. `DocumentTypes, DataTypes` to scan and synchronize document, and data types.
+uJet scans assemblies, looking for all types of type classes (document, media, and data types), by default. To limit the scan it's possible to combine the constants of the `SynchronizationMode` enumeration in `web.config`, e.g. `DocumentTypes, DataTypes` to scan and synchronize document, and data types.
 
-The following constants are declared in the `SyncronizationMode` enumeration.
+The following constants are declared in the `SynchronizationMode` enumeration.
 
 +-----------------+---------------------------------------------------------+
 | Constants                                                                 |
@@ -33,6 +33,9 @@ The following constants are declared in the `SyncronizationMode` enumeration.
 +-----------------+---------------------------------------------------------+
 | `DataTypes`     | Scan and synchronize data type classes                  |
 +-----------------+---------------------------------------------------------+
+
+.. note::
+   Template synchronization and use of the built-in preview template, `PreviewTemplateAttribute`, requires document type synchronization to be enabled.
 
 .. code-block:: xml
 

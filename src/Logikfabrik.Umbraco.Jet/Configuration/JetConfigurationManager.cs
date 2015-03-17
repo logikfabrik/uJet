@@ -35,8 +35,14 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
                    new JetSection();
         }
 
+        /// <summary>
+        /// Gets the synchronization mode.
+        /// </summary>
         public static SynchronizationMode Synchronize { get { return _section.Synchronize; } }
 
+        /// <summary>
+        /// Gets the full names of the assamblies to scan.
+        /// </summary>
         public static string[] Assemblies { get { return _section.Assemblies.Cast<JetAssemblyElement>().Select(e => e.Name).ToArray(); } }
     }
 }
