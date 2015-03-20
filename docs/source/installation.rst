@@ -13,4 +13,4 @@ uJet is available on NuGet. Simply create a new project in Visual Studio and ref
 
 Source Code
 -----------
-You'll find `the uJet source code on GitHub <https://github.com/logikfabrik/uJet>`_. Open Visual Studio, clone the GitHub repository and compile the solution. Create a new project, reference Umbraco and the compiled uJet assembly.
+You'll find `the uJet source code on GitHub <https://github.com/logikfabrik/uJet>`_. Open Visual Studio, clone the GitHub repository and compile the solution. Create a new project, reference Umbraco 7 and the compiled uJet assembly.

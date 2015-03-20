@@ -18,6 +18,7 @@ Contents
    configuration
    working_with_types
    working_with_properties
+   working_with_property_editors
    working_with_templates
    extending_ujet
    license

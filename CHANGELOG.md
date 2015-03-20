@@ -1,4 +1,4 @@
-## 3.0.0.0 (unreleased)
+## 3.0.0.0
 
 * 2015-03-02 Added type constraints in the type service.
 * 2015-02-28 Fixed an issue with uJet when setting up Umbraco for the first time.
