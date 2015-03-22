@@ -1,24 +1,25 @@
 # uJet [![Build status](https://ci.appveyor.com/api/projects/status/2ce4vbe5dexoqey7?svg=true)](https://ci.appveyor.com/project/logikfabrik/ujet) [![Docs status](https://readthedocs.org/projects/pip/badge/)](http://ujet.readthedocs.org/)
-
 Umbraco Jet (uJet) is a Code First approach to building MVC applications in Umbraco 7. Declare your document, media, and data types in code, and have uJet move them into Umbraco for you - simplifying development, deployment and versioning.
 
-uJet is capable of serving you with instances of your document types. With uJet you're no longer bound by the `RenderModel`, or by the constraints set by the built-in `ControllerActionInvoker`. uJet brings you fully typed views without requiring you to roll your own view models.
+uJet is capable of serving you with instances of your document types. With uJet you're no longer bound by the `RenderModel`, or by the constraints set by the built-in `ControllerActionInvoker`. uJet brings you strongly typed views without requiring you to roll your own view models.
 
-uJet supports document types, media types, data types, and template synchronization.
+uJet is a developer tool for Umbraco 7, released as Open Source (MIT). It supports document types, media types, data types, and template synchronization.
 
 ### Documentation
 Online documentation can be found at [http://ujet.readthedocs.org/](http://ujet.readthedocs.org/).
-
-## How To
-uJet is easy to use. Add a reference to uJet. Then create your types and decorate them using the `DocumentType`, `MediaType`, and `DataType` attributes. Fire up your application and all of your types will now be available in the Umbraco back office.
 
 ### NuGet
 ```
 PM> Install-Package uJet
 ```
 
+## How To
+uJet is easy to use. Add a reference to uJet. Then create your types and decorate them using the `DocumentType`, `MediaType`, and `DataType` attributes. Fire up your application and all of your types will now be available in the Umbraco back office.
+
+Do you want strongly typed views? Of course you do! See the Quick Start Example; strongly typed views is what Jet is all about.
+
 ## Quick Start Example
-1. Get, compile, and reference the source code (the latest stable version is 2.3.1.0) - or use the NuGet.
+1. Get, compile, and reference the source code - or use the NuGet.
 2. Create a model; a document type. Use data annotations for editorial support (validation) in the back office. Properties such as `Id`, `Url` and `Name` will be mapped by convention.
 3. Create a view. Name it according to the action method defined in the controller, `Views\MyPage\Index.cshtml`.
 4. Create a controller inheriting from `Logikfabrik.Umbraco.Jet.Web.Mvc.JetController`.
@@ -26,8 +27,8 @@ PM> Install-Package uJet
 
 **Model**
 ```csharp
-using System.ComponentModel.DataAnnotations;
 using Logikfabrik.Umbraco.Jet;
+using System.ComponentModel.DataAnnotations;
 
 namespace Example.Mvc.Models
 {
@@ -69,8 +70,8 @@ namespace Example.Mvc.Models
 
 **Controller**
 ```csharp
-using Logikfabrik.Umbraco.Jet.Web.Mvc;
 using Example.Mvc.Models;
+using Logikfabrik.Umbraco.Jet.Web.Mvc;
 using System.Web.Mvc;
 
 namespace Example.Mvc.Controllers
@@ -84,47 +85,19 @@ namespace Example.Mvc.Controllers
     }
 }
 ```
+
 ## Features
 
-### Supported data annotations
-uJet supports the following data annotations.
+##### Convention Over Configuration
+One attribute per model, that's all uJet needs to get Code First up and running. And, for the full experience, having your controllers inherit from `JetController`. That's it! And the controller part is optional, but without it you're missing out.
 
-* `RequiredAttribute`
-* `DefaultValueAttribute`
-* `RegularExpressionAttribute`
-* `UIHintAttribute`
-* `DisplayAttribute`
-* `ScaffoldColumnAttribute`
+##### Extendable
+Found a property data type uJet can't handle? Extend it. uJet is built to be easily extended.
 
-##### `RequiredAttribute`
-Properties decorated using the `RequiredAttribute` attribute will be mandatory in the Umbraco back office.
+##### Data Annotations
+uJet supports data annotations. Using data annotations uJet allows you to customize the back office, making life easier for the editors.
 
-##### `DefaultValueAttribute`
-Properties decorated using the `DefaultValueAttribute` attribute will have a default value of whatever value was set when setting the attribute.
+## Contributions
+uJet is Open Source (MIT), and you’re welcome to contribute!
 
-##### `RegularExpressionAttribute`
-Properties decorated using the `RegularExpressionAttribute` attribute will be validated in the Umbraco back office using the regular expression specified.
-
-##### `DisplayAttribute`
-Use the `DisplayAttribute` attribute to customize the property name and description in the Umbraco back office.
-
-##### `UIHintAttribute`
-Use the `UIHintAttribute` attribute to specify the property editor used in the Umbraco back office. The property editor is inferred by the property type by default, but can be overridden using this attribute.
-
-##### `ScaffoldColumnAttribute`
-Properties decorated using the `ScaffoldColumnAttribute` attribute (set to false) will not be available for editors through the Umbraco back office.
-
-### Supported data types
-uJet supports the following data types out-of-the-box and can be extended.
-
-* `Int16`
-* `Int32`
-* `UInt16`
-* `UInt32`
-* `string`
-* `decimal`
-* `float`
-* `double`
-* `DateTime`
-
-To support additional data types, implement interface `Logikfabrik.Umbraco.Jet.MappingsIDataTypeDefinitionMapping` and add the implementation to the list of available mappings (`Logikfabrik.Umbraco.Jet.Mappings.DataTypeDefinitionMappings.Mappings.Add(...)`).
+If you have a bug report, feature request, or suggestion, please open a new issue. To submit a patch, please send a pull request.

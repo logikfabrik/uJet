@@ -84,7 +84,7 @@ The available templates (aliases) of the document type.
        }
    }
 
-.. seealso:: :doc:`working_with_templates`
+.. seealso:: For more information on the topic of templates see :doc:`working_with_templates`.
 
 DefaultTemplate
 ^^^^^^^^^^^^^^^
@@ -102,7 +102,7 @@ The default template (alias) of the document type.
        }
    }
 
-.. seealso:: :doc:`working_with_templates`
+.. seealso:: For more information on the topic of templates see :doc:`working_with_templates`.
 
 Media Types
 ===========
