@@ -16,11 +16,11 @@ PM> Install-Package uJet
 ## How To
 uJet is easy to use. Add a reference to uJet. Then create your types and decorate them using the `DocumentType`, `MediaType`, and `DataType` attributes. Fire up your application and all of your types will now be available in the Umbraco back office.
 
-Do you want strongly typed views? Of course you do! See the Quick Start Example; strongly typed views is what Jet is all about.
+Do you want strongly typed views? Of course you do! See the Quick Start Example; strongly typed views is what uJet is all about.
 
-## Quick Start Example
+### Quick Start Example
 1. Get, compile, and reference the source code - or use the NuGet.
-2. Create a model; a document type. Use data annotations for editorial support (validation) in the back office. Properties such as `Id`, `Url` and `Name` will be mapped by convention.
+2. Create a model; in this case a document type. Use data annotations for editorial support (validation) in the back office. Properties such as `Id`, `Url` and `Name` will be mapped by convention.
 3. Create a view. Name it according to the action method defined in the controller, `Views\MyPage\Index.cshtml`.
 4. Create a controller inheriting from `Logikfabrik.Umbraco.Jet.Web.Mvc.JetController`.
 5. Run your application and log in to Umbraco. The document type *My page* should now be available. Pages you create using this document type will all be handled by the `MyPageController`. **It's that easy!**
@@ -85,17 +85,6 @@ namespace Example.Mvc.Controllers
     }
 }
 ```
-
-## Features
-
-##### Convention Over Configuration
-One attribute per model, that's all uJet needs to get Code First up and running. And, for the full experience, having your controllers inherit from `JetController`. That's it! And the controller part is optional, but without it you're missing out.
-
-##### Extendable
-Found a property data type uJet can't handle? Extend it. uJet is built to be easily extended.
-
-##### Data Annotations
-uJet supports data annotations. Using data annotations uJet allows you to customize the back office, making life easier for the editors.
 
 ## Contributions
 uJet is Open Source (MIT), and you’re welcome to contribute!
