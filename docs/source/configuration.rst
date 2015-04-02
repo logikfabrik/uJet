@@ -25,7 +25,7 @@ The following constants are declared in the `SynchronizationMode` enumeration.
 +-----------------+---------------------------------------------------------+
 | Constants                                                                 |
 +=================+=========================================================+
-| `None`          | Scan and synchronize no type classes                    |
+| `None`          | Do not scan or synchronize type classes                 |
 +-----------------+---------------------------------------------------------+
 | `DocumentTypes` | Scan and synchronize document type classes              |
 +-----------------+---------------------------------------------------------+

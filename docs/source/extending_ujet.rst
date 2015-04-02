@@ -8,31 +8,38 @@ Data Type Definition Mappings
 
 uJet can easily be extended to support additional types by implementing the `IDataTypeDefinitionMapping` interface and adding the implementation to the list of data type definition mappings. Add implementations to the list of data type definition mappings by calling `DataTypeDefinitionMappings.Mappings.Add()`.
 
-Built-in Data Type Definition Mappings
---------------------------------------
+Built-in Data Type Definition Mappings (DTDM)
+---------------------------------------------
 The following data type definition mappings are built-into uJet.
 
-BooleanDataTypeDefinitionMapping
+* `BooleanDataTypeDefinitionMapping`
+* `DateTimeDataTypeDefinitionMapping`
+* `FloatingBinaryPointDataTypeDefinitionMapping`
+* `FloatingDecimalPointDataTypeDefinitionMapping`
+* `IntegerDataTypeDefinitionMapping`
+* `StringDataTypeDefinitionMapping`
+
+BooleanDTDM
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Will map .NET types `bool`, and `bool?` to the Umbraco data type definition `TrueFalse`.
 
-DateTimeDataTypeDefinitionMapping
+DateTimeDTDM
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Will map .NET types `DateTime`, and `DateTime?` to the Umbraco data type definition `DatePicker`.
 
-FloatingBinaryPointDataTypeDefinitionMapping
+FloatingBinaryPointDTDM
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Will map .NET types `float`, `float?`, `double`, and `double?` to the Umbraco data type definition `Textstring`. Converted using property value converter `FloatingBinaryPointPropertyValueConverter`.
 
-FloatingDecimalPointDataTypeDefinitionMapping
+FloatingDecimalPointDTDM
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Will map .NET types `decimal`, and `decimal?` to the Umbraco data type definition `Textstring`. Converted using property value converter `FloatingDecimalPointPropertyValueConverter`.
 
-IntegerDataTypeDefinitionMapping
+IntegerDTDM
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Will map .NET types `Int16`, `Int16?`, `Int32`, `Int32?`, `UInt16`, `UInt16?`, `UInt32`, and `UInt32?` to the Umbraco data type definition `Numeric`.
 
-StringDataTypeDefinitionMapping
+StringDTDM
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Will map .NET type `string` to the Umbraco data type definition `Textstring`.
 

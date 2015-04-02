@@ -156,4 +156,4 @@ uJet supports the following .NET data types out-of-the-box.
 * `DateTime` and `DateTime?`
 
 .. seealso::
-   The uJet .NET data type support can be extended by writing custom data type definition mappings.
+   The uJet .NET data type support can be extended by writing custom data type definition mappings. For more information on the topic of custom data type definitions see :doc:`extending_ujet`.
