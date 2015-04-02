@@ -12,12 +12,12 @@ Built-in Data Type Definition Mappings (DTDM)
 ---------------------------------------------
 The following data type definition mappings are built-into uJet.
 
-* `BooleanDataTypeDefinitionMapping`
-* `DateTimeDataTypeDefinitionMapping`
-* `FloatingBinaryPointDataTypeDefinitionMapping`
-* `FloatingDecimalPointDataTypeDefinitionMapping`
-* `IntegerDataTypeDefinitionMapping`
-* `StringDataTypeDefinitionMapping`
+* `BooleanDTDM`
+* `DateTimeDTDM`
+* `FloatingBinaryPointDTDM`
+* `FloatingDecimalPointDTDM`
+* `IntegerDTDM`
+* `StringDTDM`
 
 BooleanDTDM
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
