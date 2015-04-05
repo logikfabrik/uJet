@@ -106,14 +106,7 @@ namespace Logikfabrik.Umbraco.Jet
 
             foreach (var assembly in _assemblies.Value)
             {
-                try
-                {
-                    types.AddRange(getTypes(assembly));
-                }
-                catch (ReflectionTypeLoadException)
-                {
-                    // Do nothing.
-                }
+                types.AddRange(getTypes(assembly));
             }
 
             return types;

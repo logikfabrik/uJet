@@ -1,3 +1,6 @@
+## UNRELEASED
+* 2015-04-05 Fixed an issue in the type service. TypeLoadException and ReflectionTypeLoadException are now ignored.
+
 ## 3.0.0.0
 
 * 2015-03-02 Added type constraints in the type service.

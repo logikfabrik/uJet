@@ -29,26 +29,59 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
     {
         public static bool IsDocumentType(this Type t)
         {
-            if (!IsValidType(t))
-                return false;
+            try
+            {
+                if (!IsValidType(t))
+                    return false;
 
-            return t.GetCustomAttribute<DocumentTypeAttribute>() != null;
+                return t.GetCustomAttribute<DocumentTypeAttribute>() != null;
+            }
+            catch (TypeLoadException)
+            {
+                return false;
+            }
+            catch (ReflectionTypeLoadException)
+            {
+                return false;
+            }
         }
 
         public static bool IsDataType(this Type t)
         {
-            if (!IsValidType(t))
-                return false;
+            try
+            {
+                if (!IsValidType(t))
+                    return false;
 
-            return t.GetCustomAttribute<DataTypeAttribute>() != null;
+                return t.GetCustomAttribute<DataTypeAttribute>() != null;
+            }
+            catch (TypeLoadException)
+            {
+                return false;
+            }
+            catch (ReflectionTypeLoadException)
+            {
+                return false;
+            }
         }
 
         public static bool IsMediaType(this Type t)
         {
-            if (!IsValidType(t))
-                return false;
+            try
+            {
+                if (!IsValidType(t))
+                    return false;
 
-            return t.GetCustomAttribute<MediaTypeAttribute>() != null;
+                return t.GetCustomAttribute<MediaTypeAttribute>() != null;
+            }
+            catch (TypeLoadException)
+            {
+                return false;
+            }
+            catch (ReflectionTypeLoadException)
+            {
+                return false;
+            }
         }
 
         private static bool IsValidType(Type t)
