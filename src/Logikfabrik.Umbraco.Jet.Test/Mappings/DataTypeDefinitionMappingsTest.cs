@@ -20,14 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using Logikfabrik.Umbraco.Jet.Mappings;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using System;
-using Umbraco.Core.Models;
-
 namespace Logikfabrik.Umbraco.Jet.Test.Mappings
 {
+    using System;
+    using Jet.Mappings;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Moq;
+    using global::Umbraco.Core.Models;
+
     [TestClass]
     public class DataTypeDefinitionMappingsTest
     {
@@ -95,8 +95,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Mappings
             var dtdm = DataTypeDefinitionMappings.GetDefinitionMapping(typeof(Custom));
 
             if (dtdm != null)
+            {
                 DataTypeDefinitionMappings.Mappings.Remove(typeof(Custom));
-
+            }
+                
             dtdm = DataTypeDefinitionMappings.GetDefinitionMapping(typeof(Custom));
 
             Assert.IsNull(dtdm);

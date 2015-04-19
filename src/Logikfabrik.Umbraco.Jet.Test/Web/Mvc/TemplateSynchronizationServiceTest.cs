@@ -20,16 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System.IO;
-using System.Linq;
-using Logikfabrik.Umbraco.Jet.Extensions;
-using Logikfabrik.Umbraco.Jet.Web.Mvc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Umbraco.Core.Models;
-using Umbraco.Core.Services;
-
 namespace Logikfabrik.Umbraco.Jet.Test.Web.Mvc
 {
+    using System.IO;
+    using System.Linq;
+    using Extensions;
+    using Jet.Web.Mvc;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using global::Umbraco.Core.Models;
+    using global::Umbraco.Core.Services;
+
     [TestClass]
     public class TemplateSynchronizationServiceTest
     {

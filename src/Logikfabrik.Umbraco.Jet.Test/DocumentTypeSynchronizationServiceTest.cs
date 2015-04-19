@@ -20,16 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using Logikfabrik.Umbraco.Jet.Data;
-using Logikfabrik.Umbraco.Jet.Extensions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using System;
-using Umbraco.Core.Models;
-using Umbraco.Core.Services;
-
 namespace Logikfabrik.Umbraco.Jet.Test
 {
+    using System;
+    using Data;
+    using Extensions;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Moq;
+    using global::Umbraco.Core.Models;
+    using global::Umbraco.Core.Services;
+
     [TestClass]
     public class DocumentTypeSynchronizationServiceTest
     {
@@ -38,27 +38,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         private const string NameForDocumentTypeWithoutId = "DocumentTypeWithoutId";
         private const string DefaultTemplateForDocumentTypeWithId = "DefaultTemplateForDocumentTypeWithId";
         private const string DefaultTemplateForDocumentTypeWithoutId = "DefaultTemplateForDocumentTypeWithoutId";
-
-        [DocumentType(IdForDocumentTypeWithId, NameForDocumentTypeWithId, DefaultTemplate = DefaultTemplateForDocumentTypeWithId)]
-        public class DocumentTypeWithId
-        {
-        }
-
-        [DocumentType(NameForDocumentTypeWithoutId, DefaultTemplate = DefaultTemplateForDocumentTypeWithoutId)]
-        public class DocumentTypeWithoutId
-        {
-        }
-
-        public class DocumentTypeWithPropertyWithId
-        {
-            // TODO: Test.
-        }
-
-        public class DocumentTypeWithPropertyWithoutId
-        {
-            // TODO: Test.
-        }
-
+        
         [TestMethod]
         public void CanCreateDocumentTypeWithAndWithoutId()
         {
@@ -94,8 +74,11 @@ namespace Logikfabrik.Umbraco.Jet.Test
             contentTypeRepository.Setup(m => m.GetContentTypeId(It.IsAny<Guid>())).Returns((int?)null);
             typeService.SetupGet(m => m.DocumentTypes).Returns(new[] { typeof(DocumentTypeWithId), typeof(DocumentTypeWithoutId) });
 
-            var documentTypeSynchronizationService = new DocumentTypeSynchronizationService(contentTypeService.Object,
-                contentTypeRepository.Object, fileService.Object, typeService.Object);
+            var documentTypeSynchronizationService = new DocumentTypeSynchronizationService(
+                contentTypeService.Object,
+                contentTypeRepository.Object, 
+                fileService.Object, 
+                typeService.Object);
 
             documentTypeSynchronizationService.Synchronize();
 
@@ -196,6 +179,26 @@ namespace Logikfabrik.Umbraco.Jet.Test
             documentTypeSynchronizationService.Synchronize();
 
             Assert.AreEqual(NameForDocumentTypeWithId, withIdContentType.Object.Name);
+        }
+
+        [DocumentType(IdForDocumentTypeWithId, NameForDocumentTypeWithId, DefaultTemplate = DefaultTemplateForDocumentTypeWithId)]
+        public class DocumentTypeWithId
+        {
+        }
+
+        [DocumentType(NameForDocumentTypeWithoutId, DefaultTemplate = DefaultTemplateForDocumentTypeWithoutId)]
+        public class DocumentTypeWithoutId
+        {
+        }
+
+        public class DocumentTypeWithPropertyWithId
+        {
+            // TODO: Test.
+        }
+
+        public class DocumentTypeWithPropertyWithoutId
+        {
+            // TODO: Test.
         }
     }
 }

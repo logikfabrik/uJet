@@ -20,15 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using Logikfabrik.Umbraco.Jet.Data;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using System;
-using Umbraco.Core.Models;
-using Umbraco.Core.Services;
-
 namespace Logikfabrik.Umbraco.Jet.Test
 {
+    using System;
+    using Data;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Moq;
+    using global::Umbraco.Core.Models;
+    using global::Umbraco.Core.Services;
+
     [TestClass]
     public class DataTypeSynchronizationServiceTest
     {
@@ -37,17 +37,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         private const string NameForDataTypeWithoutId = "DataTypeWithoutId";
         private const string EditorForDataTypeWithId = "EditorForDataTypeWithId";
         private const string EditorForDataTypeWithoutId = "EditorForDataTypeWithoutId";
-
-        [DataType(IdForDataTypeWithId, typeof(int), EditorForDataTypeWithId)]
-        public class DataTypeWithId
-        {
-        }
-
-        [DataType(typeof(int), EditorForDataTypeWithoutId)]
-        public class DataTypeWithoutId
-        {
-        }
-
+        
         [TestMethod]
         public void CanCreateDataTypeWithAndWithoutId()
         {
@@ -84,8 +74,10 @@ namespace Logikfabrik.Umbraco.Jet.Test
             dataTypeRepository.Setup(m => m.GetDefinitionId(It.IsAny<Guid>())).Returns((int?)null);
             typeService.SetupGet(m => m.DataTypes).Returns(new[] { typeof(DataTypeWithId), typeof(DataTypeWithoutId) });
 
-            var dataTypeSynchronizationService = new DataTypeSynchronizationService(dataTypeService.Object,
-                dataTypeRepository.Object, typeService.Object);
+            var dataTypeSynchronizationService = new DataTypeSynchronizationService(
+                dataTypeService.Object,
+                dataTypeRepository.Object, 
+                typeService.Object);
 
             dataTypeSynchronizationService.Synchronize();
 
@@ -115,8 +107,10 @@ namespace Logikfabrik.Umbraco.Jet.Test
             dataTypeRepository.Setup(m => m.GetDefinitionId(It.IsAny<Guid>())).Returns((int?)null);
             typeService.SetupGet(m => m.DataTypes).Returns(new[] { typeof(DataTypeWithId) });
 
-            var dataTypeSynchronizationService = new DataTypeSynchronizationService(dataTypeService.Object,
-                dataTypeRepository.Object, typeService.Object);
+            var dataTypeSynchronizationService = new DataTypeSynchronizationService(
+                dataTypeService.Object,
+                dataTypeRepository.Object,
+                typeService.Object);
 
             dataTypeSynchronizationService.Synchronize();
 
@@ -144,8 +138,10 @@ namespace Logikfabrik.Umbraco.Jet.Test
                 .Returns(new[] { withoutIdDataTypeDefinition.Object });
             typeService.SetupGet(m => m.DataTypes).Returns(new[] { typeof(DataTypeWithoutId) });
 
-            var dataTypeSynchronizationService = new DataTypeSynchronizationService(dataTypeService.Object,
-                dataTypeRepository.Object, typeService.Object);
+            var dataTypeSynchronizationService = new DataTypeSynchronizationService(
+                dataTypeService.Object,
+                dataTypeRepository.Object, 
+                typeService.Object);
 
             dataTypeSynchronizationService.Synchronize();
 
@@ -180,8 +176,10 @@ namespace Logikfabrik.Umbraco.Jet.Test
                 .Returns(withIdDataTypeDbDefinition.Object.Id);
             typeService.SetupGet(m => m.DataTypes).Returns(new[] { typeof(DataTypeWithId) });
 
-            var dataTypeSynchronizationService = new DataTypeSynchronizationService(dataTypeService.Object,
-                dataTypeRepository.Object, typeService.Object);
+            var dataTypeSynchronizationService = new DataTypeSynchronizationService(
+                dataTypeService.Object,
+                dataTypeRepository.Object,
+                typeService.Object);
 
             dataTypeSynchronizationService.Synchronize();
 
@@ -216,12 +214,24 @@ namespace Logikfabrik.Umbraco.Jet.Test
                 .Returns(new[] { withoutIdDataTypeDefinition.Object });
             typeService.SetupGet(m => m.DataTypes).Returns(new[] { typeof(DataTypeWithoutId) });
 
-            var dataTypeSynchronizationService = new DataTypeSynchronizationService(dataTypeService.Object,
-                dataTypeRepository.Object, typeService.Object);
+            var dataTypeSynchronizationService = new DataTypeSynchronizationService(
+                dataTypeService.Object,
+                dataTypeRepository.Object, 
+                typeService.Object);
 
             dataTypeSynchronizationService.Synchronize();
 
             Assert.AreEqual(EditorForDataTypeWithoutId, withoutIdDataTypeDefinition.Object.PropertyEditorAlias);
+        }
+
+        [DataType(IdForDataTypeWithId, typeof(int), EditorForDataTypeWithId)]
+        public class DataTypeWithId
+        {
+        }
+
+        [DataType(typeof(int), EditorForDataTypeWithoutId)]
+        public class DataTypeWithoutId
+        {
         }
     }
 }

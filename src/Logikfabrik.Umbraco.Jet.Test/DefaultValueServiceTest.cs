@@ -20,13 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using Logikfabrik.Umbraco.Jet.Extensions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.ComponentModel;
-using Umbraco.Core.Models;
-
 namespace Logikfabrik.Umbraco.Jet.Test
 {
+    using System.ComponentModel;
+    using Extensions;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using global::Umbraco.Core.Models;
+
     [TestClass]
     public class DefaultValueServiceTest
     {
@@ -99,23 +99,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             content.VerifyAll();
         }
-
-        [DocumentType("DefaultValueServiceTestDocumentType")]
-        public class DefaultValueServiceTestDocumentType
-        {
-            [DefaultValue("Default")]
-            public string StringProperty { get; set; }
-
-            [DefaultValue(1)]
-            public int IntegerProperty { get; set; }
-            
-            [DefaultValue(1.1f)]
-            public float FloatingBinaryProperty { get; set; }
-
-            [DefaultValue(true)]
-            public bool BooleanProperty { get; set; }
-        }
-
+        
         #endregion
 
         #region Media type
@@ -187,6 +171,24 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             content.VerifyAll();
         }
+        
+        #endregion
+
+        [DocumentType("DefaultValueServiceTestDocumentType")]
+        public class DefaultValueServiceTestDocumentType
+        {
+            [DefaultValue("Default")]
+            public string StringProperty { get; set; }
+
+            [DefaultValue(1)]
+            public int IntegerProperty { get; set; }
+
+            [DefaultValue(1.1f)]
+            public float FloatingBinaryProperty { get; set; }
+
+            [DefaultValue(true)]
+            public bool BooleanProperty { get; set; }
+        }
 
         [MediaType("DefaultValueServiceTestMediaType")]
         public class DefaultValueServiceTestMediaType
@@ -203,7 +205,5 @@ namespace Logikfabrik.Umbraco.Jet.Test
             [DefaultValue(true)]
             public bool BooleanProperty { get; set; }
         }
-
-        #endregion
     }
 }

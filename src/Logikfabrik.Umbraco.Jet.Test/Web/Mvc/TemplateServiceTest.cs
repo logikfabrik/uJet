@@ -20,12 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System.Linq;
-using Logikfabrik.Umbraco.Jet.Web.Mvc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace Logikfabrik.Umbraco.Jet.Test.Web.Mvc
 {
+    using System.Linq;
+    using Jet.Web.Mvc;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     [TestClass]
     public class TemplateServiceTest
     {

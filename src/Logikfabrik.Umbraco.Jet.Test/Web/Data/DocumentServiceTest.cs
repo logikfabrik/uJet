@@ -20,17 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using Logikfabrik.Umbraco.Jet.Extensions;
-using Logikfabrik.Umbraco.Jet.Web.Data;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using System;
-using System.Globalization;
-using System.Web;
-using Umbraco.Core.Models;
-
 namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 {
+    using System;
+    using System.Globalization;
+    using System.Web;
+    using Extensions;
+    using Jet.Web.Data;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Moq;
+    using global::Umbraco.Core.Models;
+
     [TestClass]
     public class DocumentServiceTest
     {

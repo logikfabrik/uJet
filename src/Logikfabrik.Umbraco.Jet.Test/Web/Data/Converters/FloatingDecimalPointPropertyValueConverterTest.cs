@@ -20,12 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using Logikfabrik.Umbraco.Jet.Web.Data.Converters;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Globalization;
-
 namespace Logikfabrik.Umbraco.Jet.Test.Web.Data.Converters
 {
+    using System.Globalization;
+    using Jet.Web.Data.Converters;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    
     [TestClass]
     public class FloatingDecimalPointPropertyValueConverterTest
     {

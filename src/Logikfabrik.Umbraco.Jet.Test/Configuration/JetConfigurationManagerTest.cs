@@ -20,11 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using Logikfabrik.Umbraco.Jet.Configuration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace Logikfabrik.Umbraco.Jet.Test.Configuration
 {
+    using Jet.Configuration;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     [TestClass]
     public class JetConfigurationManagerTest
     {

@@ -1,31 +1,35 @@
-﻿// The MIT License (MIT)
-
-// Copyright (c) 2015 anton(at)logikfabrik.se
-
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
-
-using System;
-using Umbraco.Core;
-using Umbraco.Core.Models;
+﻿//----------------------------------------------------------------------------------
+// <copyright file="DateTimeDataTypeDefinitionMapping.cs" company="Logikfabrik">
+//     The MIT License (MIT)
+//
+//     Copyright (c) 2015 anton(at)logikfabrik.se
+//
+//     Permission is hereby granted, free of charge, to any person obtaining a copy
+//     of this software and associated documentation files (the "Software"), to deal
+//     in the Software without restriction, including without limitation the rights
+//     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//     copies of the Software, and to permit persons to whom the Software is
+//     furnished to do so, subject to the following conditions:
+//
+//     The above copyright notice and this permission notice shall be included in
+//     all copies or substantial portions of the Software.
+//
+//     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//     AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//     THE SOFTWARE.
+// </copyright>
+//----------------------------------------------------------------------------------
 
 namespace Logikfabrik.Umbraco.Jet.Mappings
 {
+    using System;
+    using global::Umbraco.Core;
+    using global::Umbraco.Core.Models;
+
     /// <summary>
     /// Default data type definition mapping for date and time.
     /// </summary>
@@ -46,9 +50,9 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// <returns>A mapped data type definition.</returns>
         public override IDataTypeDefinition GetMappedDefinition(Type fromType)
         {
-            return !CanMapToDefinition(fromType)
+            return !this.CanMapToDefinition(fromType)
                 ? null
-                : GetDefinition(ApplicationContext.Current.Services.DataTypeService, (int) DataTypeDefinition.DatePicker);
+                : this.GetDefinition(ApplicationContext.Current.Services.DataTypeService, (int)DataTypeDefinition.DatePicker);
         }
     }
 }

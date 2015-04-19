@@ -20,20 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using Logikfabrik.Umbraco.Jet.Extensions;
-using Logikfabrik.Umbraco.Jet.Web.Mvc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace Logikfabrik.Umbraco.Jet.Test.Web.Mvc
 {
+    using Extensions;
+    using Jet.Web.Mvc;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     [TestClass]
     public class JetControllerActionInvokerTest
     {
         [TestMethod]
         public void CanGetActionNameForPreviewAction()
         {
-            Assert.AreEqual("Index",
-                JetControllerActionInvoker.GetActionName(PreviewTemplateAttribute.TemplateName.Alias()));
+            Assert.AreEqual("Index", JetControllerActionInvoker.GetActionName(
+                PreviewTemplateAttribute.TemplateName.Alias()));
         }
 
         [TestMethod]

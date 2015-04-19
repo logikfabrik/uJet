@@ -20,13 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-
 namespace Logikfabrik.Umbraco.Jet.Test
 {
+    using System;
+    using System.ComponentModel.DataAnnotations;
+    using System.Linq;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     [TestClass]
     public class DocumentTypeTest
     {
@@ -177,9 +177,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
             Templates = new string[] { })]
         public class DocumentTypeTestDocumentType
         {
-            private readonly string _propertyWithoutSetter = null;
+            private readonly string propertyWithoutSetter = null;
             // ReSharper disable once NotAccessedField.Local
-            private string _propertyWithoutGetter;
+            private string propertyWithoutGetter;
 
             public string StringProperty { get; set; }
 
@@ -201,9 +201,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
             [ScaffoldColumn(false)]
             public string NonScaffoldedProperty { get; set; }
 
-            public string PropertyWithoutSetter { get { return _propertyWithoutSetter; } }
+            public string PropertyWithoutSetter { get { return this.propertyWithoutSetter; } }
 
-            public string PropertyWithoutGetter { set { _propertyWithoutGetter = value; } }
+            public string PropertyWithoutGetter { set { this.propertyWithoutGetter = value; } }
         }
 
         public class DocumentTypeTestPropertyType
