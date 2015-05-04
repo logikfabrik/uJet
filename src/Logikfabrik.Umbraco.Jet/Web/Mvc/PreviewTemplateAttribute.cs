@@ -30,7 +30,6 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
 
     [AttributeUsage(
         AttributeTargets.Class,
-        AllowMultiple = false,
         Inherited = false)]
     public class PreviewTemplateAttribute : Attribute
     {

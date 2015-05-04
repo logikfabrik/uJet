@@ -65,9 +65,9 @@ namespace Logikfabrik.Umbraco.Jet
             var attribute = property.GetCustomAttribute<DisplayAttribute>();
 
             this.name = GetName(property, attribute);
-            this.sortOrder = GetSortOrder(property, attribute);
-            this.description = GetDescription(property, attribute);
-            this.propertyGroup = GetPropertyGroup(property, attribute);
+            this.sortOrder = GetSortOrder(attribute);
+            this.description = GetDescription(attribute);
+            this.propertyGroup = GetPropertyGroup(attribute);
         }
 
         /// <summary>
@@ -212,16 +212,10 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// Gets the content type property description from the given property.
         /// </summary>
-        /// <param name="property">The underlying property.</param>
         /// <param name="attribute">The display attribute of the underlying property.</param>
         /// <returns>A content type property description.</returns>
-        private static string GetDescription(PropertyInfo property, DisplayAttribute attribute)
+        private static string GetDescription(DisplayAttribute attribute)
         {
-            if (property == null)
-            {
-                throw new ArgumentNullException("property");
-            }
-                
             return attribute == null ? null : attribute.GetDescription();
         }
 
@@ -263,32 +257,20 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// Gets the content type property sort order from the given property.
         /// </summary>
-        /// <param name="property">The underlying property.</param>
         /// <param name="attribute">The display attribute of the underlying property.</param>
         /// <returns>A content type property sort order.</returns>
-        private static int? GetSortOrder(PropertyInfo property, DisplayAttribute attribute)
+        private static int? GetSortOrder(DisplayAttribute attribute)
         {
-            if (property == null)
-            {
-                throw new ArgumentNullException("property");
-            }
-                
             return attribute == null ? null : attribute.GetOrder();
         }
 
         /// <summary>
         /// Gets the content type property group from the given property.
         /// </summary>
-        /// <param name="property">The underlying property.</param>
         /// <param name="attribute">The display attribute of the underlying property.</param>
         /// <returns>A content type property group.</returns>
-        private static string GetPropertyGroup(PropertyInfo property, DisplayAttribute attribute)
+        private static string GetPropertyGroup(DisplayAttribute attribute)
         {
-            if (property == null)
-            {
-                throw new ArgumentNullException("property");
-            }
-                
             return attribute == null ? null : attribute.GetGroupName();
         }
 

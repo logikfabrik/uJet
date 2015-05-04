@@ -81,6 +81,7 @@ namespace Logikfabrik.Umbraco.Jet
             }
 
             // ReSharper disable once RedundantNameQualifier
+            // ReSharper disable once ArrangeStaticMemberQualifier
             DefaultValueService.SetDefaultValues(content, new DocumentType(type));
         }
 
@@ -113,6 +114,7 @@ namespace Logikfabrik.Umbraco.Jet
             }
 
             // ReSharper disable once RedundantNameQualifier
+            // ReSharper disable once ArrangeStaticMemberQualifier
             DefaultValueService.SetDefaultValues(content, new MediaType(type));
         }
 

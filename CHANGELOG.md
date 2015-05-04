@@ -1,3 +1,6 @@
+## Unreleased
+* 2015-05-04 Bug fix for later Umbraco versions, 7.2.4 known. `ViewLocationFormats` and `PartialViewLocationFormats` was changed to LINQ queries, causing exceptions in the `JetViewEngine`.
+
 ## 3.1.0.0
 * 2015-04-05 Fixed an issue in the type service. TypeLoadException and ReflectionTypeLoadException are now ignored.
 

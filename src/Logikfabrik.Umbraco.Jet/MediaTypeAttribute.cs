@@ -30,7 +30,6 @@ namespace Logikfabrik.Umbraco.Jet
 
     [AttributeUsage(
         AttributeTargets.Class,
-        AllowMultiple = false,
         Inherited = false)]
     public class MediaTypeAttribute : ContentTypeAttribute
     {
