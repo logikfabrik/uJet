@@ -1,4 +1,5 @@
 ## Unreleased
+* 2015-06-01 Bug fix for when using `ContentAttribute` without setting the `Name` property, causing exception to be thrown when editing users through the back office.
 * 2015-05-04 Bug fix for later Umbraco versions, 7.2.4 known. `ViewLocationFormats` and `PartialViewLocationFormats` was changed to LINQ queries, causing exceptions in the `JetViewEngine`.
 
 ## 3.1.0.0

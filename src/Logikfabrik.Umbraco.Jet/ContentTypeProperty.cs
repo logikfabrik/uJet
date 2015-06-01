@@ -190,8 +190,20 @@ namespace Logikfabrik.Umbraco.Jet
             {
                 throw new ArgumentNullException("property");
             }
-                
-            return attribute == null ? property.Name : attribute.GetName();
+
+            string name = null;
+
+            if (attribute != null)
+            {
+                name = attribute.GetName();
+            }
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                name = property.Name;
+            }
+
+            return name;
         }
 
         /// <summary>
