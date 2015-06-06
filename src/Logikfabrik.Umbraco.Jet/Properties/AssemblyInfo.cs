@@ -38,6 +38,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 [assembly: Guid("c83cc5c6-2c21-4430-8d00-d55af80e0455")]
-[assembly: AssemblyVersion("3.1.0.0")]
-[assembly: AssemblyFileVersion("3.1.0.0")]
+[assembly: AssemblyVersion("3.1.1.0")]
+[assembly: AssemblyFileVersion("3.1.1.0")]
 [assembly: InternalsVisibleTo("Logikfabrik.Umbraco.Jet.Test")]
