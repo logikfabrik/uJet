@@ -42,21 +42,41 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
             return this.HttpNotFound();
         }
         
+        /// <summary>
+        /// Redirect to the current page.
+        /// </summary>
+        /// <returns>A redirect result.</returns>
         protected RedirectResult RedirectToPage()
         {
-            return this.RedirectToPage(this.GetPageId());
+            return this.RedirectToPage(this.GetCurrentPageId());
         }
 
+        /// <summary>
+        /// Redirect to a page.
+        /// </summary>
+        /// <param name="id">The ID of the page to redirect to.</param>
+        /// <returns>A redirect result.</returns>
         protected RedirectResult RedirectToPage(int id)
         {
             return this.RedirectToPage(id, null);
         }
 
+        /// <summary>
+        /// Redirect to the current page.
+        /// </summary>
+        /// <param name="query">The query to redirect to.</param>
+        /// <returns>A redirect result.</returns>
         protected RedirectResult RedirectToPage(object query)
         {
-            return this.RedirectToPage(this.GetPageId(), query);
+            return this.RedirectToPage(this.GetCurrentPageId(), query);
         }
 
+        /// <summary>
+        /// Redirect to a page.
+        /// </summary>
+        /// <param name="id">The ID of the page to redirect to.</param>
+        /// <param name="query">The query to redirect to.</param>
+        /// <returns>A redirect result.</returns>
         protected RedirectResult RedirectToPage(int id, object query)
         {
             var url = UrlUtility.GetUrl(id, query);
@@ -64,9 +84,18 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
             return this.Redirect(url);
         }
 
-        private int GetPageId()
+        /// <summary>
+        /// Gets the current page ID.
+        /// </summary>
+        /// <returns>The page ID.</returns>
+        private int GetCurrentPageId()
         {
-            var renderModel = (RenderModel)ControllerContext.RouteData.DataTokens[RouteDataTokenKey];
+            var renderModel = ControllerContext.RouteData.DataTokens[RouteDataTokenKey] as RenderModel;
+
+            if (renderModel == null)
+            {
+                return -1;
+            }
 
             return renderModel.Content.Id;
         }
