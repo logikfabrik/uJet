@@ -14,7 +14,7 @@
     <copyright>Copyright (c) 2015</copyright>
     <tags>Umbraco, Jet, MVC, Code First, uJet</tags>
     <dependencies>
-      <dependency id="UmbracoCms.Core" version="[7.2.2,8.0]" />
+      <dependency id="UmbracoCms.Core" version="[7.2.8,8.0]" />
     </dependencies>
   </metadata>
 </package>
