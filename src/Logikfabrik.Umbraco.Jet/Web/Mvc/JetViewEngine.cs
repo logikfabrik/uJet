@@ -26,6 +26,7 @@
 
 namespace Logikfabrik.Umbraco.Jet.Web.Mvc
 {
+    using System.Linq;
     using System.Web.Mvc;
     using global::Umbraco.Web.Mvc;
 
@@ -33,21 +34,19 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     {
         public JetViewEngine()
         {
-            this.ViewLocationFormats = new[]
-            {
-                "~/Views/{0}.cshtml",
-                "~/Views/{1}/{0}.cshtml",
-                "~/Views/Shared/{0}.cshtml"
-            };
+            this.ViewLocationFormats =
+                ViewLocationFormats.Concat(new[]
+                {
+                    "~/Views/{1}/{0}.cshtml", 
+                    "~/Views/Shared/{0}.cshtml"
+                }).Distinct().ToArray();
 
-            this.PartialViewLocationFormats = new[]
-            {
-                "~/Views/{0}.cshtml",
-                "~/Views/{1}/{0}.cshtml",
-                "~/Views/Shared/{0}.cshtml",
-                "~/Views/Partials/{0}.cshtml",
-                "~/Views/MacroPartials/{0}.cshtml"
-            };
+            this.PartialViewLocationFormats =
+                PartialViewLocationFormats.Concat(new[]
+                {
+                    "~/Views/{1}/{0}.cshtml", 
+                    "~/Views/Shared/{0}.cshtml"
+                }).Distinct().ToArray();
         }
 
         public override ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)

@@ -30,7 +30,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     using Extensions;
     using global::Umbraco.Web.Mvc;
 
-    public class JetControllerActionInvoker : ControllerActionInvoker
+    public class JetControllerActionInvoker : RenderActionInvoker
     {
         public static string GetActionName(string name)
         {
