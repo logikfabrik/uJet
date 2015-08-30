@@ -34,6 +34,10 @@ namespace Logikfabrik.Umbraco.Jet
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
 
+    /// <summary>
+    /// The data type synchronization service. Responsible for synchronizing data types 
+    /// found in the code base with the Umbraco database.
+    /// </summary>
     public class DataTypeSynchronizationService : ISynchronizationService
     {
         private readonly IDataTypeRepository dataTypeRepository;

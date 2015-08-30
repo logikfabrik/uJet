@@ -32,6 +32,9 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Reflection;
     using Extensions;
 
+    /// <summary>
+    /// Content type property.
+    /// </summary>
     public class ContentTypeProperty
     {
         private readonly Guid? id;

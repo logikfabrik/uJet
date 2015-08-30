@@ -33,6 +33,9 @@ namespace Logikfabrik.Umbraco.Jet
     using Extensions;
     using global::Umbraco.Core.Models;
 
+    /// <summary>
+    /// The default value service. Responsible for setting default values for types.
+    /// </summary>
     public class DefaultValueService
     {
         private readonly ITypeService typeService;

@@ -30,6 +30,9 @@ namespace Logikfabrik.Umbraco.Jet.Data
     using System.Reflection;
     using global::Umbraco.Core.Persistence;
 
+    /// <summary>
+    /// Database wrapper.
+    /// </summary>
     public class DatabaseWrapper : IDatabaseWrapper
     {
         private readonly Database database;

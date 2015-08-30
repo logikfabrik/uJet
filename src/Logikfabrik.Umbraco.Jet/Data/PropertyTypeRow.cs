@@ -29,6 +29,9 @@ namespace Logikfabrik.Umbraco.Jet.Data
     using System;
     using global::Umbraco.Core.Persistence;
 
+    /// <summary>
+    /// Property type row.
+    /// </summary>
     [TableName("uJetPropertyType")]
     [PrimaryKey("Id", autoIncrement = false)]
     public class PropertyTypeRow

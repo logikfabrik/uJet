@@ -28,6 +28,9 @@ namespace Logikfabrik.Umbraco.Jet
 {
     using System;
 
+    /// <summary>
+    /// Base type for content type attributes.
+    /// </summary>
     public abstract class ContentTypeAttribute : IdAttribute
     {
         private readonly string name;

@@ -28,6 +28,9 @@ namespace Logikfabrik.Umbraco.Jet
 {
     using System;
 
+    /// <summary>
+    /// Data type attribute.
+    /// </summary>
     [AttributeUsage(
         AttributeTargets.Class,
         Inherited = false)]

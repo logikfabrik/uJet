@@ -35,6 +35,9 @@ namespace Logikfabrik.Umbraco.Jet
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
 
+    /// <summary>
+    /// Base type for content type synchronization services.
+    /// </summary>
     public abstract class ContentTypeSynchronizationService : ISynchronizationService
     {
         private readonly IContentTypeService contentTypeService;

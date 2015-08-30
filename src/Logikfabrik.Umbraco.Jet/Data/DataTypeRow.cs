@@ -29,6 +29,9 @@ namespace Logikfabrik.Umbraco.Jet.Data
     using System;
     using global::Umbraco.Core.Persistence;
 
+    /// <summary>
+    /// Data type row.
+    /// </summary>
     [TableName("uJetDataType")]
     [PrimaryKey("Id", autoIncrement = false)]
     public class DataTypeRow

@@ -29,6 +29,9 @@ namespace Logikfabrik.Umbraco.Jet.Data
     using System;
     using global::Umbraco.Core.Persistence;
 
+    /// <summary>
+    /// Content type row.
+    /// </summary>
     [TableName("uJetContentType")]
     [PrimaryKey("Id", autoIncrement = false)]
     public class ContentTypeRow

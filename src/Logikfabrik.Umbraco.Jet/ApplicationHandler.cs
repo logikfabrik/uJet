@@ -28,6 +28,9 @@ namespace Logikfabrik.Umbraco.Jet
 {
     using global::Umbraco.Core;
 
+    /// <summary>
+    /// Application handler for setup.
+    /// </summary>
     public abstract class ApplicationHandler : IApplicationEventHandler
     {
         /// <summary>

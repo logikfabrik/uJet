@@ -30,6 +30,9 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Reflection;
     using Extensions;
 
+    /// <summary>
+    /// Data type.
+    /// </summary>
     public class DataType
     {
         private readonly Guid? id;

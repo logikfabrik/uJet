@@ -33,6 +33,10 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Reflection;
     using Extensions;
 
+    /// <summary>
+    /// Base type for content types.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public abstract class ContentType<T> where T : ContentTypeAttribute
     {
         /// <summary>

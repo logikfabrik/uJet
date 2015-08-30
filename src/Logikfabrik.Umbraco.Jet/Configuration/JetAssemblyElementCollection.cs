@@ -28,6 +28,9 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
 {
     using System.Configuration;
 
+    /// <summary>
+    /// Assembly configuration element collection.
+    /// </summary>
     public class JetAssemblyElementCollection : ConfigurationElementCollection
     {
         protected override ConfigurationElement CreateNewElement()

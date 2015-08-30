@@ -28,6 +28,9 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
 {
     using System.Configuration;
 
+    /// <summary>
+    /// Jet configuration section.
+    /// </summary>
     public class JetSection : ConfigurationSection
     {
         /// <summary>

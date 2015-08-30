@@ -28,6 +28,9 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
 {
     using System.Configuration;
 
+    /// <summary>
+    /// Assembly configuration element.
+    /// </summary>
     public class JetAssemblyElement : ConfigurationElement
     {
         /// <summary>
