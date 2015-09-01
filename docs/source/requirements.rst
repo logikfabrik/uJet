@@ -6,7 +6,7 @@ uJet is compatible with Umbraco 7, target framework .NET 4.5 and requires Full T
 
 NuGet Requirements
 ------------------
-The uJet NuGet targets Umbraco CMS (Core) 7.0-7.2.
+The uJet NuGet targets Umbraco CMS 7.2.8 and above.
 
 Development Requirements
 ------------------------

@@ -98,7 +98,7 @@ Use the `DisplayAttribute` attribute to customize the property name and descript
 
 UIHintAttribute
 ^^^^^^^^^^^^^^^
-Use the `UIHintAttribute` attribute to specify the property editor used in the Umbraco back office. The property editor is inferred by the property type by default, but can be overridden using this attribute.
+Use the `UIHintAttribute` attribute to specify the Umbraco data type used. The Umbraco data type is inferred by the .NET property type by default, but can be overridden using this attribute.
 
 .. code-block:: csharp
 
@@ -136,13 +136,12 @@ Properties decorated using the `ScaffoldColumnAttribute` attribute (set to false
 
 Data Types
 ==========
-.NET data types are mapped to Umbraco data type definitions using data type definition mappings.
+.NET data types are mapped to Umbraco data types using data type definition mappings.
 
-The data type property definition mapped will determine how Umbraco stores the property value in the database, and what editor to use for editing the property value in the Umbraco back office.
+The Umbraco data type mapped will determine how Umbraco stores the property value in the database, and what property editor to use for editing the property value in the Umbraco back office.
 
 Supported .NET Data Types
 -------------------------
-
 uJet supports the following .NET data types out-of-the-box.
 
 * `Int16` and `Int16?`

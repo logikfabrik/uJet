@@ -34,16 +34,38 @@ namespace Logikfabrik.Umbraco.Jet
     using Extensions;
 
     /// <summary>
-    /// Service for types.
+    /// The concrete type service, responsible for probing assemblies for document types, media types, and data types.
     /// </summary>
     public class TypeService : ITypeService
     {
+        /// <summary>
+        /// The current instance.
+        /// </summary>
         private static ITypeService instance;
+
+        /// <summary>
+        /// Enumerable of all document types.
+        /// </summary>
         private readonly Lazy<IEnumerable<Type>> documentTypes;
+
+        /// <summary>
+        /// Enumerable of all data types.
+        /// </summary>
         private readonly Lazy<IEnumerable<Type>> dataTypes;
+
+        /// <summary>
+        /// Enumerable of all media types.
+        /// </summary>
         private readonly Lazy<IEnumerable<Type>> mediaTypes;
+
+        /// <summary>
+        /// Enumerable of all assemblies.
+        /// </summary>
         private readonly Lazy<IEnumerable<Assembly>> assemblies;
 
+        /// <summary>
+        /// Prevents a default instance of the <see cref="TypeService" /> class from being created.
+        /// </summary>
         private TypeService()
         {
             this.assemblies = new Lazy<IEnumerable<Assembly>>(GetAssemblies);
@@ -52,6 +74,9 @@ namespace Logikfabrik.Umbraco.Jet
             this.mediaTypes = new Lazy<IEnumerable<Type>>(this.GetMediaTypes);
         }
 
+        /// <summary>
+        /// Gets an singleton instance of the type service.
+        /// </summary>
         public static ITypeService Instance
         {
             get { return instance ?? (instance = new TypeService()); }
@@ -121,6 +146,11 @@ namespace Logikfabrik.Umbraco.Jet
             return this.GetTypesByAttribute(TypeExtensions.IsMediaType);
         }
 
+        /// <summary>
+        /// Gets types by attribute predicate.
+        /// </summary>
+        /// <param name="predicate">A predicate function for type probing.</param>
+        /// <returns>Types matching the given predicate.</returns>
         private IEnumerable<Type> GetTypesByAttribute(Func<Type, bool> predicate)
         {
             if (predicate == null)

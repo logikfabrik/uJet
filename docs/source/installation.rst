@@ -5,7 +5,7 @@ uJet can be installed by downloading, and compiling the uJet source code, and th
 
 NuGet
 -----
-uJet is available on NuGet. Simply create a new project in Visual Studio and reference the uJet NuGet. Umbraco 7 and uJet will be set up for you.
+uJet is available on NuGet. Simply create a new project in Visual Studio and add the uJet NuGet. References to the Umbraco 7 binaries and uJet binaries will be set up for you.
 
 .. code-block:: bat
 

@@ -114,21 +114,17 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
             addHint(typeof(int), DataTypeDefinition.Dropdown);
             addHint(typeof(string), DataTypeDefinition.DropdownMultiple);
             addHint(typeof(string), DataTypeDefinition.FolderBrowser);
-            //// DataTypeDefinition.ImageCropper
             addHint(typeof(string), DataTypeDefinition.Label);
-            //// DataTypeDefinition.MacroContainer
-            //// DataTypeDefinition.MediaPicker
             addHint(typeof(int), DataTypeDefinition.MediaPicker);
+            addHint(typeof(string), DataTypeDefinition.MultipleMediaPicker);
             addHint(typeof(int), DataTypeDefinition.Numeric);
             addHint(typeof(string), DataTypeDefinition.Radiobox);
-            //// DataTypeDefinition.RelatedLinks
+            addHint(typeof(string), DataTypeDefinition.RelatedLinks);
             addHint(typeof(string), DataTypeDefinition.RichtextEditor);
-            addHint(typeof(string), DataTypeDefinition.SimpleEditor);
             addHint(typeof(string), DataTypeDefinition.Tags);
             addHint(typeof(string), DataTypeDefinition.TextboxMultiple);
             addHint(typeof(string), DataTypeDefinition.Textstring);
             addHint(typeof(bool), DataTypeDefinition.TrueFalse);
-            addHint(typeof(string), DataTypeDefinition.UltimatePicker);
             addHint(typeof(string), DataTypeDefinition.Upload);
 
             return hints;

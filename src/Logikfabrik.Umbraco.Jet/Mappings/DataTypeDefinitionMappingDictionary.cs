@@ -31,32 +31,57 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
     using System.Collections.Generic;
     using System.Linq;
 
+    /// <summary>
+    /// Dictionary for data type definition mappings.
+    /// </summary>
     public class DataTypeDefinitionMappingDictionary : IDictionary<Type, IDataTypeDefinitionMapping>
     {
+        /// <summary>
+        /// Inner dictionary for data type definition mappings.
+        /// </summary>
         private readonly Dictionary<Type, IDataTypeDefinitionMapping> innerDictionary = new Dictionary<Type, IDataTypeDefinitionMapping>();
+        
+        /// <summary>
+        /// Default mapping.
+        /// </summary>
         private IDefaultDataTypeDefinitionMapping defaultMapping;
 
+        /// <summary>
+        /// Gets or sets the default mapping.
+        /// </summary>
         public IDefaultDataTypeDefinitionMapping DefaultMapping
         {
             get { return this.defaultMapping ?? (this.defaultMapping = new DefaultDataTypeDefinitionMapping()); }
             set { this.defaultMapping = value; }
         }
         
+        /// <summary>
+        /// Gets a value indicating whether or not the dictionary is read-only.
+        /// </summary>
         public bool IsReadOnly
         {
             get { return false; }
         }
 
+        /// <summary>
+        /// Gets the number of key value pairs in the dictionary.
+        /// </summary>
         public int Count
         {
             get { return this.innerDictionary.Count; }
         }
 
+        /// <summary>
+        /// Gets the mapping keys in the dictionary.
+        /// </summary>
         public ICollection<Type> Keys
         {
             get { return this.innerDictionary.Keys; }
         }
 
+        /// <summary>
+        /// Gets the data type definition mappings in the dictionary.
+        /// </summary>
         public ICollection<IDataTypeDefinitionMapping> Values
         {
             get { return this.innerDictionary.Values; }
@@ -68,21 +93,36 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
             set { this.innerDictionary[key] = value; }
         }
 
+        /// <summary>
+        /// Gets an enumerator that iterates through the dictionary.
+        /// </summary>
+        /// <returns>An enumerator.</returns>
         public IEnumerator<KeyValuePair<Type, IDataTypeDefinitionMapping>> GetEnumerator()
         {
             return this.innerDictionary.GetEnumerator();
         }
 
+        /// <summary>
+        /// Gets an enumerator that iterates through the dictionary.
+        /// </summary>
+        /// <returns>An enumerator.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
         }
 
+        /// <summary>
+        /// Adds a data type definition mapping to the dictionary.
+        /// </summary>
+        /// <param name="item">The data type definition mapping and type to add.</param>
         public void Add(KeyValuePair<Type, IDataTypeDefinitionMapping> item)
         {
             this.innerDictionary.Add(item.Key, item.Value);
         }
 
+        /// <summary>
+        /// Clears the dictionary.
+        /// </summary>
         public void Clear()
         {
             this.innerDictionary.Clear();
@@ -110,11 +150,21 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
             return this.innerDictionary.ContainsKey(key);
         }
 
+        /// <summary>
+        /// Adds a data type definition mapping to the dictionary.
+        /// </summary>
+        /// <param name="key">A type.</param>
+        /// <param name="value">A data type definition mapping.</param>
         public void Add(Type key, IDataTypeDefinitionMapping value)
         {
             this.innerDictionary.Add(key, value);
         }
 
+        /// <summary>
+        /// Removes a data type definition mapping from the dictionary.
+        /// </summary>
+        /// <param name="key">A type.</param>
+        /// <returns></returns>
         public bool Remove(Type key)
         {
             return this.innerDictionary.Remove(key);

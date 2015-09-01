@@ -35,7 +35,14 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
 
     public class TemplateService : ITemplateService
     {
+        /// <summary>
+        /// The current template service instance.
+        /// </summary>
         private static ITemplateService instance;
+
+        /// <summary>
+        /// Template paths.
+        /// </summary>
         private readonly IEnumerable<string> templatePaths;
 
         private TemplateService()
@@ -49,7 +56,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         }
 
         /// <summary>
-        /// Gets the paths for the templates in the views directory.
+        /// Gets the paths for the templates in the views folder.
         /// </summary>
         public IEnumerable<string> TemplatePaths
         {
@@ -74,6 +81,11 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
             }
         }
 
+        /// <summary>
+        /// Gets a template.
+        /// </summary>
+        /// <param name="templatePath">The template path.</param>
+        /// <returns>A template.</returns>
         public ITemplate GetTemplate(string templatePath)
         {
             if (string.IsNullOrWhiteSpace(templatePath))
@@ -87,18 +99,18 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         }
 
         /// <summary>
-        /// Gets the templates in the views directory.
+        /// Gets the templates in the views folder.
         /// </summary>
         /// <returns>Templates (paths).</returns>
         private static IEnumerable<string> GetTemplates()
         {
             /*
              * When developing exclusively using conventional ASP.NET MVC view mapping, registering all views as 
-             * templates might cause conflicts. This function will only return templates stored in the top directory 
+             * templates might cause conflicts. This function will only return templates stored in the root folder 
              * for that reason.
              * 
              * Developers might use the MVC features of uJet in combination with route hijacking. When doing so 
-             * all views/templates are stored in the top directory (Umbraco default behaviour).
+             * all views/templates are stored in the root folder (Umbraco default behaviour).
              */
             var paths = Directory.GetFiles(GetViewsPath(), "*.cshtml", SearchOption.TopDirectoryOnly);
 
@@ -112,9 +124,9 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         }
 
         /// <summary>
-        /// Gets the path to the views directory.
+        /// Gets the path to the views folder.
         /// </summary>
-        /// <returns>The path to the views directory.</returns>
+        /// <returns>The path to the views folder.</returns>
         private static string GetViewsPath()
         {
             return string.Concat(AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar, "Views");

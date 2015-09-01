@@ -2,54 +2,8 @@
 Extending uJet
 **************
 
-Data Type Definition Mappings
-=============================
-.NET data types are mapped to Umbraco data type definitions using data type definition mappings. The Umbraco data type definition mapped will determine how Umbraco stores the property value in the database, and what editor to use for editing the property value in the Umbraco back office.
+Custom Data Type Definition Mappings
+====================================
+uJet can easily be extended to support additional .NET types and Umbraco data types. By implementing the `IDataTypeDefinitionMapping` interface and adding the implementation to the list of data type definition mappings, uJet will play nice.
 
-uJet can easily be extended to support additional types by implementing the `IDataTypeDefinitionMapping` interface and adding the implementation to the list of data type definition mappings. Add implementations to the list of data type definition mappings by calling `DataTypeDefinitionMappings.Mappings.Add()`.
-
-Built-in Data Type Definition Mappings (DTDM)
----------------------------------------------
-The following data type definition mappings are built-into uJet.
-
-* `BooleanDTDM`
-* `DateTimeDTDM`
-* `FloatingBinaryPointDTDM`
-* `FloatingDecimalPointDTDM`
-* `IntegerDTDM`
-* `StringDTDM`
-
-BooleanDTDM
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Will map .NET types `bool`, and `bool?` to the Umbraco data type definition `TrueFalse`.
-
-DateTimeDTDM
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Will map .NET types `DateTime`, and `DateTime?` to the Umbraco data type definition `DatePicker`.
-
-FloatingBinaryPointDTDM
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Will map .NET types `float`, `float?`, `double`, and `double?` to the Umbraco data type definition `Textstring`. Converted using property value converter `FloatingBinaryPointPropertyValueConverter`.
-
-FloatingDecimalPointDTDM
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Will map .NET types `decimal`, and `decimal?` to the Umbraco data type definition `Textstring`. Converted using property value converter `FloatingDecimalPointPropertyValueConverter`.
-
-IntegerDTDM
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Will map .NET types `Int16`, `Int16?`, `Int32`, `Int32?`, `UInt16`, `UInt16?`, `UInt32`, and `UInt32?` to the Umbraco data type definition `Numeric`.
-
-StringDTDM
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Will map .NET type `string` to the Umbraco data type definition `Textstring`.
-
-Property Value Converters
-=========================
-
-Built-in Property Value Converters
-----------------------------------
-The following property value converters are built-into uJet.
-
-* `FloatingBinaryPointPropertyValueConverter`
-* `FloatingDecimalPointPropertyValueConverter`
-* `HtmlStringPropertyValueConverter`
+Custom mappings are added to the list of data type definition mappings by calling `DataTypeDefinitionMappings.Mappings.Add()`.
