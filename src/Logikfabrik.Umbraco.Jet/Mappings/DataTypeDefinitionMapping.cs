@@ -32,39 +32,46 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
     using global::Umbraco.Core.Services;
 
     /// <summary>
-    /// Base class for all default data type definition mappings.
+    /// The <see cref="DataTypeDefinitionMapping" /> class.
     /// </summary>
-    /// <remarks>You can create your own data type definition mapping by implementing the IDataTypeDefinitionMapping interface.</remarks>
     public abstract class DataTypeDefinitionMapping : IDataTypeDefinitionMapping
     {
         /// <summary>
-        /// Gets the types supported by this data type definition mapping.
+        /// Gets the supported types.
         /// </summary>
+        /// <value>
+        /// The supported types.
+        /// </value>
         protected abstract Type[] SupportedTypes { get; }
 
         /// <summary>
-        /// Gets whether or not this definition mapping can map the given type to a data type definition.
+        /// Determines whether this instance can map the specified from type to a definition.
         /// </summary>
-        /// <param name="fromType">The type to map to a data type definition.</param>
-        /// <returns>True if the type can be mapped using this mapping; otherwise false.</returns>
+        /// <param name="fromType">From type.</param>
+        /// <returns>
+        ///   <c>true</c> if this instance can map to definition; otherwise, <c>false</c>.
+        /// </returns>
         public bool CanMapToDefinition(Type fromType)
         {
             return this.SupportedTypes.Contains(fromType);
         }
 
         /// <summary>
-        /// Maps the given type to a data type definition.
+        /// Gets the mapped definition.
         /// </summary>
-        /// <param name="fromType">The type to map to a data type definition.</param>
-        /// <returns>A mapped data type definition.</returns>
+        /// <param name="fromType">From type.</param>
+        /// <returns>
+        /// The mapped definition.
+        /// </returns>
         public abstract IDataTypeDefinition GetMappedDefinition(Type fromType);
 
         /// <summary>
-        /// Gets a data type definition with the given ID.
+        /// Gets the definition.
         /// </summary>
-        /// <param name="dataTypeService">The data type service to use.</param>
-        /// <param name="id">ID of the data type definition to get.</param>
-        /// <returns>A data type definition.</returns>
+        /// <param name="dataTypeService">The data type service.</param>
+        /// <param name="id">The identifier.</param>
+        /// <returns>The definition.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if dataTypeService is null.</exception>
         protected IDataTypeDefinition GetDefinition(IDataTypeService dataTypeService, int id)
         {
             if (dataTypeService == null)

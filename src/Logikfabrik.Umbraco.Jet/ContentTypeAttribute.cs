@@ -36,7 +36,7 @@ namespace Logikfabrik.Umbraco.Jet
         private readonly string name;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContentTypeAttribute"/> class.
+        /// Initializes a new instance of the <see cref="ContentTypeAttribute" /> class.
         /// </summary>
         /// <param name="name">The name to use for the new content type attribute.</param>
         protected ContentTypeAttribute(string name)
@@ -50,7 +50,7 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContentTypeAttribute"/> class.
+        /// Initializes a new instance of the <see cref="ContentTypeAttribute" /> class.
         /// </summary>
         /// <param name="id">The ID to use for the new content type attribute.</param>
         /// <param name="name">The name to use for the new content type attribute.</param>

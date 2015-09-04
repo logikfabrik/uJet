@@ -26,6 +26,7 @@
 
 namespace Logikfabrik.Umbraco.Jet
 {
+    using System.Configuration;
     using global::Umbraco.Core;
 
     /// <summary>
@@ -34,13 +35,16 @@ namespace Logikfabrik.Umbraco.Jet
     public abstract class ApplicationHandler : IApplicationEventHandler
     {
         /// <summary>
-        /// Gets a value indicating whether or not Umbraco has been installed.
+        /// Gets a value indicating whether this instance is installed.
         /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is installed; otherwise, <c>false</c>.
+        /// </value>
         protected bool IsInstalled
         {
             get
             {
-                return !string.IsNullOrWhiteSpace(System.Configuration.ConfigurationManager.AppSettings["umbracoConfigurationStatus"]);
+                return !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["umbracoConfigurationStatus"]);
             }
         }
 

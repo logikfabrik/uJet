@@ -30,20 +30,26 @@ namespace Logikfabrik.Umbraco.Jet.Data
     using global::Umbraco.Core.Persistence;
 
     /// <summary>
-    /// Content type row.
+    /// The <see cref="ContentTypeRow" /> class.
     /// </summary>
     [TableName("uJetContentType")]
     [PrimaryKey("Id", autoIncrement = false)]
     public class ContentTypeRow
     {
         /// <summary>
-        /// Gets or sets the ID.
+        /// Gets or sets the identifier.
         /// </summary>
+        /// <value>
+        /// The identifier.
+        /// </value>
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the content type ID.
+        /// Gets or sets the content type identifier.
         /// </summary>
+        /// <value>
+        /// The content type identifier.
+        /// </value>
         public int ContentTypeId { get; set; }
     }
 }

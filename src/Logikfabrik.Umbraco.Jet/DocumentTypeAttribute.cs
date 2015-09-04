@@ -34,7 +34,7 @@ namespace Logikfabrik.Umbraco.Jet
     public class DocumentTypeAttribute : ContentTypeAttribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DocumentTypeAttribute"/> class.
+        /// Initializes a new instance of the <see cref="DocumentTypeAttribute" /> class.
         /// </summary>
         /// <param name="name">The name to use for the new document type attribute.</param>
         public DocumentTypeAttribute(string name)
@@ -43,7 +43,7 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DocumentTypeAttribute"/> class.
+        /// Initializes a new instance of the <see cref="DocumentTypeAttribute" /> class.
         /// </summary>
         /// <param name="id">The ID to use for the new document type attribute.</param>
         /// <param name="name">The name to use for the new document type attribute.</param>

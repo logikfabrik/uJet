@@ -31,23 +31,28 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
     using global::Umbraco.Core.Models;
 
     /// <summary>
-    /// Default data type definition mapping for true and false.
+    /// The <see cref="BooleanDataTypeDefinitionMapping" /> class for type <see cref="bool" />.
     /// </summary>
     public class BooleanDataTypeDefinitionMapping : DataTypeDefinitionMapping
     {
         /// <summary>
-        /// Gets the types supported by this data type definition mapping.
+        /// Gets the supported types.
         /// </summary>
+        /// <value>
+        /// The supported types.
+        /// </value>
         protected override Type[] SupportedTypes
         {
             get { return new[] { typeof(bool), typeof(bool?) }; }
         }
 
         /// <summary>
-        /// Maps the given type to a data type definition.
+        /// Gets the mapped definition.
         /// </summary>
-        /// <param name="fromType">The type to map to a data type definition.</param>
-        /// <returns>A mapped data type definition.</returns>
+        /// <param name="fromType">From type.</param>
+        /// <returns>
+        /// The mapped definition.
+        /// </returns>
         public override IDataTypeDefinition GetMappedDefinition(Type fromType)
         {
             return !this.CanMapToDefinition(fromType)

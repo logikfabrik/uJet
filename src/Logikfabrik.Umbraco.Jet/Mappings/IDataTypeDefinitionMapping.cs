@@ -30,22 +30,24 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
     using global::Umbraco.Core.Models;
 
     /// <summary>
-    /// Interface for data type definition mappings. Use this interface to customize the way document type properties are mapped by Jet.
+    /// The <see cref="IDataTypeDefinitionMapping" /> interface. Implement this interface to customize definition mappings.
     /// </summary>
     public interface IDataTypeDefinitionMapping
     {
         /// <summary>
-        /// Gets whether or not this definition mapping can map the given type to a data type definition.
+        /// Determines whether this instance can map the specified from type to a definition.
         /// </summary>
-        /// <param name="fromType">The type to map to a data type definition.</param>
-        /// <returns>True if the type can be mapped using this mapping; otherwise false.</returns>
+        /// <param name="fromType">From type.</param>
+        /// <returns>
+        ///   <c>true</c> if this instance can map to definition; otherwise, <c>false</c>.
+        /// </returns>
         bool CanMapToDefinition(Type fromType);
 
         /// <summary>
-        /// Maps the given type to a data type definition.
+        /// Gets the mapped definition.
         /// </summary>
-        /// <param name="fromType">The type to map to a data type definition.</param>
-        /// <returns>A mapped data type definition.</returns>
+        /// <param name="fromType">From type.</param>
+        /// <returns>The mapped definition.</returns>
         IDataTypeDefinition GetMappedDefinition(Type fromType);
     }
 }

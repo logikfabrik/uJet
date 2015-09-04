@@ -241,6 +241,8 @@
     <Compile Include="Data\IDataTypeRepository.cs" />
     <Compile Include="Data\PropertyTypeRow.cs" />
     <Compile Include="IdAttribute.cs" />
+    <Compile Include="MemberTypeAttribute.cs" />
+    <Compile Include="MemberTypeSynchronizationService.cs" />
     <Compile Include="Web\Data\ContentService.cs" />
     <Compile Include="Web\Data\Converters\FloatingBinaryPointPropertyValueConverter.cs" />
     <Compile Include="Web\Data\Converters\FloatingDecimalPointPropertyValueConverter.cs" />

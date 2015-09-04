@@ -30,8 +30,21 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
     using System.Globalization;
     using System.Linq;
 
+    /// <summary>
+    /// The <see cref="FloatingBinaryPointPropertyValueConverter" /> class.
+    /// </summary>
     public class FloatingBinaryPointPropertyValueConverter : IPropertyValueConverter
     {
+        /// <summary>
+        /// Determines whether this instance can convert between types.
+        /// </summary>
+        /// <param name="uiHint">The UI hint.</param>
+        /// <param name="from">From type.</param>
+        /// <param name="to">To type.</param>
+        /// <returns>
+        ///   <c>true</c> if this instance can convert between types; otherwise, <c>false</c>.
+        /// </returns>
+        /// <exception cref="System.ArgumentNullException">Thrown if from or to are null.</exception>
         public bool CanConvertValue(string uiHint, Type from, Type to)
         {
             if (from == null)
@@ -49,29 +62,42 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
             return from == typeof(string) && validTypes.Contains(to);
         }
 
-        public object Convert(object propertyValue, Type to)
+        /// <summary>
+        /// Converts the specified value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="to">To type.</param>
+        /// <returns>
+        /// The converted value.
+        /// </returns>
+        public object Convert(object value, Type to)
         {
-            if (propertyValue == null)
+            if (value == null)
             {
                 return null;
             }
 
             if (to == typeof(float) || to == typeof(float?))
             {
-                return ConvertToFloat(propertyValue);
+                return ConvertToFloat(value);
             }
 
             if (to == typeof(double) || to == typeof(double?))
             {
-                return ConvertToDouble(propertyValue);
+                return ConvertToDouble(value);
             }
 
             return null;
         }
 
-        private static object ConvertToFloat(object propertyValue)
+        /// <summary>
+        /// Converts to float.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The converted value.</returns>
+        private static object ConvertToFloat(object value)
         {
-            if (propertyValue == null)
+            if (value == null)
             {
                 return null;
             }
@@ -79,7 +105,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
             float result;
 
             if (float.TryParse(
-                    propertyValue.ToString(),
+                    value.ToString(),
                     NumberStyles.Float,
                     CultureInfo.InvariantCulture.NumberFormat,
                     out result))
@@ -90,9 +116,14 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
             return null;
         }
 
-        private static object ConvertToDouble(object propertyValue)
+        /// <summary>
+        /// Converts to double.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The converted value.</returns>
+        private static object ConvertToDouble(object value)
         {
-            if (propertyValue == null)
+            if (value == null)
             {
                 return null;
             }
@@ -100,7 +131,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
             double result;
 
             if (double.TryParse(
-                    propertyValue.ToString(),
+                    value.ToString(),
                     NumberStyles.Float,
                     CultureInfo.InvariantCulture.NumberFormat,
                     out result))

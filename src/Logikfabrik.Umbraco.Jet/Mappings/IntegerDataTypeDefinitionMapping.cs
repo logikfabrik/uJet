@@ -31,17 +31,19 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
     using global::Umbraco.Core.Models;
 
     /// <summary>
-    /// Default data type definition mapping for integer types.
+    /// The <see cref="IntegerDataTypeDefinitionMapping" /> class for type <see cref="int" />.
     /// </summary>
     public class IntegerDataTypeDefinitionMapping : DataTypeDefinitionMapping
     {
         /// <summary>
-        /// Gets the types supported by this data type definition mapping.
+        /// Gets the supported types.
         /// </summary>
+        /// <value>
+        /// The supported types.
+        /// </value>
         protected override Type[] SupportedTypes
         {
-            // Signed and unsigned integers are handled using the same mapping as there's no 
-            // need to differentiate the two (they're stored in the same way).
+            // Signed and unsigned integers are handled using the same mapping as there's no need to differentiate the two (they're stored in the same way).
             get
             {
                 return new[]
@@ -53,10 +55,12 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         }
 
         /// <summary>
-        /// Maps the given type to a data type definition.
+        /// Gets the mapped definition.
         /// </summary>
-        /// <param name="fromType">The type to map to a data type definition.</param>
-        /// <returns>A mapped data type definition.</returns>
+        /// <param name="fromType">From type.</param>
+        /// <returns>
+        /// The mapped definition.
+        /// </returns>
         public override IDataTypeDefinition GetMappedDefinition(Type fromType)
         {
             return !this.CanMapToDefinition(fromType)

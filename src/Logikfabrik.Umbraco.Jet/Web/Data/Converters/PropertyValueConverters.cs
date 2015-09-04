@@ -30,15 +30,35 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
     using System.Collections.Generic;
     using System.Linq;
 
+    /// <summary>
+    /// The <see cref="PropertyValueConverters" /> class.
+    /// </summary>
     public class PropertyValueConverters
     {
+        /// <summary>
+        /// The shared converters.
+        /// </summary>
         private static readonly PropertyValueConverterDictionary SharedConverters = GetDefaultConverters();
 
+        /// <summary>
+        /// Gets the converters.
+        /// </summary>
+        /// <value>
+        /// The converters.
+        /// </value>
         public static PropertyValueConverterDictionary Converters
         {
             get { return SharedConverters; }
         }
 
+        /// <summary>
+        /// Gets the converter.
+        /// </summary>
+        /// <param name="uiHint">The UI hint.</param>
+        /// <param name="from">From type.</param>
+        /// <param name="to">To type.</param>
+        /// <returns>The converter</returns>
+        /// <exception cref="System.ArgumentNullException">Thrown if from or to are null.</exception>
         internal static IPropertyValueConverter GetConverter(string uiHint, Type from, Type to)
         {
             if (from == null)
@@ -58,6 +78,10 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
                 : converters.FirstOrDefault(c => c.CanConvertValue(uiHint, @from, to));
         }
 
+        /// <summary>
+        /// Gets the default converters.
+        /// </summary>
+        /// <returns>The default converters.</returns>
         private static PropertyValueConverterDictionary GetDefaultConverters()
         {
             return new PropertyValueConverterDictionary

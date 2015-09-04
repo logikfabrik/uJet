@@ -29,18 +29,28 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
     using System;
     using System.Reflection;
 
+    /// <summary>
+    /// The <see cref="TypeExtensions" /> class.
+    /// </summary>
     public static class TypeExtensions
     {
-        public static bool IsDocumentType(this Type t)
+        /// <summary>
+        /// Determines whether the type is a document type, annotated using the <see cref="DocumentTypeAttribute" /> class.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>
+        ///   <c>true</c> if the type is a document type; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsDocumentType(this Type type)
         {
             try
             {
-                if (!IsValidType(t))
+                if (!IsValidType(type))
                 {
                     return false;
                 }
 
-                return t.GetCustomAttribute<DocumentTypeAttribute>() != null;
+                return type.GetCustomAttribute<DocumentTypeAttribute>() != null;
             }
             catch (TypeLoadException)
             {
@@ -52,16 +62,23 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
             }
         }
 
-        public static bool IsDataType(this Type t)
+        /// <summary>
+        /// Determines whether the type is a data type, annotated using the <see cref="DataTypeAttribute" /> class.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>
+        ///   <c>true</c> if the type is a data type; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsDataType(this Type type)
         {
             try
             {
-                if (!IsValidType(t))
+                if (!IsValidType(type))
                 {
                     return false;
                 }
 
-                return t.GetCustomAttribute<DataTypeAttribute>() != null;
+                return type.GetCustomAttribute<DataTypeAttribute>() != null;
             }
             catch (TypeLoadException)
             {
@@ -73,16 +90,23 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
             }
         }
 
-        public static bool IsMediaType(this Type t)
+        /// <summary>
+        /// Determines whether the type is a media type, annotated using the <see cref="MediaTypeAttribute" /> class.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>
+        ///   <c>true</c> if the type is a media type; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsMediaType(this Type type)
         {
             try
             {
-                if (!IsValidType(t))
+                if (!IsValidType(type))
                 {
                     return false;
                 }
 
-                return t.GetCustomAttribute<MediaTypeAttribute>() != null;
+                return type.GetCustomAttribute<MediaTypeAttribute>() != null;
             }
             catch (TypeLoadException)
             {
@@ -94,19 +118,54 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
             }
         }
 
-        private static bool IsValidType(Type t)
+        /// <summary>
+        /// Determines whether the type is a member type, annotated using the <see cref="MemberTypeAttribute" /> class.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>
+        ///   <c>true</c> if the type is a member type; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsMemberType(this Type type)
         {
-            if (t == null)
+            try
+            {
+                if (!IsValidType(type))
+                {
+                    return false;
+                }
+
+                return type.GetCustomAttribute<MemberTypeAttribute>() != null;
+            }
+            catch (TypeLoadException)
+            {
+                return false;
+            }
+            catch (ReflectionTypeLoadException)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Determines whether the type is a valid.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>
+        ///   <c>true</c> if the type is valid; otherwise, <c>false</c>.
+        /// </returns>
+        private static bool IsValidType(Type type)
+        {
+            if (type == null)
             {
                 return false;
             }
 
-            if (t.IsAbstract)
+            if (type.IsAbstract)
             {
                 return false;
             }
 
-            return t.GetConstructor(Type.EmptyTypes) != null;
+            return type.GetConstructor(Type.EmptyTypes) != null;
         }
     }
 }

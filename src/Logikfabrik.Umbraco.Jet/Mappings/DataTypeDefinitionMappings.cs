@@ -29,20 +29,33 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
     using System;
     using global::Umbraco.Core.Models;
 
+    /// <summary>
+    /// The <see cref="DataTypeDefinitionMappings" /> class.
+    /// </summary>
     public static class DataTypeDefinitionMappings
     {
+        /// <summary>
+        /// The shared mappings.
+        /// </summary>
         private static readonly DataTypeDefinitionMappingDictionary SharedMappings = GetDefaultMappings();
 
+        /// <summary>
+        /// Gets the mappings.
+        /// </summary>
+        /// <value>
+        /// The mappings.
+        /// </value>
         public static DataTypeDefinitionMappingDictionary Mappings
         {
             get { return SharedMappings; }
         }
-        
+
         /// <summary>
-        /// Gets a matching definition mapping.
+        /// Gets the definition mapping.
         /// </summary>
-        /// <param name="fromType">The from type to match.</param>
-        /// <returns>A definition mapping; or null if there's no match.</returns>
+        /// <param name="fromType">From type.</param>
+        /// <returns>The definition mapping; or <c>null</c> if there's no match.</returns>
+        /// <exception cref="System.ArgumentNullException">Thrown if fromType is null.</exception>
         internal static IDataTypeDefinitionMapping GetDefinitionMapping(Type fromType)
         {
             if (fromType == null)
@@ -61,11 +74,12 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         }
 
         /// <summary>
-        /// Gets a matching definition.
+        /// Gets the definition.
         /// </summary>
-        /// <param name="uiHint">The UI hint to match.</param>
-        /// <param name="fromType">The from type to match.</param>
-        /// <returns>A definition; or null if there's no match.</returns>
+        /// <param name="uiHint">The UI hint.</param>
+        /// <param name="fromType">From type.</param>
+        /// <returns>The definition; or <c>null</c> if there's no match.</returns>
+        /// <exception cref="System.ArgumentNullException">Thrown if fromType is null.</exception>
         internal static IDataTypeDefinition GetDefinition(string uiHint, Type fromType)
         {
             if (fromType == null)
@@ -87,6 +101,10 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
             return mapping != null ? mapping.GetMappedDefinition(fromType) : null;
         }
 
+        /// <summary>
+        /// Gets the default mappings.
+        /// </summary>
+        /// <returns>The default mappings.</returns>
         private static DataTypeDefinitionMappingDictionary GetDefaultMappings()
         {
             return new DataTypeDefinitionMappingDictionary

@@ -31,12 +31,20 @@ namespace Logikfabrik.Umbraco.Jet.Data
     using global::Umbraco.Core.Persistence;
 
     /// <summary>
-    /// Database wrapper.
+    /// The <see cref="DatabaseWrapper" /> class.
     /// </summary>
     public class DatabaseWrapper : IDatabaseWrapper
     {
+        /// <summary>
+        /// The database.
+        /// </summary>
         private readonly Database database;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DatabaseWrapper" /> class.
+        /// </summary>
+        /// <param name="database">The database.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown if database is null.</exception>
         public DatabaseWrapper(Database database)
         {
             if (database == null)
@@ -47,6 +55,13 @@ namespace Logikfabrik.Umbraco.Jet.Data
             this.database = database;
         }
 
+        /// <summary>
+        /// Gets the row.
+        /// </summary>
+        /// <typeparam name="T">The row type.</typeparam>
+        /// <param name="primaryKey">The primary key.</param>
+        /// <returns>The row.</returns>
+        /// <exception cref="System.ArgumentNullException">Thrown if primaryKey is null.</exception>
         public T GetRow<T>(object primaryKey)
         {
             if (primaryKey == null)
@@ -57,6 +72,13 @@ namespace Logikfabrik.Umbraco.Jet.Data
             return this.database.SingleOrDefault<T>(primaryKey);
         }
 
+        /// <summary>
+        /// Inserts the row.
+        /// </summary>
+        /// <typeparam name="T">The row type.</typeparam>
+        /// <param name="row">The row.</param>
+        /// <param name="primaryKey">The primary key.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown if row is null.</exception>
         public void InsertRow<T>(T row, object primaryKey) where T : class
         {
             if (row == null)
@@ -74,21 +96,20 @@ namespace Logikfabrik.Umbraco.Jet.Data
             }
         }
 
-        public bool TableExists<T>()
+        public bool TableExist<T>()
         {
             var tableName = GetTableName<T>();
-
-            if (string.IsNullOrWhiteSpace(tableName))
-            {
-                throw new ArgumentException(string.Format("Table name cannot be null or white space for type {0}.", typeof(T)));
-            }
 
             return this.database.TableExist(tableName);
         }
 
+        /// <summary>
+        /// Creates the table.
+        /// </summary>
+        /// <typeparam name="T">The row type.</typeparam>
         public void CreateTable<T>() where T : new()
         {
-            if (this.TableExists<T>())
+            if (this.TableExist<T>())
             {
                 return;
             }
@@ -96,6 +117,11 @@ namespace Logikfabrik.Umbraco.Jet.Data
             this.database.CreateTable<T>();
         }
 
+        /// <summary>
+        /// Gets the name of the table.
+        /// </summary>
+        /// <typeparam name="T">The row type.</typeparam>
+        /// <returns>The name of the table.</returns>
         private static string GetTableName<T>()
         {
             var attribute = typeof(T).GetCustomAttribute<TableNameAttribute>();

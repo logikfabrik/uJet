@@ -31,23 +31,28 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
     using global::Umbraco.Core.Models;
 
     /// <summary>
-    /// Default data type definition mapping for floating binary point types.
+    /// The <see cref="FloatingBinaryPointDataTypeDefinitionMapping" /> class for types <see cref="float" /> and <see cref="double" />.
     /// </summary>
     public class FloatingBinaryPointDataTypeDefinitionMapping : DataTypeDefinitionMapping
     {
         /// <summary>
-        /// Gets the types supported by this data type definition mapping.
+        /// Gets the supported types.
         /// </summary>
+        /// <value>
+        /// The supported types.
+        /// </value>
         protected override Type[] SupportedTypes
         {
             get { return new[] { typeof(float), typeof(float?), typeof(double), typeof(double?) }; }
         }
 
         /// <summary>
-        /// Maps the given type to a data type definition.
+        /// Gets the mapped definition.
         /// </summary>
-        /// <param name="fromType">The type to map to a data type definition.</param>
-        /// <returns>A mapped data type definition.</returns>
+        /// <param name="fromType">From type.</param>
+        /// <returns>
+        /// The mapped definition.
+        /// </returns>
         public override IDataTypeDefinition GetMappedDefinition(Type fromType)
         {
             // The Umbraco data model has no explicit support for floating binary point types.

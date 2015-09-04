@@ -29,29 +29,34 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
     using System;
 
     /// <summary>
-    /// Enumerable representing the uJet synchronization modes.
+    /// The <see cref="SynchronizationMode" /> enumerable.
     /// </summary>
     [Flags]
     public enum SynchronizationMode
     {
         /// <summary>
-        /// Scan and synchronize no type classes.
+        /// Do not scan or synchronize any classes.
         /// </summary>
         None = 0,
 
         /// <summary>
-        /// Scan and synchronize document type classes.
+        /// Scan and synchronize classes annotated using the <see cref="DocumentTypeAttribute" /> class.
         /// </summary>
         DocumentTypes = 1,
 
         /// <summary>
-        /// Scan and synchronize media type classes.
+        /// Scan and synchronize classes annotated using the <see cref="MediaTypeAttribute" /> class.
         /// </summary>
         MediaTypes = 2,
 
         /// <summary>
-        /// Scan and synchronize data type classes.
+        /// Scan and synchronize classes annotated using the <see cref="DataTypeAttribute" /> class.
         /// </summary>
-        DataTypes = 4
+        DataTypes = 4,
+
+        /// <summary>
+        /// Scan and synchronize classes annotated using the <see cref="MemberTypeAttribute" /> class.
+        /// </summary>
+        MemberTypes
     }
 }

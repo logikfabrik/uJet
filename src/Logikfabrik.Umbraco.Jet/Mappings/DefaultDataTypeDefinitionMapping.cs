@@ -32,17 +32,40 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
 
+    /// <summary>
+    /// The <see cref="DefaultDataTypeDefinitionMapping" /> class.
+    /// </summary>
     public class DefaultDataTypeDefinitionMapping : IDefaultDataTypeDefinitionMapping
     {
+        /// <summary>
+        /// The supported hints.
+        /// </summary>
         private readonly IDictionary<string, KeyValuePair<Type, DataTypeDefinition>> supportedHints;
+
+        /// <summary>
+        /// The data type service.
+        /// </summary>
         private readonly IDataTypeService dataTypeService;
+
+        /// <summary>
+        /// The mapped definitions.
+        /// </summary>
         private readonly IDictionary<DataTypeDefinition, IDataTypeDefinition> mappedDefinitions = new Dictionary<DataTypeDefinition, IDataTypeDefinition>();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultDataTypeDefinitionMapping"/> class.
+        /// </summary>
         public DefaultDataTypeDefinitionMapping()
             : this(ApplicationContext.Current.Services.DataTypeService, GetSupportedHints())
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultDataTypeDefinitionMapping"/> class.
+        /// </summary>
+        /// <param name="dataTypeService">The data type service.</param>
+        /// <param name="supportedHints">The supported hints.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown if dataTypeService or supportedHints are null.</exception>
         protected DefaultDataTypeDefinitionMapping(IDataTypeService dataTypeService, IDictionary<string, KeyValuePair<Type, DataTypeDefinition>> supportedHints)
         {
             if (dataTypeService == null)
@@ -59,6 +82,16 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
             this.supportedHints = supportedHints;
         }
 
+        /// <summary>
+        /// Determines whether this instance can map to definition.
+        /// </summary>
+        /// <param name="uiHint">A UI hint.</param>
+        /// <param name="fromType">From type.</param>
+        /// <returns>
+        ///   <c>true</c> if this instance can map to definition; otherwise, <c>false</c>.
+        /// </returns>
+        /// <exception cref="System.ArgumentException">Thrown if uiHint is null or white space.</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown if fromType is null.</exception>
         public virtual bool CanMapToDefinition(string uiHint, Type fromType)
         {
             if (string.IsNullOrWhiteSpace(uiHint))
@@ -74,6 +107,16 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
             return this.GetDefinition(uiHint, fromType) != null;
         }
 
+        /// <summary>
+        /// Gets the mapped definition.
+        /// </summary>
+        /// <param name="uiHint">A UI hint.</param>
+        /// <param name="fromType">From type.</param>
+        /// <returns>
+        /// The mapped definition.
+        /// </returns>
+        /// <exception cref="System.ArgumentException">Thrown if uiHint is null or white space.</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown if fromType is null.</exception>
         public virtual IDataTypeDefinition GetMappedDefinition(string uiHint, Type fromType)
         {
             if (string.IsNullOrWhiteSpace(uiHint))
@@ -89,6 +132,12 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
             return this.GetDefinition(uiHint, fromType);
         }
 
+        /// <summary>
+        /// Gets the type of the nullable.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>The type of the nullable.</returns>
+        /// <exception cref="System.ArgumentNullException">Thrown if type is null.</exception>
         private static Type GetNullableType(Type type)
         {
             if (type == null)
@@ -99,6 +148,10 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
             return type.IsValueType ? typeof(Nullable<>).MakeGenericType(type) : type;
         }
 
+        /// <summary>
+        /// Gets the supported hints.
+        /// </summary>
+        /// <returns>The supported hints.</returns>
         private static IDictionary<string, KeyValuePair<Type, DataTypeDefinition>> GetSupportedHints()
         {
             var hints = new Dictionary<string, KeyValuePair<Type, DataTypeDefinition>>();
@@ -130,6 +183,14 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
             return hints;
         }
 
+        /// <summary>
+        /// Gets the definition.
+        /// </summary>
+        /// <param name="uiHint">The UI hint.</param>
+        /// <param name="fromType">From type.</param>
+        /// <returns>The definition.</returns>
+        /// <exception cref="System.ArgumentException">Thrown if uiHint is null or white space.</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown if fromType is null.</exception>
         private IDataTypeDefinition GetDefinition(string uiHint, Type fromType)
         {
             if (string.IsNullOrWhiteSpace(uiHint))
@@ -156,7 +217,12 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
 
             return this.GetDefinition(v.Value);
         }
-     
+
+        /// <summary>
+        /// Gets the definition.
+        /// </summary>
+        /// <param name="dataTypeDefinition">The data type definition.</param>
+        /// <returns>The definition.</returns>
         private IDataTypeDefinition GetDefinition(DataTypeDefinition dataTypeDefinition)
         {
             IDataTypeDefinition v;

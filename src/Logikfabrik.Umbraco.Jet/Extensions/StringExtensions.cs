@@ -26,13 +26,16 @@
 
 namespace Logikfabrik.Umbraco.Jet.Extensions
 {
+    /// <summary>
+    /// The <see cref="StringExtensions" /> class.
+    /// </summary>
     public static class StringExtensions
     {
         /// <summary>
-        /// Gets an Umbraco alias.
+        /// Gets the Umbraco alias.
         /// </summary>
-        /// <param name="s">The string to format as an Umbraco alias.</param>
-        /// <returns>An Umbraco alias.</returns>
+        /// <param name="s">The string.</param>
+        /// <returns>The Umbraco alias.</returns>
         public static string Alias(this string s)
         {
             if (s == null)

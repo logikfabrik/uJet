@@ -27,7 +27,7 @@
 namespace Logikfabrik.Umbraco.Jet.Mappings
 {
     /// <summary>
-    /// Enumeration representing the built in data types.
+    /// The <see cref="DataTypeDefinition" /> enumerable for built-in data types.
     /// </summary>
     public enum DataTypeDefinition
     {

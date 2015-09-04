@@ -27,15 +27,18 @@
 namespace Logikfabrik.Umbraco.Jet.Configuration
 {
     using System.Configuration;
-
+    
     /// <summary>
-    /// Jet configuration section.
+    /// The <see cref="JetSection" /> class.
     /// </summary>
     public class JetSection : ConfigurationSection
     {
         /// <summary>
         /// Gets or sets the synchronization mode.
         /// </summary>
+        /// <value>
+        /// The synchronization mode.
+        /// </value>
         [ConfigurationProperty(
             "synchronize",
             DefaultValue = "DocumentTypes,MediaTypes,DataTypes",
@@ -47,8 +50,11 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
         }
 
         /// <summary>
-        /// Gets or sets the full names of the assemblies to scan.
+        /// Gets or sets the assemblies.
         /// </summary>
+        /// <value>
+        /// The assemblies.
+        /// </value>
         [ConfigurationProperty(
             "assemblies", 
             IsRequired = false, 

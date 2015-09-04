@@ -29,13 +29,16 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
     using System.Configuration;
 
     /// <summary>
-    /// Assembly configuration element.
+    /// The <see cref="JetAssemblyElement" /> class.
     /// </summary>
     public class JetAssemblyElement : ConfigurationElement
     {
         /// <summary>
-        /// Gets or sets the full name of the assembly.
+        /// Gets or sets the name.
         /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
         [ConfigurationProperty("name", IsRequired = true, IsKey = true)]
         public string Name
         {

@@ -34,7 +34,7 @@ namespace Logikfabrik.Umbraco.Jet
     using Extensions;
 
     /// <summary>
-    /// The concrete type service, responsible for probing assemblies for document types, media types, and data types.
+    /// The concrete type service, responsible for probing assemblies for document types, media types, data types, and member types.
     /// </summary>
     public class TypeService : ITypeService
     {
@@ -59,6 +59,11 @@ namespace Logikfabrik.Umbraco.Jet
         private readonly Lazy<IEnumerable<Type>> mediaTypes;
 
         /// <summary>
+        /// Enumerable of all member types.
+        /// </summary>
+        private readonly Lazy<IEnumerable<Type>> memberTypes;
+
+        /// <summary>
         /// Enumerable of all assemblies.
         /// </summary>
         private readonly Lazy<IEnumerable<Assembly>> assemblies;
@@ -72,6 +77,7 @@ namespace Logikfabrik.Umbraco.Jet
             this.documentTypes = new Lazy<IEnumerable<Type>>(this.GetDocumentTypes);
             this.dataTypes = new Lazy<IEnumerable<Type>>(this.GetDataTypes);
             this.mediaTypes = new Lazy<IEnumerable<Type>>(this.GetMediaTypes);
+            this.memberTypes = new Lazy<IEnumerable<Type>>(this.GetMemberTypes);
         }
 
         /// <summary>
@@ -104,6 +110,14 @@ namespace Logikfabrik.Umbraco.Jet
         public IEnumerable<Type> MediaTypes
         {
             get { return this.mediaTypes.Value; }
+        }
+
+        /// <summary>
+        /// Gets the member types within the current application domain.
+        /// </summary>
+        public IEnumerable<Type> MemberTypes
+        {
+            get { return this.memberTypes.Value; }
         }
 
         /// <summary>
@@ -144,6 +158,15 @@ namespace Logikfabrik.Umbraco.Jet
         private IEnumerable<Type> GetMediaTypes()
         {
             return this.GetTypesByAttribute(TypeExtensions.IsMediaType);
+        }
+
+        /// <summary>
+        /// Gets the member types within the current application domain.
+        /// </summary>
+        /// <returns>Media types.</returns>
+        private IEnumerable<Type> GetMemberTypes()
+        {
+            return this.GetTypesByAttribute(TypeExtensions.IsMemberType);
         }
 
         /// <summary>

@@ -32,31 +32,34 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
     using System.Linq;
 
     /// <summary>
-    /// Dictionary for data type definition mappings.
+    /// The <see cref="DataTypeDefinitionMappingDictionary" /> class.
     /// </summary>
     public class DataTypeDefinitionMappingDictionary : IDictionary<Type, IDataTypeDefinitionMapping>
     {
         /// <summary>
-        /// Inner dictionary for data type definition mappings.
+        /// The inner dictionary.
         /// </summary>
         private readonly Dictionary<Type, IDataTypeDefinitionMapping> innerDictionary = new Dictionary<Type, IDataTypeDefinitionMapping>();
-        
+
         /// <summary>
-        /// Default mapping.
+        /// The default mapping.
         /// </summary>
         private IDefaultDataTypeDefinitionMapping defaultMapping;
 
         /// <summary>
         /// Gets or sets the default mapping.
         /// </summary>
+        /// <value>
+        /// The default mapping.
+        /// </value>
         public IDefaultDataTypeDefinitionMapping DefaultMapping
         {
             get { return this.defaultMapping ?? (this.defaultMapping = new DefaultDataTypeDefinitionMapping()); }
             set { this.defaultMapping = value; }
         }
-        
+
         /// <summary>
-        /// Gets a value indicating whether or not the dictionary is read-only.
+        /// Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.
         /// </summary>
         public bool IsReadOnly
         {
@@ -64,7 +67,7 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         }
 
         /// <summary>
-        /// Gets the number of key value pairs in the dictionary.
+        /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.
         /// </summary>
         public int Count
         {
@@ -72,7 +75,7 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         }
 
         /// <summary>
-        /// Gets the mapping keys in the dictionary.
+        /// Gets an <see cref="T:System.Collections.Generic.ICollection`1" /> containing the keys of the <see cref="T:System.Collections.Generic.IDictionary`2" />.
         /// </summary>
         public ICollection<Type> Keys
         {
@@ -80,13 +83,18 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         }
 
         /// <summary>
-        /// Gets the data type definition mappings in the dictionary.
+        /// Gets an <see cref="T:System.Collections.Generic.ICollection`1" /> containing the values in the <see cref="T:System.Collections.Generic.IDictionary`2" />.
         /// </summary>
         public ICollection<IDataTypeDefinitionMapping> Values
         {
             get { return this.innerDictionary.Values; }
         }
 
+        /// <summary>
+        /// Gets or sets the element with the specified key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns>The element with the specified key.</returns>
         public IDataTypeDefinitionMapping this[Type key]
         {
             get { return this.innerDictionary[key]; }
@@ -94,45 +102,61 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         }
 
         /// <summary>
-        /// Gets an enumerator that iterates through the dictionary.
+        /// Returns an enumerator that iterates through the collection.
         /// </summary>
-        /// <returns>An enumerator.</returns>
+        /// <returns>
+        /// A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.
+        /// </returns>
         public IEnumerator<KeyValuePair<Type, IDataTypeDefinitionMapping>> GetEnumerator()
         {
             return this.innerDictionary.GetEnumerator();
         }
 
         /// <summary>
-        /// Gets an enumerator that iterates through the dictionary.
+        /// Returns an enumerator that iterates through a collection.
         /// </summary>
-        /// <returns>An enumerator.</returns>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.
+        /// </returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
         }
 
         /// <summary>
-        /// Adds a data type definition mapping to the dictionary.
+        /// Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1" />.
         /// </summary>
-        /// <param name="item">The data type definition mapping and type to add.</param>
+        /// <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
         public void Add(KeyValuePair<Type, IDataTypeDefinitionMapping> item)
         {
             this.innerDictionary.Add(item.Key, item.Value);
         }
 
         /// <summary>
-        /// Clears the dictionary.
+        /// Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1" />.
         /// </summary>
         public void Clear()
         {
             this.innerDictionary.Clear();
         }
 
+        /// <summary>
+        /// Determines whether the <see cref="T:System.Collections.Generic.ICollection`1" /> contains a specific value.
+        /// </summary>
+        /// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
+        /// <returns>
+        ///   <c>true</c> if <paramref name="item" /> is found in the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, <c>false</c>.
+        /// </returns>
         public bool Contains(KeyValuePair<Type, IDataTypeDefinitionMapping> item)
         {
             return this.innerDictionary.ContainsKey(item.Key);
         }
 
+        /// <summary>
+        /// Copies to.
+        /// </summary>
+        /// <param name="array">The array.</param>
+        /// <param name="index">The index.</param>
         public void CopyTo(KeyValuePair<Type, IDataTypeDefinitionMapping>[] array, int index)
         {
             var a = this.innerDictionary.ToArray();
@@ -140,36 +164,60 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
             a.CopyTo(array, index);
         }
 
+        /// <summary>
+        /// Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1" />.
+        /// </summary>
+        /// <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
+        /// <returns>
+        ///   <c>true</c> if <paramref name="item" /> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, false. This method also returns false if <paramref name="item" /> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1" />.
+        /// </returns>
         public bool Remove(KeyValuePair<Type, IDataTypeDefinitionMapping> item)
         {
             return this.innerDictionary.Remove(item.Key);
         }
-        
+
+        /// <summary>
+        /// Determines whether the <see cref="T:System.Collections.Generic.IDictionary`2" /> contains an element with the specified key.
+        /// </summary>
+        /// <param name="key">The key to locate in the <see cref="T:System.Collections.Generic.IDictionary`2" />.</param>
+        /// <returns>
+        ///   <c>true</c> if the <see cref="T:System.Collections.Generic.IDictionary`2" /> contains an element with the key; otherwise, false.
+        /// </returns>
         public bool ContainsKey(Type key)
         {
             return this.innerDictionary.ContainsKey(key);
         }
 
         /// <summary>
-        /// Adds a data type definition mapping to the dictionary.
+        /// Adds an element with the provided key and value to the <see cref="T:System.Collections.Generic.IDictionary`2" />.
         /// </summary>
-        /// <param name="key">A type.</param>
-        /// <param name="value">A data type definition mapping.</param>
+        /// <param name="key">The object to use as the key of the element to add.</param>
+        /// <param name="value">The object to use as the value of the element to add.</param>
         public void Add(Type key, IDataTypeDefinitionMapping value)
         {
             this.innerDictionary.Add(key, value);
         }
 
         /// <summary>
-        /// Removes a data type definition mapping from the dictionary.
+        /// Removes the element with the specified key from the <see cref="T:System.Collections.Generic.IDictionary`2" />.
         /// </summary>
-        /// <param name="key">A type.</param>
-        /// <returns></returns>
+        /// <param name="key">The key of the element to remove.</param>
+        /// <returns>
+        ///   <c>true</c> if the element is successfully removed; otherwise, false. This method also returns false if <paramref name="key" /> was not found in the original <see cref="T:System.Collections.Generic.IDictionary`2" />.
+        /// </returns>
         public bool Remove(Type key)
         {
             return this.innerDictionary.Remove(key);
         }
 
+        /// <summary>
+        /// Gets the value associated with the specified key.
+        /// </summary>
+        /// <param name="key">The key whose value to get.</param>
+        /// <param name="value">When this method returns, the value associated with the specified key, if the key is found; otherwise, the default value for the type of the <paramref name="value" /> parameter. This parameter is passed uninitialized.</param>
+        /// <returns>
+        ///   <c>true</c> if the object that implements <see cref="T:System.Collections.Generic.IDictionary`2" /> contains an element with the specified key; otherwise, <c>false</c>.
+        /// </returns>
         public bool TryGetValue(Type key, out IDataTypeDefinitionMapping value)
         {
             return this.innerDictionary.TryGetValue(key, out value);

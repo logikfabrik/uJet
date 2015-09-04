@@ -29,28 +29,41 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
     using System.Linq;
 
     /// <summary>
-    /// Jet configuration manager.
+    /// The <see cref="JetConfigurationManager" /> class.
     /// </summary>
     public static class JetConfigurationManager
     {
+        /// <summary>
+        /// The section.
+        /// </summary>
         private static readonly JetSection Section = GetSection();
 
         /// <summary>
         /// Gets the synchronization mode.
         /// </summary>
+        /// <value>
+        /// The synchronization mode.
+        /// </value>
         public static SynchronizationMode Synchronize
         {
             get { return Section.Synchronize; }
         }
 
         /// <summary>
-        /// Gets the full names of the assemblies to scan.
+        /// Gets the assemblies.
         /// </summary>
+        /// <value>
+        /// The assemblies.
+        /// </value>
         public static string[] Assemblies
         {
             get { return Section.Assemblies.Cast<JetAssemblyElement>().Select(e => e.Name).ToArray(); }
         }
 
+        /// <summary>
+        /// Gets the section.
+        /// </summary>
+        /// <returns>The section.</returns>
         private static JetSection GetSection()
         {
             return System.Configuration.ConfigurationManager.GetSection("logikfabrik.umbraco.jet") as JetSection ??

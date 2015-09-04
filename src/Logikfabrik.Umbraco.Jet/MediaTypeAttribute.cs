@@ -34,7 +34,7 @@ namespace Logikfabrik.Umbraco.Jet
     public class MediaTypeAttribute : ContentTypeAttribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MediaTypeAttribute"/> class.
+        /// Initializes a new instance of the <see cref="MediaTypeAttribute" /> class.
         /// </summary>
         /// <param name="name">The name to use for the new media type attribute.</param>
         public MediaTypeAttribute(string name) : base(name)
@@ -42,7 +42,7 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MediaTypeAttribute"/> class.
+        /// Initializes a new instance of the <see cref="MediaTypeAttribute" /> class.
         /// </summary>
         /// <param name="id">The ID to use for the new media type attribute.</param>
         /// <param name="name">The name to use for the new media type attribute.</param>

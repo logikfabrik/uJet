@@ -45,5 +45,10 @@ namespace Logikfabrik.Umbraco.Jet
         /// Gets the media types within the current application domain.
         /// </summary>
         IEnumerable<Type> MediaTypes { get; }
+
+        /// <summary>
+        /// Gets the member types within the current application domain.
+        /// </summary>
+        IEnumerable<Type> MemberTypes { get; }
     }
 }

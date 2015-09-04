@@ -30,20 +30,26 @@ namespace Logikfabrik.Umbraco.Jet.Data
     using global::Umbraco.Core.Persistence;
 
     /// <summary>
-    /// Data type row.
+    /// The <see cref="DataTypeRow" /> class.
     /// </summary>
     [TableName("uJetDataType")]
     [PrimaryKey("Id", autoIncrement = false)]
     public class DataTypeRow
     {
         /// <summary>
-        /// Gets or sets the ID.
+        /// Gets or sets the identifier.
         /// </summary>
+        /// <value>
+        /// The identifier.
+        /// </value>
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the definition ID.
+        /// Gets or sets the definition identifier.
         /// </summary>
+        /// <value>
+        /// The definition identifier.
+        /// </value>
         public int DefinitionId { get; set; }
     }
 }
