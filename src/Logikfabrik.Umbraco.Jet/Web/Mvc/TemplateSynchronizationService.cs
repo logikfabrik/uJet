@@ -1,28 +1,6 @@
-﻿//----------------------------------------------------------------------------------
-// <copyright file="TemplateSynchronizationService.cs" company="Logikfabrik">
-//     The MIT License (MIT)
-//
-//     Copyright (c) 2015 anton(at)logikfabrik.se
-//
-//     Permission is hereby granted, free of charge, to any person obtaining a copy
-//     of this software and associated documentation files (the "Software"), to deal
-//     in the Software without restriction, including without limitation the rights
-//     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//     copies of the Software, and to permit persons to whom the Software is
-//     furnished to do so, subject to the following conditions:
-//
-//     The above copyright notice and this permission notice shall be included in
-//     all copies or substantial portions of the Software.
-//
-//     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//     AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-//     THE SOFTWARE.
+﻿// <copyright file="TemplateSynchronizationService.cs" company="Logikfabrik">
+//   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
-//----------------------------------------------------------------------------------
 
 namespace Logikfabrik.Umbraco.Jet.Web.Mvc
 {
@@ -35,11 +13,24 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
 
+    /// <summary>
+    /// The <see cref="TemplateSynchronizationService" /> class.
+    /// </summary>
     public class TemplateSynchronizationService : ISynchronizationService
     {
+        /// <summary>
+        /// The file service.
+        /// </summary>
         private readonly IFileService fileService;
+
+        /// <summary>
+        /// The template service.
+        /// </summary>
         private readonly ITemplateService templateService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TemplateSynchronizationService" /> class.
+        /// </summary>
         public TemplateSynchronizationService()
             : this(
                 ApplicationContext.Current.Services.FileService,
@@ -47,45 +38,54 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TemplateSynchronizationService" /> class.
+        /// </summary>
+        /// <param name="fileService">The file service.</param>
+        /// <param name="templateService">The template service.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="fileService" /> or <paramref name="templateService" /> are <c>null</c>.</exception>
         public TemplateSynchronizationService(
             IFileService fileService,
             ITemplateService templateService)
         {
             if (fileService == null)
             {
-                throw new ArgumentNullException("fileService");
+                throw new ArgumentNullException(nameof(fileService));
             }
 
             if (templateService == null)
             {
-                throw new ArgumentNullException("templateService");
+                throw new ArgumentNullException(nameof(templateService));
             }
 
             this.fileService = fileService;
             this.templateService = templateService;
         }
-        
+
+        /// <summary>
+        /// Synchronizes this instance.
+        /// </summary>
         public void Synchronize()
         {
-            var templatesToAdd = this.GetTemplatesToAdd(this.GetTemplatesToAdd()).ToArray();
+            var templatesToAdd = GetTemplatesToAdd(GetTemplatesToAdd()).ToArray();
 
             if (!templatesToAdd.Any())
             {
                 return;
             }
 
-            this.AddTemplates(templatesToAdd);
+            AddTemplates(templatesToAdd);
         }
 
         /// <summary>
         /// Gets the templates to add.
         /// </summary>
-        /// <returns>Templates to add (paths).</returns>
+        /// <returns>The templates to add.</returns>
         internal IEnumerable<string> GetTemplatesToAdd()
         {
             var templates =
-                this.fileService.GetTemplates().Where(template => template != null).Select(template => template.Alias);
-            var templatePaths = this.templateService.TemplatePaths;
+                fileService.GetTemplates().Where(template => template != null).Select(template => template.Alias);
+            var templatePaths = templateService.TemplatePaths;
 
             return from templatePath in templatePaths
                    let alias = Path.GetFileNameWithoutExtension(templatePath).Alias()
@@ -96,28 +96,34 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// <summary>
         /// Gets the templates to add.
         /// </summary>
-        /// <param name="templatePaths">Paths to the templates to add.</param>
-        /// <returns>Templates to add (templates).</returns>
+        /// <param name="templatePaths">The template paths.</param>
+        /// <returns>The templates to add.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="templatePaths" /> is <c>null</c>.</exception>
         internal IEnumerable<ITemplate> GetTemplatesToAdd(IEnumerable<string> templatePaths)
         {
             if (templatePaths == null)
             {
-                throw new ArgumentNullException("templatePaths");
+                throw new ArgumentNullException(nameof(templatePaths));
             }
 
-            var templates = templatePaths.Select(this.templateService.GetTemplate);
+            var templates = templatePaths.Select(templateService.GetTemplate);
 
             return templates;
         }
 
+        /// <summary>
+        /// Adds the templates.
+        /// </summary>
+        /// <param name="templates">The templates.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="templates" /> is <c>null</c>.</exception>
         private void AddTemplates(IEnumerable<ITemplate> templates)
         {
             if (templates == null)
             {
-                throw new ArgumentNullException("templates");
+                throw new ArgumentNullException(nameof(templates));
             }
 
-            this.fileService.SaveTemplate(templates);
+            fileService.SaveTemplate(templates);
         }
     }
 }

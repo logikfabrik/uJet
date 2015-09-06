@@ -1,69 +1,38 @@
-﻿//----------------------------------------------------------------------------------
-// <copyright file="DocumentType.cs" company="Logikfabrik">
-//     The MIT License (MIT)
-//
-//     Copyright (c) 2015 anton(at)logikfabrik.se
-//
-//     Permission is hereby granted, free of charge, to any person obtaining a copy
-//     of this software and associated documentation files (the "Software"), to deal
-//     in the Software without restriction, including without limitation the rights
-//     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//     copies of the Software, and to permit persons to whom the Software is
-//     furnished to do so, subject to the following conditions:
-//
-//     The above copyright notice and this permission notice shall be included in
-//     all copies or substantial portions of the Software.
-//
-//     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//     AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-//     THE SOFTWARE.
+﻿// <copyright file="DocumentType.cs" company="Logikfabrik">
+//   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
-//----------------------------------------------------------------------------------
 
 namespace Logikfabrik.Umbraco.Jet
 {
     using System;
     using System.Collections.Generic;
     using Extensions;
-    
+
     public class DocumentType : ContentType<DocumentTypeAttribute>
     {
-        private readonly IEnumerable<string> templates;
-        private readonly string defaultTemplate;
-
         public DocumentType(Type type)
             : base(type)
         {
             if (!type.IsDocumentType())
             {
-                throw new ArgumentException(string.Format("Type {0} is not a document type.", type), "type");
+                throw new ArgumentException($"Type {type} is not a document type.", nameof(type));
             }
 
             var attribute = GetAttribute();
 
-            this.templates = GetTemplates(attribute);
-            this.defaultTemplate = GetDefaultTemplate(attribute);
+            Templates = GetTemplates(attribute);
+            DefaultTemplate = GetDefaultTemplate(attribute);
         }
 
         /// <summary>
         /// Gets the default template for this document type.
         /// </summary>
-        public string DefaultTemplate
-        {
-            get { return this.defaultTemplate; }
-        }
+        public string DefaultTemplate { get; }
 
         /// <summary>
         /// Gets the available templates for this document type.
         /// </summary>
-        public IEnumerable<string> Templates
-        {
-            get { return this.templates; }
-        }
+        public IEnumerable<string> Templates { get; }
 
         /// <summary>
         /// Gets the document type default template from the given type.
@@ -74,7 +43,7 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (attribute == null)
             {
-                throw new ArgumentNullException("attribute");
+                throw new ArgumentNullException(nameof(attribute));
             }
 
             return attribute.DefaultTemplate;
@@ -89,7 +58,7 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (attribute == null)
             {
-                throw new ArgumentNullException("attribute");
+                throw new ArgumentNullException(nameof(attribute));
             }
 
             return attribute.Templates;

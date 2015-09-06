@@ -1,28 +1,6 @@
-﻿//----------------------------------------------------------------------------------
-// <copyright file="DataTypeSynchronizationService.cs" company="Logikfabrik">
-//     The MIT License (MIT)
-//
-//     Copyright (c) 2015 anton(at)logikfabrik.se
-//
-//     Permission is hereby granted, free of charge, to any person obtaining a copy
-//     of this software and associated documentation files (the "Software"), to deal
-//     in the Software without restriction, including without limitation the rights
-//     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//     copies of the Software, and to permit persons to whom the Software is
-//     furnished to do so, subject to the following conditions:
-//
-//     The above copyright notice and this permission notice shall be included in
-//     all copies or substantial portions of the Software.
-//
-//     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//     AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-//     THE SOFTWARE.
+﻿// <copyright file="DataTypeSynchronizationService.cs" company="Logikfabrik">
+//   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
-//----------------------------------------------------------------------------------
 
 namespace Logikfabrik.Umbraco.Jet
 {
@@ -35,7 +13,7 @@ namespace Logikfabrik.Umbraco.Jet
     using global::Umbraco.Core.Services;
 
     /// <summary>
-    /// The data type synchronization service. Responsible for synchronizing data types 
+    /// The data type synchronization service. Responsible for synchronizing data types
     /// found in the code base with the Umbraco database.
     /// </summary>
     public class DataTypeSynchronizationService : ISynchronizationService
@@ -59,17 +37,17 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (dataTypeService == null)
             {
-                throw new ArgumentNullException("dataTypeService");
+                throw new ArgumentNullException(nameof(dataTypeService));
             }
 
             if (dataTypeRepository == null)
             {
-                throw new ArgumentNullException("dataTypeRepository");
+                throw new ArgumentNullException(nameof(dataTypeRepository));
             }
 
             if (typeService == null)
             {
-                throw new ArgumentNullException("typeService");
+                throw new ArgumentNullException(nameof(typeService));
             }
 
             this.dataTypeService = dataTypeService;
@@ -82,19 +60,19 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         public void Synchronize()
         {
-            var dataTypes = this.typeService.DataTypes.Select(t => new DataType(t)).ToArray();
+            var dataTypes = typeService.DataTypes.Select(t => new DataType(t)).ToArray();
 
             ValidateDataTypeId(dataTypes);
             ValidateDataTypeName(dataTypes);
 
             foreach (var dataType in dataTypes.Where(dt => dt.Id.HasValue))
             {
-                this.SynchronizeById(this.dataTypeService.GetAllDataTypeDefinitions(), dataType);
+                SynchronizeById(dataTypeService.GetAllDataTypeDefinitions(), dataType);
             }
-            
+
             foreach (var dataType in dataTypes.Where(dt => !dt.Id.HasValue))
             {
-                this.SynchronizeByName(this.dataTypeService.GetAllDataTypeDefinitions(), dataType);
+                SynchronizeByName(dataTypeService.GetAllDataTypeDefinitions(), dataType);
             }
         }
 
@@ -102,7 +80,7 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (dataTypes == null)
             {
-                throw new ArgumentNullException("dataTypes");
+                throw new ArgumentNullException(nameof(dataTypes));
             }
 
             var set = new HashSet<Guid>();
@@ -117,8 +95,7 @@ namespace Logikfabrik.Umbraco.Jet
                 if (set.Contains(dataType.Id.Value))
                 {
                     throw new InvalidOperationException(
-                        string.Format(
-                            "ID conflict for data type {0}. ID {1} is already in use.", dataType.Name, dataType.Id.Value));
+                        $"ID conflict for data type {dataType.Name}. ID {dataType.Id.Value} is already in use.");
                 }
 
                 set.Add(dataType.Id.Value);
@@ -129,7 +106,7 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (dataTypes == null)
             {
-                throw new ArgumentNullException("dataTypes");
+                throw new ArgumentNullException(nameof(dataTypes));
             }
 
             var set = new HashSet<string>();
@@ -145,12 +122,12 @@ namespace Logikfabrik.Umbraco.Jet
                 set.Add(dataType.Name);
             }
         }
-        
+
         private static DataTypeDatabaseType GetDatabaseType(DataType dataType)
         {
             if (dataType == null)
             {
-                throw new ArgumentNullException("dataType");
+                throw new ArgumentNullException(nameof(dataType));
             }
 
             if (dataType.Type == typeof(int))
@@ -165,28 +142,28 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (dataTypeDefinitions == null)
             {
-                throw new ArgumentNullException("dataTypeDefinitions");
+                throw new ArgumentNullException(nameof(dataTypeDefinitions));
             }
 
             if (dataType == null)
             {
-                throw new ArgumentNullException("dataType");
+                throw new ArgumentNullException(nameof(dataType));
             }
 
             if (dataType.Id.HasValue)
             {
-                throw new ArgumentException("Data type ID must be null.", "dataType");
+                throw new ArgumentException("Data type ID must be null.", nameof(dataType));
             }
 
             var dtd = dataTypeDefinitions.FirstOrDefault(type => type.Name == dataType.Name);
 
             if (dtd == null)
             {
-                this.CreateDataType(dataType);
+                CreateDataType(dataType);
             }
             else
             {
-                this.UpdateDataType(dtd, dataType);
+                UpdateDataType(dtd, dataType);
             }
         }
 
@@ -194,22 +171,22 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (dataTypeDefinitions == null)
             {
-                throw new ArgumentNullException("dataTypeDefinitions");
+                throw new ArgumentNullException(nameof(dataTypeDefinitions));
             }
 
             if (dataType == null)
             {
-                throw new ArgumentNullException("dataType");
+                throw new ArgumentNullException(nameof(dataType));
             }
 
             if (!dataType.Id.HasValue)
             {
-                throw new ArgumentException("Data type ID cannot be null.", "dataType");
+                throw new ArgumentException("Data type ID cannot be null.", nameof(dataType));
             }
 
             IDataTypeDefinition dtd = null;
 
-            var id = this.dataTypeRepository.GetDefinitionId(dataType.Id.Value);
+            var id = dataTypeRepository.GetDefinitionId(dataType.Id.Value);
 
             if (id.HasValue)
             {
@@ -220,19 +197,19 @@ namespace Logikfabrik.Umbraco.Jet
 
             if (dtd == null)
             {
-                this.CreateDataType(dataType);
+                CreateDataType(dataType);
 
                 // Get the created data type definition.
                 dtd =
-                    this.dataTypeService.GetDataTypeDefinitionByPropertyEditorAlias(dataType.Editor)
+                    dataTypeService.GetDataTypeDefinitionByPropertyEditorAlias(dataType.Editor)
                         .First(type => type.Name == dataType.Name);
 
                 // Connect the data type and the created data type definition.
-                this.dataTypeRepository.SetDefinitionId(dataType.Id.Value, dtd.Id);
+                dataTypeRepository.SetDefinitionId(dataType.Id.Value, dtd.Id);
             }
             else
             {
-                this.UpdateDataType(dtd, dataType);
+                UpdateDataType(dtd, dataType);
             }
         }
 
@@ -244,7 +221,7 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (dataType == null)
             {
-                throw new ArgumentNullException("dataType");
+                throw new ArgumentNullException(nameof(dataType));
             }
 
             var dataTypeDefinition = new DataTypeDefinition(-1, dataType.Editor)
@@ -253,7 +230,7 @@ namespace Logikfabrik.Umbraco.Jet
                 DatabaseType = GetDatabaseType(dataType)
             };
 
-            this.dataTypeService.Save(dataTypeDefinition);
+            dataTypeService.Save(dataTypeDefinition);
         }
 
         /// <summary>
@@ -265,19 +242,19 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (dataTypeDefinition == null)
             {
-                throw new ArgumentNullException("dataTypeDefinition");
+                throw new ArgumentNullException(nameof(dataTypeDefinition));
             }
 
             if (dataType == null)
             {
-                throw new ArgumentNullException("dataType");
+                throw new ArgumentNullException(nameof(dataType));
             }
 
             dataTypeDefinition.Name = dataType.Name;
             dataTypeDefinition.PropertyEditorAlias = dataType.Editor;
             dataTypeDefinition.DatabaseType = GetDatabaseType(dataType);
 
-            this.dataTypeService.Save(dataTypeDefinition);
+            dataTypeService.Save(dataTypeDefinition);
         }
     }
 }

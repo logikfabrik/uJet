@@ -1,28 +1,6 @@
-﻿//----------------------------------------------------------------------------------
-// <copyright file="DataType.cs" company="Logikfabrik">
-//     The MIT License (MIT)
-//
-//     Copyright (c) 2015 anton(at)logikfabrik.se
-//
-//     Permission is hereby granted, free of charge, to any person obtaining a copy
-//     of this software and associated documentation files (the "Software"), to deal
-//     in the Software without restriction, including without limitation the rights
-//     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//     copies of the Software, and to permit persons to whom the Software is
-//     furnished to do so, subject to the following conditions:
-//
-//     The above copyright notice and this permission notice shall be included in
-//     all copies or substantial portions of the Software.
-//
-//     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//     AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-//     THE SOFTWARE.
+﻿// <copyright file="DataType.cs" company="Logikfabrik">
+//   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
-//----------------------------------------------------------------------------------
 
 namespace Logikfabrik.Umbraco.Jet
 {
@@ -35,64 +13,47 @@ namespace Logikfabrik.Umbraco.Jet
     /// </summary>
     public class DataType
     {
-        private readonly Guid? id;
-        private readonly string name;
-        private readonly string editor;
-        private readonly Type type;
-
         public DataType(Type type)
         {
             if (type == null)
             {
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
             }
 
             if (!type.IsDataType())
             {
-                throw new ArgumentException("Type is not a data type.", "type");
+                throw new ArgumentException("Type is not a data type.", nameof(type));
             }
 
-            this.name = GetName(type);
+            Name = GetName(type);
 
             var attribute = type.GetCustomAttribute<DataTypeAttribute>();
 
-            this.id = GetId(attribute);
-            this.editor = GetEditor(attribute);
-            this.type = GetType(attribute);
+            Id = GetId(attribute);
+            Editor = GetEditor(attribute);
+            Type = GetType(attribute);
         }
 
         /// <summary>
         /// Gets the ID for this data type.
         /// </summary>
-        public Guid? Id
-        {
-            get { return this.id; }
-        }
+        public Guid? Id { get; }
 
         /// <summary>
         /// Gets the name of this data type.
         /// </summary>
-        public string Name
-        {
-            get { return this.name; }
-        }
+        public string Name { get; }
 
         /// <summary>
         /// Gets the editor for this data type.
         /// </summary>
-        public string Editor
-        {
-            get { return this.editor; }
-        }
+        public string Editor { get; }
 
         /// <summary>
         /// Gets the database type for this data type.
         /// </summary>
-        public Type Type
-        {
-            get { return this.type; }
-        }
-        
+        public Type Type { get; }
+
         /// <summary>
         /// Gets the data type ID from the given type.
         /// </summary>
@@ -102,7 +63,7 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (attribute == null)
             {
-                throw new ArgumentNullException("attribute");
+                throw new ArgumentNullException(nameof(attribute));
             }
 
             return attribute.Id;
@@ -117,7 +78,7 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (type == null)
             {
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
             }
 
             return type.Name;
@@ -132,7 +93,7 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (attribute == null)
             {
-                throw new ArgumentNullException("attribute");
+                throw new ArgumentNullException(nameof(attribute));
             }
 
             return attribute.Editor;
@@ -147,7 +108,7 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (attribute == null)
             {
-                throw new ArgumentNullException("attribute");
+                throw new ArgumentNullException(nameof(attribute));
             }
 
             return attribute.Type;

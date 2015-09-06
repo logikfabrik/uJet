@@ -1,28 +1,6 @@
-﻿//----------------------------------------------------------------------------------
-// <copyright file="ContentTypeProperty.cs" company="Logikfabrik">
-//     The MIT License (MIT)
-//
-//     Copyright (c) 2015 anton(at)logikfabrik.se
-//
-//     Permission is hereby granted, free of charge, to any person obtaining a copy
-//     of this software and associated documentation files (the "Software"), to deal
-//     in the Software without restriction, including without limitation the rights
-//     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//     copies of the Software, and to permit persons to whom the Software is
-//     furnished to do so, subject to the following conditions:
-//
-//     The above copyright notice and this permission notice shall be included in
-//     all copies or substantial portions of the Software.
-//
-//     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//     AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-//     THE SOFTWARE.
+﻿// <copyright file="ContentTypeProperty.cs" company="Logikfabrik">
+//   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
-//----------------------------------------------------------------------------------
 
 namespace Logikfabrik.Umbraco.Jet
 {
@@ -33,165 +11,164 @@ namespace Logikfabrik.Umbraco.Jet
     using Extensions;
 
     /// <summary>
-    /// Content type property.
+    /// The <see cref="ContentTypeProperty" /> class.
     /// </summary>
     public class ContentTypeProperty
     {
-        private readonly Guid? id;
-        private readonly Type type;
-        private readonly string name;
-        private readonly string alias;
-        private readonly bool mandatory;
-        private readonly int? sortOrder;
-        private readonly string description;
-        private readonly string propertyGroup;
-        private readonly string regularExpression;
-        private readonly string uiHint;
-        private readonly object defaultValue;
+        /// <summary>
+        /// Value indicating whether this <see cref="ContentTypeProperty" /> has a default value.
+        /// </summary>
         private readonly bool hasDefaultValue;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContentTypeProperty" /> class.
+        /// </summary>
+        /// <param name="property">The property.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="property" /> is <c>null</c>.</exception>
         public ContentTypeProperty(PropertyInfo property)
         {
             if (property == null)
             {
-                throw new ArgumentNullException("property");
+                throw new ArgumentNullException(nameof(property));
             }
 
-            this.type = property.PropertyType;
-            this.id = GetId(property);
-            this.mandatory = GetIsMandatory(property);
-            this.alias = GetAlias(property);
-            this.regularExpression = GetRegularExpression(property);
-            this.uiHint = GetUIHint(property);
-            this.defaultValue = GetDefaultValue(property, out this.hasDefaultValue);
+            Type = property.PropertyType;
+            Id = GetId(property);
+            Mandatory = GetIsMandatory(property);
+            Alias = GetAlias(property);
+            RegularExpression = GetRegularExpression(property);
+            UIHint = GetUIHint(property);
+            DefaultValue = GetDefaultValue(property, out hasDefaultValue);
 
             var attribute = property.GetCustomAttribute<DisplayAttribute>();
 
-            this.name = GetName(property, attribute);
-            this.sortOrder = GetSortOrder(attribute);
-            this.description = GetDescription(attribute);
-            this.propertyGroup = GetPropertyGroup(attribute);
+            Name = GetName(property, attribute);
+            SortOrder = GetSortOrder(attribute);
+            Description = GetDescription(attribute);
+            PropertyGroup = GetPropertyGroup(attribute);
         }
 
         /// <summary>
-        /// Gets the ID of this content type.
+        /// Gets the identifier.
         /// </summary>
-        public Guid? Id
-        {
-            get { return this.id; }
-        }
+        /// <value>
+        /// The identifier.
+        /// </value>
+        public Guid? Id { get; }
 
         /// <summary>
-        /// Gets the type of this content type property.
+        /// Gets the type.
         /// </summary>
-        public Type Type
-        {
-            get { return this.type; }
-        }
+        /// <value>
+        /// The type.
+        /// </value>
+        public Type Type { get; }
 
         /// <summary>
-        /// Gets the name of this content type property.
+        /// Gets the name.
         /// </summary>
-        public string Name
-        {
-            get { return this.name; }
-        }
+        /// <value>
+        /// The name.
+        /// </value>
+        public string Name { get; }
 
         /// <summary>
-        /// Gets the alias of this content type property.
+        /// Gets the alias.
         /// </summary>
-        public string Alias
-        {
-            get { return this.alias; }
-        }
+        /// <value>
+        /// The alias.
+        /// </value>
+        public string Alias { get; }
 
         /// <summary>
-        /// Gets a value indicating whether or not this content type property is mandatory.
+        /// Gets a value indicating whether this <see cref="ContentTypeProperty" /> is mandatory.
         /// </summary>
-        public bool Mandatory
-        {
-            get { return this.mandatory; }
-        }
+        /// <value>
+        ///   <c>true</c> if mandatory; otherwise, <c>false</c>.
+        /// </value>
+        public bool Mandatory { get; }
 
         /// <summary>
-        /// Gets the sort order of this content type property.
+        /// Gets the sort order.
         /// </summary>
-        public int? SortOrder
-        {
-            get { return this.sortOrder; }
-        }
+        /// <value>
+        /// The sort order.
+        /// </value>
+        public int? SortOrder { get; }
 
         /// <summary>
-        /// Gets the property group of this content type property.
+        /// Gets the property group.
         /// </summary>
-        public string PropertyGroup
-        {
-            get { return this.propertyGroup; }
-        }
+        /// <value>
+        /// The property group.
+        /// </value>
+        public string PropertyGroup { get; }
 
         /// <summary>
-        /// Gets the description of this content type property.
+        /// Gets the description.
         /// </summary>
-        public string Description
-        {
-            get { return this.description; }
-        }
+        /// <value>
+        /// The description.
+        /// </value>
+        public string Description { get; }
 
         /// <summary>
-        /// Gets the regular expression of this content type property.
+        /// Gets the regular expression.
         /// </summary>
-        public string RegularExpression
-        {
-            get { return this.regularExpression; }
-        }
+        /// <value>
+        /// The regular expression.
+        /// </value>
+        public string RegularExpression { get; }
 
         /// <summary>
-        /// Gets the UI hint of this content type property.
+        /// Gets the UI hint.
         /// </summary>
-        public string UIHint
-        {
-            get { return this.uiHint; }
-        }
+        /// <value>
+        /// The UI hint.
+        /// </value>
+        public string UIHint { get; }
 
         /// <summary>
-        /// Gets the default value of this content type property.
+        /// Gets the default value.
         /// </summary>
-        public object DefaultValue
-        {
-            get { return this.defaultValue; }
-        }
+        /// <value>
+        /// The default value.
+        /// </value>
+        public object DefaultValue { get; }
 
         /// <summary>
-        /// Gets a value indicating whether or not this content type property has a default value.
+        /// Gets a value indicating whether this <see cref="ContentTypeProperty" /> has a default value.
         /// </summary>
-        public bool HasDefaultValue
-        {
-            get { return this.hasDefaultValue; }
-        }
-        
+        public bool HasDefaultValue => hasDefaultValue;
+
+        /// <summary>
+        /// Gets the identifier.
+        /// </summary>
+        /// <param name="property">The property.</param>
+        /// <returns>The identifier.</returns>
         private static Guid? GetId(PropertyInfo property)
         {
             if (property == null)
             {
-                throw new ArgumentNullException("property");
+                throw new ArgumentNullException(nameof(property));
             }
-                
+
             var attribute = property.GetCustomAttribute<IdAttribute>();
 
-            return attribute == null ? null : attribute.Id;
+            return attribute?.Id;
         }
 
         /// <summary>
-        /// Gets the content type property name from the given property.
+        /// Gets the name.
         /// </summary>
-        /// <param name="property">The underlying property.</param>
-        /// <param name="attribute">The display attribute of the underlying property.</param>
-        /// <returns>A content type property name.</returns>
+        /// <param name="property">The property.</param>
+        /// <param name="attribute">The attribute.</param>
+        /// <returns>The name.</returns>
         private static string GetName(PropertyInfo property, DisplayAttribute attribute)
         {
             if (property == null)
             {
-                throw new ArgumentNullException("property");
+                throw new ArgumentNullException(nameof(property));
             }
 
             string name = null;
@@ -210,58 +187,60 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Gets the content type property alias from the given property.
+        /// Gets the alias.
         /// </summary>
-        /// <param name="property">The underlying property.</param>
-        /// <returns>A content type property alias.</returns>
+        /// <param name="property">The property.</param>
+        /// <returns>The alias.</returns>
         private static string GetAlias(PropertyInfo property)
         {
             if (property == null)
             {
-                throw new ArgumentNullException("property");
+                throw new ArgumentNullException(nameof(property));
             }
-                
+
             return property.Name.Alias();
         }
 
         /// <summary>
-        /// Gets the content type property description from the given property.
+        /// Gets the description.
         /// </summary>
-        /// <param name="attribute">The display attribute of the underlying property.</param>
-        /// <returns>A content type property description.</returns>
+        /// <param name="attribute">The attribute.</param>
+        /// <returns>The description.</returns>
         private static string GetDescription(DisplayAttribute attribute)
         {
-            return attribute == null ? null : attribute.GetDescription();
+            return attribute?.GetDescription();
         }
 
         /// <summary>
-        /// Gets whether or not the content type property is mandatory from the given property.
+        /// Gets a value indicating whether this <see cref="ContentTypeProperty" /> is mandatory.
         /// </summary>
-        /// <param name="property">The underlying property.</param>
-        /// <returns>True if the property is mandatory; otherwise false.</returns>
+        /// <param name="property">The property.</param>
+        /// <returns>
+        ///   <c>true</c> if mandatory; otherwise, <c>false</c>.
+        /// </returns>
         private static bool GetIsMandatory(PropertyInfo property)
         {
             if (property == null)
             {
-                throw new ArgumentNullException("property");
+                throw new ArgumentNullException(nameof(property));
             }
-            
+
             return property.GetCustomAttribute<RequiredAttribute>() != null;
         }
 
         /// <summary>
-        /// Gets the content type property default value from the given property.
+        /// Gets the default value.
         /// </summary>
-        /// <param name="property">The underlying property.</param>
-        /// <param name="hasDefaultValue">Whether or not the content type property has a default value.</param>
-        /// <returns>A default value.</returns>
+        /// <param name="property">The property.</param>
+        /// <param name="hasDefaultValue"><c>true</c> if this <see cref="ContentTypeProperty" /> has a default value; otherwise, <c>false</c>.</param>
+        /// <returns>The default value.</returns>
         private static object GetDefaultValue(PropertyInfo property, out bool hasDefaultValue)
         {
             if (property == null)
             {
-                throw new ArgumentNullException("property");
+                throw new ArgumentNullException(nameof(property));
             }
-                
+
             var attribute = property.GetCustomAttribute<DefaultValueAttribute>();
 
             hasDefaultValue = attribute != null;
@@ -270,57 +249,57 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Gets the content type property sort order from the given property.
+        /// Gets the sort order.
         /// </summary>
-        /// <param name="attribute">The display attribute of the underlying property.</param>
-        /// <returns>A content type property sort order.</returns>
+        /// <param name="attribute">The attribute.</param>
+        /// <returns>The sort order.</returns>
         private static int? GetSortOrder(DisplayAttribute attribute)
         {
-            return attribute == null ? null : attribute.GetOrder();
+            return attribute?.GetOrder();
         }
 
         /// <summary>
-        /// Gets the content type property group from the given property.
+        /// Gets the property group.
         /// </summary>
-        /// <param name="attribute">The display attribute of the underlying property.</param>
-        /// <returns>A content type property group.</returns>
+        /// <param name="attribute">The attribute.</param>
+        /// <returns>The property group.</returns>
         private static string GetPropertyGroup(DisplayAttribute attribute)
         {
-            return attribute == null ? null : attribute.GetGroupName();
+            return attribute?.GetGroupName();
         }
 
         /// <summary>
-        /// Get the content type property regular expression from the given property.
+        /// Gets the regular expression.
         /// </summary>
-        /// <param name="property">The underlying property.</param>
-        /// <returns>A content type property regular expression.</returns>
+        /// <param name="property">The property.</param>
+        /// <returns>The regular expression.</returns>
         private static string GetRegularExpression(PropertyInfo property)
         {
             if (property == null)
             {
-                throw new ArgumentNullException("property");
+                throw new ArgumentNullException(nameof(property));
             }
-                
+
             var attribute = property.GetCustomAttribute<RegularExpressionAttribute>();
 
-            return attribute == null ? null : attribute.Pattern;
+            return attribute?.Pattern;
         }
 
         /// <summary>
-        /// Gets the content type property UI hint from the given property.
+        /// Gets the UI hint.
         /// </summary>
-        /// <param name="property">The underlying property.</param>
-        /// <returns>A content type property UI hint.</returns>
+        /// <param name="property">The property.</param>
+        /// <returns>The UI hint.</returns>
         private static string GetUIHint(PropertyInfo property)
         {
             if (property == null)
             {
-                throw new ArgumentNullException("property");
+                throw new ArgumentNullException(nameof(property));
             }
-                
+
             var attribute = property.GetCustomAttribute<UIHintAttribute>();
 
-            return attribute == null ? null : attribute.UIHint;
+            return attribute?.UIHint;
         }
     }
 }

@@ -1,28 +1,6 @@
-﻿//----------------------------------------------------------------------------------
-// <copyright file="ContentTypeRepository.cs" company="Logikfabrik">
-//     The MIT License (MIT)
-//
-//     Copyright (c) 2015 anton(at)logikfabrik.se
-//
-//     Permission is hereby granted, free of charge, to any person obtaining a copy
-//     of this software and associated documentation files (the "Software"), to deal
-//     in the Software without restriction, including without limitation the rights
-//     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//     copies of the Software, and to permit persons to whom the Software is
-//     furnished to do so, subject to the following conditions:
-//
-//     The above copyright notice and this permission notice shall be included in
-//     all copies or substantial portions of the Software.
-//
-//     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//     AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-//     THE SOFTWARE.
+﻿// <copyright file="ContentTypeRepository.cs" company="Logikfabrik">
+//   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
-//----------------------------------------------------------------------------------
 
 namespace Logikfabrik.Umbraco.Jet.Data
 {
@@ -42,12 +20,12 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// Initializes a new instance of the <see cref="ContentTypeRepository" /> class.
         /// </summary>
         /// <param name="databaseWrapper">The database wrapper.</param>
-        /// <exception cref="System.ArgumentNullException">Thrown if databaseWrapper is null.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="databaseWrapper" /> is <code>null</code>.</exception>
         public ContentTypeRepository(IDatabaseWrapper databaseWrapper)
         {
             if (databaseWrapper == null)
             {
-                throw new ArgumentNullException("databaseWrapper");
+                throw new ArgumentNullException(nameof(databaseWrapper));
             }
 
             this.databaseWrapper = databaseWrapper;
@@ -60,19 +38,14 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <returns>The content type identifier.</returns>
         public int? GetContentTypeId(Guid id)
         {
-            if (!this.databaseWrapper.TableExist<ContentTypeRow>())
+            if (!databaseWrapper.TableExist<ContentTypeRow>())
             {
                 return null;
             }
 
-            var row = this.databaseWrapper.GetRow<ContentTypeRow>(id);
+            var row = databaseWrapper.GetRow<ContentTypeRow>(id);
 
-            if (row == null)
-            {
-                return null;
-            }
-
-            return row.ContentTypeId;
+            return row?.ContentTypeId;
         }
 
         /// <summary>
@@ -82,19 +55,14 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <returns>The property type identifier.</returns>
         public int? GetPropertyTypeId(Guid id)
         {
-            if (!this.databaseWrapper.TableExist<PropertyTypeRow>())
+            if (!databaseWrapper.TableExist<PropertyTypeRow>())
             {
                 return null;
             }
 
-            var row = this.databaseWrapper.GetRow<PropertyTypeRow>(id);
+            var row = databaseWrapper.GetRow<PropertyTypeRow>(id);
 
-            if (row == null)
-            {
-                return null;
-            }
-
-            return row.PropertyTypeId;
+            return row?.PropertyTypeId;
         }
 
         /// <summary>
@@ -106,8 +74,8 @@ namespace Logikfabrik.Umbraco.Jet.Data
         {
             var row = new ContentTypeRow { Id = id, ContentTypeId = contentTypeId };
 
-            this.databaseWrapper.CreateTable<ContentTypeRow>();
-            this.databaseWrapper.InsertRow(row, id);
+            databaseWrapper.CreateTable<ContentTypeRow>();
+            databaseWrapper.InsertRow(row, id);
         }
 
         /// <summary>
@@ -119,8 +87,8 @@ namespace Logikfabrik.Umbraco.Jet.Data
         {
             var row = new PropertyTypeRow { Id = id, PropertyTypeId = propertyTypeId };
 
-            this.databaseWrapper.CreateTable<PropertyTypeRow>();
-            this.databaseWrapper.InsertRow(row, id);
+            databaseWrapper.CreateTable<PropertyTypeRow>();
+            databaseWrapper.InsertRow(row, id);
         }
     }
 }

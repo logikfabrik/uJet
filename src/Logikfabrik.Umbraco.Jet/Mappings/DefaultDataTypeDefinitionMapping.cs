@@ -1,28 +1,6 @@
-﻿//----------------------------------------------------------------------------------
-// <copyright file="DefaultDataTypeDefinitionMapping.cs" company="Logikfabrik">
-//     The MIT License (MIT)
-//
-//     Copyright (c) 2015 anton(at)logikfabrik.se
-//
-//     Permission is hereby granted, free of charge, to any person obtaining a copy
-//     of this software and associated documentation files (the "Software"), to deal
-//     in the Software without restriction, including without limitation the rights
-//     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//     copies of the Software, and to permit persons to whom the Software is
-//     furnished to do so, subject to the following conditions:
-//
-//     The above copyright notice and this permission notice shall be included in
-//     all copies or substantial portions of the Software.
-//
-//     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//     AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-//     THE SOFTWARE.
+﻿// <copyright file="DefaultDataTypeDefinitionMapping.cs" company="Logikfabrik">
+//   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
-//----------------------------------------------------------------------------------
 
 namespace Logikfabrik.Umbraco.Jet.Mappings
 {
@@ -70,12 +48,12 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         {
             if (dataTypeService == null)
             {
-                throw new ArgumentNullException("dataTypeService");
+                throw new ArgumentNullException(nameof(dataTypeService));
             }
 
             if (supportedHints == null)
             {
-                throw new ArgumentNullException("supportedHints");
+                throw new ArgumentNullException(nameof(supportedHints));
             }
 
             this.dataTypeService = dataTypeService;
@@ -96,15 +74,15 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         {
             if (string.IsNullOrWhiteSpace(uiHint))
             {
-                throw new ArgumentException("UI hint cannot be null or white space.", "uiHint");
+                throw new ArgumentException("UI hint cannot be null or white space.", nameof(uiHint));
             }
 
             if (fromType == null)
             {
-                throw new ArgumentNullException("fromType");
+                throw new ArgumentNullException(nameof(fromType));
             }
 
-            return this.GetDefinition(uiHint, fromType) != null;
+            return GetDefinition(uiHint, fromType) != null;
         }
 
         /// <summary>
@@ -121,15 +99,15 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         {
             if (string.IsNullOrWhiteSpace(uiHint))
             {
-                throw new ArgumentException("UI hint cannot be null or white space.", "uiHint");
+                throw new ArgumentException("UI hint cannot be null or white space.", nameof(uiHint));
             }
 
             if (fromType == null)
             {
-                throw new ArgumentNullException("fromType");
+                throw new ArgumentNullException(nameof(fromType));
             }
 
-            return this.GetDefinition(uiHint, fromType);
+            return GetDefinition(uiHint, fromType);
         }
 
         /// <summary>
@@ -142,7 +120,7 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         {
             if (type == null)
             {
-                throw new ArgumentNullException("type");
+                throw new ArgumentNullException(nameof(type));
             }
 
             return type.IsValueType ? typeof(Nullable<>).MakeGenericType(type) : type;
@@ -195,27 +173,27 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         {
             if (string.IsNullOrWhiteSpace(uiHint))
             {
-                throw new ArgumentException("UI hint cannot be null or white space.", "uiHint");
+                throw new ArgumentException("UI hint cannot be null or white space.", nameof(uiHint));
             }
 
             if (fromType == null)
             {
-                throw new ArgumentNullException("fromType");
+                throw new ArgumentNullException(nameof(fromType));
             }
 
             KeyValuePair<Type, DataTypeDefinition> v;
 
-            if (!this.supportedHints.TryGetValue(uiHint, out v))
+            if (!supportedHints.TryGetValue(uiHint, out v))
             {
                 return null;
             }
 
             if (v.Key != fromType)
             {
-                return GetNullableType(v.Key) == fromType ? this.GetDefinition(v.Value) : null;
+                return GetNullableType(v.Key) == fromType ? GetDefinition(v.Value) : null;
             }
 
-            return this.GetDefinition(v.Value);
+            return GetDefinition(v.Value);
         }
 
         /// <summary>
@@ -227,19 +205,19 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         {
             IDataTypeDefinition v;
 
-            if (this.mappedDefinitions.TryGetValue(dataTypeDefinition, out v))
+            if (mappedDefinitions.TryGetValue(dataTypeDefinition, out v))
             {
                 return v;
             }
 
-            v = this.dataTypeService.GetDataTypeDefinitionById((int)dataTypeDefinition);
+            v = dataTypeService.GetDataTypeDefinitionById((int)dataTypeDefinition);
 
             if (v == null)
             {
                 return null;
             }
 
-            this.mappedDefinitions.Add(dataTypeDefinition, v);
+            mappedDefinitions.Add(dataTypeDefinition, v);
 
             return v;
         }

@@ -1,28 +1,6 @@
-﻿//----------------------------------------------------------------------------------
-// <copyright file="ContentTypeSynchronizationService.cs" company="Logikfabrik">
-//     The MIT License (MIT)
-//
-//     Copyright (c) 2015 anton(at)logikfabrik.se
-//
-//     Permission is hereby granted, free of charge, to any person obtaining a copy
-//     of this software and associated documentation files (the "Software"), to deal
-//     in the Software without restriction, including without limitation the rights
-//     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//     copies of the Software, and to permit persons to whom the Software is
-//     furnished to do so, subject to the following conditions:
-//
-//     The above copyright notice and this permission notice shall be included in
-//     all copies or substantial portions of the Software.
-//
-//     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//     AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-//     THE SOFTWARE.
+﻿// <copyright file="ContentTypeSynchronizationService.cs" company="Logikfabrik">
+//   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
-//----------------------------------------------------------------------------------
 
 namespace Logikfabrik.Umbraco.Jet
 {
@@ -31,9 +9,9 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Linq;
     using Data;
     using Extensions;
-    using Mappings;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
+    using Mappings;
 
     /// <summary>
     /// Base type for content type synchronization services.
@@ -47,12 +25,12 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (contentTypeService == null)
             {
-                throw new ArgumentNullException("contentTypeService");
+                throw new ArgumentNullException(nameof(contentTypeService));
             }
 
             if (contentTypeRepository == null)
             {
-                throw new ArgumentNullException("contentTypeRepository");
+                throw new ArgumentNullException(nameof(contentTypeRepository));
             }
 
             this.contentTypeService = contentTypeService;
@@ -75,12 +53,12 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (contentTypeBaseConstructor == null)
             {
-                throw new ArgumentNullException("contentTypeBaseConstructor");
+                throw new ArgumentNullException(nameof(contentTypeBaseConstructor));
             }
 
             if (contentType == null)
             {
-                throw new ArgumentNullException("contentType");
+                throw new ArgumentNullException(nameof(contentType));
             }
 
             var t = contentTypeBaseConstructor();
@@ -100,7 +78,7 @@ namespace Logikfabrik.Umbraco.Jet
                 t.Thumbnail = contentType.Thumbnail;
             }
 
-            this.SynchronizePropertyTypes(t, contentType.Properties);
+            SynchronizePropertyTypes(t, contentType.Properties);
 
             return t;
         }
@@ -120,17 +98,17 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (contentTypeBase == null)
             {
-                throw new ArgumentNullException("contentTypeBase");
+                throw new ArgumentNullException(nameof(contentTypeBase));
             }
 
             if (contentTypeBaseConstructor == null)
             {
-                throw new ArgumentNullException("contentTypeBaseConstructor");
+                throw new ArgumentNullException(nameof(contentTypeBaseConstructor));
             }
 
             if (contentType == null)
             {
-                throw new ArgumentNullException("contentType");
+                throw new ArgumentNullException(nameof(contentType));
             }
 
             contentTypeBase.Name = contentType.Name;
@@ -143,7 +121,7 @@ namespace Logikfabrik.Umbraco.Jet
             contentTypeBase.Icon = contentType.Icon ?? defaultContentType.Icon;
             contentTypeBase.Thumbnail = contentType.Thumbnail ?? defaultContentType.Thumbnail;
 
-            this.SynchronizePropertyTypes(contentTypeBase, contentType.Properties);
+            SynchronizePropertyTypes(contentTypeBase, contentType.Properties);
         }
 
         /// <summary>
@@ -159,12 +137,12 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (contentTypeBases == null)
             {
-                throw new ArgumentNullException("contentTypeBases");
+                throw new ArgumentNullException(nameof(contentTypeBases));
             }
 
             if (contentTypes == null)
             {
-                throw new ArgumentNullException("contentTypes");
+                throw new ArgumentNullException(nameof(contentTypes));
             }
 
             foreach (var contentType in contentTypes.Where(dt => dt.AllowedChildNodeTypes.Any()))
@@ -176,15 +154,15 @@ namespace Logikfabrik.Umbraco.Jet
                     continue;
                 }
 
-                contentTypeBase.AllowedContentTypes = this.GetAllowedChildNodeContentTypes(contentType.AllowedChildNodeTypes);
+                contentTypeBase.AllowedContentTypes = GetAllowedChildNodeContentTypes(contentType.AllowedChildNodeTypes);
 
                 if (contentType.Type.IsDocumentType())
                 {
-                    this.contentTypeService.Save((IContentType)contentTypeBase);
+                    contentTypeService.Save((IContentType)contentTypeBase);
                 }
                 else if (contentType.Type.IsMediaType())
                 {
-                    this.contentTypeService.Save((IMediaType)contentTypeBase);
+                    contentTypeService.Save((IMediaType)contentTypeBase);
                 }
             }
         }
@@ -194,13 +172,13 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (contentTypeBase == null)
             {
-                throw new ArgumentNullException("contentTypeBase");
+                throw new ArgumentNullException(nameof(contentTypeBase));
             }
 
             foreach (var property in contentType.Properties.Where(p => p.Id.HasValue))
             {
                 // ReSharper disable once PossibleInvalidOperationException
-                var id = this.contentTypeRepository.GetPropertyTypeId(property.Id.Value);
+                var id = contentTypeRepository.GetPropertyTypeId(property.Id.Value);
 
                 PropertyType pt;
 
@@ -219,7 +197,7 @@ namespace Logikfabrik.Umbraco.Jet
 
                 pt = contentTypeBase.PropertyTypes.Single(type => type.Alias == property.Alias);
 
-                this.contentTypeRepository.SetPropertyTypeId(property.Id.Value, pt.Id);
+                contentTypeRepository.SetPropertyTypeId(property.Id.Value, pt.Id);
             }
         }
 
@@ -232,12 +210,12 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (contentTypeBase == null)
             {
-                throw new ArgumentNullException("contentTypeBase");
+                throw new ArgumentNullException(nameof(contentTypeBase));
             }
 
             if (contentTypeProperty == null)
             {
-                throw new ArgumentNullException("contentTypeProperty");
+                throw new ArgumentNullException(nameof(contentTypeProperty));
             }
 
             var definition = GetDataDefinition(contentTypeProperty);
@@ -270,17 +248,17 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (contentTypeBase == null)
             {
-                throw new ArgumentNullException("contentTypeBase");
+                throw new ArgumentNullException(nameof(contentTypeBase));
             }
 
             if (contentTypeProperty == null)
             {
-                throw new ArgumentNullException("contentTypeProperty");
+                throw new ArgumentNullException(nameof(contentTypeProperty));
             }
 
             if (contentTypeProperty.Id.HasValue)
             {
-                throw new ArgumentException("Content type property ID must be null.", "contentTypeProperty");
+                throw new ArgumentException("Content type property ID must be null.", nameof(contentTypeProperty));
             }
 
             var pt = contentTypeBase.PropertyTypes.FirstOrDefault(type => type.Alias == contentTypeProperty.Alias);
@@ -305,17 +283,17 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (contentTypeBase == null)
             {
-                throw new ArgumentNullException("contentTypeBase");
+                throw new ArgumentNullException(nameof(contentTypeBase));
             }
 
             if (propertyType == null)
             {
-                throw new ArgumentNullException("propertyType");
+                throw new ArgumentNullException(nameof(propertyType));
             }
 
             if (contentTypeProperty == null)
             {
-                throw new ArgumentNullException("contentTypeProperty");
+                throw new ArgumentNullException(nameof(contentTypeProperty));
             }
 
             if (!contentTypeBase.PropertyGroups.Contains(contentTypeProperty.PropertyGroup) ||
@@ -355,7 +333,7 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (contentTypeProperty == null)
             {
-                throw new ArgumentNullException("contentTypeProperty");
+                throw new ArgumentNullException(nameof(contentTypeProperty));
             }
 
             var definition = DataTypeDefinitionMappings.GetDefinition(
@@ -365,9 +343,7 @@ namespace Logikfabrik.Umbraco.Jet
             if (definition == null)
             {
                 throw new Exception(
-                    string.Format(
-                        "There is no definition for content type property of type {0}.",
-                        contentTypeProperty.Type));
+                    $"There is no definition for content type property of type {contentTypeProperty.Type}.");
             }
 
             return definition;
@@ -377,12 +353,12 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (contentTypeBase == null)
             {
-                throw new ArgumentNullException("contentTypeBase");
+                throw new ArgumentNullException(nameof(contentTypeBase));
             }
 
             if (contentTypeProperties == null)
             {
-                throw new ArgumentNullException("contentTypeProperties");
+                throw new ArgumentNullException(nameof(contentTypeProperties));
             }
 
             var p = contentTypeProperties.ToArray();
@@ -394,7 +370,7 @@ namespace Logikfabrik.Umbraco.Jet
 
             foreach (var property in p.Where(pt => pt.Id.HasValue))
             {
-                this.SynchronizePropertyTypeById(contentTypeBase, property);
+                SynchronizePropertyTypeById(contentTypeBase, property);
             }
 
             foreach (var property in p.Where(pt => !pt.Id.HasValue))
@@ -407,22 +383,22 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (contentTypeBase == null)
             {
-                throw new ArgumentNullException("contentTypeBase");
+                throw new ArgumentNullException(nameof(contentTypeBase));
             }
 
             if (contentTypeProperty == null)
             {
-                throw new ArgumentNullException("contentTypeProperty");
+                throw new ArgumentNullException(nameof(contentTypeProperty));
             }
 
             if (!contentTypeProperty.Id.HasValue)
             {
-                throw new ArgumentException("Content type property ID cannot be null.", "contentTypeProperty");
+                throw new ArgumentException("Content type property ID cannot be null.", nameof(contentTypeProperty));
             }
 
             PropertyType pt = null;
 
-            var id = this.contentTypeRepository.GetPropertyTypeId(contentTypeProperty.Id.Value);
+            var id = contentTypeRepository.GetPropertyTypeId(contentTypeProperty.Id.Value);
 
             if (id.HasValue)
             {
@@ -445,7 +421,7 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (allowedChildNodeTypes == null)
             {
-                throw new ArgumentNullException("allowedChildNodeTypes");
+                throw new ArgumentNullException(nameof(allowedChildNodeTypes));
             }
 
             var nodeTypes = new List<ContentTypeSort>();
@@ -453,7 +429,7 @@ namespace Logikfabrik.Umbraco.Jet
             // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (var allowedChildNodeType in allowedChildNodeTypes)
             {
-                var contentType = this.contentTypeService.GetContentType(allowedChildNodeType.Name.Alias());
+                var contentType = contentTypeService.GetContentType(allowedChildNodeType.Name.Alias());
 
                 if (contentType == null)
                 {

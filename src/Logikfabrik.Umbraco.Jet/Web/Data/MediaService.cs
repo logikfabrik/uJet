@@ -1,28 +1,6 @@
-﻿//----------------------------------------------------------------------------------
-// <copyright file="MediaService.cs" company="Logikfabrik">
-//     The MIT License (MIT)
-//
-//     Copyright (c) 2015 anton(at)logikfabrik.se
-//
-//     Permission is hereby granted, free of charge, to any person obtaining a copy
-//     of this software and associated documentation files (the "Software"), to deal
-//     in the Software without restriction, including without limitation the rights
-//     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//     copies of the Software, and to permit persons to whom the Software is
-//     furnished to do so, subject to the following conditions:
-//
-//     The above copyright notice and this permission notice shall be included in
-//     all copies or substantial portions of the Software.
-//
-//     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//     AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-//     THE SOFTWARE.
+﻿// <copyright file="MediaService.cs" company="Logikfabrik">
+//   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
-//----------------------------------------------------------------------------------
 
 namespace Logikfabrik.Umbraco.Jet.Web.Data
 {
@@ -31,43 +9,76 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
     using Extensions;
     using global::Umbraco.Core.Models;
 
+    /// <summary>
+    /// The <see cref="MediaService" /> class.
+    /// </summary>
     public class MediaService : ContentService
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MediaService" /> class.
+        /// </summary>
         public MediaService()
             : this(new UmbracoHelperWrapper(), Jet.TypeService.Instance)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MediaService" /> class.
+        /// </summary>
+        /// <param name="umbracoHelperWrapper">The Umbraco helper wrapper.</param>
+        /// <param name="typeService">The type service.</param>
         public MediaService(IUmbracoHelperWrapper umbracoHelperWrapper, ITypeService typeService)
             : base(umbracoHelperWrapper, typeService)
         {
         }
 
+        /// <summary>
+        /// Gets the media.
+        /// </summary>
+        /// <typeparam name="T">The media type.</typeparam>
+        /// <param name="id">The media identifier.</param>
+        /// <returns>The media.</returns>
+        /// <exception cref="ArgumentException">Thrown if <typeparamref name="T" /> is not a media type.</exception>
         public T GetMedia<T>(int id) where T : class, new()
         {
             if (!typeof(T).IsMediaType())
             {
-                throw new ArgumentException(string.Format("Type {0} is not a media type.", typeof(T)));
+                throw new ArgumentException($"Type {typeof(T)} is not a media type.");
             }
 
-            return this.GetMedia<T>(UmbracoHelper.TypedMedia(id));
+            return GetMedia<T>(UmbracoHelper.TypedMedia(id));
         }
 
+        /// <summary>
+        /// Gets the media.
+        /// </summary>
+        /// <typeparam name="T">The media type.</typeparam>
+        /// <param name="content">The media content.</param>
+        /// <returns>The media.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentException">Thrown if <typeparamref name="T" /> is not a media type.</exception>
         public T GetMedia<T>(IPublishedContent content) where T : class, new()
         {
             if (content == null)
             {
-                throw new ArgumentNullException("content");
+                throw new ArgumentNullException(nameof(content));
             }
 
             if (!typeof(T).IsMediaType())
             {
-                throw new ArgumentException(string.Format("Type {0} is not a media type.", typeof(T)));
+                throw new ArgumentException($"Type {typeof(T)} is not a media type.");
             }
 
-            return (T)this.GetMedia(content, typeof(T));
+            return (T)GetMedia(content, typeof(T));
         }
 
+        /// <summary>
+        /// Gets the media.
+        /// </summary>
+        /// <param name="id">The media identifier.</param>
+        /// <param name="mediaTypeAlias">The media type alias.</param>
+        /// <returns>The media.</returns>
+        /// <exception cref="ArgumentException">Thrown if media type with alias <paramref name="mediaTypeAlias" /> can not be found.</exception>
         public object GetMedia(int id, string mediaTypeAlias)
         {
             var mediaType = TypeService.MediaTypes.FirstOrDefault(t => t.Name.Alias() == mediaTypeAlias);
@@ -75,31 +86,39 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
             if (mediaType == null)
             {
                 throw new ArgumentException(
-                    string.Format("Media type with alias {0} could not be found.", mediaTypeAlias),
-                    "mediaTypeAlias");
+                    $"Media type with alias {mediaTypeAlias} could not be found.",
+                    nameof(mediaTypeAlias));
             }
 
-            return this.GetMedia(UmbracoHelper.TypedMedia(id), mediaType);
+            return GetMedia(UmbracoHelper.TypedMedia(id), mediaType);
         }
 
+        /// <summary>
+        /// Gets the media.
+        /// </summary>
+        /// <param name="content">The media content.</param>
+        /// <param name="mediaType">Type of the media.</param>
+        /// <returns>The media</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" /> or <paramref name="mediaType" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentException">Thrown if <paramref name="mediaType" /> is not a media type.</exception>
         public object GetMedia(IPublishedContent content, Type mediaType)
         {
             if (content == null)
             {
-                throw new ArgumentNullException("content");
+                throw new ArgumentNullException(nameof(content));
             }
 
             if (mediaType == null)
             {
-                throw new ArgumentNullException("mediaType");
+                throw new ArgumentNullException(nameof(mediaType));
             }
 
             if (!mediaType.IsMediaType())
             {
-                throw new ArgumentException(string.Format("Type {0} is not a media type.", mediaType), "mediaType");
+                throw new ArgumentException($"Type {mediaType} is not a media type.", nameof(mediaType));
             }
 
-            return this.GetContent(content, mediaType);
+            return GetContent(content, mediaType);
         }
     }
 }

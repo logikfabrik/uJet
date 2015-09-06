@@ -173,7 +173,6 @@ namespace Logikfabrik.Umbraco.Jet.Test
             AllowedChildNodeTypes = new Type[] { })]
         public class MediaTypeTestMediaType
         {
-            private readonly string propertyWithoutSetter = null;
             // ReSharper disable once NotAccessedField.Local
             private string propertyWithoutGetter;
 
@@ -197,9 +196,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
             [ScaffoldColumn(false)]
             public string NonScaffoldedProperty { get; set; }
 
-            public string PropertyWithoutSetter { get { return this.propertyWithoutSetter; } }
+            public string PropertyWithoutSetter { get; } = null;
 
-            public string PropertyWithoutGetter { set { this.propertyWithoutGetter = value; } }
+            public string PropertyWithoutGetter { set { propertyWithoutGetter = value; } }
         }
 
         public class MediaTypeTestPropertyType

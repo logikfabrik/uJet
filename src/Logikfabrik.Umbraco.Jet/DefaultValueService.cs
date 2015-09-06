@@ -1,28 +1,6 @@
-﻿//----------------------------------------------------------------------------------
-// <copyright file="DefaultValueService.cs" company="Logikfabrik">
-//     The MIT License (MIT)
-//
-//     Copyright (c) 2015 anton(at)logikfabrik.se
-//
-//     Permission is hereby granted, free of charge, to any person obtaining a copy
-//     of this software and associated documentation files (the "Software"), to deal
-//     in the Software without restriction, including without limitation the rights
-//     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//     copies of the Software, and to permit persons to whom the Software is
-//     furnished to do so, subject to the following conditions:
-//
-//     The above copyright notice and this permission notice shall be included in
-//     all copies or substantial portions of the Software.
-//
-//     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//     AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-//     THE SOFTWARE.
+﻿// <copyright file="DefaultValueService.cs" company="Logikfabrik">
+//   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
-//----------------------------------------------------------------------------------
 
 namespace Logikfabrik.Umbraco.Jet
 {
@@ -49,7 +27,7 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (typeService == null)
             {
-                throw new ArgumentNullException("typeService");
+                throw new ArgumentNullException(nameof(typeService));
             }
 
             this.typeService = typeService;
@@ -59,12 +37,12 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (contents == null)
             {
-                throw new ArgumentNullException("contents");
+                throw new ArgumentNullException(nameof(contents));
             }
 
             foreach (var content in contents)
             {
-                this.SetDefaultValues(content);
+                SetDefaultValues(content);
             }
         }
 
@@ -72,11 +50,11 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (content == null)
             {
-                throw new ArgumentNullException("content");
+                throw new ArgumentNullException(nameof(content));
             }
 
             var type =
-                this.typeService.DocumentTypes.FirstOrDefault(t => t.Name.Alias() == content.ContentType.Alias);
+                typeService.DocumentTypes.FirstOrDefault(t => t.Name.Alias() == content.ContentType.Alias);
 
             if (type == null)
             {
@@ -92,12 +70,12 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (contents == null)
             {
-                throw new ArgumentNullException("contents");
+                throw new ArgumentNullException(nameof(contents));
             }
 
             foreach (var content in contents)
             {
-                this.SetDefaultValues(content);
+                SetDefaultValues(content);
             }
         }
 
@@ -105,11 +83,11 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (content == null)
             {
-                throw new ArgumentNullException("content");
+                throw new ArgumentNullException(nameof(content));
             }
 
             var type =
-                this.typeService.MediaTypes.FirstOrDefault(t => t.Name.Alias() == content.ContentType.Alias);
+                typeService.MediaTypes.FirstOrDefault(t => t.Name.Alias() == content.ContentType.Alias);
 
             if (type == null)
             {
@@ -126,12 +104,12 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (content == null)
             {
-                throw new ArgumentNullException("content");
+                throw new ArgumentNullException(nameof(content));
             }
 
             if (contentType == null)
             {
-                throw new ArgumentNullException("contentType");
+                throw new ArgumentNullException(nameof(contentType));
             }
 
             foreach (var property in contentType.Properties)
@@ -144,12 +122,12 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (content == null)
             {
-                throw new ArgumentNullException("content");
+                throw new ArgumentNullException(nameof(content));
             }
 
             if (contentTypeProperty == null)
             {
-                throw new ArgumentNullException("contentTypeProperty");
+                throw new ArgumentNullException(nameof(contentTypeProperty));
             }
 
             if (!contentTypeProperty.HasDefaultValue)
@@ -176,7 +154,7 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (propertyType == null)
             {
-                throw new ArgumentNullException("propertyType");
+                throw new ArgumentNullException(nameof(propertyType));
             }
 
             return defaultValue == null
@@ -193,12 +171,12 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (from == null)
             {
-                throw new ArgumentNullException("from");
+                throw new ArgumentNullException(nameof(@from));
             }
 
             if (to == null)
             {
-                throw new ArgumentNullException("to");
+                throw new ArgumentNullException(nameof(to));
             }
 
             if (to.IsAssignableFrom(from))

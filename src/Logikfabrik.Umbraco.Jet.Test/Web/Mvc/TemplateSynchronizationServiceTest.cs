@@ -73,8 +73,8 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Mvc
             var templatesToAdd1 = service.GetTemplatesToAdd().ToArray();
             var templatesToAdd2 = service.GetTemplatesToAdd(templatesToAdd1).ToArray();
 
-            Assert.AreEqual(1, templatesToAdd1.Count());
-            Assert.AreEqual(1, templatesToAdd2.Count());
+            Assert.AreEqual(1, templatesToAdd1.Length);
+            Assert.AreEqual(1, templatesToAdd2.Length);
 
             var templateToAdd1 = templatesToAdd1.First();
             var templateToAdd2 = templatesToAdd2.First();

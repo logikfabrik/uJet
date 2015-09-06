@@ -1,28 +1,6 @@
-﻿//----------------------------------------------------------------------------------
-// <copyright file="PreviewTemplateSynchronizationService.cs" company="Logikfabrik">
-//     The MIT License (MIT)
-//
-//     Copyright (c) 2015 anton(at)logikfabrik.se
-//
-//     Permission is hereby granted, free of charge, to any person obtaining a copy
-//     of this software and associated documentation files (the "Software"), to deal
-//     in the Software without restriction, including without limitation the rights
-//     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//     copies of the Software, and to permit persons to whom the Software is
-//     furnished to do so, subject to the following conditions:
-//
-//     The above copyright notice and this permission notice shall be included in
-//     all copies or substantial portions of the Software.
-//
-//     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//     AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-//     THE SOFTWARE.
+﻿// <copyright file="PreviewTemplateSynchronizationService.cs" company="Logikfabrik">
+//   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
-//----------------------------------------------------------------------------------
 
 namespace Logikfabrik.Umbraco.Jet.Web.Mvc
 {
@@ -57,17 +35,17 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         {
             if (contentTypeService == null)
             {
-                throw new ArgumentNullException("contentTypeService");
+                throw new ArgumentNullException(nameof(contentTypeService));
             }
 
             if (fileService == null)
             {
-                throw new ArgumentNullException("fileService");
+                throw new ArgumentNullException(nameof(fileService));
             }
 
             if (documentTypeService == null)
             {
-                throw new ArgumentNullException("documentTypeService");
+                throw new ArgumentNullException(nameof(documentTypeService));
             }
 
             this.contentTypeService = contentTypeService;
@@ -77,11 +55,11 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
 
         public void Synchronize()
         {
-            var contentTypes = this.contentTypeService.GetAllContentTypes().ToArray();
+            var contentTypes = contentTypeService.GetAllContentTypes().ToArray();
 
             foreach (
                 var type in
-                    this.GetTypes().Where(t => t.GetCustomAttribute<PreviewTemplateAttribute>() != null))
+                    GetTypes().Where(t => t.GetCustomAttribute<PreviewTemplateAttribute>() != null))
             {
                 var dt = new DocumentType(type);
                 var ct = contentTypes.FirstOrDefault(contentType => contentType.Alias == dt.Alias);
@@ -91,36 +69,36 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
                     continue;
                 }
 
-                this.UpdateDocumentType(ct);
+                UpdateDocumentType(ct);
             }
         }
 
         private IEnumerable<Type> GetTypes()
         {
-            return this.documentTypeService.DocumentTypes;
+            return documentTypeService.DocumentTypes;
         }
 
         private void UpdateDocumentType(IContentType contentType)
         {
             if (contentType == null)
             {
-                throw new ArgumentNullException("contentType");
+                throw new ArgumentNullException(nameof(contentType));
             }
 
-            var templates = this.GetAllowedTemplates(contentType);
+            var templates = GetAllowedTemplates(contentType);
             var template = templates.First(t => t.Alias == PreviewTemplateAttribute.TemplateName.Alias());
 
             contentType.AllowedTemplates = templates;
             contentType.SetDefaultTemplate(template);
 
-            this.contentTypeService.Save(contentType);
+            contentTypeService.Save(contentType);
         }
 
         private List<ITemplate> GetAllowedTemplates(IContentType contentType)
         {
             if (contentType == null)
             {
-                throw new ArgumentNullException("contentType");
+                throw new ArgumentNullException(nameof(contentType));
             }
 
             var templates = new List<ITemplate>();
@@ -132,7 +110,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
 
             if (templates.All(t => t.Alias != PreviewTemplateAttribute.TemplateName.Alias()))
             {
-                templates.Add(this.GetPreviewTemplate());
+                templates.Add(GetPreviewTemplate());
             }
 
             return templates;
@@ -140,19 +118,19 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
 
         private ITemplate GetPreviewTemplate()
         {
-            if (this.previewTemplate != null)
+            if (previewTemplate != null)
             {
-                return this.previewTemplate;
+                return previewTemplate;
             }
 
-            this.previewTemplate = this.fileService.GetTemplate(PreviewTemplateAttribute.TemplateName.Alias());
+            previewTemplate = fileService.GetTemplate(PreviewTemplateAttribute.TemplateName.Alias());
 
-            if (this.previewTemplate != null)
+            if (previewTemplate != null)
             {
-                return this.previewTemplate;
+                return previewTemplate;
             }
 
-            this.fileService.SaveTemplate(
+            fileService.SaveTemplate(
                 new Template(
                     string.Concat(PreviewTemplateAttribute.TemplateName.Alias(), ".cshtml"),
                     PreviewTemplateAttribute.TemplateName,
@@ -161,9 +139,9 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
                     Content = "@inherits Umbraco.Web.Mvc.UmbracoTemplatePage"
                 });
 
-            this.previewTemplate = this.fileService.GetTemplate(PreviewTemplateAttribute.TemplateName.Alias());
+            previewTemplate = fileService.GetTemplate(PreviewTemplateAttribute.TemplateName.Alias());
 
-            return this.previewTemplate;
+            return previewTemplate;
         }
     }
 }

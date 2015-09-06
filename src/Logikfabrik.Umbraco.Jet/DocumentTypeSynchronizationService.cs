@@ -1,28 +1,6 @@
-﻿//----------------------------------------------------------------------------------
-// <copyright file="DocumentTypeSynchronizationService.cs" company="Logikfabrik">
-//     The MIT License (MIT)
-//
-//     Copyright (c) 2015 anton(at)logikfabrik.se
-//
-//     Permission is hereby granted, free of charge, to any person obtaining a copy
-//     of this software and associated documentation files (the "Software"), to deal
-//     in the Software without restriction, including without limitation the rights
-//     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//     copies of the Software, and to permit persons to whom the Software is
-//     furnished to do so, subject to the following conditions:
-//
-//     The above copyright notice and this permission notice shall be included in
-//     all copies or substantial portions of the Software.
-//
-//     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//     AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-//     THE SOFTWARE.
+﻿// <copyright file="DocumentTypeSynchronizationService.cs" company="Logikfabrik">
+//   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
-//----------------------------------------------------------------------------------
 
 namespace Logikfabrik.Umbraco.Jet
 {
@@ -59,22 +37,22 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (contentTypeService == null)
             {
-                throw new ArgumentNullException("contentTypeService");
+                throw new ArgumentNullException(nameof(contentTypeService));
             }
 
             if (contentTypeRepository == null)
             {
-                throw new ArgumentNullException("contentTypeRepository");
+                throw new ArgumentNullException(nameof(contentTypeRepository));
             }
 
             if (fileService == null)
             {
-                throw new ArgumentNullException("fileService");
+                throw new ArgumentNullException(nameof(fileService));
             }
 
             if (typeService == null)
             {
-                throw new ArgumentNullException("typeService");
+                throw new ArgumentNullException(nameof(typeService));
             }
 
             this.contentTypeService = contentTypeService;
@@ -88,30 +66,30 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         public override void Synchronize()
         {
-            var documentTypes = this.typeService.DocumentTypes.Select(t => new DocumentType(t)).ToArray();
+            var documentTypes = typeService.DocumentTypes.Select(t => new DocumentType(t)).ToArray();
 
             ValidateDocumentTypeId(documentTypes);
             ValidateDocumentTypeAlias(documentTypes);
 
             foreach (var documentType in documentTypes.Where(dt => dt.Id.HasValue))
             {
-                this.SynchronizeById(this.contentTypeService.GetAllContentTypes(), documentType);
+                SynchronizeById(contentTypeService.GetAllContentTypes(), documentType);
             }
 
             foreach (var documentType in documentTypes.Where(dt => !dt.Id.HasValue))
             {
-                this.SynchronizeByName(this.contentTypeService.GetAllContentTypes(), documentType);
+                SynchronizeByName(contentTypeService.GetAllContentTypes(), documentType);
             }
 
-            this.SetAllowedContentTypes(
-                this.contentTypeService.GetAllContentTypes().Cast<IContentTypeBase>().ToArray(), documentTypes);
+            SetAllowedContentTypes(
+                contentTypeService.GetAllContentTypes().Cast<IContentTypeBase>().ToArray(), documentTypes);
         }
 
         private static void ValidateDocumentTypeId(IEnumerable<DocumentType> documentTypes)
         {
             if (documentTypes == null)
             {
-                throw new ArgumentNullException("documentTypes");
+                throw new ArgumentNullException(nameof(documentTypes));
             }
 
             var set = new HashSet<Guid>();
@@ -126,10 +104,7 @@ namespace Logikfabrik.Umbraco.Jet
                 if (set.Contains(documentType.Id.Value))
                 {
                     throw new InvalidOperationException(
-                        string.Format(
-                            "ID conflict for document type {0}. ID {1} is already in use.", 
-                            documentType.Name,
-                            documentType.Id.Value));
+                        $"ID conflict for document type {documentType.Name}. ID {documentType.Id.Value} is already in use.");
                 }
 
                 set.Add(documentType.Id.Value);
@@ -140,7 +115,7 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (documentTypes == null)
             {
-                throw new ArgumentNullException("documentTypes");
+                throw new ArgumentNullException(nameof(documentTypes));
             }
 
             var set = new HashSet<string>();
@@ -163,28 +138,28 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (contentTypes == null)
             {
-                throw new ArgumentNullException("contentTypes");
+                throw new ArgumentNullException(nameof(contentTypes));
             }
 
             if (documentType == null)
             {
-                throw new ArgumentNullException("documentType");
+                throw new ArgumentNullException(nameof(documentType));
             }
 
             if (documentType.Id.HasValue)
             {
-                throw new ArgumentException("Document type ID must be null.", "documentType");
+                throw new ArgumentException("Document type ID must be null.", nameof(documentType));
             }
 
             var ct = contentTypes.FirstOrDefault(type => type.Alias == documentType.Alias);
 
             if (ct == null)
             {
-                this.CreateDocumentType(documentType);
+                CreateDocumentType(documentType);
             }
             else
             {
-                this.UpdateDocumentType(ct, documentType);
+                UpdateDocumentType(ct, documentType);
             }
         }
 
@@ -192,22 +167,22 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (contentTypes == null)
             {
-                throw new ArgumentNullException("contentTypes");
+                throw new ArgumentNullException(nameof(contentTypes));
             }
 
             if (documentType == null)
             {
-                throw new ArgumentNullException("documentType");
+                throw new ArgumentNullException(nameof(documentType));
             }
 
             if (!documentType.Id.HasValue)
             {
-                throw new ArgumentException("Document type ID cannot be null.", "documentType");
+                throw new ArgumentException("Document type ID cannot be null.", nameof(documentType));
             }
 
             IContentType ct = null;
 
-            var id = this.contentTypeRepository.GetContentTypeId(documentType.Id.Value);
+            var id = contentTypeRepository.GetContentTypeId(documentType.Id.Value);
 
             if (id.HasValue)
             {
@@ -218,17 +193,17 @@ namespace Logikfabrik.Umbraco.Jet
 
             if (ct == null)
             {
-                this.CreateDocumentType(documentType);
+                CreateDocumentType(documentType);
 
                 // Get the created content type.
-                ct = this.contentTypeService.GetContentType(documentType.Alias);
+                ct = contentTypeService.GetContentType(documentType.Alias);
 
                 // Connect the document type and the created content type.
-                this.contentTypeRepository.SetContentTypeId(documentType.Id.Value, ct.Id);
+                contentTypeRepository.SetContentTypeId(documentType.Id.Value, ct.Id);
             }
             else
             {
-                this.UpdateDocumentType(ct, documentType);
+                UpdateDocumentType(ct, documentType);
             }
         }
 
@@ -240,18 +215,18 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (documentType == null)
             {
-                throw new ArgumentNullException("documentType");
+                throw new ArgumentNullException(nameof(documentType));
             }
 
             var contentType = (IContentType)CreateContentType(() => new ContentType(-1), documentType);
 
-            this.SetTemplates(contentType, documentType);
-            this.SetDefaultTemplate(contentType, documentType);
+            SetTemplates(contentType, documentType);
+            SetDefaultTemplate(contentType, documentType);
 
-            this.contentTypeService.Save(contentType);
+            contentTypeService.Save(contentType);
 
             // Update tracking.
-            this.SetPropertyTypeId(this.contentTypeService.GetContentType(contentType.Alias), documentType);
+            SetPropertyTypeId(contentTypeService.GetContentType(contentType.Alias), documentType);
         }
 
         /// <summary>
@@ -263,22 +238,22 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (contentType == null)
             {
-                throw new ArgumentNullException("contentType");
+                throw new ArgumentNullException(nameof(contentType));
             }
 
             if (documentType == null)
             {
-                throw new ArgumentNullException("documentType");
+                throw new ArgumentNullException(nameof(documentType));
             }
 
-            this.UpdateContentType(contentType, () => new ContentType(-1), documentType);
-            this.SetTemplates(contentType, documentType);
-            this.SetDefaultTemplate(contentType, documentType);
+            UpdateContentType(contentType, () => new ContentType(-1), documentType);
+            SetTemplates(contentType, documentType);
+            SetDefaultTemplate(contentType, documentType);
 
-            this.contentTypeService.Save(contentType);
+            contentTypeService.Save(contentType);
 
             // Update tracking.
-            this.SetPropertyTypeId(this.contentTypeService.GetContentType(contentType.Alias), documentType);
+            SetPropertyTypeId(contentTypeService.GetContentType(contentType.Alias), documentType);
         }
 
         /// <summary>
@@ -290,12 +265,12 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (contentType == null)
             {
-                throw new ArgumentNullException("contentType");
+                throw new ArgumentNullException(nameof(contentType));
             }
 
             if (documentType == null)
             {
-                throw new ArgumentNullException("documentType");
+                throw new ArgumentNullException(nameof(documentType));
             }
 
             IEnumerable<ITemplate> templates = new ITemplate[] { };
@@ -303,7 +278,7 @@ namespace Logikfabrik.Umbraco.Jet
             if (documentType.Templates != null && !documentType.Templates.Any())
             {
                 templates =
-                    this.fileService.GetTemplates(documentType.Templates.ToArray()).Where(template => template != null);
+                    fileService.GetTemplates(documentType.Templates.ToArray()).Where(template => template != null);
             }
 
             contentType.AllowedTemplates = templates;
@@ -318,19 +293,19 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (contentType == null)
             {
-                throw new ArgumentNullException("contentType");
+                throw new ArgumentNullException(nameof(contentType));
             }
 
             if (documentType == null)
             {
-                throw new ArgumentNullException("documentType");
+                throw new ArgumentNullException(nameof(documentType));
             }
 
             ITemplate template = null;
 
             if (!string.IsNullOrWhiteSpace(documentType.DefaultTemplate))
             {
-                template = this.fileService.GetTemplate(documentType.DefaultTemplate);
+                template = fileService.GetTemplate(documentType.DefaultTemplate);
             }
 
             contentType.SetDefaultTemplate(template);

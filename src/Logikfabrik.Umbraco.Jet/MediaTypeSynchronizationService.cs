@@ -1,28 +1,6 @@
-﻿//----------------------------------------------------------------------------------
-// <copyright file="MediaTypeSynchronizationService.cs" company="Logikfabrik">
-//     The MIT License (MIT)
-//
-//     Copyright (c) 2015 anton(at)logikfabrik.se
-//
-//     Permission is hereby granted, free of charge, to any person obtaining a copy
-//     of this software and associated documentation files (the "Software"), to deal
-//     in the Software without restriction, including without limitation the rights
-//     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//     copies of the Software, and to permit persons to whom the Software is
-//     furnished to do so, subject to the following conditions:
-//
-//     The above copyright notice and this permission notice shall be included in
-//     all copies or substantial portions of the Software.
-//
-//     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//     AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-//     THE SOFTWARE.
+﻿// <copyright file="MediaTypeSynchronizationService.cs" company="Logikfabrik">
+//   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
-//----------------------------------------------------------------------------------
 
 namespace Logikfabrik.Umbraco.Jet
 {
@@ -56,17 +34,17 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (contentTypeService == null)
             {
-                throw new ArgumentNullException("contentTypeService");
+                throw new ArgumentNullException(nameof(contentTypeService));
             }
 
             if (contentTypeRepository == null)
             {
-                throw new ArgumentNullException("contentTypeRepository");
+                throw new ArgumentNullException(nameof(contentTypeRepository));
             }
 
             if (typeService == null)
             {
-                throw new ArgumentNullException("typeService");
+                throw new ArgumentNullException(nameof(typeService));
             }
 
             this.contentTypeService = contentTypeService;
@@ -79,23 +57,23 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         public override void Synchronize()
         {
-            var mediaTypes = this.typeService.MediaTypes.Select(t => new MediaType(t)).ToArray();
+            var mediaTypes = typeService.MediaTypes.Select(t => new MediaType(t)).ToArray();
 
             ValidateMediaTypeId(mediaTypes);
             ValidateMediaTypeAlias(mediaTypes);
 
             foreach (var documentType in mediaTypes.Where(dt => dt.Id.HasValue))
             {
-                this.SynchronizeById(this.contentTypeService.GetAllMediaTypes(), documentType);
+                SynchronizeById(contentTypeService.GetAllMediaTypes(), documentType);
             }
 
             foreach (var documentType in mediaTypes.Where(dt => !dt.Id.HasValue))
             {
-                this.SynchronizeByName(this.contentTypeService.GetAllMediaTypes(), documentType);
+                SynchronizeByName(contentTypeService.GetAllMediaTypes(), documentType);
             }
 
-            this.SetAllowedContentTypes(
-                this.contentTypeService.GetAllMediaTypes().Cast<IContentTypeBase>().ToArray(),
+            SetAllowedContentTypes(
+                contentTypeService.GetAllMediaTypes().Cast<IContentTypeBase>().ToArray(),
                 mediaTypes);
         }
 
@@ -103,7 +81,7 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (mediaTypes == null)
             {
-                throw new ArgumentNullException("mediaTypes");
+                throw new ArgumentNullException(nameof(mediaTypes));
             }
 
             var set = new HashSet<Guid>();
@@ -118,10 +96,7 @@ namespace Logikfabrik.Umbraco.Jet
                 if (set.Contains(mediaType.Id.Value))
                 {
                     throw new InvalidOperationException(
-                        string.Format(
-                            "ID conflict for media type {0}. ID {1} is already in use.",
-                            mediaType.Name,
-                            mediaType.Id.Value));
+                        $"ID conflict for media type {mediaType.Name}. ID {mediaType.Id.Value} is already in use.");
                 }
 
                 set.Add(mediaType.Id.Value);
@@ -132,7 +107,7 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (mediaTypes == null)
             {
-                throw new ArgumentNullException("mediaTypes");
+                throw new ArgumentNullException(nameof(mediaTypes));
             }
 
             var set = new HashSet<string>();
@@ -153,28 +128,28 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (contentTypes == null)
             {
-                throw new ArgumentNullException("contentTypes");
+                throw new ArgumentNullException(nameof(contentTypes));
             }
 
             if (mediaType == null)
             {
-                throw new ArgumentNullException("mediaType");
+                throw new ArgumentNullException(nameof(mediaType));
             }
 
             if (mediaType.Id.HasValue)
             {
-                throw new ArgumentException("Media type ID must be null.", "mediaType");
+                throw new ArgumentException("Media type ID must be null.", nameof(mediaType));
             }
 
             var ct = contentTypes.FirstOrDefault(type => type.Alias == mediaType.Alias);
 
             if (ct == null)
             {
-                this.CreateMediaType(mediaType);
+                CreateMediaType(mediaType);
             }
             else
             {
-                this.UpdateMediaType(ct, mediaType);
+                UpdateMediaType(ct, mediaType);
             }
         }
 
@@ -182,22 +157,22 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (contentTypes == null)
             {
-                throw new ArgumentNullException("contentTypes");
+                throw new ArgumentNullException(nameof(contentTypes));
             }
 
             if (mediaType == null)
             {
-                throw new ArgumentNullException("mediaType");
+                throw new ArgumentNullException(nameof(mediaType));
             }
 
             if (!mediaType.Id.HasValue)
             {
-                throw new ArgumentException("Media type ID cannot be null.", "mediaType");
+                throw new ArgumentException("Media type ID cannot be null.", nameof(mediaType));
             }
 
             IMediaType ct = null;
 
-            var id = this.contentTypeRepository.GetContentTypeId(mediaType.Id.Value);
+            var id = contentTypeRepository.GetContentTypeId(mediaType.Id.Value);
 
             if (id.HasValue)
             {
@@ -208,17 +183,17 @@ namespace Logikfabrik.Umbraco.Jet
 
             if (ct == null)
             {
-                this.CreateMediaType(mediaType);
+                CreateMediaType(mediaType);
 
                 // Get the created media type.
-                ct = this.contentTypeService.GetMediaType(mediaType.Alias);
+                ct = contentTypeService.GetMediaType(mediaType.Alias);
 
                 // Connect the media type and the created content type.
-                this.contentTypeRepository.SetContentTypeId(mediaType.Id.Value, ct.Id);
+                contentTypeRepository.SetContentTypeId(mediaType.Id.Value, ct.Id);
             }
             else
             {
-                this.UpdateMediaType(ct, mediaType);
+                UpdateMediaType(ct, mediaType);
             }
         }
 
@@ -230,15 +205,15 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (mediaType == null)
             {
-                throw new ArgumentNullException("mediaType");
+                throw new ArgumentNullException(nameof(mediaType));
             }
 
             var contentType = (IMediaType)CreateContentType(() => new global::Umbraco.Core.Models.MediaType(-1), mediaType);
 
-            this.contentTypeService.Save(contentType);
+            contentTypeService.Save(contentType);
 
             // Update tracking.
-            this.SetPropertyTypeId(this.contentTypeService.GetMediaType(contentType.Alias), mediaType);
+            SetPropertyTypeId(contentTypeService.GetMediaType(contentType.Alias), mediaType);
         }
 
         /// <summary>
@@ -250,20 +225,20 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (contentType == null)
             {
-                throw new ArgumentNullException("contentType");
+                throw new ArgumentNullException(nameof(contentType));
             }
 
             if (mediaType == null)
             {
-                throw new ArgumentNullException("mediaType");
+                throw new ArgumentNullException(nameof(mediaType));
             }
 
-            this.UpdateContentType(contentType, () => new global::Umbraco.Core.Models.MediaType(-1), mediaType);
+            UpdateContentType(contentType, () => new global::Umbraco.Core.Models.MediaType(-1), mediaType);
 
-            this.contentTypeService.Save(contentType);
+            contentTypeService.Save(contentType);
 
             // Update tracking.
-            this.SetPropertyTypeId(this.contentTypeService.GetMediaType(contentType.Alias), mediaType);
+            SetPropertyTypeId(contentTypeService.GetMediaType(contentType.Alias), mediaType);
         }
     }
 }

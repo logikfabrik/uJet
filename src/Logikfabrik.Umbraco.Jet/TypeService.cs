@@ -1,28 +1,6 @@
-﻿//----------------------------------------------------------------------------------
-// <copyright file="TypeService.cs" company="Logikfabrik">
-//     The MIT License (MIT)
-//
-//     Copyright (c) 2015 anton(at)logikfabrik.se
-//
-//     Permission is hereby granted, free of charge, to any person obtaining a copy
-//     of this software and associated documentation files (the "Software"), to deal
-//     in the Software without restriction, including without limitation the rights
-//     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//     copies of the Software, and to permit persons to whom the Software is
-//     furnished to do so, subject to the following conditions:
-//
-//     The above copyright notice and this permission notice shall be included in
-//     all copies or substantial portions of the Software.
-//
-//     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//     AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-//     THE SOFTWARE.
+﻿// <copyright file="TypeService.cs" company="Logikfabrik">
+//   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
-//----------------------------------------------------------------------------------
 
 namespace Logikfabrik.Umbraco.Jet
 {
@@ -34,7 +12,7 @@ namespace Logikfabrik.Umbraco.Jet
     using Extensions;
 
     /// <summary>
-    /// The concrete type service, responsible for probing assemblies for document types, media types, data types, and member types.
+    /// The <see cref="TypeService" /> class. Scans assemblies for document types, media types, data types, and member types.
     /// </summary>
     public class TypeService : ITypeService
     {
@@ -44,27 +22,27 @@ namespace Logikfabrik.Umbraco.Jet
         private static ITypeService instance;
 
         /// <summary>
-        /// Enumerable of all document types.
+        /// The document types.
         /// </summary>
         private readonly Lazy<IEnumerable<Type>> documentTypes;
 
         /// <summary>
-        /// Enumerable of all data types.
+        /// The data types.
         /// </summary>
         private readonly Lazy<IEnumerable<Type>> dataTypes;
 
         /// <summary>
-        /// Enumerable of all media types.
+        /// The media types.
         /// </summary>
         private readonly Lazy<IEnumerable<Type>> mediaTypes;
 
         /// <summary>
-        /// Enumerable of all member types.
+        /// The member types.
         /// </summary>
         private readonly Lazy<IEnumerable<Type>> memberTypes;
 
         /// <summary>
-        /// Enumerable of all assemblies.
+        /// The assemblies.
         /// </summary>
         private readonly Lazy<IEnumerable<Assembly>> assemblies;
 
@@ -73,57 +51,54 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         private TypeService()
         {
-            this.assemblies = new Lazy<IEnumerable<Assembly>>(GetAssemblies);
-            this.documentTypes = new Lazy<IEnumerable<Type>>(this.GetDocumentTypes);
-            this.dataTypes = new Lazy<IEnumerable<Type>>(this.GetDataTypes);
-            this.mediaTypes = new Lazy<IEnumerable<Type>>(this.GetMediaTypes);
-            this.memberTypes = new Lazy<IEnumerable<Type>>(this.GetMemberTypes);
+            assemblies = new Lazy<IEnumerable<Assembly>>(GetAssemblies);
+            documentTypes = new Lazy<IEnumerable<Type>>(GetDocumentTypes);
+            dataTypes = new Lazy<IEnumerable<Type>>(GetDataTypes);
+            mediaTypes = new Lazy<IEnumerable<Type>>(GetMediaTypes);
+            memberTypes = new Lazy<IEnumerable<Type>>(GetMemberTypes);
         }
 
         /// <summary>
         /// Gets an singleton instance of the type service.
         /// </summary>
-        public static ITypeService Instance
-        {
-            get { return instance ?? (instance = new TypeService()); }
-        }
+        public static ITypeService Instance => instance ?? (instance = new TypeService());
 
         /// <summary>
-        /// Gets the document types within the current application domain.
+        /// Gets or sets the document types within the current application domain.
         /// </summary>
-        public IEnumerable<Type> DocumentTypes
-        {
-            get { return this.documentTypes.Value; }
-        }
+        /// <value>
+        /// The document types.
+        /// </value>
+        public IEnumerable<Type> DocumentTypes => documentTypes.Value;
 
         /// <summary>
-        /// Gets the data types within the current application domain.
+        /// Gets or sets the data types within the current application domain.
         /// </summary>
-        public IEnumerable<Type> DataTypes
-        {
-            get { return this.dataTypes.Value; }
-        }
+        /// <value>
+        /// The data types.
+        /// </value>
+        public IEnumerable<Type> DataTypes => dataTypes.Value;
 
         /// <summary>
-        /// Gets the media types within the current application domain.
+        /// Gets or sets the media types within the current application domain.
         /// </summary>
-        public IEnumerable<Type> MediaTypes
-        {
-            get { return this.mediaTypes.Value; }
-        }
+        /// <value>
+        /// The media types.
+        /// </value>
+        public IEnumerable<Type> MediaTypes => mediaTypes.Value;
 
         /// <summary>
-        /// Gets the member types within the current application domain.
+        /// Gets or sets the member types within the current application domain.
         /// </summary>
-        public IEnumerable<Type> MemberTypes
-        {
-            get { return this.memberTypes.Value; }
-        }
+        /// <value>
+        /// The member types.
+        /// </value>
+        public IEnumerable<Type> MemberTypes => memberTypes.Value;
 
         /// <summary>
-        /// Gets the assemblies to be probed for content types, within the current application domain.
+        /// Gets the assemblies to be scanned for content types, within the current application domain.
         /// </summary>
-        /// <returns>Assemblies to be probed.</returns>
+        /// <returns>The assemblies to be scanned.</returns>
         private static IEnumerable<Assembly> GetAssemblies()
         {
             var assemblies = JetConfigurationManager.Assemblies;
@@ -136,56 +111,56 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// Gets the document types within the current application domain.
         /// </summary>
-        /// <returns>Document types.</returns>
+        /// <returns>The document types.</returns>
         private IEnumerable<Type> GetDocumentTypes()
         {
-            return this.GetTypesByAttribute(TypeExtensions.IsDocumentType);
+            return GetTypesByAttribute(TypeExtensions.IsDocumentType);
         }
 
         /// <summary>
         /// Gets the data types within the current application domain.
         /// </summary>
-        /// <returns>Data types.</returns>
+        /// <returns>The data types.</returns>
         private IEnumerable<Type> GetDataTypes()
         {
-            return this.GetTypesByAttribute(TypeExtensions.IsDataType);
+            return GetTypesByAttribute(TypeExtensions.IsDataType);
         }
 
         /// <summary>
         /// Gets the media types within the current application domain.
         /// </summary>
-        /// <returns>Media types.</returns>
+        /// <returns>The media types.</returns>
         private IEnumerable<Type> GetMediaTypes()
         {
-            return this.GetTypesByAttribute(TypeExtensions.IsMediaType);
+            return GetTypesByAttribute(TypeExtensions.IsMediaType);
         }
 
         /// <summary>
         /// Gets the member types within the current application domain.
         /// </summary>
-        /// <returns>Media types.</returns>
+        /// <returns>The member types.</returns>
         private IEnumerable<Type> GetMemberTypes()
         {
-            return this.GetTypesByAttribute(TypeExtensions.IsMemberType);
+            return GetTypesByAttribute(TypeExtensions.IsMemberType);
         }
 
         /// <summary>
         /// Gets types by attribute predicate.
         /// </summary>
-        /// <param name="predicate">A predicate function for type probing.</param>
+        /// <param name="predicate">A predicate for type scanning.</param>
         /// <returns>Types matching the given predicate.</returns>
         private IEnumerable<Type> GetTypesByAttribute(Func<Type, bool> predicate)
         {
             if (predicate == null)
             {
-                throw new ArgumentNullException("predicate");
+                throw new ArgumentNullException(nameof(predicate));
             }
 
             Func<Assembly, IEnumerable<Type>> getTypes = a => a.GetTypes().Where(predicate);
 
             var types = new List<Type>();
 
-            foreach (var assembly in this.assemblies.Value)
+            foreach (var assembly in assemblies.Value)
             {
                 types.AddRange(getTypes(assembly));
             }

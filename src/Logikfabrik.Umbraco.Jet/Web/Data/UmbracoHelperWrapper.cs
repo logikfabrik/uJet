@@ -1,28 +1,6 @@
-﻿//----------------------------------------------------------------------------------
-// <copyright file="UmbracoHelperWrapper.cs" company="Logikfabrik">
-//     The MIT License (MIT)
-//
-//     Copyright (c) 2015 anton(at)logikfabrik.se
-//
-//     Permission is hereby granted, free of charge, to any person obtaining a copy
-//     of this software and associated documentation files (the "Software"), to deal
-//     in the Software without restriction, including without limitation the rights
-//     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//     copies of the Software, and to permit persons to whom the Software is
-//     furnished to do so, subject to the following conditions:
-//
-//     The above copyright notice and this permission notice shall be included in
-//     all copies or substantial portions of the Software.
-//
-//     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//     AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-//     THE SOFTWARE.
+﻿// <copyright file="UmbracoHelperWrapper.cs" company="Logikfabrik">
+//   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
-//----------------------------------------------------------------------------------
 
 namespace Logikfabrik.Umbraco.Jet.Web.Data
 {
@@ -30,33 +8,61 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
     using global::Umbraco.Core.Models;
     using global::Umbraco.Web;
 
+    /// <summary>
+    /// The <see cref="UmbracoHelperWrapper" /> class.
+    /// </summary>
     public class UmbracoHelperWrapper : IUmbracoHelperWrapper
     {
+        /// <summary>
+        /// The Umbraco helper.
+        /// </summary>
         private readonly UmbracoHelper umbracoHelper;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UmbracoHelperWrapper" /> class.
+        /// </summary>
         public UmbracoHelperWrapper()
             : this(new UmbracoHelper(UmbracoContext.Current))
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UmbracoHelperWrapper" /> class.
+        /// </summary>
+        /// <param name="umbracoHelper">The Umbraco helper.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="umbracoHelper" /> is <c>null</c>.</exception>
         public UmbracoHelperWrapper(UmbracoHelper umbracoHelper)
         {
             if (umbracoHelper == null)
             {
-                throw new ArgumentNullException("umbracoHelper");
+                throw new ArgumentNullException(nameof(umbracoHelper));
             }
 
             this.umbracoHelper = umbracoHelper;
         }
 
+        /// <summary>
+        /// Gets typed document.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>
+        /// Typed document.
+        /// </returns>
         public IPublishedContent TypedDocument(int id)
         {
-            return this.umbracoHelper.TypedContent(id);
+            return umbracoHelper.TypedContent(id);
         }
 
+        /// <summary>
+        /// Gets typed media.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>
+        /// Typed media.
+        /// </returns>
         public IPublishedContent TypedMedia(int id)
         {
-            return this.umbracoHelper.TypedMedia(id);
+            return umbracoHelper.TypedMedia(id);
         }
     }
 }

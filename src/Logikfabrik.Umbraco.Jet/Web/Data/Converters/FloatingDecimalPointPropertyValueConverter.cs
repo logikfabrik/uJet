@@ -1,28 +1,6 @@
-﻿//----------------------------------------------------------------------------------
-// <copyright file="FloatingDecimalPointPropertyValueConverter.cs" company="Logikfabrik">
-//     The MIT License (MIT)
-//
-//     Copyright (c) 2015 anton(at)logikfabrik.se
-//
-//     Permission is hereby granted, free of charge, to any person obtaining a copy
-//     of this software and associated documentation files (the "Software"), to deal
-//     in the Software without restriction, including without limitation the rights
-//     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//     copies of the Software, and to permit persons to whom the Software is
-//     furnished to do so, subject to the following conditions:
-//
-//     The above copyright notice and this permission notice shall be included in
-//     all copies or substantial portions of the Software.
-//
-//     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//     AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-//     THE SOFTWARE.
+﻿// <copyright file="FloatingDecimalPointPropertyValueConverter.cs" company="Logikfabrik">
+//   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
-//----------------------------------------------------------------------------------
 
 namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
 {
@@ -44,17 +22,17 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
         /// <returns>
         ///   <c>true</c> if this instance can convert between types; otherwise, <c>false</c>.
         /// </returns>
-        /// <exception cref="System.ArgumentNullException">Thrown if from or to are null.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="from" /> or <paramref name="to" /> are <c>null</c>.</exception>
         public bool CanConvertValue(string uiHint, Type from, Type to)
         {
             if (from == null)
             {
-                throw new ArgumentNullException("from");
+                throw new ArgumentNullException(nameof(@from));
             }
 
             if (to == null)
             {
-                throw new ArgumentNullException("to");
+                throw new ArgumentNullException(nameof(to));
             }
 
             var validTypes = new[] { typeof(decimal), typeof(decimal?) };
@@ -67,9 +45,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="to">To type.</param>
-        /// <returns>
-        /// The converted value.
-        /// </returns>
+        /// <returns>The converted value.</returns>
         public object Convert(object value, Type to)
         {
             if (value == null)
@@ -80,8 +56,8 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
             decimal result;
 
             if (decimal.TryParse(
-                    value.ToString(), 
-                    NumberStyles.Float, 
+                    value.ToString(),
+                    NumberStyles.Float,
                     CultureInfo.InvariantCulture.NumberFormat,
                     out result))
             {

@@ -1,28 +1,6 @@
-﻿//----------------------------------------------------------------------------------
-// <copyright file="PropertyValueConverters.cs" company="Logikfabrik">
-//     The MIT License (MIT)
-//
-//     Copyright (c) 2015 anton(at)logikfabrik.se
-//
-//     Permission is hereby granted, free of charge, to any person obtaining a copy
-//     of this software and associated documentation files (the "Software"), to deal
-//     in the Software without restriction, including without limitation the rights
-//     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//     copies of the Software, and to permit persons to whom the Software is
-//     furnished to do so, subject to the following conditions:
-//
-//     The above copyright notice and this permission notice shall be included in
-//     all copies or substantial portions of the Software.
-//
-//     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//     AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-//     THE SOFTWARE.
+﻿// <copyright file="PropertyValueConverters.cs" company="Logikfabrik">
+//   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
-//----------------------------------------------------------------------------------
 
 namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
 {
@@ -43,13 +21,8 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
         /// <summary>
         /// Gets the converters.
         /// </summary>
-        /// <value>
-        /// The converters.
-        /// </value>
-        public static PropertyValueConverterDictionary Converters
-        {
-            get { return SharedConverters; }
-        }
+        /// <value>The converters.</value>
+        public static PropertyValueConverterDictionary Converters => SharedConverters;
 
         /// <summary>
         /// Gets the converter.
@@ -58,17 +31,17 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
         /// <param name="from">From type.</param>
         /// <param name="to">To type.</param>
         /// <returns>The converter</returns>
-        /// <exception cref="System.ArgumentNullException">Thrown if from or to are null.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="from" /> or <paramref name="to" /> are <c>null</c>.</exception>
         internal static IPropertyValueConverter GetConverter(string uiHint, Type from, Type to)
         {
             if (from == null)
             {
-                throw new ArgumentNullException("from");
+                throw new ArgumentNullException(nameof(@from));
             }
 
             if (to == null)
             {
-                throw new ArgumentNullException("to");
+                throw new ArgumentNullException(nameof(to));
             }
 
             IEnumerable<IPropertyValueConverter> converters;

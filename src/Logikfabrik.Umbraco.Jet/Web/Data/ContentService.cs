@@ -1,28 +1,6 @@
-﻿//----------------------------------------------------------------------------------
-// <copyright file="ContentService.cs" company="Logikfabrik">
-//     The MIT License (MIT)
-//
-//     Copyright (c) 2015 anton(at)logikfabrik.se
-//
-//     Permission is hereby granted, free of charge, to any person obtaining a copy
-//     of this software and associated documentation files (the "Software"), to deal
-//     in the Software without restriction, including without limitation the rights
-//     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//     copies of the Software, and to permit persons to whom the Software is
-//     furnished to do so, subject to the following conditions:
-//
-//     The above copyright notice and this permission notice shall be included in
-//     all copies or substantial portions of the Software.
-//
-//     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//     AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-//     THE SOFTWARE.
+﻿// <copyright file="ContentService.cs" company="Logikfabrik">
+//   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
-//----------------------------------------------------------------------------------
 
 namespace Logikfabrik.Umbraco.Jet.Web.Data
 {
@@ -33,47 +11,66 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
     using Converters;
     using global::Umbraco.Core.Models;
 
+    /// <summary>
+    /// The <see cref="ContentService" /> class.
+    /// </summary>
     public abstract class ContentService
     {
-        private readonly ITypeService typeService;
-        private readonly IUmbracoHelperWrapper umbracoHelperWrapper;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContentService" /> class.
+        /// </summary>
+        /// <param name="umbracoHelperWrapper">The Umbraco helper wrapper.</param>
+        /// <param name="typeService">The type service.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="umbracoHelperWrapper" /> or <paramref name="typeService" /> are <c>null</c>.</exception>
         protected ContentService(IUmbracoHelperWrapper umbracoHelperWrapper, ITypeService typeService)
         {
             if (umbracoHelperWrapper == null)
             {
-                throw new ArgumentNullException("umbracoHelperWrapper");
+                throw new ArgumentNullException(nameof(umbracoHelperWrapper));
             }
 
             if (typeService == null)
             {
-                throw new ArgumentNullException("typeService");
+                throw new ArgumentNullException(nameof(typeService));
             }
 
-            this.umbracoHelperWrapper = umbracoHelperWrapper;
-            this.typeService = typeService;
-        }
-        
-        protected ITypeService TypeService
-        {
-            get { return this.typeService; }
+            UmbracoHelper = umbracoHelperWrapper;
+            TypeService = typeService;
         }
 
-        protected IUmbracoHelperWrapper UmbracoHelper
-        {
-            get { return this.umbracoHelperWrapper; }
-        }
-        
+        /// <summary>
+        /// Gets the type service.
+        /// </summary>
+        /// <value>
+        /// The type service.
+        /// </value>
+        protected ITypeService TypeService { get; }
+
+        /// <summary>
+        /// Gets the Umbraco helper.
+        /// </summary>
+        /// <value>
+        /// The Umbraco helper.
+        /// </value>
+        protected IUmbracoHelperWrapper UmbracoHelper { get; }
+
+        /// <summary>
+        /// Gets the content.
+        /// </summary>
+        /// <param name="content">The content.</param>
+        /// <param name="contentType">The type of content.</param>
+        /// <returns>The content.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" /> or <paramref name="contentType" /> are <c>null</c>.</exception>
         protected object GetContent(IPublishedContent content, Type contentType)
         {
             if (content == null)
             {
-                throw new ArgumentNullException("content");
+                throw new ArgumentNullException(nameof(content));
             }
 
             if (contentType == null)
             {
-                throw new ArgumentNullException("contentType");
+                throw new ArgumentNullException(nameof(contentType));
             }
 
             var model = Activator.CreateInstance(contentType);
@@ -88,16 +85,22 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
             return model;
         }
 
+        /// <summary>
+        /// Maps content by convention.
+        /// </summary>
+        /// <param name="content">The content.</param>
+        /// <param name="model">The model.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" /> or <paramref name="model" /> are <c>null</c>.</exception>
         private static void MapByConvention(IPublishedContent content, object model)
         {
             if (content == null)
             {
-                throw new ArgumentNullException("content");
+                throw new ArgumentNullException(nameof(content));
             }
 
             if (model == null)
             {
-                throw new ArgumentNullException("model");
+                throw new ArgumentNullException(nameof(model));
             }
 
             MapProperty(model, GetPropertyName(() => content.Id), content.Id);
@@ -107,30 +110,49 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
             MapProperty(model, GetPropertyName(() => content.UpdateDate), content.UpdateDate);
         }
 
+        /// <summary>
+        /// Gets the name of the property.
+        /// </summary>
+        /// <typeparam name="T">The property type.</typeparam>
+        /// <param name="expression">The expression.</param>
+        /// <returns>The property name.</returns>
         private static string GetPropertyName<T>(Expression<Func<T>> expression)
         {
             return ((MemberExpression)expression.Body).Member.Name;
         }
 
-        private static string GetUIHint(PropertyInfo property)
+        /// <summary>
+        /// Gets a property UI hint.
+        /// </summary>
+        /// <param name="property">The property to get UI hint for.</param>
+        /// <returns>A property UI hint.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="property" /> is <c>null</c>.</exception>
+        private static string GetPropertyUIHint(PropertyInfo property)
         {
             if (property == null)
             {
-                throw new ArgumentNullException("property");
+                throw new ArgumentNullException(nameof(property));
             }
 
             var attribute = property.GetCustomAttribute<UIHintAttribute>();
 
-            var uiHint = attribute == null ? null : attribute.UIHint;
+            var uiHint = attribute?.UIHint;
 
             return uiHint;
         }
 
+        /// <summary>
+        /// Maps the property.
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="value">The value.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="model" /> is <c>null</c>.</exception>
         private static void MapProperty(object model, string name, object value)
         {
             if (model == null)
             {
-                throw new ArgumentNullException("model");
+                throw new ArgumentNullException(nameof(model));
             }
 
             var p = model.GetType()
@@ -153,7 +175,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
                 }
                 else
                 {
-                    var uiHint = GetUIHint(p);
+                    var uiHint = GetPropertyUIHint(p);
                     var converter = PropertyValueConverters.GetConverter(uiHint, value.GetType(), p.PropertyType);
 
                     if (converter != null)

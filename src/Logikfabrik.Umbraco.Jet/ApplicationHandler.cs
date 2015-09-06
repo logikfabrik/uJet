@@ -1,28 +1,6 @@
-﻿//----------------------------------------------------------------------------------
-// <copyright file="ApplicationHandler.cs" company="Logikfabrik">
-//     The MIT License (MIT)
-//
-//     Copyright (c) 2015 anton(at)logikfabrik.se
-//
-//     Permission is hereby granted, free of charge, to any person obtaining a copy
-//     of this software and associated documentation files (the "Software"), to deal
-//     in the Software without restriction, including without limitation the rights
-//     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//     copies of the Software, and to permit persons to whom the Software is
-//     furnished to do so, subject to the following conditions:
-//
-//     The above copyright notice and this permission notice shall be included in
-//     all copies or substantial portions of the Software.
-//
-//     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//     AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-//     THE SOFTWARE.
+﻿// <copyright file="ApplicationHandler.cs" company="Logikfabrik">
+//   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
-//----------------------------------------------------------------------------------
 
 namespace Logikfabrik.Umbraco.Jet
 {
@@ -30,7 +8,7 @@ namespace Logikfabrik.Umbraco.Jet
     using global::Umbraco.Core;
 
     /// <summary>
-    /// Application handler for setup.
+    /// The <see cref="ApplicationHandler" /> class.
     /// </summary>
     public abstract class ApplicationHandler : IApplicationEventHandler
     {
@@ -40,22 +18,31 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         ///   <c>true</c> if this instance is installed; otherwise, <c>false</c>.
         /// </value>
-        protected bool IsInstalled
-        {
-            get
-            {
-                return !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["umbracoConfigurationStatus"]);
-            }
-        }
+        protected bool IsInstalled => !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["umbracoConfigurationStatus"]);
 
+        /// <summary>
+        /// Called when the application is initialized.
+        /// </summary>
+        /// <param name="umbracoApplication">The Umbraco application.</param>
+        /// <param name="applicationContext">The application context.</param>
         public virtual void OnApplicationInitialized(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
         {
         }
 
+        /// <summary>
+        /// Called when the application is starting.
+        /// </summary>
+        /// <param name="umbracoApplication">The Umbraco application.</param>
+        /// <param name="applicationContext">The application context.</param>
         public virtual void OnApplicationStarting(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
         {
         }
 
+        /// <summary>
+        /// Called when the application is started.
+        /// </summary>
+        /// <param name="umbracoApplication">The Umbraco application.</param>
+        /// <param name="applicationContext">The application context.</param>
         public virtual void OnApplicationStarted(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
         {
         }
