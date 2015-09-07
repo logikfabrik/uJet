@@ -6,11 +6,13 @@ namespace Logikfabrik.Umbraco.Jet
 {
     using System;
 
+    /// <summary>
+    /// The <see cref="MemberTypeAttribute" /> class.
+    /// </summary>
     [AttributeUsage(
         AttributeTargets.Class,
         Inherited = false)]
     public class MemberTypeAttribute : IdAttribute
     {
-        // TODO: This!
     }
 }

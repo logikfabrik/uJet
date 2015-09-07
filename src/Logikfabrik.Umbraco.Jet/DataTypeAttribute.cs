@@ -7,13 +7,20 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
 
     /// <summary>
-    /// Data type attribute.
+    /// The <see cref="DataTypeAttribute" /> class.
     /// </summary>
     [AttributeUsage(
         AttributeTargets.Class,
         Inherited = false)]
     public class DataTypeAttribute : IdAttribute
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataTypeAttribute" /> class.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="editor">The editor.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="type" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentException">Thrown if <paramref name="editor" /> is <c>null</c> or white space.</exception>
         public DataTypeAttribute(Type type, string editor)
         {
             if (type == null)
@@ -30,6 +37,14 @@ namespace Logikfabrik.Umbraco.Jet
             Editor = editor;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataTypeAttribute" /> class.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="editor">The editor.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="type" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentException">Thrown if <paramref name="editor" /> is <c>null</c> or white space.</exception>
         public DataTypeAttribute(string id, Type type, string editor)
             : base(id)
         {
@@ -48,13 +63,19 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Gets the name of this data type attribute.
+        /// Gets the editor.
         /// </summary>
+        /// <value>
+        /// The editor.
+        /// </value>
         public string Editor { get; }
 
         /// <summary>
-        /// Gets the type of this data type attribute.
+        /// Gets the type.
         /// </summary>
+        /// <value>
+        /// The type.
+        /// </value>
         public Type Type { get; }
     }
 }

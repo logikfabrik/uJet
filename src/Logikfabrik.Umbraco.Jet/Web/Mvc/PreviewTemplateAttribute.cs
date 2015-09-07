@@ -6,11 +6,17 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
 {
     using System;
 
+    /// <summary>
+    /// The <see cref="PreviewTemplateAttribute" /> class.
+    /// </summary>
     [AttributeUsage(
         AttributeTargets.Class,
         Inherited = false)]
     public class PreviewTemplateAttribute : Attribute
     {
+        /// <summary>
+        /// The template name.
+        /// </summary>
         public const string TemplateName = "Preview";
     }
 }

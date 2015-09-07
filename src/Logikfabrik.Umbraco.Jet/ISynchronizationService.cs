@@ -4,8 +4,14 @@
 
 namespace Logikfabrik.Umbraco.Jet
 {
+    /// <summary>
+    /// The <see cref="ISynchronizationService" /> interface.
+    /// </summary>
     public interface ISynchronizationService
     {
+        /// <summary>
+        /// Synchronizes this instance.
+        /// </summary>
         void Synchronize();
     }
 }

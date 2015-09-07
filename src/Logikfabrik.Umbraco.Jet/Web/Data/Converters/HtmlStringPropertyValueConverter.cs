@@ -21,7 +21,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
         /// <returns>
         ///   <c>true</c> if this instance can convert between types; otherwise, <c>false</c>.
         /// </returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="from" /> or <paramref name="to" /> are <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="from" />, or <paramref name="to" /> are <c>null</c>.</exception>
         public bool CanConvertValue(string uiHint, Type from, Type to)
         {
             if (from == null)

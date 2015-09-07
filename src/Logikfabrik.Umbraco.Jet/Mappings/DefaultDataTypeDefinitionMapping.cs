@@ -31,7 +31,7 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         private readonly IDictionary<DataTypeDefinition, IDataTypeDefinition> mappedDefinitions = new Dictionary<DataTypeDefinition, IDataTypeDefinition>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultDataTypeDefinitionMapping"/> class.
+        /// Initializes a new instance of the <see cref="DefaultDataTypeDefinitionMapping" /> class.
         /// </summary>
         public DefaultDataTypeDefinitionMapping()
             : this(ApplicationContext.Current.Services.DataTypeService, GetSupportedHints())
@@ -39,11 +39,11 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultDataTypeDefinitionMapping"/> class.
+        /// Initializes a new instance of the <see cref="DefaultDataTypeDefinitionMapping" /> class.
         /// </summary>
         /// <param name="dataTypeService">The data type service.</param>
         /// <param name="supportedHints">The supported hints.</param>
-        /// <exception cref="System.ArgumentNullException">Thrown if dataTypeService or supportedHints are null.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dataTypeService" />, or <paramref name="supportedHints" /> are <c>null</c>.</exception>
         protected DefaultDataTypeDefinitionMapping(IDataTypeService dataTypeService, IDictionary<string, KeyValuePair<Type, DataTypeDefinition>> supportedHints)
         {
             if (dataTypeService == null)
@@ -68,8 +68,8 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// <returns>
         ///   <c>true</c> if this instance can map to definition; otherwise, <c>false</c>.
         /// </returns>
-        /// <exception cref="System.ArgumentException">Thrown if uiHint is null or white space.</exception>
-        /// <exception cref="System.ArgumentNullException">Thrown if fromType is null.</exception>
+        /// <exception cref="ArgumentException">Thrown if <paramref name="uiHint" /> is <c>null</c> or white space.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="fromType" /> is <c>null</c>.</exception>
         public virtual bool CanMapToDefinition(string uiHint, Type fromType)
         {
             if (string.IsNullOrWhiteSpace(uiHint))
@@ -93,8 +93,8 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// <returns>
         /// The mapped definition.
         /// </returns>
-        /// <exception cref="System.ArgumentException">Thrown if uiHint is null or white space.</exception>
-        /// <exception cref="System.ArgumentNullException">Thrown if fromType is null.</exception>
+        /// <exception cref="ArgumentException">Thrown if <paramref name="uiHint" /> is <c>null</c> or white space.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="fromType" /> is <c>null</c>.</exception>
         public virtual IDataTypeDefinition GetMappedDefinition(string uiHint, Type fromType)
         {
             if (string.IsNullOrWhiteSpace(uiHint))
@@ -115,7 +115,7 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns>The type of the nullable.</returns>
-        /// <exception cref="System.ArgumentNullException">Thrown if type is null.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="type" /> is <c>null</c>.</exception>
         private static Type GetNullableType(Type type)
         {
             if (type == null)
@@ -167,8 +167,8 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// <param name="uiHint">The UI hint.</param>
         /// <param name="fromType">From type.</param>
         /// <returns>The definition.</returns>
-        /// <exception cref="System.ArgumentException">Thrown if uiHint is null or white space.</exception>
-        /// <exception cref="System.ArgumentNullException">Thrown if fromType is null.</exception>
+        /// <exception cref="ArgumentException">Thrown if <paramref name="uiHint" /> is <c>null</c> or white space.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="fromType" /> is <c>null</c>.</exception>
         private IDataTypeDefinition GetDefinition(string uiHint, Type fromType)
         {
             if (string.IsNullOrWhiteSpace(uiHint))

@@ -9,11 +9,21 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     using global::Umbraco.Web.Mvc;
     using Utilities;
 
+    /// <summary>
+    /// The <see cref="JetController" /> class.
+    /// </summary>
     public abstract class JetController : Controller, IRenderMvcController
     {
-        // Key found by examining the Umbraco source code.
+        /// <summary>
+        /// The route data token key. Key found by examining the Umbraco source code.
+        /// </summary>
         private const string RouteDataTokenKey = "umbraco";
 
+        /// <summary>
+        /// Gets the index.
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>A view result.</returns>
         [ActionName("404")]
         public virtual ActionResult Index(RenderModel model)
         {
@@ -21,7 +31,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         }
 
         /// <summary>
-        /// Redirect to the current page.
+        /// Redirects to the current page.
         /// </summary>
         /// <returns>A redirect result.</returns>
         protected RedirectResult RedirectToPage()
@@ -30,19 +40,9 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         }
 
         /// <summary>
-        /// Redirect to a page.
+        /// Redirects to the current page.
         /// </summary>
-        /// <param name="id">The ID of the page to redirect to.</param>
-        /// <returns>A redirect result.</returns>
-        protected RedirectResult RedirectToPage(int id)
-        {
-            return RedirectToPage(id, null);
-        }
-
-        /// <summary>
-        /// Redirect to the current page.
-        /// </summary>
-        /// <param name="query">The query to redirect to.</param>
+        /// <param name="query">The query.</param>
         /// <returns>A redirect result.</returns>
         protected RedirectResult RedirectToPage(object query)
         {
@@ -50,10 +50,20 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         }
 
         /// <summary>
-        /// Redirect to a page.
+        /// Redirects to page.
         /// </summary>
-        /// <param name="id">The ID of the page to redirect to.</param>
-        /// <param name="query">The query to redirect to.</param>
+        /// <param name="id">The identifier.</param>
+        /// <returns>A redirect result.</returns>
+        protected RedirectResult RedirectToPage(int id)
+        {
+            return RedirectToPage(id, null);
+        }
+
+        /// <summary>
+        /// Redirects to page.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="query">The query.</param>
         /// <returns>A redirect result.</returns>
         protected RedirectResult RedirectToPage(int id, object query)
         {
@@ -63,9 +73,9 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         }
 
         /// <summary>
-        /// Gets the current page ID.
+        /// Gets the current page identifier.
         /// </summary>
-        /// <returns>The page ID.</returns>
+        /// <returns>The page identifier.</returns>
         private int GetCurrentPageId()
         {
             var renderModel = ControllerContext.RouteData.DataTokens[RouteDataTokenKey] as RenderModel;

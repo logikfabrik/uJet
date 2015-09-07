@@ -12,12 +12,19 @@ namespace Logikfabrik.Umbraco.Jet
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
 
+    /// <summary>
+    /// The <see cref="MediaTypeSynchronizationService" /> class. Synchronizes types annotated using the <see cref="MediaTypeAttribute" />.
+    /// </summary>
     public class MediaTypeSynchronizationService : ContentTypeSynchronizationService
     {
-        private readonly IContentTypeRepository contentTypeRepository;
-        private readonly IContentTypeService contentTypeService;
+        /// <summary>
+        /// The type service.
+        /// </summary>
         private readonly ITypeService typeService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MediaTypeSynchronizationService" /> class.
+        /// </summary>
         public MediaTypeSynchronizationService()
             : this(
                 ApplicationContext.Current.Services.ContentTypeService,
@@ -26,34 +33,29 @@ namespace Logikfabrik.Umbraco.Jet
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MediaTypeSynchronizationService" /> class.
+        /// </summary>
+        /// <param name="contentTypeService">The content type service.</param>
+        /// <param name="contentTypeRepository">The content type repository.</param>
+        /// <param name="typeService">The type service.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="typeService" /> is <c>null</c>.</exception>
         public MediaTypeSynchronizationService(
             IContentTypeService contentTypeService,
             IContentTypeRepository contentTypeRepository,
             ITypeService typeService)
             : base(contentTypeService, contentTypeRepository)
         {
-            if (contentTypeService == null)
-            {
-                throw new ArgumentNullException(nameof(contentTypeService));
-            }
-
-            if (contentTypeRepository == null)
-            {
-                throw new ArgumentNullException(nameof(contentTypeRepository));
-            }
-
             if (typeService == null)
             {
                 throw new ArgumentNullException(nameof(typeService));
             }
 
-            this.contentTypeService = contentTypeService;
-            this.contentTypeRepository = contentTypeRepository;
             this.typeService = typeService;
         }
 
         /// <summary>
-        /// Synchronizes media types.
+        /// Synchronizes this instance.
         /// </summary>
         public override void Synchronize()
         {
@@ -64,19 +66,25 @@ namespace Logikfabrik.Umbraco.Jet
 
             foreach (var documentType in mediaTypes.Where(dt => dt.Id.HasValue))
             {
-                SynchronizeById(contentTypeService.GetAllMediaTypes(), documentType);
+                SynchronizeById(ContentTypeService.GetAllMediaTypes(), documentType);
             }
 
             foreach (var documentType in mediaTypes.Where(dt => !dt.Id.HasValue))
             {
-                SynchronizeByName(contentTypeService.GetAllMediaTypes(), documentType);
+                SynchronizeByName(ContentTypeService.GetAllMediaTypes(), documentType);
             }
 
             SetAllowedContentTypes(
-                contentTypeService.GetAllMediaTypes().Cast<IContentTypeBase>().ToArray(),
+                ContentTypeService.GetAllMediaTypes().Cast<IContentTypeBase>().ToArray(),
                 mediaTypes);
         }
 
+        /// <summary>
+        /// Validates the media type identifier.
+        /// </summary>
+        /// <param name="mediaTypes">The media types.</param>
+        /// <exception cref="ArgumentNullException">>Thrown if <paramref name="mediaTypes" /> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if an identifier in <paramref name="mediaTypes" /> is conflicting.</exception>
         private static void ValidateMediaTypeId(IEnumerable<MediaType> mediaTypes)
         {
             if (mediaTypes == null)
@@ -103,6 +111,12 @@ namespace Logikfabrik.Umbraco.Jet
             }
         }
 
+        /// <summary>
+        /// Validates the media type alias.
+        /// </summary>
+        /// <param name="mediaTypes">The media types.</param>
+        /// <exception cref="ArgumentNullException">>Thrown if <paramref name="mediaTypes" /> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if an alias in <paramref name="mediaTypes" /> is conflicting.</exception>
         private static void ValidateMediaTypeAlias(IEnumerable<MediaType> mediaTypes)
         {
             if (mediaTypes == null)
@@ -124,6 +138,13 @@ namespace Logikfabrik.Umbraco.Jet
             }
         }
 
+        /// <summary>
+        /// Synchronizes media type by name.
+        /// </summary>
+        /// <param name="contentTypes">The content types.</param>
+        /// <param name="mediaType">The media type.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypes" />, or <paramref name="mediaType" /> are <c>null</c>.</exception>
+        /// <exception cref="ArgumentException">Thrown if the media type identifier is not <c>null</c>.</exception>
         private void SynchronizeByName(IEnumerable<IMediaType> contentTypes, MediaType mediaType)
         {
             if (contentTypes == null)
@@ -153,6 +174,13 @@ namespace Logikfabrik.Umbraco.Jet
             }
         }
 
+        /// <summary>
+        /// Synchronizes media type by identifier.
+        /// </summary>
+        /// <param name="contentTypes">The content types.</param>
+        /// <param name="mediaType">The media type.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypes" />, or <paramref name="mediaType" /> are <c>null</c>.</exception>
+        /// <exception cref="ArgumentException">Thrown if the media type identifier is <c>null</c>.</exception>
         private void SynchronizeById(IEnumerable<IMediaType> contentTypes, MediaType mediaType)
         {
             if (contentTypes == null)
@@ -172,7 +200,7 @@ namespace Logikfabrik.Umbraco.Jet
 
             IMediaType ct = null;
 
-            var id = contentTypeRepository.GetContentTypeId(mediaType.Id.Value);
+            var id = ContentTypeRepository.GetContentTypeId(mediaType.Id.Value);
 
             if (id.HasValue)
             {
@@ -186,10 +214,10 @@ namespace Logikfabrik.Umbraco.Jet
                 CreateMediaType(mediaType);
 
                 // Get the created media type.
-                ct = contentTypeService.GetMediaType(mediaType.Alias);
+                ct = ContentTypeService.GetMediaType(mediaType.Alias);
 
                 // Connect the media type and the created content type.
-                contentTypeRepository.SetContentTypeId(mediaType.Id.Value, ct.Id);
+                ContentTypeRepository.SetContentTypeId(mediaType.Id.Value, ct.Id);
             }
             else
             {
@@ -198,9 +226,10 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Creates a media type.
+        /// Creates the media type.
         /// </summary>
-        /// <param name="mediaType">The reflected media type to create.</param>
+        /// <param name="mediaType">The media type to create.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="mediaType" /> is <c>null</c>.</exception>
         private void CreateMediaType(MediaType mediaType)
         {
             if (mediaType == null)
@@ -210,17 +239,18 @@ namespace Logikfabrik.Umbraco.Jet
 
             var contentType = (IMediaType)CreateContentType(() => new global::Umbraco.Core.Models.MediaType(-1), mediaType);
 
-            contentTypeService.Save(contentType);
+            ContentTypeService.Save(contentType);
 
             // Update tracking.
-            SetPropertyTypeId(contentTypeService.GetMediaType(contentType.Alias), mediaType);
+            SetPropertyTypeId(ContentTypeService.GetMediaType(contentType.Alias), mediaType);
         }
 
         /// <summary>
-        /// Updates a media type.
+        /// Updates the media type.
         /// </summary>
-        /// <param name="contentType">The media type to update.</param>
-        /// <param name="mediaType">The reflected media type.</param>
+        /// <param name="contentType">The content type.</param>
+        /// <param name="mediaType">The media type to update.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentType" />, or <paramref name="mediaType" /> are <c>null</c>.</exception>
         private void UpdateMediaType(IMediaType contentType, MediaType mediaType)
         {
             if (contentType == null)
@@ -235,10 +265,10 @@ namespace Logikfabrik.Umbraco.Jet
 
             UpdateContentType(contentType, () => new global::Umbraco.Core.Models.MediaType(-1), mediaType);
 
-            contentTypeService.Save(contentType);
+            ContentTypeService.Save(contentType);
 
             // Update tracking.
-            SetPropertyTypeId(contentTypeService.GetMediaType(contentType.Alias), mediaType);
+            SetPropertyTypeId(ContentTypeService.GetMediaType(contentType.Alias), mediaType);
         }
     }
 }

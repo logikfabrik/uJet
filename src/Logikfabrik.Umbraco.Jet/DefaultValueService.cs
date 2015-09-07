@@ -12,17 +12,28 @@ namespace Logikfabrik.Umbraco.Jet
     using global::Umbraco.Core.Models;
 
     /// <summary>
-    /// The default value service. Responsible for setting default values for types.
+    /// The <see cref="DefaultValueService" /> class.
     /// </summary>
     public class DefaultValueService
     {
+        /// <summary>
+        /// The type service.
+        /// </summary>
         private readonly ITypeService typeService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultValueService" /> class.
+        /// </summary>
         public DefaultValueService()
             : this(TypeService.Instance)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultValueService" /> class.
+        /// </summary>
+        /// <param name="typeService">The type service.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="typeService" /> is <c>null</c>.</exception>
         public DefaultValueService(ITypeService typeService)
         {
             if (typeService == null)
@@ -33,19 +44,29 @@ namespace Logikfabrik.Umbraco.Jet
             this.typeService = typeService;
         }
 
-        public void SetDefaultValues(IEnumerable<IContent> contents)
+        /// <summary>
+        /// Sets the default values.
+        /// </summary>
+        /// <param name="content">The content to set default values for.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" /> is <c>null</c>.</exception>
+        public void SetDefaultValues(IEnumerable<IContent> content)
         {
-            if (contents == null)
+            if (content == null)
             {
-                throw new ArgumentNullException(nameof(contents));
+                throw new ArgumentNullException(nameof(content));
             }
 
-            foreach (var content in contents)
+            foreach (var c in content)
             {
-                SetDefaultValues(content);
+                SetDefaultValues(c);
             }
         }
 
+        /// <summary>
+        /// Sets the default values.
+        /// </summary>
+        /// <param name="content">The content to set default values for.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" /> is <c>null</c>.</exception>
         public void SetDefaultValues(IContent content)
         {
             if (content == null)
@@ -53,32 +74,39 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(content));
             }
 
-            var type =
-                typeService.DocumentTypes.FirstOrDefault(t => t.Name.Alias() == content.ContentType.Alias);
+            var type = typeService.DocumentTypes.FirstOrDefault(t => t.Name.Alias() == content.ContentType.Alias);
 
             if (type == null)
             {
                 return;
             }
 
-            // ReSharper disable once RedundantNameQualifier
-            // ReSharper disable once ArrangeStaticMemberQualifier
-            DefaultValueService.SetDefaultValues(content, new DocumentType(type));
+            SetDefaultValues(content, new DocumentType(type));
         }
 
-        public void SetDefaultValues(IEnumerable<IMedia> contents)
+        /// <summary>
+        /// Sets the default values.
+        /// </summary>
+        /// <param name="content">The content to set default values for.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" /> is <c>null</c>.</exception>
+        public void SetDefaultValues(IEnumerable<IMedia> content)
         {
-            if (contents == null)
+            if (content == null)
             {
-                throw new ArgumentNullException(nameof(contents));
+                throw new ArgumentNullException(nameof(content));
             }
 
-            foreach (var content in contents)
+            foreach (var c in content)
             {
-                SetDefaultValues(content);
+                SetDefaultValues(c);
             }
         }
 
+        /// <summary>
+        /// Sets the default values.
+        /// </summary>
+        /// <param name="content">The content to set default values for.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" /> is <c>null</c>.</exception>
         public void SetDefaultValues(IMedia content)
         {
             if (content == null)
@@ -86,19 +114,23 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(content));
             }
 
-            var type =
-                typeService.MediaTypes.FirstOrDefault(t => t.Name.Alias() == content.ContentType.Alias);
+            var type = typeService.MediaTypes.FirstOrDefault(t => t.Name.Alias() == content.ContentType.Alias);
 
             if (type == null)
             {
                 return;
             }
 
-            // ReSharper disable once RedundantNameQualifier
-            // ReSharper disable once ArrangeStaticMemberQualifier
-            DefaultValueService.SetDefaultValues(content, new MediaType(type));
+            SetDefaultValues(content, new MediaType(type));
         }
 
+        /// <summary>
+        /// Sets the default values.
+        /// </summary>
+        /// <typeparam name="T">The content type.</typeparam>
+        /// <param name="content">The content to set default values for.</param>
+        /// <param name="contentType">The content type.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" />, or <paramref name="contentType" /> are <c>null</c>.</exception>
         private static void SetDefaultValues<T>(IContentBase content, ContentType<T> contentType)
             where T : ContentTypeAttribute
         {
@@ -118,6 +150,12 @@ namespace Logikfabrik.Umbraco.Jet
             }
         }
 
+        /// <summary>
+        /// Sets the default value.
+        /// </summary>
+        /// <param name="content">The content to set default values for.</param>
+        /// <param name="contentTypeProperty">The content type property.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" />, or <paramref name="contentTypeProperty" /> are <c>null</c>.</exception>
         private static void SetDefaultValue(IContentBase content, ContentTypeProperty contentTypeProperty)
         {
             if (content == null)

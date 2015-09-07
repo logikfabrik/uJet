@@ -21,7 +21,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// </summary>
         /// <param name="umbracoHelperWrapper">The Umbraco helper wrapper.</param>
         /// <param name="typeService">The type service.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="umbracoHelperWrapper" /> or <paramref name="typeService" /> are <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="umbracoHelperWrapper" />, or <paramref name="typeService" /> are <c>null</c>.</exception>
         protected ContentService(IUmbracoHelperWrapper umbracoHelperWrapper, ITypeService typeService)
         {
             if (umbracoHelperWrapper == null)
@@ -60,7 +60,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// <param name="content">The content.</param>
         /// <param name="contentType">The type of content.</param>
         /// <returns>The content.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" /> or <paramref name="contentType" /> are <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" />, or <paramref name="contentType" /> are <c>null</c>.</exception>
         protected object GetContent(IPublishedContent content, Type contentType)
         {
             if (content == null)
@@ -90,7 +90,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// </summary>
         /// <param name="content">The content.</param>
         /// <param name="model">The model.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" /> or <paramref name="model" /> are <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" />, or <paramref name="model" /> are <c>null</c>.</exception>
         private static void MapByConvention(IPublishedContent content, object model)
         {
             if (content == null)

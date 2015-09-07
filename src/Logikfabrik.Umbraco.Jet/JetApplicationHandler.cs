@@ -8,11 +8,23 @@ namespace Logikfabrik.Umbraco.Jet
     using global::Umbraco.Core;
     using global::Umbraco.Core.Services;
 
+    /// <summary>
+    /// The <see cref="JetApplicationHandler" /> class.
+    /// </summary>
     public class JetApplicationHandler : ApplicationHandler
     {
+        /// <summary>
+        /// The lock.
+        /// </summary>
         private static readonly object Lock = new object();
+
         private static bool configured;
 
+        /// <summary>
+        /// Called when the application is started.
+        /// </summary>
+        /// <param name="umbracoApplication">The Umbraco application.</param>
+        /// <param name="applicationContext">The application context.</param>
         public override void OnApplicationStarted(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
         {
             if (!IsInstalled)
@@ -44,8 +56,7 @@ namespace Logikfabrik.Umbraco.Jet
                 }
 
                 // Wire up handler for document type default values.
-                ContentService.Saving +=
-                    (sender, args) => new DefaultValueService().SetDefaultValues(args.SavedEntities);
+                ContentService.Saving += (sender, args) => new DefaultValueService().SetDefaultValues(args.SavedEntities);
 
                 // Wire up handler for media type default values.
                 MediaService.Saving += (sender, args) => new DefaultValueService().SetDefaultValues(args.SavedEntities);

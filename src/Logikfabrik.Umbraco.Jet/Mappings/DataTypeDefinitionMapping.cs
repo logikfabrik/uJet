@@ -49,7 +49,7 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// <param name="dataTypeService">The data type service.</param>
         /// <param name="id">The identifier.</param>
         /// <returns>The definition.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if dataTypeService is null.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dataTypeService" /> is <c>null</c>.</exception>
         protected IDataTypeDefinition GetDefinition(IDataTypeService dataTypeService, int id)
         {
             if (dataTypeService == null)

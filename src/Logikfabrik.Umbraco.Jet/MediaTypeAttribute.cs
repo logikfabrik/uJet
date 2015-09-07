@@ -6,6 +6,9 @@ namespace Logikfabrik.Umbraco.Jet
 {
     using System;
 
+    /// <summary>
+    /// The <see cref="MediaTypeAttribute" /> class.
+    /// </summary>
     [AttributeUsage(
         AttributeTargets.Class,
         Inherited = false)]
@@ -14,7 +17,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// Initializes a new instance of the <see cref="MediaTypeAttribute" /> class.
         /// </summary>
-        /// <param name="name">The name to use for the new media type attribute.</param>
+        /// <param name="name">The name.</param>
         public MediaTypeAttribute(string name) : base(name)
         {
         }
@@ -22,8 +25,8 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// Initializes a new instance of the <see cref="MediaTypeAttribute" /> class.
         /// </summary>
-        /// <param name="id">The ID to use for the new media type attribute.</param>
-        /// <param name="name">The name to use for the new media type attribute.</param>
+        /// <param name="id">The identifier.</param>
+        /// <param name="name">The name.</param>
         public MediaTypeAttribute(string id, string name) : base(id, name)
         {
         }

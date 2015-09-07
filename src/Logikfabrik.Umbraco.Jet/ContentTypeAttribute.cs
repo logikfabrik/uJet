@@ -15,7 +15,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// Initializes a new instance of the <see cref="ContentTypeAttribute" /> class.
         /// </summary>
         /// <param name="name">The name.</param>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="name" /> is <c>null</c> or white space.</exception>
+        /// <exception cref="ArgumentException">Thrown if <paramref name="name" /> is <c>null</c>, or white space.</exception>
         protected ContentTypeAttribute(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -27,11 +27,11 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContentTypeAttribute"/> class.
+        /// Initializes a new instance of the <see cref="ContentTypeAttribute" /> class.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="name">The name.</param>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="name" /> is <c>null</c> or white space.</exception>
+        /// <exception cref="ArgumentException">Thrown if <paramref name="name" /> is <c>null</c>, or white space.</exception>
         protected ContentTypeAttribute(string id, string name)
             : base(id)
         {

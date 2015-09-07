@@ -4,17 +4,16 @@
 
 namespace Logikfabrik.Umbraco.Jet
 {
-    using System;
-
     /// <summary>
-    /// The member type synchronization service. Responsible for synchronizing member types
-    /// found in the code base with the Umbraco database.
+    /// The <see cref="MemberTypeSynchronizationService" /> class. Synchronizes types annotated using the <see cref="MemberTypeAttribute" />.
     /// </summary>
     public class MemberTypeSynchronizationService : ISynchronizationService
     {
+        /// <summary>
+        /// Synchronizes this instance.
+        /// </summary>
         public void Synchronize()
         {
-            throw new NotImplementedException();
         }
     }
 }

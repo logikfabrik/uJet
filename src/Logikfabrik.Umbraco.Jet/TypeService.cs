@@ -12,7 +12,7 @@ namespace Logikfabrik.Umbraco.Jet
     using Extensions;
 
     /// <summary>
-    /// The <see cref="TypeService" /> class. Scans assemblies for document types, media types, data types, and member types.
+    /// The <see cref="TypeService" /> class. Scans assemblies for types annotated using the <see cref="DocumentTypeAttribute" />, <see cref="MediaTypeAttribute" />, <see cref="DataTypeAttribute" />, and <see cref="MemberTypeAttribute" />.
     /// </summary>
     public class TypeService : ITypeService
     {

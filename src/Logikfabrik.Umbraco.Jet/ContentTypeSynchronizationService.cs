@@ -14,13 +14,16 @@ namespace Logikfabrik.Umbraco.Jet
     using Mappings;
 
     /// <summary>
-    /// Base type for content type synchronization services.
+    /// The <see cref="ContentTypeSynchronizationService" /> class.
     /// </summary>
     public abstract class ContentTypeSynchronizationService : ISynchronizationService
     {
-        private readonly IContentTypeService contentTypeService;
-        private readonly IContentTypeRepository contentTypeRepository;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContentTypeSynchronizationService" /> class.
+        /// </summary>
+        /// <param name="contentTypeService">The content type service.</param>
+        /// <param name="contentTypeRepository">The content type repository.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeService" />, or <paramref name="contentTypeRepository" /> are <c>null</c>.</exception>
         protected ContentTypeSynchronizationService(IContentTypeService contentTypeService, IContentTypeRepository contentTypeRepository)
         {
             if (contentTypeService == null)
@@ -33,19 +36,39 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(contentTypeRepository));
             }
 
-            this.contentTypeService = contentTypeService;
-            this.contentTypeRepository = contentTypeRepository;
+            ContentTypeService = contentTypeService;
+            ContentTypeRepository = contentTypeRepository;
         }
 
+        /// <summary>
+        /// Gets the content type service.
+        /// </summary>
+        /// <value>
+        /// The content type service.
+        /// </value>
+        protected IContentTypeService ContentTypeService { get; }
+
+        /// <summary>
+        /// Gets the content type repository.
+        /// </summary>
+        /// <value>
+        /// The content type repository.
+        /// </value>
+        protected IContentTypeRepository ContentTypeRepository { get; }
+
+        /// <summary>
+        /// Synchronizes this instance.
+        /// </summary>
         public abstract void Synchronize();
 
         /// <summary>
-        /// Creates a content type.
+        /// Creates the content type.
         /// </summary>
-        /// <typeparam name="T">The reflected content type type.</typeparam>
-        /// <param name="contentTypeBaseConstructor">The content type constructor.</param>
-        /// <param name="contentType">The reflected content type to create.</param>
-        /// <returns>A content type.</returns>
+        /// <typeparam name="T">The <see cref="ContentTypeAttribute" /> type.</typeparam>
+        /// <param name="contentTypeBaseConstructor">The content type base constructor.</param>
+        /// <param name="contentType">Type of the content.</param>
+        /// <returns>The content type.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeBaseConstructor" />, or <paramref name="contentType" /> are <c>null</c>.</exception>
         protected IContentTypeBase CreateContentType<T>(
             Func<IContentTypeBase> contentTypeBaseConstructor,
             ContentType<T> contentType)
@@ -84,12 +107,13 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Updates a content type.
+        /// Updates the content type.
         /// </summary>
-        /// <typeparam name="T">The reflected content type type.</typeparam>
-        /// <param name="contentTypeBase">The content type to update.</param>
-        /// <param name="contentTypeBaseConstructor">The content type constructor.</param>
-        /// <param name="contentType">The reflected content type to update.</param>
+        /// <typeparam name="T">The <see cref="ContentTypeAttribute" /> type.</typeparam>
+        /// <param name="contentTypeBase">The content type base.</param>
+        /// <param name="contentTypeBaseConstructor">The content type base constructor.</param>
+        /// <param name="contentType">Type of the content.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeBase" />, <paramref name="contentTypeBaseConstructor" />, or <paramref name="contentType" /> are <c>null</c>.</exception>
         protected void UpdateContentType<T>(
             IContentTypeBase contentTypeBase,
             Func<IContentTypeBase> contentTypeBaseConstructor,
@@ -125,11 +149,12 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Sets allowed content types.
+        /// Sets the allowed content types.
         /// </summary>
-        /// <typeparam name="T">The reflected content type type.</typeparam>
-        /// <param name="contentTypeBases">Content types.</param>
-        /// <param name="contentTypes">Reflected content types.</param>
+        /// <typeparam name="T">The <see cref="ContentTypeAttribute" /> type.</typeparam>
+        /// <param name="contentTypeBases">The content type bases.</param>
+        /// <param name="contentTypes">The content types.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeBases" />, or <paramref name="contentTypes" /> are <c>null</c>.</exception>
         protected void SetAllowedContentTypes<T>(
             IContentTypeBase[] contentTypeBases,
             IEnumerable<ContentType<T>> contentTypes)
@@ -158,15 +183,22 @@ namespace Logikfabrik.Umbraco.Jet
 
                 if (contentType.Type.IsDocumentType())
                 {
-                    contentTypeService.Save((IContentType)contentTypeBase);
+                    ContentTypeService.Save((IContentType)contentTypeBase);
                 }
                 else if (contentType.Type.IsMediaType())
                 {
-                    contentTypeService.Save((IMediaType)contentTypeBase);
+                    ContentTypeService.Save((IMediaType)contentTypeBase);
                 }
             }
         }
 
+        /// <summary>
+        /// Sets the property type identifier.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="ContentTypeAttribute" /> type.</typeparam>
+        /// <param name="contentTypeBase">The content type base.</param>
+        /// <param name="contentType">Type of the content.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeBase" />, or <paramref name="contentType" /> are <c>null</c>.</exception>
         protected void SetPropertyTypeId<T>(IContentTypeBase contentTypeBase, ContentType<T> contentType)
             where T : ContentTypeAttribute
         {
@@ -175,10 +207,14 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(contentTypeBase));
             }
 
-            foreach (var property in contentType.Properties.Where(p => p.Id.HasValue))
+            foreach (var property in contentType.Properties)
             {
-                // ReSharper disable once PossibleInvalidOperationException
-                var id = contentTypeRepository.GetPropertyTypeId(property.Id.Value);
+                if (!property.Id.HasValue)
+                {
+                    return;
+                }
+
+                var id = ContentTypeRepository.GetPropertyTypeId(property.Id.Value);
 
                 PropertyType pt;
 
@@ -197,15 +233,16 @@ namespace Logikfabrik.Umbraco.Jet
 
                 pt = contentTypeBase.PropertyTypes.Single(type => type.Alias == property.Alias);
 
-                contentTypeRepository.SetPropertyTypeId(property.Id.Value, pt.Id);
+                ContentTypeRepository.SetPropertyTypeId(property.Id.Value, pt.Id);
             }
         }
 
         /// <summary>
-        /// Creates a property type.
+        /// Creates the content type property.
         /// </summary>
-        /// <param name="contentTypeBase">The content type to add the property to.</param>
-        /// <param name="contentTypeProperty">The reflected content type property to create.</param>
+        /// <param name="contentTypeBase">The content type base to add the property to.</param>
+        /// <param name="contentTypeProperty">The content type property to create.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeBase" />, or <paramref name="contentTypeProperty" /> are <c>null</c>.</exception>
         private static void CreatePropertyType(IContentTypeBase contentTypeBase, ContentTypeProperty contentTypeProperty)
         {
             if (contentTypeBase == null)
@@ -218,7 +255,7 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(contentTypeProperty));
             }
 
-            var definition = GetDataDefinition(contentTypeProperty);
+            var definition = GetDataTypeDefinition(contentTypeProperty);
 
             var propertyType = new PropertyType(definition)
             {
@@ -244,6 +281,13 @@ namespace Logikfabrik.Umbraco.Jet
             }
         }
 
+        /// <summary>
+        /// Synchronizes the property type by name.
+        /// </summary>
+        /// <param name="contentTypeBase">The content type base.</param>
+        /// <param name="contentTypeProperty">The content type property.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeBase" />, or <paramref name="contentTypeProperty" /> are <c>null</c>.</exception>
+        /// <exception cref="ArgumentException">Thrown if the <paramref name="contentTypeProperty" /> identifier is not <c>null</c>.</exception>
         private static void SynchronizePropertyTypeByName(IContentTypeBase contentTypeBase, ContentTypeProperty contentTypeProperty)
         {
             if (contentTypeBase == null)
@@ -274,11 +318,12 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Updates a property type.
+        /// Updates the property type.
         /// </summary>
-        /// <param name="contentTypeBase">The content type to update.</param>
-        /// <param name="propertyType">The property type to update.</param>
-        /// <param name="contentTypeProperty">The reflected content type property.</param>
+        /// <param name="contentTypeBase">The content type base.</param>
+        /// <param name="propertyType">Type of the property.</param>
+        /// <param name="contentTypeProperty">The content type property.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeBase" />, <paramref name="propertyType" />, or <paramref name="contentTypeProperty" /> are <c>null</c>.</exception>
         private static void UpdatePropertyType(IContentTypeBase contentTypeBase, PropertyType propertyType, ContentTypeProperty contentTypeProperty)
         {
             if (contentTypeBase == null)
@@ -315,7 +360,7 @@ namespace Logikfabrik.Umbraco.Jet
                 propertyType.SortOrder = contentTypeProperty.SortOrder.Value;
             }
 
-            var definition = GetDataDefinition(contentTypeProperty);
+            var definition = GetDataTypeDefinition(contentTypeProperty);
 
             // ReSharper disable once RedundantCheckBeforeAssignment
             if (propertyType.DataTypeDefinitionId != definition.Id)
@@ -325,11 +370,13 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Gets a data type definition.
+        /// Gets the data type definition.
         /// </summary>
-        /// <param name="contentTypeProperty">The reflected content type property to create.</param>
-        /// <returns>A data type definition.</returns>
-        private static IDataTypeDefinition GetDataDefinition(ContentTypeProperty contentTypeProperty)
+        /// <param name="contentTypeProperty">The content type property.</param>
+        /// <returns>The data type definition.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeProperty" /> is <c>null</c>.</exception>
+        /// <exception cref="Exception">Thrown if no data type definition can be found.</exception>
+        private static IDataTypeDefinition GetDataTypeDefinition(ContentTypeProperty contentTypeProperty)
         {
             if (contentTypeProperty == null)
             {
@@ -349,6 +396,12 @@ namespace Logikfabrik.Umbraco.Jet
             return definition;
         }
 
+        /// <summary>
+        /// Synchronizes the property types.
+        /// </summary>
+        /// <param name="contentTypeBase">The content type base.</param>
+        /// <param name="contentTypeProperties">The content type properties.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeBase" />, or <paramref name="contentTypeProperties" /> are <c>null</c>.</exception>
         private void SynchronizePropertyTypes(IContentTypeBase contentTypeBase, IEnumerable<ContentTypeProperty> contentTypeProperties)
         {
             if (contentTypeBase == null)
@@ -379,6 +432,13 @@ namespace Logikfabrik.Umbraco.Jet
             }
         }
 
+        /// <summary>
+        /// Synchronizes the property type by identifier.
+        /// </summary>
+        /// <param name="contentTypeBase">The content type base.</param>
+        /// <param name="contentTypeProperty">The content type property.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeBase" />, or <paramref name="contentTypeProperty" /> are <c>null</c>.</exception>
+        /// <exception cref="ArgumentException">Thrown if the <paramref name="contentTypeProperty" /> identifier is <c>null</c>.</exception>
         private void SynchronizePropertyTypeById(IContentTypeBase contentTypeBase, ContentTypeProperty contentTypeProperty)
         {
             if (contentTypeBase == null)
@@ -398,7 +458,7 @@ namespace Logikfabrik.Umbraco.Jet
 
             PropertyType pt = null;
 
-            var id = contentTypeRepository.GetPropertyTypeId(contentTypeProperty.Id.Value);
+            var id = ContentTypeRepository.GetPropertyTypeId(contentTypeProperty.Id.Value);
 
             if (id.HasValue)
             {
@@ -417,6 +477,12 @@ namespace Logikfabrik.Umbraco.Jet
             }
         }
 
+        /// <summary>
+        /// Gets the allowed child node content types.
+        /// </summary>
+        /// <param name="allowedChildNodeTypes">The allowed child node types.</param>
+        /// <returns>The allowed child node content types.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="allowedChildNodeTypes" /> is <c>null</c>.</exception>
         private IEnumerable<ContentTypeSort> GetAllowedChildNodeContentTypes(IEnumerable<Type> allowedChildNodeTypes)
         {
             if (allowedChildNodeTypes == null)
@@ -426,10 +492,9 @@ namespace Logikfabrik.Umbraco.Jet
 
             var nodeTypes = new List<ContentTypeSort>();
 
-            // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (var allowedChildNodeType in allowedChildNodeTypes)
             {
-                var contentType = contentTypeService.GetContentType(allowedChildNodeType.Name.Alias());
+                var contentType = ContentTypeService.GetContentType(allowedChildNodeType.Name.Alias());
 
                 if (contentType == null)
                 {

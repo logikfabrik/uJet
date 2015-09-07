@@ -43,7 +43,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// </summary>
         /// <param name="fileService">The file service.</param>
         /// <param name="templateService">The template service.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="fileService" /> or <paramref name="templateService" /> are <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="fileService" />, or <paramref name="templateService" /> are <c>null</c>.</exception>
         public TemplateSynchronizationService(
             IFileService fileService,
             ITemplateService templateService)

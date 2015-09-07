@@ -9,10 +9,16 @@ namespace Logikfabrik.Umbraco.Jet
     using Extensions;
 
     /// <summary>
-    /// Data type.
+    /// The <see cref="DataType" /> class.
     /// </summary>
     public class DataType
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataType" /> class.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="type" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is not a data type.</exception>
         public DataType(Type type)
         {
             if (type == null)
@@ -35,30 +41,43 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Gets the ID for this data type.
+        /// Gets the identifier.
         /// </summary>
+        /// <value>
+        /// The identifier.
+        /// </value>
         public Guid? Id { get; }
 
         /// <summary>
-        /// Gets the name of this data type.
+        /// Gets the name.
         /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
         public string Name { get; }
 
         /// <summary>
-        /// Gets the editor for this data type.
+        /// Gets the editor.
         /// </summary>
+        /// <value>
+        /// The editor.
+        /// </value>
         public string Editor { get; }
 
         /// <summary>
-        /// Gets the database type for this data type.
+        /// Gets the type.
         /// </summary>
+        /// <value>
+        /// The type.
+        /// </value>
         public Type Type { get; }
 
         /// <summary>
-        /// Gets the data type ID from the given type.
+        /// Gets the identifier.
         /// </summary>
-        /// <param name="attribute">The data type attribute of the underlying type.</param>
-        /// <returns>A data type ID.</returns>
+        /// <param name="attribute">The attribute.</param>
+        /// <returns>The identifier.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="attribute" /> is <c>null</c>.</exception>
         private static Guid? GetId(IdAttribute attribute)
         {
             if (attribute == null)
@@ -70,10 +89,11 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Gets the data type name from the given type.
+        /// Gets the name.
         /// </summary>
-        /// <param name="type">The underlying type.</param>
-        /// <returns>A data type name.</returns>
+        /// <param name="type">The type.</param>
+        /// <returns>The name.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="type" /> is <c>null</c>.</exception>
         private static string GetName(Type type)
         {
             if (type == null)
@@ -85,10 +105,11 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Gets the data type editor from the given type.
+        /// Gets the editor.
         /// </summary>
-        /// <param name="attribute">The data type attribute of the underlying type.</param>
-        /// <returns>A data type editor.</returns>
+        /// <param name="attribute">The attribute.</param>
+        /// <returns>The editor.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="attribute" /> is <c>null</c>.</exception>
         private static string GetEditor(DataTypeAttribute attribute)
         {
             if (attribute == null)
@@ -100,10 +121,11 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Gets the data type type from the given type.
+        /// Gets the type.
         /// </summary>
-        /// <param name="attribute">The data type attribute of the underlying type.</param>
-        /// <returns>A data type type.</returns>
+        /// <param name="attribute">The attribute.</param>
+        /// <returns>The type.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="attribute" /> is <c>null</c>.</exception>
         private static Type GetType(DataTypeAttribute attribute)
         {
             if (attribute == null)

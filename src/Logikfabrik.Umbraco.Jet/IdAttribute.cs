@@ -6,8 +6,16 @@ namespace Logikfabrik.Umbraco.Jet
 {
     using System;
 
+    /// <summary>
+    /// The <see cref="IdAttribute" /> class.
+    /// </summary>
     public class IdAttribute : Attribute
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IdAttribute" /> class.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <exception cref="ArgumentException">Thrown if <paramref name="id" /> is <c>null</c> or white space.</exception>
         public IdAttribute(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -23,13 +31,19 @@ namespace Logikfabrik.Umbraco.Jet
             }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IdAttribute" /> class.
+        /// </summary>
         protected IdAttribute()
         {
         }
 
         /// <summary>
-        /// Gets the ID.
+        /// Gets the identifier.
         /// </summary>
+        /// <value>
+        /// The identifier.
+        /// </value>
         public Guid? Id { get; }
     }
 }

@@ -13,15 +13,28 @@ namespace Logikfabrik.Umbraco.Jet
     using global::Umbraco.Core.Services;
 
     /// <summary>
-    /// The data type synchronization service. Responsible for synchronizing data types
-    /// found in the code base with the Umbraco database.
+    /// The <see cref="DataTypeSynchronizationService" /> class. Synchronizes types annotated using the <see cref="DataTypeAttribute" />.
     /// </summary>
     public class DataTypeSynchronizationService : ISynchronizationService
     {
+        /// <summary>
+        /// The data type repository.
+        /// </summary>
         private readonly IDataTypeRepository dataTypeRepository;
+
+        /// <summary>
+        /// The data type service.
+        /// </summary>
         private readonly IDataTypeService dataTypeService;
+
+        /// <summary>
+        /// The type service.
+        /// </summary>
         private readonly ITypeService typeService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataTypeSynchronizationService" /> class.
+        /// </summary>
         public DataTypeSynchronizationService()
             : this(
                 ApplicationContext.Current.Services.DataTypeService,
@@ -30,6 +43,13 @@ namespace Logikfabrik.Umbraco.Jet
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataTypeSynchronizationService" /> class.
+        /// </summary>
+        /// <param name="dataTypeService">The data type service.</param>
+        /// <param name="dataTypeRepository">The data type repository.</param>
+        /// <param name="typeService">The type service.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dataTypeService" />, <paramref name="dataTypeRepository" />, or <paramref name="typeService" /> are <c>null</c>.</exception>
         public DataTypeSynchronizationService(
             IDataTypeService dataTypeService,
             IDataTypeRepository dataTypeRepository,
@@ -56,7 +76,7 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Synchronizes data types.
+        /// Synchronizes this instance.
         /// </summary>
         public void Synchronize()
         {
@@ -76,6 +96,12 @@ namespace Logikfabrik.Umbraco.Jet
             }
         }
 
+        /// <summary>
+        /// Validates the data type identifier.
+        /// </summary>
+        /// <param name="dataTypes">The data types.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dataTypes" /> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if an identifier in <paramref name="dataTypes" /> is conflicting.</exception>
         private static void ValidateDataTypeId(IEnumerable<DataType> dataTypes)
         {
             if (dataTypes == null)
@@ -102,6 +128,12 @@ namespace Logikfabrik.Umbraco.Jet
             }
         }
 
+        /// <summary>
+        /// Validates the data type name.
+        /// </summary>
+        /// <param name="dataTypes">The data types.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dataTypes" /> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if a name in <paramref name="dataTypes" /> is conflicting.</exception>
         private static void ValidateDataTypeName(IEnumerable<DataType> dataTypes)
         {
             if (dataTypes == null)
@@ -123,6 +155,12 @@ namespace Logikfabrik.Umbraco.Jet
             }
         }
 
+        /// <summary>
+        /// Gets the database type.
+        /// </summary>
+        /// <param name="dataType">The data type.</param>
+        /// <returns>The database type.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dataType" /> is <c>null</c>.</exception>
         private static DataTypeDatabaseType GetDatabaseType(DataType dataType)
         {
             if (dataType == null)
@@ -138,6 +176,13 @@ namespace Logikfabrik.Umbraco.Jet
             return dataType.Type == typeof(DateTime) ? DataTypeDatabaseType.Date : DataTypeDatabaseType.Ntext;
         }
 
+        /// <summary>
+        /// Synchronizes data type by name.
+        /// </summary>
+        /// <param name="dataTypeDefinitions">The data type definitions.</param>
+        /// <param name="dataType">The data type.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dataTypeDefinitions" />, or <paramref name="dataType" /> are <c>null</c>.</exception>
+        /// <exception cref="ArgumentException">Thrown if the data type identifier is not <c>null</c>.</exception>
         private void SynchronizeByName(IEnumerable<IDataTypeDefinition> dataTypeDefinitions, DataType dataType)
         {
             if (dataTypeDefinitions == null)
@@ -167,6 +212,13 @@ namespace Logikfabrik.Umbraco.Jet
             }
         }
 
+        /// <summary>
+        /// Synchronizes data type by identifier.
+        /// </summary>
+        /// <param name="dataTypeDefinitions">The data type definitions.</param>
+        /// <param name="dataType">The data type.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dataTypeDefinitions" />, or <paramref name="dataType" /> are <c>null</c>.</exception>
+        /// <exception cref="ArgumentException">Thrown if the data type identifier is <c>null</c>.</exception>
         private void SynchronizeById(IEnumerable<IDataTypeDefinition> dataTypeDefinitions, DataType dataType)
         {
             if (dataTypeDefinitions == null)
@@ -214,9 +266,10 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Creates a new data type.
+        /// Creates the data type.
         /// </summary>
-        /// <param name="dataType">The reflected data type to create.</param>
+        /// <param name="dataType">The data type to create.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dataType" /> is <c>null</c>.</exception>
         private void CreateDataType(DataType dataType)
         {
             if (dataType == null)
@@ -234,10 +287,11 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Updates a data type.
+        /// Updates the data type.
         /// </summary>
-        /// <param name="dataTypeDefinition">The data type to update.</param>
-        /// <param name="dataType">The reflected data type to update.</param>
+        /// <param name="dataTypeDefinition">The data type definition.</param>
+        /// <param name="dataType">The data type to update.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dataTypeDefinition" />, or <paramref name="dataType" /> are <c>null</c>.</exception>
         private void UpdateDataType(IDataTypeDefinition dataTypeDefinition, DataType dataType)
         {
             if (dataTypeDefinition == null)

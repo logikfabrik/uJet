@@ -99,7 +99,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// <param name="content">The document content.</param>
         /// <param name="documentType">Type of the document.</param>
         /// <returns>A document.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" /> or <paramref name="documentType" /> are <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" />, or <paramref name="documentType" /> are <c>null</c>.</exception>
         /// <exception cref="ArgumentException">Thrown if <paramref name="documentType" /> is not a document type.</exception>
         public object GetDocument(IPublishedContent content, Type documentType)
         {

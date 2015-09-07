@@ -8,8 +8,16 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Collections.Generic;
     using Extensions;
 
+    /// <summary>
+    /// The <see cref="MediaType" /> class.
+    /// </summary>
     public class DocumentType : ContentType<DocumentTypeAttribute>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DocumentType" /> class.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is not a document type.</exception>
         public DocumentType(Type type)
             : base(type)
         {
@@ -25,20 +33,27 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Gets the default template for this document type.
+        /// Gets the default template.
         /// </summary>
+        /// <value>
+        /// The default template.
+        /// </value>
         public string DefaultTemplate { get; }
 
         /// <summary>
-        /// Gets the available templates for this document type.
+        /// Gets the templates.
         /// </summary>
+        /// <value>
+        /// The templates.
+        /// </value>
         public IEnumerable<string> Templates { get; }
 
         /// <summary>
-        /// Gets the document type default template from the given type.
+        /// Gets the default template.
         /// </summary>
-        /// <param name="attribute">The document type attribute of the underlying type.</param>
-        /// <returns>A document type default template (alias).</returns>
+        /// <param name="attribute">The attribute.</param>
+        /// <returns>The default template.</returns>
+        /// <exception cref="ArgumentNullException">Throw if <paramref name="attribute" /> is <c>null</c>.</exception>
         private static string GetDefaultTemplate(DocumentTypeAttribute attribute)
         {
             if (attribute == null)
@@ -50,10 +65,11 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Gets the document type available templates (aliases) from the given type.
+        /// Gets the templates.
         /// </summary>
-        /// <param name="attribute">The document type attribute of the underlying type.</param>
-        /// <returns>Document type available templates (aliases).</returns>
+        /// <param name="attribute">The attribute.</param>
+        /// <returns>The templates.</returns>
+        /// <exception cref="ArgumentNullException">Throw if <paramref name="attribute" /> is <c>null</c>.</exception>
         private static IEnumerable<string> GetTemplates(DocumentTypeAttribute attribute)
         {
             if (attribute == null)

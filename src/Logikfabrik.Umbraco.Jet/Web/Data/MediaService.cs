@@ -99,7 +99,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// <param name="content">The media content.</param>
         /// <param name="mediaType">Type of the media.</param>
         /// <returns>The media</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" /> or <paramref name="mediaType" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" />, or <paramref name="mediaType" /> is <c>null</c>.</exception>
         /// <exception cref="ArgumentException">Thrown if <paramref name="mediaType" /> is not a media type.</exception>
         public object GetMedia(IPublishedContent content, Type mediaType)
         {

@@ -31,7 +31,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
         /// <param name="from">From type.</param>
         /// <param name="to">To type.</param>
         /// <returns>The converter</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="from" /> or <paramref name="to" /> are <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="from" />, or <paramref name="to" /> are <c>null</c>.</exception>
         internal static IPropertyValueConverter GetConverter(string uiHint, Type from, Type to)
         {
             if (from == null)

@@ -30,7 +30,7 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// </summary>
         /// <param name="fromType">From type.</param>
         /// <returns>The definition mapping; or <c>null</c> if there's no match.</returns>
-        /// <exception cref="System.ArgumentNullException">Thrown if fromType is null.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="fromType" /> is <c>null</c>.</exception>
         internal static IDataTypeDefinitionMapping GetDefinitionMapping(Type fromType)
         {
             if (fromType == null)
@@ -54,7 +54,7 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// <param name="uiHint">The UI hint.</param>
         /// <param name="fromType">From type.</param>
         /// <returns>The definition; or <c>null</c> if there's no match.</returns>
-        /// <exception cref="System.ArgumentNullException">Thrown if fromType is null.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="fromType" /> is <c>null</c>.</exception>
         internal static IDataTypeDefinition GetDefinition(string uiHint, Type fromType)
         {
             if (fromType == null)

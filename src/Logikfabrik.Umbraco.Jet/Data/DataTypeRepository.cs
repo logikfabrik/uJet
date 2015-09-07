@@ -20,7 +20,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// Initializes a new instance of the <see cref="DataTypeRepository" /> class.
         /// </summary>
         /// <param name="databaseWrapper">The database wrapper.</param>
-        /// <exception cref="System.ArgumentNullException">Thrown if databaseWrapper is null.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="databaseWrapper" /> is <c>null</c>.</exception>
         public DataTypeRepository(IDatabaseWrapper databaseWrapper)
         {
             if (databaseWrapper == null)

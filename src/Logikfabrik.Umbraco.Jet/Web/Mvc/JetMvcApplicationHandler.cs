@@ -9,16 +9,33 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     using global::Umbraco.Core;
     using global::Umbraco.Web.Mvc;
 
+    /// <summary>
+    /// The <see cref="JetMvcApplicationHandler" /> class.
+    /// </summary>
     public class JetMvcApplicationHandler : ApplicationHandler
     {
+        /// <summary>
+        /// The lock.
+        /// </summary>
         private static readonly object Lock = new object();
+
         private static bool configured;
 
+        /// <summary>
+        /// Called when the application is starting.
+        /// </summary>
+        /// <param name="umbracoApplication">The Umbraco application.</param>
+        /// <param name="applicationContext">The application context.</param>
         public override void OnApplicationStarting(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
         {
             FilteredControllerFactoriesResolver.Current.InsertTypeBefore(typeof(RenderControllerFactory), typeof(JetControllerFactory));
         }
 
+        /// <summary>
+        /// Called when the application is started.
+        /// </summary>
+        /// <param name="umbracoApplication">The Umbraco application.</param>
+        /// <param name="applicationContext">The application context.</param>
         public override void OnApplicationStarted(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
         {
             if (!IsInstalled)

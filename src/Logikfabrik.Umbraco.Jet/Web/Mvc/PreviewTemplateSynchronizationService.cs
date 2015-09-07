@@ -7,19 +7,39 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
     using Extensions;
     using global::Umbraco.Core;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
 
+    /// <summary>
+    /// The <see cref="PreviewTemplateSynchronizationService" /> class.
+    /// </summary>
     public class PreviewTemplateSynchronizationService : ISynchronizationService
     {
+        /// <summary>
+        /// The content type service.
+        /// </summary>
         private readonly IContentTypeService contentTypeService;
+
+        /// <summary>
+        /// The document type service.
+        /// </summary>
         private readonly ITypeService documentTypeService;
+
+        /// <summary>
+        /// The file service.
+        /// </summary>
         private readonly IFileService fileService;
+
+        /// <summary>
+        /// The preview template.
+        /// </summary>
         private ITemplate previewTemplate;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PreviewTemplateSynchronizationService" /> class.
+        /// </summary>
         public PreviewTemplateSynchronizationService()
             : this(
                 ApplicationContext.Current.Services.ContentTypeService,
@@ -28,6 +48,13 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PreviewTemplateSynchronizationService" /> class.
+        /// </summary>
+        /// <param name="contentTypeService">The content type service.</param>
+        /// <param name="fileService">The file service.</param>
+        /// <param name="documentTypeService">The document type service.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeService" />, <paramref name="fileService" />, or <paramref name="documentTypeService" /> is <c>null</c>.</exception>
         public PreviewTemplateSynchronizationService(
             IContentTypeService contentTypeService,
             IFileService fileService,
@@ -53,31 +80,31 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
             this.documentTypeService = documentTypeService;
         }
 
+        /// <summary>
+        /// Synchronizes this instance.
+        /// </summary>
         public void Synchronize()
         {
             var contentTypes = contentTypeService.GetAllContentTypes().ToArray();
 
-            foreach (
-                var type in
-                    GetTypes().Where(t => t.GetCustomAttribute<PreviewTemplateAttribute>() != null))
+            foreach (var type in documentTypeService.DocumentTypes.Where(t => Attribute.IsDefined(t, typeof(PreviewTemplateAttribute))))
             {
-                var dt = new DocumentType(type);
-                var ct = contentTypes.FirstOrDefault(contentType => contentType.Alias == dt.Alias);
+                var contentType = contentTypes.FirstOrDefault(t => t.Alias == new DocumentType(type).Alias);
 
-                if (ct == null)
+                if (contentType == null)
                 {
                     continue;
                 }
 
-                UpdateDocumentType(ct);
+                UpdateDocumentType(contentType);
             }
         }
 
-        private IEnumerable<Type> GetTypes()
-        {
-            return documentTypeService.DocumentTypes;
-        }
-
+        /// <summary>
+        /// Updates the content type.
+        /// </summary>
+        /// <param name="contentType">The content type.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentType" /> is <c>null</c>.</exception>
         private void UpdateDocumentType(IContentType contentType)
         {
             if (contentType == null)
@@ -85,15 +112,21 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
                 throw new ArgumentNullException(nameof(contentType));
             }
 
-            var templates = GetAllowedTemplates(contentType);
-            var template = templates.First(t => t.Alias == PreviewTemplateAttribute.TemplateName.Alias());
+            var allowedTemplates = GetAllowedTemplates(contentType);
+            var template = allowedTemplates.First(t => t.Alias == PreviewTemplateAttribute.TemplateName.Alias());
 
-            contentType.AllowedTemplates = templates;
+            contentType.AllowedTemplates = allowedTemplates;
             contentType.SetDefaultTemplate(template);
 
             contentTypeService.Save(contentType);
         }
 
+        /// <summary>
+        /// Gets the allowed templates for the specified content type.
+        /// </summary>
+        /// <param name="contentType">The content type.</param>
+        /// <returns>The allowed templates.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentType" /> is <c>null</c>.</exception>
         private List<ITemplate> GetAllowedTemplates(IContentType contentType)
         {
             if (contentType == null)
@@ -108,7 +141,9 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
                 templates.AddRange(contentType.AllowedTemplates);
             }
 
-            if (templates.All(t => t.Alias != PreviewTemplateAttribute.TemplateName.Alias()))
+            var previewTemplateAlias = PreviewTemplateAttribute.TemplateName.Alias();
+
+            if (templates.All(t => t.Alias != previewTemplateAlias))
             {
                 templates.Add(GetPreviewTemplate());
             }
@@ -116,6 +151,10 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
             return templates;
         }
 
+        /// <summary>
+        /// Gets the preview template.
+        /// </summary>
+        /// <returns>The preview template.</returns>
         private ITemplate GetPreviewTemplate()
         {
             if (previewTemplate != null)
@@ -130,13 +169,15 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
                 return previewTemplate;
             }
 
+            var previewTemplateAlias = PreviewTemplateAttribute.TemplateName.Alias();
+
             fileService.SaveTemplate(
                 new Template(
-                    string.Concat(PreviewTemplateAttribute.TemplateName.Alias(), ".cshtml"),
+                    string.Concat(previewTemplateAlias, ".cshtml"),
                     PreviewTemplateAttribute.TemplateName,
-                    PreviewTemplateAttribute.TemplateName.Alias())
+                    previewTemplateAlias)
                 {
-                    Content = "@inherits Umbraco.Web.Mvc.UmbracoTemplatePage"
+                    Content = $"@inherits {typeof(global::Umbraco.Web.Mvc.UmbracoTemplatePage)}"
                 });
 
             previewTemplate = fileService.GetTemplate(PreviewTemplateAttribute.TemplateName.Alias());

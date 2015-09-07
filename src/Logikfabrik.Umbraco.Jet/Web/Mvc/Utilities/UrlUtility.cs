@@ -9,24 +9,27 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc.Utilities
     using System.Linq;
     using System.Web;
 
+    /// <summary>
+    /// The <see cref="UrlUtility" /> class.
+    /// </summary>
     public static class UrlUtility
     {
         /// <summary>
-        /// Gets a URL using the given node ID.
+        /// Gets a URL using the specified node identifier.
         /// </summary>
-        /// <param name="nodeId">The node ID to get a URL using.</param>
-        /// <returns>A URL.</returns>
+        /// <param name="nodeId">The node identifier.</param>
+        /// <returns>The URL.</returns>
         public static string GetUrl(int nodeId)
         {
             return GetUrl(nodeId, null);
         }
 
         /// <summary>
-        /// Gets a URL using the given node ID and query.
+        /// Gets a URL using the specified node identifier and query.
         /// </summary>
-        /// <param name="nodeId">The node ID to get a URL using.</param>
-        /// <param name="query">The query to get a URL using.</param>
-        /// <returns>A URL.</returns>
+        /// <param name="nodeId">The node identifier.</param>
+        /// <param name="query">The query.</param>
+        /// <returns>The URL.</returns>
         public static string GetUrl(int nodeId, object query)
         {
             var url = umbraco.library.NiceUrl(nodeId);
@@ -35,21 +38,21 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc.Utilities
         }
 
         /// <summary>
-        /// Gets a URL using the given URL.
+        /// Gets a URL using the specified URL.
         /// </summary>
-        /// <param name="url">The URL to get a URL using.</param>
-        /// <returns>A URL.</returns>
+        /// <param name="url">The URL.</param>
+        /// <returns>The URL.</returns>
         public static string GetUrl(string url)
         {
             return GetUrl(url, null);
         }
 
         /// <summary>
-        /// Gets a URL using the given URL and query.
+        /// Gets a URL using the specified URL and query.
         /// </summary>
-        /// <param name="url">The URL to get a URL using.</param>
-        /// <param name="query">The query to get a URL using.</param>
-        /// <returns>A URL.</returns>
+        /// <param name="url">The URL.</param>
+        /// <param name="query">The query.</param>
+        /// <returns>The URL.</returns>
         public static string GetUrl(string url, object query)
         {
             var q = new NameValueCollection();
@@ -70,10 +73,10 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc.Utilities
         }
 
         /// <summary>
-        /// Gets a query string using the given query.
+        /// Gets a query using the specified query.
         /// </summary>
-        /// <param name="query">The query to get a query string using.</param>
-        /// <returns>A query string.</returns>
+        /// <param name="query">The query.</param>
+        /// <returns>The query.</returns>
         private static string GetQuery(NameValueCollection query)
         {
             if (query.Count == 0)
