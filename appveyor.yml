@@ -1,5 +1,5 @@
 version: 3.2.0.{build}
-os: Windows Server 2012
+os: Visual Studio 2015
 platform: Any CPU
 configuration: Release
 before_build:
