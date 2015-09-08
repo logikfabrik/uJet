@@ -362,7 +362,6 @@ namespace Logikfabrik.Umbraco.Jet
 
             var definition = GetDataTypeDefinition(contentTypeProperty);
 
-            // ReSharper disable once RedundantCheckBeforeAssignment
             if (propertyType.DataTypeDefinitionId != definition.Id)
             {
                 propertyType.DataTypeDefinitionId = definition.Id;
