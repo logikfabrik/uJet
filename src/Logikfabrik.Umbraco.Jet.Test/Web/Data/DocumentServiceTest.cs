@@ -91,7 +91,6 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
             var umbracoHelperWrapper = new Mock<IUmbracoHelperWrapper>();
             var typeService = new Mock<ITypeService>();
 
-            // ReSharper disable once ImplicitlyCapturedClosure
             umbracoHelperWrapper.Setup(m => m.TypedDocument(id)).Returns(() =>
             {
                 Func<string, object, IPublishedProperty> getProperty = (alias, value) =>
@@ -119,8 +118,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
                     getProperty("FloatingBinaryProperty".Alias(), floatingBinaryProperty),
                     getProperty("DateTimeProperty".Alias(), dateTimeProperty),
                     getProperty("BooleanProperty".Alias(), booleanProperty),
+
                     // Returned as string as the Umbraco data model has no explicit support for floating decimal point types.
                     getProperty("FloatingDecimalPropertyAsString", floatingDecimalPropertyAsString.ToString(CultureInfo.InvariantCulture)),
+
                     // Returned as string as the Umbraco data model has no explicit support for floating binary point types.
                     getProperty("FloatingBinaryPropertyAsString", floatingDecimalPropertyAsString.ToString(CultureInfo.InvariantCulture)),
                     getProperty("StringPropertyAsHtmlString", new HtmlString(stringPropertyAsHtmlString))

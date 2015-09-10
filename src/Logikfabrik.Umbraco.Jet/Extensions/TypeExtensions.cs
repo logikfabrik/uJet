@@ -21,23 +21,7 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
         /// </returns>
         public static bool IsDocumentType(this Type type)
         {
-            try
-            {
-                if (!IsValidType(type))
-                {
-                    return false;
-                }
-
-                return type.GetCustomAttribute<DocumentTypeAttribute>() != null;
-            }
-            catch (TypeLoadException)
-            {
-                return false;
-            }
-            catch (ReflectionTypeLoadException)
-            {
-                return false;
-            }
+            return HasAttribute<DocumentTypeAttribute>(type);
         }
 
         /// <summary>
@@ -49,23 +33,7 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
         /// </returns>
         public static bool IsDataType(this Type type)
         {
-            try
-            {
-                if (!IsValidType(type))
-                {
-                    return false;
-                }
-
-                return type.GetCustomAttribute<DataTypeAttribute>() != null;
-            }
-            catch (TypeLoadException)
-            {
-                return false;
-            }
-            catch (ReflectionTypeLoadException)
-            {
-                return false;
-            }
+            return HasAttribute<DataTypeAttribute>(type);
         }
 
         /// <summary>
@@ -77,23 +45,7 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
         /// </returns>
         public static bool IsMediaType(this Type type)
         {
-            try
-            {
-                if (!IsValidType(type))
-                {
-                    return false;
-                }
-
-                return type.GetCustomAttribute<MediaTypeAttribute>() != null;
-            }
-            catch (TypeLoadException)
-            {
-                return false;
-            }
-            catch (ReflectionTypeLoadException)
-            {
-                return false;
-            }
+            return HasAttribute<MediaTypeAttribute>(type);
         }
 
         /// <summary>
@@ -105,14 +57,27 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
         /// </returns>
         public static bool IsMemberType(this Type type)
         {
+            return HasAttribute<MemberTypeAttribute>(type);
+        }
+
+        /// <summary>
+        /// Determines whether the type has an attribute of the specified type.
+        /// </summary>
+        /// <typeparam name="T">The attribute type.</typeparam>
+        /// <param name="type">The type.</param>
+        /// <returns>
+        ///   <c>true</c> if the type has an attribute of the specified type; otherwise, <c>false</c>.
+        /// </returns>
+        private static bool HasAttribute<T>(Type type) where T : Attribute
+        {
+            if (type == null)
+            {
+                return false;
+            }
+
             try
             {
-                if (!IsValidType(type))
-                {
-                    return false;
-                }
-
-                return type.GetCustomAttribute<MemberTypeAttribute>() != null;
+                return IsValidType(type) && type.GetCustomAttribute<T>() != null;
             }
             catch (TypeLoadException)
             {

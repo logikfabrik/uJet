@@ -81,7 +81,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             content.VerifyAll();
         }
-        
+
         #endregion
 
         #region Media type
@@ -153,7 +153,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             content.VerifyAll();
         }
-        
+
         #endregion
 
         [DocumentType("DefaultValueServiceTestDocumentType")]

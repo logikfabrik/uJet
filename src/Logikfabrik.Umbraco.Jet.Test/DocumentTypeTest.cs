@@ -151,7 +151,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
             Assert.AreSame(typeof(DocumentTypeTestPropertyType), pt.Type);
         }
 
-        [DocumentType("DocumentTypeTestDocumentType",
+        [DocumentType(
+            "DocumentTypeTestDocumentType",
             Description = "Description",
             AllowedAsRoot = true,
             AllowedChildNodeTypes = new Type[] { },

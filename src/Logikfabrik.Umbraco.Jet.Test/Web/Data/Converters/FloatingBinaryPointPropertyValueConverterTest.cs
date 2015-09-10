@@ -7,46 +7,103 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data.Converters
     using System.Globalization;
     using Jet.Web.Data.Converters;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    
+
+    /// <summary>
+    /// The <see cref="FloatingBinaryPointPropertyValueConverterTest" /> class.
+    /// </summary>
     [TestClass]
     public class FloatingBinaryPointPropertyValueConverterTest
     {
+        /// <summary>
+        /// Test for supported type <see cref="float" />.
+        /// </summary>
         [TestMethod]
-        public void CanConvertValue()
+        public void CanConvertStringToFloat()
+        {
+            const float value = 1.1f;
+
+            var converter = new FloatingBinaryPointPropertyValueConverter();
+
+            Assert.AreEqual(value, converter.Convert(value.ToString(CultureInfo.InvariantCulture), typeof(float)));
+        }
+
+        /// <summary>
+        /// Test for supported type <see cref="float" />.
+        /// </summary>
+        [TestMethod]
+        public void CanConvertStringToNullableFloat()
+        {
+            var converter = new FloatingBinaryPointPropertyValueConverter();
+
+            Assert.AreEqual(null, converter.Convert(null, typeof(float?)));
+        }
+
+        /// <summary>
+        /// Test for supported type <see cref="double" />.
+        /// </summary>
+        [TestMethod]
+        public void CanConvertStringToDouble()
+        {
+            const double value = 1.1;
+
+            var converter = new FloatingBinaryPointPropertyValueConverter();
+
+            Assert.AreEqual(value, converter.Convert(value.ToString(CultureInfo.InvariantCulture), typeof(double)));
+        }
+
+        /// <summary>
+        /// Test for supported type <see cref="double" />.
+        /// </summary>
+        [TestMethod]
+        public void CanConvertStringToNullableDouble()
+        {
+            var converter = new FloatingBinaryPointPropertyValueConverter();
+
+            Assert.AreEqual(null, converter.Convert(null, typeof(double?)));
+        }
+
+        /// <summary>
+        /// Test for supported type <see cref="float" />.
+        /// </summary>
+        [TestMethod]
+        public void CanConvertValueReturnsTrueForFloat()
         {
             var converter = new FloatingBinaryPointPropertyValueConverter();
 
             Assert.IsTrue(converter.CanConvertValue(null, typeof(string), typeof(float)));
+        }
+
+        /// <summary>
+        /// Test for supported type <see cref="float" />.
+        /// </summary>
+        [TestMethod]
+        public void CanConvertValueReturnsTrueForNullableFloat()
+        {
+            var converter = new FloatingBinaryPointPropertyValueConverter();
+
             Assert.IsTrue(converter.CanConvertValue(null, typeof(string), typeof(float?)));
+        }
+
+        /// <summary>
+        /// Test for supported type <see cref="double" />.
+        /// </summary>
+        [TestMethod]
+        public void CanConvertValueReturnsTrueForDouble()
+        {
+            var converter = new FloatingBinaryPointPropertyValueConverter();
+
             Assert.IsTrue(converter.CanConvertValue(null, typeof(string), typeof(double)));
+        }
+
+        /// <summary>
+        /// Test for supported type <see cref="double" />.
+        /// </summary>
+        [TestMethod]
+        public void CanConvertValueReturnsTrueForNullableDouble()
+        {
+            var converter = new FloatingBinaryPointPropertyValueConverter();
+
             Assert.IsTrue(converter.CanConvertValue(null, typeof(string), typeof(double?)));
-
-            const float value1 = 1.1f;
-            float? value2 = null;
-            const double value3 = 1.1;
-            double? value4 = null;
-            var propertyValue1 = value1.ToString(CultureInfo.InvariantCulture);
-            // ReSharper disable once ExpressionIsAlwaysNull
-            var propertyValue2 = value2;
-            var propertyValue3 = value3.ToString(CultureInfo.InvariantCulture);
-            // ReSharper disable once ExpressionIsAlwaysNull
-            var propertyValue4 = value4;
-
-            var convertedValue1 = converter.Convert(propertyValue1, typeof(float));
-            // ReSharper disable once ExpressionIsAlwaysNull
-            var convertedValue2 = converter.Convert(propertyValue2, typeof(float?));
-
-            Assert.AreEqual(value1, convertedValue1);
-            // ReSharper disable once ExpressionIsAlwaysNull
-            Assert.AreEqual(value2, convertedValue2);
-
-            var convertedValue3 = converter.Convert(propertyValue3, typeof(double));
-            // ReSharper disable once ExpressionIsAlwaysNull
-            var convertedValue4 = converter.Convert(propertyValue4, typeof(double?));
-
-            Assert.AreEqual(value3, convertedValue3);
-            // ReSharper disable once ExpressionIsAlwaysNull
-            Assert.AreEqual(value4, convertedValue4);
         }
     }
 }

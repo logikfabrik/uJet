@@ -20,7 +20,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         private const string NameForDocumentTypeWithoutId = "DocumentTypeWithoutId";
         private const string DefaultTemplateForDocumentTypeWithId = "DefaultTemplateForDocumentTypeWithId";
         private const string DefaultTemplateForDocumentTypeWithoutId = "DefaultTemplateForDocumentTypeWithoutId";
-        
+
         [TestMethod]
         public void CanCreateDocumentTypeWithAndWithoutId()
         {
@@ -58,7 +58,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var documentTypeSynchronizationService = new DocumentTypeSynchronizationService(
                 contentTypeService.Object,
-                contentTypeRepository.Object, 
+                contentTypeRepository.Object,
                 typeService.Object,
                 fileService.Object);
 
@@ -90,8 +90,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
             contentTypeRepository.Setup(m => m.GetContentTypeId(It.IsAny<Guid>())).Returns((int?)null);
             typeService.SetupGet(m => m.DocumentTypes).Returns(new[] { typeof(DocumentTypeWithId) });
 
-            var documentTypeSynchronizationService = new DocumentTypeSynchronizationService(contentTypeService.Object,
-                contentTypeRepository.Object, typeService.Object, fileService.Object);
+            var documentTypeSynchronizationService = new DocumentTypeSynchronizationService(
+                contentTypeService.Object, contentTypeRepository.Object, typeService.Object, fileService.Object);
 
             documentTypeSynchronizationService.Synchronize();
 
@@ -120,8 +120,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
             contentTypeRepository.Setup(m => m.GetContentTypeId(It.IsAny<Guid>())).Returns((int?)null);
             typeService.SetupGet(m => m.DocumentTypes).Returns(new[] { typeof(DocumentTypeWithoutId) });
 
-            var documentTypeSynchronizationService = new DocumentTypeSynchronizationService(contentTypeService.Object,
-                contentTypeRepository.Object, typeService.Object, fileService.Object);
+            var documentTypeSynchronizationService = new DocumentTypeSynchronizationService(
+                contentTypeService.Object, contentTypeRepository.Object, typeService.Object, fileService.Object);
 
             documentTypeSynchronizationService.Synchronize();
 
@@ -155,8 +155,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
             contentTypeRepository.Setup(m => m.GetContentTypeId(It.IsAny<Guid>())).Returns((int?)null);
             typeService.SetupGet(m => m.DocumentTypes).Returns(new[] { typeof(DocumentTypeWithId) });
 
-            var documentTypeSynchronizationService = new DocumentTypeSynchronizationService(contentTypeService.Object,
-                contentTypeRepository.Object, typeService.Object, fileService.Object);
+            var documentTypeSynchronizationService = new DocumentTypeSynchronizationService(
+                contentTypeService.Object, contentTypeRepository.Object, typeService.Object, fileService.Object);
 
             documentTypeSynchronizationService.Synchronize();
 

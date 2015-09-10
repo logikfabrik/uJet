@@ -7,31 +7,57 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data.Converters
     using System.Globalization;
     using Jet.Web.Data.Converters;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    
+
+    /// <summary>
+    /// The <see cref="FloatingDecimalPointPropertyValueConverterTest" /> class.
+    /// </summary>
     [TestClass]
     public class FloatingDecimalPointPropertyValueConverterTest
     {
+        /// <summary>
+        /// Test for supported type <see cref="decimal" />.
+        /// </summary>
         [TestMethod]
-        public void CanConvertValue()
+        public void CanConvertStringToDecimal()
+        {
+            const decimal value = 1.1m;
+
+            var converter = new FloatingDecimalPointPropertyValueConverter();
+
+            Assert.AreEqual(value, converter.Convert(value.ToString(CultureInfo.InvariantCulture), typeof(decimal)));
+        }
+
+        /// <summary>
+        /// Test for supported type <see cref="decimal" />.
+        /// </summary>
+        [TestMethod]
+        public void CanConvertStringToNullableDecimal()
+        {
+            var converter = new FloatingDecimalPointPropertyValueConverter();
+
+            Assert.AreEqual(null, converter.Convert(null, typeof(decimal?)));
+        }
+
+        /// <summary>
+        /// Test for supported type <see cref="decimal" />.
+        /// </summary>
+        [TestMethod]
+        public void CanConvertValueReturnsTrueForDecimal()
         {
             var converter = new FloatingDecimalPointPropertyValueConverter();
 
             Assert.IsTrue(converter.CanConvertValue(null, typeof(string), typeof(decimal)));
+        }
+
+        /// <summary>
+        /// Test for supported type <see cref="decimal" />.
+        /// </summary>
+        [TestMethod]
+        public void CanConvertValueReturnsTrueForNullableDecimal()
+        {
+            var converter = new FloatingDecimalPointPropertyValueConverter();
+
             Assert.IsTrue(converter.CanConvertValue(null, typeof(string), typeof(decimal?)));
-
-            const decimal value1 = 1.1m;
-            decimal? value2 = null;
-            var propertyValue1 = value1.ToString(CultureInfo.InvariantCulture);
-            // ReSharper disable once ExpressionIsAlwaysNull
-            var propertyValue2 = value2;
-
-            var convertedValue1 = converter.Convert(propertyValue1, typeof(decimal));
-            // ReSharper disable once ExpressionIsAlwaysNull
-            var convertedValue2 = converter.Convert(propertyValue2, typeof(decimal?));
-
-            Assert.AreEqual(value1, convertedValue1);
-            // ReSharper disable once ExpressionIsAlwaysNull
-            Assert.AreEqual(value2, convertedValue2);
         }
     }
 }

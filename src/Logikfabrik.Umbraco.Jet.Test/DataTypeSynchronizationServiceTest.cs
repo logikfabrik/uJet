@@ -19,7 +19,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         private const string NameForDataTypeWithoutId = "DataTypeWithoutId";
         private const string EditorForDataTypeWithId = "EditorForDataTypeWithId";
         private const string EditorForDataTypeWithoutId = "EditorForDataTypeWithoutId";
-        
+
         [TestMethod]
         public void CanCreateDataTypeWithAndWithoutId()
         {
@@ -58,7 +58,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var dataTypeSynchronizationService = new DataTypeSynchronizationService(
                 dataTypeService.Object,
-                dataTypeRepository.Object, 
+                dataTypeRepository.Object,
                 typeService.Object);
 
             dataTypeSynchronizationService.Synchronize();
@@ -122,7 +122,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var dataTypeSynchronizationService = new DataTypeSynchronizationService(
                 dataTypeService.Object,
-                dataTypeRepository.Object, 
+                dataTypeRepository.Object,
                 typeService.Object);
 
             dataTypeSynchronizationService.Synchronize();
@@ -198,7 +198,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var dataTypeSynchronizationService = new DataTypeSynchronizationService(
                 dataTypeService.Object,
-                dataTypeRepository.Object, 
+                dataTypeRepository.Object,
                 typeService.Object);
 
             dataTypeSynchronizationService.Synchronize();

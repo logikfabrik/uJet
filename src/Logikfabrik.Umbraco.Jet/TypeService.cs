@@ -47,15 +47,29 @@ namespace Logikfabrik.Umbraco.Jet
         private readonly Lazy<IEnumerable<Assembly>> assemblies;
 
         /// <summary>
-        /// Prevents a default instance of the <see cref="TypeService" /> class from being created.
+        /// Initializes a new instance of the <see cref="TypeService" /> class.
         /// </summary>
-        private TypeService()
+        /// <param name="getAssemblies">Function to get assemblies to scan.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="getAssemblies" /> is <c>null</c>.</exception>
+        internal TypeService(Func<IEnumerable<Assembly>> getAssemblies)
         {
-            assemblies = new Lazy<IEnumerable<Assembly>>(GetAssemblies);
+            if (getAssemblies == null)
+            {
+                throw new ArgumentNullException(nameof(getAssemblies));
+            }
+
+            assemblies = new Lazy<IEnumerable<Assembly>>(getAssemblies);
             documentTypes = new Lazy<IEnumerable<Type>>(GetDocumentTypes);
             dataTypes = new Lazy<IEnumerable<Type>>(GetDataTypes);
             mediaTypes = new Lazy<IEnumerable<Type>>(GetMediaTypes);
             memberTypes = new Lazy<IEnumerable<Type>>(GetMemberTypes);
+        }
+
+        /// <summary>
+        /// Prevents a default instance of the <see cref="TypeService" /> class from being created.
+        /// </summary>
+        private TypeService() : this(GetAssemblies)
+        {
         }
 
         /// <summary>
@@ -101,11 +115,11 @@ namespace Logikfabrik.Umbraco.Jet
         /// <returns>The assemblies to be scanned.</returns>
         private static IEnumerable<Assembly> GetAssemblies()
         {
-            var assemblies = JetConfigurationManager.Assemblies;
+            var assemblyNames = JetConfigurationManager.Assemblies;
 
-            return !assemblies.Any()
+            return !assemblyNames.Any()
                 ? AppDomain.CurrentDomain.GetAssemblies()
-                : AppDomain.CurrentDomain.GetAssemblies().Where(a => assemblies.Contains(a.GetName().Name));
+                : AppDomain.CurrentDomain.GetAssemblies().Where(a => assemblyNames.Contains(a.GetName().Name));
         }
 
         /// <summary>
@@ -156,16 +170,29 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(predicate));
             }
 
-            Func<Assembly, IEnumerable<Type>> getTypes = a => a.GetTypes().Where(predicate);
-
             var types = new List<Type>();
 
             foreach (var assembly in assemblies.Value)
             {
-                types.AddRange(getTypes(assembly));
+                types.AddRange(GetTypes(assembly).Where(predicate));
             }
 
             return types;
+        }
+
+        /// <summary>
+        /// Gets the types.
+        /// </summary>
+        /// <param name="assembly">The assembly to get types from.</param>
+        /// <returns>The types.</returns>
+        private IEnumerable<Type> GetTypes(Assembly assembly)
+        {
+            if (assembly == null)
+            {
+                throw new ArgumentNullException(nameof(assembly));
+            }
+
+            return assembly.GetTypes();
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             return new MediaType(typeof(MediaTypeTestMediaType));
         }
-        
+
         [TestMethod]
         public void CanGetTypeFromAttribute()
         {
@@ -145,7 +145,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
             Assert.IsNull(pt);
         }
 
-        [MediaType("MediaTypeTestMediaType",
+        [MediaType(
+            "MediaTypeTestMediaType",
             Description = "Description",
             AllowedAsRoot = true,
             AllowedChildNodeTypes = new Type[] { })]

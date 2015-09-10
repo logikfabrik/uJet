@@ -18,7 +18,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         private const string IdForMediaTypeWithId = "D7B9B7F5-B2ED-4C2F-8239-9A2F50D14054";
         private const string NameForMediaTypeWithId = "MediaTypeWithId";
         private const string NameForMediaTypeWithoutId = "MediaTypeWithoutId";
-        
+
         [TestMethod]
         public void CanCreateMediaTypeWithAndWithoutId()
         {
@@ -53,8 +53,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
             contentTypeRepository.Setup(m => m.GetContentTypeId(It.IsAny<Guid>())).Returns((int?)null);
             typeService.SetupGet(m => m.MediaTypes).Returns(new[] { typeof(MediaTypeWithId), typeof(MediaTypeWithoutId) });
 
-            var mediaTypeSynchronizationService = new MediaTypeSynchronizationService(contentTypeService.Object,
-                contentTypeRepository.Object, typeService.Object);
+            var mediaTypeSynchronizationService = new MediaTypeSynchronizationService(
+                contentTypeService.Object, contentTypeRepository.Object, typeService.Object);
 
             mediaTypeSynchronizationService.Synchronize();
 
@@ -83,8 +83,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
             contentTypeRepository.Setup(m => m.GetContentTypeId(It.IsAny<Guid>())).Returns((int?)null);
             typeService.SetupGet(m => m.MediaTypes).Returns(new[] { typeof(MediaTypeWithId) });
 
-            var mediaTypeSynchronizationService = new MediaTypeSynchronizationService(contentTypeService.Object,
-                contentTypeRepository.Object, typeService.Object);
+            var mediaTypeSynchronizationService = new MediaTypeSynchronizationService(
+                contentTypeService.Object, contentTypeRepository.Object, typeService.Object);
 
             mediaTypeSynchronizationService.Synchronize();
 
@@ -112,8 +112,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
             contentTypeRepository.Setup(m => m.GetContentTypeId(It.IsAny<Guid>())).Returns((int?)null);
             typeService.SetupGet(m => m.MediaTypes).Returns(new[] { typeof(MediaTypeWithoutId) });
 
-            var mediaTypeSynchronizationService = new MediaTypeSynchronizationService(contentTypeService.Object,
-                contentTypeRepository.Object, typeService.Object);
+            var mediaTypeSynchronizationService = new MediaTypeSynchronizationService(
+                contentTypeService.Object, contentTypeRepository.Object, typeService.Object);
 
             mediaTypeSynchronizationService.Synchronize();
 
@@ -146,8 +146,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
             contentTypeRepository.Setup(m => m.GetContentTypeId(It.IsAny<Guid>())).Returns((int?)null);
             typeService.SetupGet(m => m.MediaTypes).Returns(new[] { typeof(MediaTypeWithId) });
 
-            var mediaTypeSynchronizationService = new MediaTypeSynchronizationService(contentTypeService.Object,
-                contentTypeRepository.Object, typeService.Object);
+            var mediaTypeSynchronizationService = new MediaTypeSynchronizationService(
+                contentTypeService.Object, contentTypeRepository.Object, typeService.Object);
 
             mediaTypeSynchronizationService.Synchronize();
 

@@ -4,160 +4,306 @@
 
 namespace Logikfabrik.Umbraco.Jet.Test
 {
+    using System;
+    using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
+    using System.Reflection.Emit;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Moq;
 
+    /// <summary>
+    /// The <see cref="TypeServiceTest" /> class.
+    /// </summary>
     [TestClass]
     public class TypeServiceTest
     {
+        /// <summary>
+        /// Test to get document types.
+        /// </summary>
         [TestMethod]
         public void CanGetDocumentTypes()
         {
-            var documentTypes = TypeService.Instance.DocumentTypes;
+            TypeUtility.GetAttributeBuilder<DocumentTypeAttribute> builder = () =>
+            {
+                var constructor = typeof(DocumentTypeAttribute).GetConstructor(new[] { typeof(string) });
 
-            Assert.IsTrue(documentTypes.Any());
+                return constructor == null ? null : new CustomAttributeBuilder(constructor, new object[] { "Name" });
+            };
+
+            var type = TypeUtility.GetType("MyType", builder);
+
+            Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
+
+            var typeServiceMock = new Mock<TypeService>(getAssemblies) { CallBase = true };
+
+            var documentTypes = typeServiceMock.Object.DocumentTypes;
+
+            Assert.AreEqual(1, documentTypes.Count());
         }
 
+        /// <summary>
+        /// Test to get abstract document types.
+        /// </summary>
         [TestMethod]
         public void CannotGetAbstractDocumentTypes()
         {
-            var documentTypes = TypeService.Instance.DocumentTypes;
-            var containsAbstractType = documentTypes.Contains(typeof(TypeServiceTestAbstractDocumentType));
+            TypeUtility.GetAttributeBuilder<DocumentTypeAttribute> builder = () =>
+            {
+                var constructor = typeof(DocumentTypeAttribute).GetConstructor(new[] { typeof(string) });
 
-            Assert.IsFalse(containsAbstractType);
+                return constructor == null ? null : new CustomAttributeBuilder(constructor, new object[] { "Name" });
+            };
+
+            var type = TypeUtility.GetAbstractType("MyType", builder);
+
+            Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
+
+            var typeServiceMock = new Mock<TypeService>(getAssemblies) { CallBase = true };
+
+            var documentTypes = typeServiceMock.Object.DocumentTypes;
+
+            Assert.IsFalse(documentTypes.Any());
         }
 
+        /// <summary>
+        /// Test to get document types without public default constructor.
+        /// </summary>
         [TestMethod]
-        public void CannotGetDocumentTypesWithoutDefaultConstructor()
+        public void CannotGetDocumentTypesWithoutPublicDefaultConstructor()
         {
-            var documentTypes = TypeService.Instance.DocumentTypes;
-            var containsTypeWithoutDefaultConstructor = documentTypes.Contains(typeof(TypeServiceTestDocumentTypeWithoutDefaultConstructor));
+            TypeUtility.GetAttributeBuilder<DocumentTypeAttribute> builder = () =>
+            {
+                var constructor = typeof(DocumentTypeAttribute).GetConstructor(new[] { typeof(string) });
 
-            Assert.IsFalse(containsTypeWithoutDefaultConstructor);
+                return constructor == null ? null : new CustomAttributeBuilder(constructor, new object[] { "Name" });
+            };
+
+            var type = TypeUtility.GetTypeWithoutPublicDefaultConstructor("MyType", builder);
+
+            Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
+
+            var typeServiceMock = new Mock<TypeService>(getAssemblies) { CallBase = true };
+
+            var documentTypes = typeServiceMock.Object.DocumentTypes;
+
+            Assert.IsFalse(documentTypes.Any());
         }
 
+        /// <summary>
+        /// Test to get data types.
+        /// </summary>
         [TestMethod]
         public void CanGetDataTypes()
         {
-            var dataTypes = TypeService.Instance.DataTypes;
+            TypeUtility.GetAttributeBuilder<DataTypeAttribute> builder = () =>
+            {
+                var constructor = typeof(DataTypeAttribute).GetConstructor(new[] { typeof(Type), typeof(string) });
 
-            Assert.IsTrue(dataTypes.Any());
+                return constructor == null ? null : new CustomAttributeBuilder(constructor, new object[] { typeof(int), "Editor" });
+            };
+
+            var type = TypeUtility.GetType("MyType", builder);
+
+            Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
+
+            var typeServiceMock = new Mock<TypeService>(getAssemblies) { CallBase = true };
+
+            var dataTypes = typeServiceMock.Object.DataTypes;
+
+            Assert.AreEqual(1, dataTypes.Count());
         }
 
+        /// <summary>
+        /// Test to get abstract data types.
+        /// </summary>
         [TestMethod]
         public void CannotGetAbstractDataTypes()
         {
-            var dataTypes = TypeService.Instance.DataTypes;
-            var containsAbstractType = dataTypes.Contains(typeof(TypeServiceTestAbstractDataType));
+            TypeUtility.GetAttributeBuilder<DataTypeAttribute> builder = () =>
+            {
+                var constructor = typeof(DataTypeAttribute).GetConstructor(new[] { typeof(Type), typeof(string) });
 
-            Assert.IsFalse(containsAbstractType);
+                return constructor == null ? null : new CustomAttributeBuilder(constructor, new object[] { typeof(int), "Editor" });
+            };
+
+            var type = TypeUtility.GetAbstractType("MyType", builder);
+
+            Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
+
+            var typeServiceMock = new Mock<TypeService>(getAssemblies) { CallBase = true };
+
+            var dataTypes = typeServiceMock.Object.DataTypes;
+
+            Assert.IsFalse(dataTypes.Any());
         }
 
+        /// <summary>
+        /// Test to get data types without public default constructor.
+        /// </summary>
         [TestMethod]
         public void CannotGetDataTypesWithoutDefaultConstructor()
         {
-            var dataTypes = TypeService.Instance.DataTypes;
-            var containsTypeWithoutDefaultConstructor = dataTypes.Contains(typeof(TypeServiceTestDataTypeWithoutDefaultConstructor));
+            TypeUtility.GetAttributeBuilder<DataTypeAttribute> builder = () =>
+            {
+                var constructor = typeof(DataTypeAttribute).GetConstructor(new[] { typeof(Type), typeof(string) });
 
-            Assert.IsFalse(containsTypeWithoutDefaultConstructor);
+                return constructor == null ? null : new CustomAttributeBuilder(constructor, new object[] { typeof(int), "Editor" });
+            };
+
+            var type = TypeUtility.GetTypeWithoutPublicDefaultConstructor("MyType", builder);
+
+            Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
+
+            var typeServiceMock = new Mock<TypeService>(getAssemblies) { CallBase = true };
+
+            var dataTypes = typeServiceMock.Object.DataTypes;
+
+            Assert.IsFalse(dataTypes.Any());
         }
 
+        /// <summary>
+        /// Test to get media types.
+        /// </summary>
         [TestMethod]
         public void CanGetMediaTypes()
         {
-            var mediaTypes = TypeService.Instance.MediaTypes;
+            TypeUtility.GetAttributeBuilder<MediaTypeAttribute> builder = () =>
+            {
+                var constructor = typeof(MediaTypeAttribute).GetConstructor(new[] { typeof(string) });
 
-            Assert.IsTrue(mediaTypes.Any());
+                return constructor == null ? null : new CustomAttributeBuilder(constructor, new object[] { "Name" });
+            };
+
+            var type = TypeUtility.GetType("MyType", builder);
+
+            Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
+
+            var typeServiceMock = new Mock<TypeService>(getAssemblies) { CallBase = true };
+
+            var mediaTypes = typeServiceMock.Object.MediaTypes;
+
+            Assert.AreEqual(1, mediaTypes.Count());
         }
 
+        /// <summary>
+        /// Test to get abstract media types.
+        /// </summary>
         [TestMethod]
         public void CannotGetAbstractMediaTypes()
         {
-            var mediaTypes = TypeService.Instance.MediaTypes;
-            var containsAbstractType = mediaTypes.Contains(typeof(TypeServiceTestAbstractMediaType));
+            TypeUtility.GetAttributeBuilder<MediaTypeAttribute> builder = () =>
+            {
+                var constructor = typeof(MediaTypeAttribute).GetConstructor(new[] { typeof(string) });
 
-            Assert.IsFalse(containsAbstractType);
+                return constructor == null ? null : new CustomAttributeBuilder(constructor, new object[] { "Name" });
+            };
+
+            var type = TypeUtility.GetAbstractType("MyType", builder);
+
+            Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
+
+            var typeServiceMock = new Mock<TypeService>(getAssemblies) { CallBase = true };
+
+            var mediaTypes = typeServiceMock.Object.MediaTypes;
+
+            Assert.IsFalse(mediaTypes.Any());
         }
 
+        /// <summary>
+        /// Test to get media types without public default constructor.
+        /// </summary>
         [TestMethod]
         public void CannotGetMediaTypesWithoutDefaultConstructor()
         {
-            var mediaTypes = TypeService.Instance.MediaTypes;
-            var containsTypeWithoutDefaultConstructor = mediaTypes.Contains(typeof(TypeServiceTestMediaTypeWithoutDefaultConstructor));
-
-            Assert.IsFalse(containsTypeWithoutDefaultConstructor);
-        }
-
-        [DocumentType("TypeServiceTestDocumentType")]
-        public class TypeServiceTestDocumentType
-        {
-        }
-
-        [DocumentType("TypeServiceTestAbstractDocumentType")]
-        public abstract class TypeServiceTestAbstractDocumentType
-        {
-        }
-
-        [DocumentType("TypeServiceTestDocumentTypeWithoutDefaultConstructor")]
-        public class TypeServiceTestDocumentTypeWithoutDefaultConstructor
-        {
-            private TypeServiceTestDocumentTypeWithoutDefaultConstructor()
+            TypeUtility.GetAttributeBuilder<MediaTypeAttribute> builder = () =>
             {
-            }
+                var constructor = typeof(MediaTypeAttribute).GetConstructor(new[] { typeof(string) });
 
-            // ReSharper disable once UnusedParameter.Local
-            public TypeServiceTestDocumentTypeWithoutDefaultConstructor(object param)
-                : this()
+                return constructor == null ? null : new CustomAttributeBuilder(constructor, new object[] { "Name" });
+            };
+
+            var type = TypeUtility.GetTypeWithoutPublicDefaultConstructor("MyType", builder);
+
+            Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
+
+            var typeServiceMock = new Mock<TypeService>(getAssemblies) { CallBase = true };
+
+            var mediaTypes = typeServiceMock.Object.MediaTypes;
+
+            Assert.IsFalse(mediaTypes.Any());
+        }
+
+        /// <summary>
+        /// Test to get member types.
+        /// </summary>
+        [TestMethod]
+        public void CanGetMemberTypes()
+        {
+            TypeUtility.GetAttributeBuilder<MemberTypeAttribute> builder = () =>
             {
-            }
+                var constructor = typeof(MemberTypeAttribute).GetConstructor(new Type[] { });
+
+                return constructor == null ? null : new CustomAttributeBuilder(constructor, new object[] { });
+            };
+
+            var type = TypeUtility.GetType("MyType", builder);
+
+            Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
+
+            var typeServiceMock = new Mock<TypeService>(getAssemblies) { CallBase = true };
+
+            var memberTypes = typeServiceMock.Object.MemberTypes;
+
+            Assert.AreEqual(1, memberTypes.Count());
         }
 
-        [MediaType("TypeServiceTestMediaType")]
-        public class TypeServiceTestMediaType
+        /// <summary>
+        /// Test to get abstract member types.
+        /// </summary>
+        [TestMethod]
+        public void CannotGetAbstractMemberTypes()
         {
-        }
-
-        [MediaType("TypeServiceTestAbstractMediaType")]
-        public abstract class TypeServiceTestAbstractMediaType
-        {
-        }
-
-        [MediaType("TypeServiceTestMediaTypeWithoutDefaultConstructor")]
-        public class TypeServiceTestMediaTypeWithoutDefaultConstructor
-        {
-            private TypeServiceTestMediaTypeWithoutDefaultConstructor()
+            TypeUtility.GetAttributeBuilder<MemberTypeAttribute> builder = () =>
             {
-            }
+                var constructor = typeof(MemberTypeAttribute).GetConstructor(new Type[] { });
 
-            // ReSharper disable once UnusedParameter.Local
-            public TypeServiceTestMediaTypeWithoutDefaultConstructor(object param)
-                : this()
-            {
-            }
+                return constructor == null ? null : new CustomAttributeBuilder(constructor, new object[] { });
+            };
+
+            var type = TypeUtility.GetAbstractType("MyType", builder);
+
+            Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
+
+            var typeServiceMock = new Mock<TypeService>(getAssemblies) { CallBase = true };
+
+            var memberTypes = typeServiceMock.Object.MemberTypes;
+
+            Assert.IsFalse(memberTypes.Any());
         }
 
-        [DataType(typeof(int), "TypeServiceTestDataTypeEditor")]
-        public class TypeServiceTestDataType
+        /// <summary>
+        /// Test to get member types without public default constructor.
+        /// </summary>
+        [TestMethod]
+        public void CannotGetMemberTypesWithoutDefaultConstructor()
         {
-        }
-
-        [DataType(typeof(int), "TypeServiceTestDataTypeEditor")]
-        public abstract class TypeServiceTestAbstractDataType
-        {
-        }
-
-        [DataType(typeof(int), "TypeServiceTestDataTypeEditorWithoutDefaultConstructor")]
-        public class TypeServiceTestDataTypeWithoutDefaultConstructor
-        {
-            private TypeServiceTestDataTypeWithoutDefaultConstructor()
+            TypeUtility.GetAttributeBuilder<MemberTypeAttribute> builder = () =>
             {
-            }
+                var constructor = typeof(MemberTypeAttribute).GetConstructor(new Type[] { });
 
-            // ReSharper disable once UnusedParameter.Local
-            public TypeServiceTestDataTypeWithoutDefaultConstructor(object param)
-                : this()
-            {
-            }
+                return constructor == null ? null : new CustomAttributeBuilder(constructor, new object[] { });
+            };
+
+            var type = TypeUtility.GetTypeWithoutPublicDefaultConstructor("MyType", builder);
+
+            Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
+
+            var typeServiceMock = new Mock<TypeService>(getAssemblies) { CallBase = true };
+
+            var memberTypes = typeServiceMock.Object.MemberTypes;
+
+            Assert.IsFalse(memberTypes.Any());
         }
     }
 }
