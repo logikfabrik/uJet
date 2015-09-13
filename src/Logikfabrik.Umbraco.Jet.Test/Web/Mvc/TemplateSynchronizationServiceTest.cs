@@ -4,63 +4,70 @@
 
 namespace Logikfabrik.Umbraco.Jet.Test.Web.Mvc
 {
+    using System;
     using System.IO;
     using System.Linq;
-    using Extensions;
-    using Jet.Web.Mvc;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
+    using Jet.Web.Mvc;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Moq;
 
+    /// <summary>
+    /// The <see cref="TemplateSynchronizationServiceTest" /> class.
+    /// </summary>
     [TestClass]
     public class TemplateSynchronizationServiceTest
     {
+        /// <summary>
+        /// Test to get templates to add.
+        /// </summary>
         [TestMethod]
         public void CanGetTemplatesToAdd()
         {
-            var template = new Moq.Mock<ITemplate>();
+            var service = GetTemplateSynchronizationService();
 
-            template.Setup(m => m.Path).Returns("Views\\Template1.cshtml");
-            template.Setup(m => m.Name).Returns("Template1");
-            template.Setup(m => m.Alias).Returns("template1");
+            var templatesToAdd = service.GetTemplatesToAdd(service.GetTemplatesToAdd());
 
-            var fileService = new Moq.Mock<IFileService>();
+            Assert.AreEqual(2, templatesToAdd.Count());
+        }
 
-            fileService.Setup(m => m.GetTemplates(Moq.It.IsAny<string[]>()))
-                .Returns(new[] { template.Object });
+        /// <summary>
+        /// Test to get paths to templates to add.
+        /// </summary>
+        [TestMethod]
+        public void CanGetPathsToTemplatesToAdd()
+        {
+            var service = GetTemplateSynchronizationService();
 
-            var templateService = new Moq.Mock<ITemplateService>();
+            var templatesToAdd = service.GetTemplatesToAdd();
 
-            templateService.Setup(m => m.TemplatePaths).Returns(TemplateService.Instance.TemplatePaths);
-            templateService.Setup(m =>
-                m.GetTemplate(Moq.It.IsAny<string>())).Returns<string>(
-                    templatePath =>
-                    {
-                        var t = new Moq.Mock<ITemplate>();
+            Assert.AreEqual(templatesToAdd.First(), GetTemplatePath("Template1.cshtml"));
+        }
 
-                        t.Setup(m => m.Path).Returns(templatePath);
-                        t.Setup(m => m.Name).Returns(Path.GetFileNameWithoutExtension(templatePath));
-                        t.Setup(m => m.Alias).Returns(Path.GetFileNameWithoutExtension(templatePath).Alias());
-                        t.Setup(m => m.Content).Returns(TemplateService.Instance.GetContent(templatePath));
+        private static string GetTemplatePath(string fileName)
+        {
+            return string.Format("{0}{1}Views{1}{2}", AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar, fileName);
+        }
 
-                        return t.Object;
-                    });
+        private static ITemplate GetTemplateMock(string templatePath)
+        {
+            var templateMock = new Mock<ITemplate>();
 
-            var service = new TemplateSynchronizationService(fileService.Object, templateService.Object);
+            templateMock.Setup(m => m.Path).Returns(templatePath);
 
-            var templatesToAdd1 = service.GetTemplatesToAdd().ToArray();
-            var templatesToAdd2 = service.GetTemplatesToAdd(templatesToAdd1).ToArray();
+            return templateMock.Object;
+        }
 
-            Assert.AreEqual(1, templatesToAdd1.Length);
-            Assert.AreEqual(1, templatesToAdd2.Length);
+        private static TemplateSynchronizationService GetTemplateSynchronizationService()
+        {
+            var fileServiceMock = new Mock<IFileService>();
+            var templateServiceMock = new Mock<ITemplateService>();
 
-            var templateToAdd1 = templatesToAdd1.First();
-            var templateToAdd2 = templatesToAdd2.First();
+            templateServiceMock.Setup(m => m.TemplatePaths).Returns(TemplateService.Instance.TemplatePaths);
+            templateServiceMock.Setup(m => m.GetTemplate(It.IsAny<string>())).Returns<string>(GetTemplateMock);
 
-            Assert.AreEqual(templateToAdd1, templateToAdd2.Path);
-            Assert.AreEqual("Template2", templateToAdd2.Name);
-            Assert.AreEqual("template2", templateToAdd2.Alias);
-            Assert.AreEqual("Test template Template2.cshtml", templateToAdd2.Content);
+            return new TemplateSynchronizationService(fileServiceMock.Object, templateServiceMock.Object);
         }
     }
 }

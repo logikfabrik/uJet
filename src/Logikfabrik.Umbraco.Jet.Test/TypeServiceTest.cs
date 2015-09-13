@@ -24,14 +24,19 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanGetDocumentTypes()
         {
-            TypeUtility.GetAttributeBuilder<DocumentTypeAttribute> builder = () =>
+            TypeUtility.BuildAction typeAttributeBuildAction = typeBuilder =>
             {
                 var constructor = typeof(DocumentTypeAttribute).GetConstructor(new[] { typeof(string) });
 
-                return constructor == null ? null : new CustomAttributeBuilder(constructor, new object[] { "Name" });
+                if (constructor == null)
+                {
+                    return;
+                }
+
+                typeBuilder.SetCustomAttribute(new CustomAttributeBuilder(constructor, new object[] { "Name" }));
             };
 
-            var type = TypeUtility.GetType("MyType", builder);
+            var type = TypeUtility.CreateType("MyType", new[] { typeAttributeBuildAction });
 
             Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
 
@@ -48,14 +53,19 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CannotGetAbstractDocumentTypes()
         {
-            TypeUtility.GetAttributeBuilder<DocumentTypeAttribute> builder = () =>
+            TypeUtility.BuildAction typeAttributeBuildAction = typeBuilder =>
             {
                 var constructor = typeof(DocumentTypeAttribute).GetConstructor(new[] { typeof(string) });
 
-                return constructor == null ? null : new CustomAttributeBuilder(constructor, new object[] { "Name" });
+                if (constructor == null)
+                {
+                    return;
+                }
+
+                typeBuilder.SetCustomAttribute(new CustomAttributeBuilder(constructor, new object[] { "Name" }));
             };
 
-            var type = TypeUtility.GetAbstractType("MyType", builder);
+            var type = TypeUtility.CreateType("MyType", TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Abstract, new[] { typeAttributeBuildAction });
 
             Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
 
@@ -72,14 +82,19 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CannotGetDocumentTypesWithoutPublicDefaultConstructor()
         {
-            TypeUtility.GetAttributeBuilder<DocumentTypeAttribute> builder = () =>
+            TypeUtility.BuildAction typeAttributeBuildAction = typeBuilder =>
             {
                 var constructor = typeof(DocumentTypeAttribute).GetConstructor(new[] { typeof(string) });
 
-                return constructor == null ? null : new CustomAttributeBuilder(constructor, new object[] { "Name" });
+                if (constructor == null)
+                {
+                    return;
+                }
+
+                typeBuilder.SetCustomAttribute(new CustomAttributeBuilder(constructor, new object[] { "Name" }));
             };
 
-            var type = TypeUtility.GetTypeWithoutPublicDefaultConstructor("MyType", builder);
+            var type = TypeUtility.CreateType("MyType", new[] { typeAttributeBuildAction, TypeUtility.AbstractTypeBuildAction });
 
             Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
 
@@ -96,14 +111,19 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanGetDataTypes()
         {
-            TypeUtility.GetAttributeBuilder<DataTypeAttribute> builder = () =>
+            TypeUtility.BuildAction typeAttributeBuildAction = typeBuilder =>
             {
                 var constructor = typeof(DataTypeAttribute).GetConstructor(new[] { typeof(Type), typeof(string) });
 
-                return constructor == null ? null : new CustomAttributeBuilder(constructor, new object[] { typeof(int), "Editor" });
+                if (constructor == null)
+                {
+                    return;
+                }
+
+                typeBuilder.SetCustomAttribute(new CustomAttributeBuilder(constructor, new object[] { typeof(int), "Editor" }));
             };
 
-            var type = TypeUtility.GetType("MyType", builder);
+            var type = TypeUtility.CreateType("MyType", new[] { typeAttributeBuildAction });
 
             Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
 
@@ -120,14 +140,19 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CannotGetAbstractDataTypes()
         {
-            TypeUtility.GetAttributeBuilder<DataTypeAttribute> builder = () =>
+            TypeUtility.BuildAction typeAttributeBuildAction = typeBuilder =>
             {
                 var constructor = typeof(DataTypeAttribute).GetConstructor(new[] { typeof(Type), typeof(string) });
 
-                return constructor == null ? null : new CustomAttributeBuilder(constructor, new object[] { typeof(int), "Editor" });
+                if (constructor == null)
+                {
+                    return;
+                }
+
+                typeBuilder.SetCustomAttribute(new CustomAttributeBuilder(constructor, new object[] { typeof(int), "Editor" }));
             };
 
-            var type = TypeUtility.GetAbstractType("MyType", builder);
+            var type = TypeUtility.CreateType("MyType", TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Abstract, new[] { typeAttributeBuildAction });
 
             Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
 
@@ -142,16 +167,21 @@ namespace Logikfabrik.Umbraco.Jet.Test
         /// Test to get data types without public default constructor.
         /// </summary>
         [TestMethod]
-        public void CannotGetDataTypesWithoutDefaultConstructor()
+        public void CannotGetDataTypesWithoutPublicDefaultConstructor()
         {
-            TypeUtility.GetAttributeBuilder<DataTypeAttribute> builder = () =>
+            TypeUtility.BuildAction typeAttributeBuildAction = typeBuilder =>
             {
                 var constructor = typeof(DataTypeAttribute).GetConstructor(new[] { typeof(Type), typeof(string) });
 
-                return constructor == null ? null : new CustomAttributeBuilder(constructor, new object[] { typeof(int), "Editor" });
+                if (constructor == null)
+                {
+                    return;
+                }
+
+                typeBuilder.SetCustomAttribute(new CustomAttributeBuilder(constructor, new object[] { typeof(int), "Editor" }));
             };
 
-            var type = TypeUtility.GetTypeWithoutPublicDefaultConstructor("MyType", builder);
+            var type = TypeUtility.CreateType("MyType", new[] { typeAttributeBuildAction, TypeUtility.AbstractTypeBuildAction });
 
             Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
 
@@ -168,14 +198,19 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanGetMediaTypes()
         {
-            TypeUtility.GetAttributeBuilder<MediaTypeAttribute> builder = () =>
+            TypeUtility.BuildAction typeAttributeBuildAction = typeBuilder =>
             {
                 var constructor = typeof(MediaTypeAttribute).GetConstructor(new[] { typeof(string) });
 
-                return constructor == null ? null : new CustomAttributeBuilder(constructor, new object[] { "Name" });
+                if (constructor == null)
+                {
+                    return;
+                }
+
+                typeBuilder.SetCustomAttribute(new CustomAttributeBuilder(constructor, new object[] { "Name" }));
             };
 
-            var type = TypeUtility.GetType("MyType", builder);
+            var type = TypeUtility.CreateType("MyType", new[] { typeAttributeBuildAction });
 
             Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
 
@@ -192,14 +227,19 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CannotGetAbstractMediaTypes()
         {
-            TypeUtility.GetAttributeBuilder<MediaTypeAttribute> builder = () =>
+            TypeUtility.BuildAction typeAttributeBuildAction = typeBuilder =>
             {
                 var constructor = typeof(MediaTypeAttribute).GetConstructor(new[] { typeof(string) });
 
-                return constructor == null ? null : new CustomAttributeBuilder(constructor, new object[] { "Name" });
+                if (constructor == null)
+                {
+                    return;
+                }
+
+                typeBuilder.SetCustomAttribute(new CustomAttributeBuilder(constructor, new object[] { "Name" }));
             };
 
-            var type = TypeUtility.GetAbstractType("MyType", builder);
+            var type = TypeUtility.CreateType("MyType", TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Abstract, new[] { typeAttributeBuildAction });
 
             Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
 
@@ -214,16 +254,21 @@ namespace Logikfabrik.Umbraco.Jet.Test
         /// Test to get media types without public default constructor.
         /// </summary>
         [TestMethod]
-        public void CannotGetMediaTypesWithoutDefaultConstructor()
+        public void CannotGetMediaTypesWithoutPublicDefaultConstructor()
         {
-            TypeUtility.GetAttributeBuilder<MediaTypeAttribute> builder = () =>
+            TypeUtility.BuildAction typeAttributeBuildAction = typeBuilder =>
             {
                 var constructor = typeof(MediaTypeAttribute).GetConstructor(new[] { typeof(string) });
 
-                return constructor == null ? null : new CustomAttributeBuilder(constructor, new object[] { "Name" });
+                if (constructor == null)
+                {
+                    return;
+                }
+
+                typeBuilder.SetCustomAttribute(new CustomAttributeBuilder(constructor, new object[] { "Name" }));
             };
 
-            var type = TypeUtility.GetTypeWithoutPublicDefaultConstructor("MyType", builder);
+            var type = TypeUtility.CreateType("MyType", new[] { typeAttributeBuildAction, TypeUtility.AbstractTypeBuildAction });
 
             Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
 
@@ -240,14 +285,19 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanGetMemberTypes()
         {
-            TypeUtility.GetAttributeBuilder<MemberTypeAttribute> builder = () =>
+            TypeUtility.BuildAction typeAttributeBuildAction = typeBuilder =>
             {
                 var constructor = typeof(MemberTypeAttribute).GetConstructor(new Type[] { });
 
-                return constructor == null ? null : new CustomAttributeBuilder(constructor, new object[] { });
+                if (constructor == null)
+                {
+                    return;
+                }
+
+                typeBuilder.SetCustomAttribute(new CustomAttributeBuilder(constructor, new object[] { }));
             };
 
-            var type = TypeUtility.GetType("MyType", builder);
+            var type = TypeUtility.CreateType("MyType", new[] { typeAttributeBuildAction });
 
             Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
 
@@ -264,14 +314,19 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CannotGetAbstractMemberTypes()
         {
-            TypeUtility.GetAttributeBuilder<MemberTypeAttribute> builder = () =>
+            TypeUtility.BuildAction typeAttributeBuildAction = typeBuilder =>
             {
                 var constructor = typeof(MemberTypeAttribute).GetConstructor(new Type[] { });
 
-                return constructor == null ? null : new CustomAttributeBuilder(constructor, new object[] { });
+                if (constructor == null)
+                {
+                    return;
+                }
+
+                typeBuilder.SetCustomAttribute(new CustomAttributeBuilder(constructor, new object[] { }));
             };
 
-            var type = TypeUtility.GetAbstractType("MyType", builder);
+            var type = TypeUtility.CreateType("MyType", TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Abstract, new[] { typeAttributeBuildAction });
 
             Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
 
@@ -286,16 +341,21 @@ namespace Logikfabrik.Umbraco.Jet.Test
         /// Test to get member types without public default constructor.
         /// </summary>
         [TestMethod]
-        public void CannotGetMemberTypesWithoutDefaultConstructor()
+        public void CannotGetMemberTypesWithoutPublicDefaultConstructor()
         {
-            TypeUtility.GetAttributeBuilder<MemberTypeAttribute> builder = () =>
+            TypeUtility.BuildAction typeAttributeBuildAction = typeBuilder =>
             {
                 var constructor = typeof(MemberTypeAttribute).GetConstructor(new Type[] { });
 
-                return constructor == null ? null : new CustomAttributeBuilder(constructor, new object[] { });
+                if (constructor == null)
+                {
+                    return;
+                }
+
+                typeBuilder.SetCustomAttribute(new CustomAttributeBuilder(constructor, new object[] { }));
             };
 
-            var type = TypeUtility.GetTypeWithoutPublicDefaultConstructor("MyType", builder);
+            var type = TypeUtility.CreateType("MyType", new[] { typeAttributeBuildAction, TypeUtility.AbstractTypeBuildAction });
 
             Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
 
