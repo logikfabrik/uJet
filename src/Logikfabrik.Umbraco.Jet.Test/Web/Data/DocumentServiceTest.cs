@@ -5,152 +5,472 @@
 namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 {
     using System;
-    using System.Globalization;
-    using System.Web;
-    using Extensions;
+    using System.Collections.Generic;
+    using global::Umbraco.Core.Models;
     using Jet.Web.Data;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using global::Umbraco.Core.Models;
+    using Utilities;
 
+    /// <summary>
+    /// The <see cref="DocumentServiceTest" /> class.
+    /// </summary>
     [TestClass]
-    public class DocumentServiceTest
+    public class DocumentServiceTest : TestBase
     {
-        [DocumentType("DocumentTypeWithTheDocumentTypeAttribute")]
-        public class DocumentTypeWithTheDocumentTypeAttribute
+        /// <summary>
+        /// Test to get document with ID mapped by convention.
+        /// </summary>
+        [TestMethod]
+        public void CanGetDocumentIdByConvention()
         {
-            // Should be mapped by convention.
-            public int Id { get; set; }
+            const int id = 123;
 
-            // Should be mapped by convention.
-            public string Url { get; set; }
+            var publishedContentMock = new Mock<IPublishedContent>();
 
-            // Should be mapped by convention.
-            public string Name { get; set; }
+            publishedContentMock.Setup(m => m.Id).Returns(id);
+            publishedContentMock.Setup(m => m.Properties).Returns(new IPublishedProperty[] { });
 
-            // Should be mapped by convention.
-            public DateTime CreateDate { get; set; }
+            var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
 
-            // Should be mapped by convention.
-            public DateTime UpdateDate { get; set; }
+            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
 
-            public string StringProperty { get; set; }
+            var typeServiceMock = GetTypeServiceMock(typeof(DocumentType));
 
-            public int IntegerProperty { get; set; }
+            var document = new DocumentService(umbracoHelperWrapperMock.Object, typeServiceMock.Object).GetDocument<DocumentType>(id);
 
-            public decimal FloatingDecimalProperty { get; set; }
-
-            public float FloatingBinaryProperty { get; set; }
-
-            public DateTime DateTimeProperty { get; set; }
-
-            public bool BooleanProperty { get; set; }
-
-            public decimal FloatingDecimalPropertyAsString { get; set; }
-
-            public float FloatingBinaryPropertyAsString { get; set; }
-
-            public string StringPropertyAsHtmlString { get; set; }
+            Assert.AreEqual(id, document.Id);
         }
 
-        public class DocumentTypeWithoutTheDocumentTypeAttribute
+        /// <summary>
+        /// Test to get document with URL mapped by convention.
+        /// </summary>
+        [TestMethod]
+        public void CanGetDocumentUrlByConvention()
         {
+            const int id = 123;
+            const string url = "/umbraco/jet";
+
+            var publishedContentMock = new Mock<IPublishedContent>();
+
+            publishedContentMock.Setup(m => m.Url).Returns(url);
+            publishedContentMock.Setup(m => m.Properties).Returns(new IPublishedProperty[] { });
+
+            var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
+
+            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
+
+            var typeServiceMock = GetTypeServiceMock(typeof(DocumentType));
+
+            var document = new DocumentService(umbracoHelperWrapperMock.Object, typeServiceMock.Object).GetDocument<DocumentType>(id);
+
+            Assert.AreEqual(url, document.Url);
         }
 
+        /// <summary>
+        /// Test to get document with name mapped by convention.
+        /// </summary>
+        [TestMethod]
+        public void CanGetDocumentNameByConvention()
+        {
+            const int id = 123;
+            const string name = "Umbraco Jet";
+
+            var publishedContentMock = new Mock<IPublishedContent>();
+
+            publishedContentMock.Setup(m => m.Name).Returns(name);
+            publishedContentMock.Setup(m => m.Properties).Returns(new IPublishedProperty[] { });
+
+            var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
+
+            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
+
+            var typeServiceMock = GetTypeServiceMock(typeof(DocumentType));
+
+            var document = new DocumentService(umbracoHelperWrapperMock.Object, typeServiceMock.Object).GetDocument<DocumentType>(id);
+
+            Assert.AreEqual(name, document.Name);
+        }
+
+        /// <summary>
+        /// Test to get document with create date mapped by convention.
+        /// </summary>
+        [TestMethod]
+        public void CanGetDocumentCreateDateByConvention()
+        {
+            const int id = 123;
+            var createDate = new DateTime(2015, 1, 1);
+
+            var publishedContentMock = new Mock<IPublishedContent>();
+
+            publishedContentMock.Setup(m => m.CreateDate).Returns(createDate);
+            publishedContentMock.Setup(m => m.Properties).Returns(new IPublishedProperty[] { });
+
+            var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
+
+            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
+
+            var typeServiceMock = GetTypeServiceMock(typeof(DocumentType));
+
+            var document = new DocumentService(umbracoHelperWrapperMock.Object, typeServiceMock.Object).GetDocument<DocumentType>(id);
+
+            Assert.AreEqual(createDate, document.CreateDate);
+        }
+
+        /// <summary>
+        /// Test to get document with update date mapped by convention.
+        /// </summary>
+        [TestMethod]
+        public void CanGetDocumentUpdateDateByConvention()
+        {
+            const int id = 123;
+            var updateDate = new DateTime(2015, 1, 1);
+
+            var publishedContentMock = new Mock<IPublishedContent>();
+
+            publishedContentMock.Setup(m => m.UpdateDate).Returns(updateDate);
+            publishedContentMock.Setup(m => m.Properties).Returns(new IPublishedProperty[] { });
+
+            var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
+
+            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
+
+            var typeServiceMock = GetTypeServiceMock(typeof(DocumentType));
+
+            var document = new DocumentService(umbracoHelperWrapperMock.Object, typeServiceMock.Object).GetDocument<DocumentType>(id);
+
+            Assert.AreEqual(updateDate, document.UpdateDate);
+        }
+
+        /// <summary>
+        /// Test to get document for invalid document type.
+        /// </summary>
         [TestMethod, ExpectedException(typeof(ArgumentException))]
         public void CanNotGetDocumentForInvalidDocumentType()
         {
-            const int id = 1234;
+            var type = TypeUtility.GetTypeBuilder("MyType", TypeUtility.GetTypeAttributes()).CreateType();
 
-            var umbracoHelperWrapper = new Mock<IUmbracoHelperWrapper>();
-            var typeService = new Mock<ITypeService>();
+            var typeServiceMock = GetTypeServiceMock(type);
 
-            var documentService = new DocumentService(umbracoHelperWrapper.Object, typeService.Object);
+            var contentMock = new Mock<IPublishedContent>();
 
-            documentService.GetDocument<DocumentTypeWithoutTheDocumentTypeAttribute>(id);
+            var service = new DocumentService(new Mock<IUmbracoHelperWrapper>().Object, typeServiceMock.Object);
+
+            service.GetDocument(contentMock.Object, type);
         }
 
+        /// <summary>
+        /// Test to get document for valid document type.
+        /// </summary>
         [TestMethod]
         public void CanGetDocumentForValidDocumentType()
         {
-            const int id = 1234;
-            const string url = "http://www.logikfabrik.se/umbraco/jet/test";
-            const string name = "Test";
-            var createDate = new DateTime(2015, 1, 1);
-            var updateDate = new DateTime(2015, 2, 1);
-            const string stringProperty = "StringProperty";
-            const int integerProperty = 1;
-            const decimal floatingDecimalProperty = 1.1m;
-            const float floatingBinaryProperty = 1.1f;
-            var dateTimeProperty = new DateTime(2015, 3, 1);
-            const bool booleanProperty = true;
-            const decimal floatingDecimalPropertyAsString = 1.1m;
-            const float floatingBinaryPropertyAsString = 1.1f;
-            const string stringPropertyAsHtmlString = "StringPropertyAsHtmlString";
+            var type = DocumentTypeUtility.GetTypeBuilder().CreateType();
 
-            var umbracoHelperWrapper = new Mock<IUmbracoHelperWrapper>();
-            var typeService = new Mock<ITypeService>();
+            var typeServiceMock = GetTypeServiceMock(type);
 
-            umbracoHelperWrapper.Setup(m => m.TypedDocument(id)).Returns(() =>
+            var contentMock = new Mock<IPublishedContent>();
+
+            contentMock.Setup(m => m.Properties).Returns(new List<IPublishedProperty>());
+
+            var service = new DocumentService(new Mock<IUmbracoHelperWrapper>().Object, typeServiceMock.Object);
+
+            var document = service.GetDocument(contentMock.Object, type);
+
+            Assert.IsNotNull(document);
+        }
+
+        /// <summary>
+        /// Test to get document for document type with <see cref="string" /> property.
+        /// </summary>
+        [TestMethod]
+        public void CanGetDocumentForDocumentTypeWithStringProperty()
+        {
+            const int id = 123;
+            const string stringPropertyName = "stringProperty";
+            const string stringPropertyValue = "StringProperty";
+
+            var publishedContentMock = new Mock<IPublishedContent>();
+
+            publishedContentMock.Setup(m => m.Properties).Returns(() =>
             {
-                Func<string, object, IPublishedProperty> getProperty = (alias, value) =>
-                {
-                    var property = new Mock<IPublishedProperty>();
+                var property = new Mock<IPublishedProperty>();
 
-                    property.Setup(m => m.PropertyTypeAlias).Returns(alias);
-                    property.Setup(m => m.Value).Returns(value);
+                property.Setup(m => m.PropertyTypeAlias).Returns(stringPropertyName);
+                property.Setup(m => m.Value).Returns(stringPropertyValue);
 
-                    return property.Object;
-                };
-
-                var content = new Mock<IPublishedContent>();
-
-                content.Setup(m => m.Id).Returns(id);
-                content.Setup(m => m.Url).Returns(url);
-                content.Setup(m => m.Name).Returns(name);
-                content.Setup(m => m.CreateDate).Returns(createDate);
-                content.Setup(m => m.UpdateDate).Returns(updateDate);
-                content.Setup(m => m.Properties).Returns(new[]
-                {
-                    getProperty("StringProperty".Alias(), stringProperty),
-                    getProperty("IntegerProperty".Alias(), integerProperty),
-                    getProperty("FloatingDecimalProperty".Alias(), floatingDecimalProperty),
-                    getProperty("FloatingBinaryProperty".Alias(), floatingBinaryProperty),
-                    getProperty("DateTimeProperty".Alias(), dateTimeProperty),
-                    getProperty("BooleanProperty".Alias(), booleanProperty),
-
-                    // Returned as string as the Umbraco data model has no explicit support for floating decimal point types.
-                    getProperty("FloatingDecimalPropertyAsString", floatingDecimalPropertyAsString.ToString(CultureInfo.InvariantCulture)),
-
-                    // Returned as string as the Umbraco data model has no explicit support for floating binary point types.
-                    getProperty("FloatingBinaryPropertyAsString", floatingDecimalPropertyAsString.ToString(CultureInfo.InvariantCulture)),
-                    getProperty("StringPropertyAsHtmlString", new HtmlString(stringPropertyAsHtmlString))
-                });
-
-                return content.Object;
+                return new[] { property.Object };
             });
 
-            typeService.Setup(m => m.DocumentTypes)
-                .Returns(new[] { typeof(DocumentTypeWithTheDocumentTypeAttribute) });
+            var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
 
-            var documentService = new DocumentService(umbracoHelperWrapper.Object, typeService.Object);
+            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
 
-            var document = documentService.GetDocument<DocumentTypeWithTheDocumentTypeAttribute>(id);
+            var typeServiceMock = GetTypeServiceMock(typeof(DocumentType));
 
-            Assert.AreEqual(id, document.Id);
-            Assert.AreEqual(url, document.Url);
-            Assert.AreEqual(name, document.Name);
-            Assert.AreEqual(createDate, document.CreateDate);
-            Assert.AreEqual(updateDate, document.UpdateDate);
-            Assert.AreEqual(stringProperty, document.StringProperty);
-            Assert.AreEqual(integerProperty, document.IntegerProperty);
-            Assert.AreEqual(floatingDecimalProperty, document.FloatingDecimalProperty);
-            Assert.AreEqual(floatingBinaryProperty, document.FloatingBinaryProperty);
-            Assert.AreEqual(dateTimeProperty, document.DateTimeProperty);
-            Assert.AreEqual(booleanProperty, document.BooleanProperty);
-            Assert.AreEqual(floatingDecimalPropertyAsString, document.FloatingDecimalPropertyAsString);
-            Assert.AreEqual(floatingBinaryPropertyAsString, document.FloatingBinaryPropertyAsString);
-            Assert.AreEqual(stringPropertyAsHtmlString, document.StringPropertyAsHtmlString);
+            var document = new DocumentService(umbracoHelperWrapperMock.Object, typeServiceMock.Object).GetDocument<DocumentType>(id);
+
+            Assert.AreEqual(stringPropertyValue, document.StringProperty);
+        }
+
+        /// <summary>
+        /// Test to get document for document type with <see cref="int" /> property.
+        /// </summary>
+        [TestMethod]
+        public void CanGetDocumentForDocumentTypeWithIntegerProperty()
+        {
+            const int id = 123;
+            const string integerPropertyName = "integerProperty";
+            const int integerPropertyValue = 7;
+
+            var publishedContentMock = new Mock<IPublishedContent>();
+
+            publishedContentMock.Setup(m => m.Properties).Returns(() =>
+            {
+                var property = new Mock<IPublishedProperty>();
+
+                property.Setup(m => m.PropertyTypeAlias).Returns(integerPropertyName);
+                property.Setup(m => m.Value).Returns(integerPropertyValue);
+
+                return new[] { property.Object };
+            });
+
+            var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
+
+            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
+
+            var typeServiceMock = GetTypeServiceMock(typeof(DocumentType));
+
+            var document = new DocumentService(umbracoHelperWrapperMock.Object, typeServiceMock.Object).GetDocument<DocumentType>(id);
+
+            Assert.AreEqual(integerPropertyValue, document.IntegerProperty);
+        }
+
+        /// <summary>
+        /// Test to get document for document type with <see cref="float" /> property.
+        /// </summary>
+        [TestMethod]
+        public void CanGetDocumentForDocumentTypeWithFloatingBinaryPointProperty()
+        {
+            const int id = 123;
+            const string floatingBinaryPointPropertyName = "FloatingBinaryPointProperty";
+            const float floatingBinaryPointPropertyValue = 2.2f;
+
+            var publishedContentMock = new Mock<IPublishedContent>();
+
+            publishedContentMock.Setup(m => m.Properties).Returns(() =>
+            {
+                var property = new Mock<IPublishedProperty>();
+
+                property.Setup(m => m.PropertyTypeAlias).Returns(floatingBinaryPointPropertyName);
+                property.Setup(m => m.Value).Returns(floatingBinaryPointPropertyValue);
+
+                return new[] { property.Object };
+            });
+
+            var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
+
+            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
+
+            var typeServiceMock = GetTypeServiceMock(typeof(DocumentType));
+
+            var document = new DocumentService(umbracoHelperWrapperMock.Object, typeServiceMock.Object).GetDocument<DocumentType>(id);
+
+            Assert.AreEqual(floatingBinaryPointPropertyValue, document.FloatingBinaryPointProperty);
+        }
+
+        /// <summary>
+        /// Test to get document for document type with <see cref="double" /> property.
+        /// </summary>
+        [TestMethod]
+        public void CanGetDocumentForDocumentTypeWithFloatingDecimalPointProperty()
+        {
+            const int id = 123;
+            const string floatingDecimalPointPropertyName = "FloatingDecimalPointProperty";
+            const decimal floatingDecimalPointPropertyValue = 2.2m;
+
+            var publishedContentMock = new Mock<IPublishedContent>();
+
+            publishedContentMock.Setup(m => m.Properties).Returns(() =>
+            {
+                var property = new Mock<IPublishedProperty>();
+
+                property.Setup(m => m.PropertyTypeAlias).Returns(floatingDecimalPointPropertyName);
+                property.Setup(m => m.Value).Returns(floatingDecimalPointPropertyValue);
+
+                return new[] { property.Object };
+            });
+
+            var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
+
+            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
+
+            var typeServiceMock = GetTypeServiceMock(typeof(DocumentType));
+
+            var document = new DocumentService(umbracoHelperWrapperMock.Object, typeServiceMock.Object).GetDocument<DocumentType>(id);
+
+            Assert.AreEqual(floatingDecimalPointPropertyValue, document.FloatingDecimalPointProperty);
+        }
+
+        /// <summary>
+        /// Test to get document for document type with <see cref="bool" /> property.
+        /// </summary>
+        [TestMethod]
+        public void CanGetDocumentForDocumentTypeWithBooleanProperty()
+        {
+            const int id = 123;
+            const string booleanPropertyName = "BooleanProperty";
+            const bool booleanPropertyValue = true;
+
+            var publishedContentMock = new Mock<IPublishedContent>();
+
+            publishedContentMock.Setup(m => m.Properties).Returns(() =>
+            {
+                var property = new Mock<IPublishedProperty>();
+
+                property.Setup(m => m.PropertyTypeAlias).Returns(booleanPropertyName);
+                property.Setup(m => m.Value).Returns(booleanPropertyValue);
+
+                return new[] { property.Object };
+            });
+
+            var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
+
+            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
+
+            var typeServiceMock = GetTypeServiceMock(typeof(DocumentType));
+
+            var document = new DocumentService(umbracoHelperWrapperMock.Object, typeServiceMock.Object).GetDocument<DocumentType>(id);
+
+            Assert.AreEqual(booleanPropertyValue, document.BooleanProperty);
+        }
+
+        /// <summary>
+        /// Test to get document for document type with <see cref="DateTime" /> property.
+        /// </summary>
+        [TestMethod]
+        public void CanGetDocumentForDocumentTypeWithDateTimeProperty()
+        {
+            const int id = 123;
+            const string dateTimePropertyName = "DateTimeProperty";
+            var dateTimePropertyValue = DateTime.Now;
+
+            var publishedContentMock = new Mock<IPublishedContent>();
+
+            publishedContentMock.Setup(m => m.Properties).Returns(() =>
+            {
+                var property = new Mock<IPublishedProperty>();
+
+                property.Setup(m => m.PropertyTypeAlias).Returns(dateTimePropertyName);
+                property.Setup(m => m.Value).Returns(dateTimePropertyValue);
+
+                return new[] { property.Object };
+            });
+
+            var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
+
+            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
+
+            var typeServiceMock = GetTypeServiceMock(typeof(DocumentType));
+
+            var document = new DocumentService(umbracoHelperWrapperMock.Object, typeServiceMock.Object).GetDocument<DocumentType>(id);
+
+            Assert.AreEqual(dateTimePropertyValue, document.DateTimeProperty);
+        }
+
+        /// <summary>
+        /// The <see cref="DocumentType" /> class.
+        /// </summary>
+        [DocumentType("DocumentType")]
+        protected class DocumentType
+        {
+            /// <summary>
+            /// Gets or sets the identifier.
+            /// </summary>
+            /// <value>
+            /// The identifier.
+            /// </value>
+            public int Id { get; set; }
+
+            /// <summary>
+            /// Gets or sets the URL.
+            /// </summary>
+            /// <value>
+            /// The URL.
+            /// </value>
+            public string Url { get; set; }
+
+            /// <summary>
+            /// Gets or sets the name.
+            /// </summary>
+            /// <value>
+            /// The name.
+            /// </value>
+            public string Name { get; set; }
+
+            /// <summary>
+            /// Gets or sets the create date.
+            /// </summary>
+            /// <value>
+            /// The create date.
+            /// </value>
+            public DateTime CreateDate { get; set; }
+
+            /// <summary>
+            /// Gets or sets the update date.
+            /// </summary>
+            /// <value>
+            /// The update date.
+            /// </value>
+            public DateTime UpdateDate { get; set; }
+
+            /// <summary>
+            /// Gets or sets the string property value.
+            /// </summary>
+            /// <value>
+            /// The string property value.
+            /// </value>
+            public string StringProperty { get; set; }
+
+            /// <summary>
+            /// Gets or sets the integer property value.
+            /// </summary>
+            /// <value>
+            /// The integer property value.
+            /// </value>
+            public int IntegerProperty { get; set; }
+
+            /// <summary>
+            /// Gets or sets the floating binary point property value.
+            /// </summary>
+            /// <value>
+            /// The floating binary point property value.
+            /// </value>
+            public float FloatingBinaryPointProperty { get; set; }
+
+            /// <summary>
+            /// Gets or sets the floating decimal point property value.
+            /// </summary>
+            /// <value>
+            /// The floating decimal point property value.
+            /// </value>
+            public decimal FloatingDecimalPointProperty { get; set; }
+
+            /// <summary>
+            /// Gets or sets the boolean property value.
+            /// </summary>
+            /// <value>
+            /// The boolean property value.
+            /// </value>
+            public bool BooleanProperty { get; set; }
+
+            /// <summary>
+            /// Gets or sets the DateTime property value.
+            /// </summary>
+            /// <value>
+            /// The DateTime property value.
+            /// </value>
+            public DateTime DateTimeProperty { get; set; }
         }
     }
 }

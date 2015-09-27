@@ -4,188 +4,244 @@
 
 namespace Logikfabrik.Umbraco.Jet.Test
 {
+    using System;
     using System.ComponentModel;
+    using System.Linq;
     using Extensions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using global::Umbraco.Core.Models;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Moq;
 
+    /// <summary>
+    /// The <see cref="DefaultValueServiceTest" /> class.
+    /// </summary>
     [TestClass]
-    public class DefaultValueServiceTest
+    public class DefaultValueServiceTest : TestBase
     {
-        #region Document type
-
+        /// <summary>
+        /// Test to set default value for a document type string property.
+        /// </summary>
         [TestMethod]
         public void CanSetDocumentTypeDefaultValueForStringProperty()
         {
-            var service = new DefaultValueService();
-            var content = new Moq.Mock<IContent>();
-            var contentType = new Moq.Mock<IContentType>();
+            var documentType = new DocumentType();
+            var propertyName = GetPropertyName(() => documentType.StringProperty);
 
-            content.Setup(m => m.GetValue("stringProperty")).Returns(null);
-            content.Setup(m => m.SetValue("stringProperty", "Default")).Verifiable();
-            content.Setup(m => m.ContentType).Returns(contentType.Object);
-            contentType.Setup(m => m.Alias).Returns(typeof(DefaultValueServiceTestDocumentType).Name.Alias());
-
-            service.SetDefaultValues(content.Object);
-
-            content.VerifyAll();
+            CanSetDefaultValueForDocumentType<string>(documentType, propertyName);
         }
 
+        /// <summary>
+        /// Test to set default value for a document type integer property.
+        /// </summary>
         [TestMethod]
         public void CanSetDocumentTypeDefaultValueForIntegerProperty()
         {
-            var service = new DefaultValueService();
-            var content = new Moq.Mock<IContent>();
-            var contentType = new Moq.Mock<IContentType>();
+            var documentType = new DocumentType();
+            var propertyName = GetPropertyName(() => documentType.IntegerProperty);
 
-            content.Setup(m => m.GetValue("integerProperty")).Returns(null);
-            content.Setup(m => m.SetValue("integerProperty", 1)).Verifiable();
-            content.Setup(m => m.ContentType).Returns(contentType.Object);
-            contentType.Setup(m => m.Alias).Returns(typeof(DefaultValueServiceTestDocumentType).Name.Alias());
-
-            service.SetDefaultValues(content.Object);
-
-            content.VerifyAll();
+            CanSetDefaultValueForDocumentType<int>(documentType, propertyName);
         }
 
+        /// <summary>
+        /// Test to set default value for a document type floating binary point property.
+        /// </summary>
         [TestMethod]
-        public void CanSetDocumentTypeDefaultValueForFloatingBinaryProperty()
+        public void CanSetDocumentTypeDefaultValueForFloatingBinaryPointProperty()
         {
-            var service = new DefaultValueService();
-            var content = new Moq.Mock<IContent>();
-            var contentType = new Moq.Mock<IContentType>();
+            var documentType = new DocumentType();
+            var propertyName = GetPropertyName(() => documentType.FloatingBinaryPointProperty);
 
-            content.Setup(m => m.GetValue("floatingBinaryProperty")).Returns(null);
-            content.Setup(m => m.SetValue("floatingBinaryProperty", 1.1f)).Verifiable();
-            content.Setup(m => m.ContentType).Returns(contentType.Object);
-            contentType.Setup(m => m.Alias).Returns(typeof(DefaultValueServiceTestDocumentType).Name.Alias());
-
-            service.SetDefaultValues(content.Object);
-
-            content.VerifyAll();
+            CanSetDefaultValueForDocumentType<float>(documentType, propertyName);
         }
 
+        /// <summary>
+        /// Test to set default value for a document type floating decimal point property.
+        /// </summary>
+        [TestMethod]
+        public void CanSetDocumentTypeDefaultValueForFloatingDecimalPointProperty()
+        {
+            var documentType = new DocumentType();
+            var propertyName = GetPropertyName(() => documentType.FloatingDecimalPointProperty);
+
+            CanSetDefaultValueForDocumentType<decimal>(documentType, propertyName);
+        }
+
+        /// <summary>
+        /// Test to set default value for a document type boolean property.
+        /// </summary>
         [TestMethod]
         public void CanSetDocumentTypeDefaultValueForBooleanProperty()
         {
-            var service = new DefaultValueService();
-            var content = new Moq.Mock<IContent>();
-            var contentType = new Moq.Mock<IContentType>();
+            var documentType = new DocumentType();
+            var propertyName = GetPropertyName(() => documentType.BooleanProperty);
 
-            content.Setup(m => m.GetValue("booleanProperty")).Returns(null);
-            content.Setup(m => m.SetValue("booleanProperty", true)).Verifiable();
-            content.Setup(m => m.ContentType).Returns(contentType.Object);
-            contentType.Setup(m => m.Alias).Returns(typeof(DefaultValueServiceTestDocumentType).Name.Alias());
-
-            service.SetDefaultValues(content.Object);
-
-            content.VerifyAll();
+            CanSetDefaultValueForDocumentType<bool>(documentType, propertyName);
         }
 
-        #endregion
-
-        #region Media type
-
+        /// <summary>
+        /// Test to set default value for a media type string property.
+        /// </summary>
         [TestMethod]
         public void CanSetMediaTypeDefaultValueForStringProperty()
         {
-            var service = new DefaultValueService();
-            var content = new Moq.Mock<IMedia>();
-            var contentType = new Moq.Mock<IMediaType>();
+            var mediaType = new MediaType();
+            var propertyName = GetPropertyName(() => mediaType.StringProperty);
 
-            content.Setup(m => m.GetValue("stringProperty")).Returns(null);
-            content.Setup(m => m.SetValue("stringProperty", "Default")).Verifiable();
-            content.Setup(m => m.ContentType).Returns(contentType.Object);
-            contentType.Setup(m => m.Alias).Returns(typeof(DefaultValueServiceTestMediaType).Name.Alias());
-
-            service.SetDefaultValues(content.Object);
-
-            content.VerifyAll();
+            CanSetDefaultValueForMediaType<string>(mediaType, propertyName);
         }
 
+        /// <summary>
+        /// Test to set default value for a media type integer property.
+        /// </summary>
         [TestMethod]
         public void CanSetMediaTypeDefaultValueForIntegerProperty()
         {
-            var service = new DefaultValueService();
-            var content = new Moq.Mock<IMedia>();
-            var contentType = new Moq.Mock<IMediaType>();
+            var mediaType = new MediaType();
+            var propertyName = GetPropertyName(() => mediaType.IntegerProperty);
 
-            content.Setup(m => m.GetValue("integerProperty")).Returns(null);
-            content.Setup(m => m.SetValue("integerProperty", 1)).Verifiable();
-            content.Setup(m => m.ContentType).Returns(contentType.Object);
-            contentType.Setup(m => m.Alias).Returns(typeof(DefaultValueServiceTestMediaType).Name.Alias());
-
-            service.SetDefaultValues(content.Object);
-
-            content.VerifyAll();
+            CanSetDefaultValueForMediaType<int>(mediaType, propertyName);
         }
 
+        /// <summary>
+        /// Test to set default value for a media type floating binary point property.
+        /// </summary>
         [TestMethod]
-        public void CanSetMediaTypeDefaultValueForFloatingBinaryProperty()
+        public void CanSetMediaTypeDefaultValueForFloatingBinaryPointProperty()
         {
-            var service = new DefaultValueService();
-            var content = new Moq.Mock<IMedia>();
-            var contentType = new Moq.Mock<IMediaType>();
+            var mediaType = new MediaType();
+            var propertyName = GetPropertyName(() => mediaType.FloatingBinaryPointProperty);
 
-            content.Setup(m => m.GetValue("floatingBinaryProperty")).Returns(null);
-            content.Setup(m => m.SetValue("floatingBinaryProperty", 1.1f)).Verifiable();
-            content.Setup(m => m.ContentType).Returns(contentType.Object);
-            contentType.Setup(m => m.Alias).Returns(typeof(DefaultValueServiceTestMediaType).Name.Alias());
-
-            service.SetDefaultValues(content.Object);
-
-            content.VerifyAll();
+            CanSetDefaultValueForMediaType<float>(mediaType, propertyName);
         }
 
+        /// <summary>
+        /// Test to set default value for a media type floating decimal point property.
+        /// </summary>
+        [TestMethod]
+        public void CanSetMediaTypeDefaultValueForFloatingDecimalPointProperty()
+        {
+            var mediaType = new MediaType();
+            var propertyName = GetPropertyName(() => mediaType.FloatingDecimalPointProperty);
+
+            CanSetDefaultValueForMediaType<decimal>(mediaType, propertyName);
+        }
+
+        /// <summary>
+        /// Test to set default value for a media type boolean property.
+        /// </summary>
         [TestMethod]
         public void CanSetMediaTypeDefaultValueForBooleanProperty()
         {
-            var service = new DefaultValueService();
-            var content = new Moq.Mock<IMedia>();
-            var contentType = new Moq.Mock<IMediaType>();
+            var mediaType = new MediaType();
+            var propertyName = GetPropertyName(() => mediaType.BooleanProperty);
 
-            content.Setup(m => m.GetValue("booleanProperty")).Returns(null);
-            content.Setup(m => m.SetValue("booleanProperty", true)).Verifiable();
-            content.Setup(m => m.ContentType).Returns(contentType.Object);
-            contentType.Setup(m => m.Alias).Returns(typeof(DefaultValueServiceTestMediaType).Name.Alias());
-
-            service.SetDefaultValues(content.Object);
-
-            content.VerifyAll();
+            CanSetDefaultValueForMediaType<bool>(mediaType, propertyName);
         }
 
-        #endregion
-
-        [DocumentType("DefaultValueServiceTestDocumentType")]
-        public class DefaultValueServiceTestDocumentType
+        private static void CanSetDefaultValueForDocumentType<TPropertyType>(ContentType documentType, string propertyName)
         {
+            var contentTypeMock = new Mock<IContentType>();
+
+            contentTypeMock.Setup(m => m.Alias).Returns(documentType.GetType().Name.Alias());
+
+            var contentMock = new Mock<IContent>();
+
+            contentMock.Setup(m => m.ContentType).Returns(contentTypeMock.Object);
+
+            new DefaultValueService(GetTypeServiceMock(documentType.GetType()).Object).SetDefaultValues(contentMock.Object);
+
+            contentMock.Verify(m => m.SetValue(propertyName.Alias(), GetPropertyDefaultValue<TPropertyType>(documentType.GetType(), propertyName)));
+        }
+
+        private static void CanSetDefaultValueForMediaType<TPropertyType>(ContentType mediaType, string propertyName)
+        {
+            var contentTypeMock = new Mock<IMediaType>();
+
+            contentTypeMock.Setup(m => m.Alias).Returns(mediaType.GetType().Name.Alias());
+
+            var contentMock = new Mock<IMedia>();
+
+            contentMock.Setup(m => m.ContentType).Returns(contentTypeMock.Object);
+
+            new DefaultValueService(GetTypeServiceMock(mediaType.GetType()).Object).SetDefaultValues(contentMock.Object);
+
+            contentMock.Verify(m => m.SetValue(propertyName.Alias(), GetPropertyDefaultValue<TPropertyType>(mediaType.GetType(), propertyName)));
+        }
+
+        private static T GetPropertyDefaultValue<T>(Type type, string propertyName)
+        {
+            var property = type.GetProperties().Single(p => p.Name == propertyName);
+
+            var attribute = (DefaultValueAttribute)Attribute.GetCustomAttribute(property, typeof(DefaultValueAttribute));
+
+            return (T)attribute.Value;
+        }
+
+        /// <summary>
+        /// The <see cref="ContentType" /> class.
+        /// </summary>
+        protected abstract class ContentType
+        {
+            /// <summary>
+            /// Gets or sets the string property value.
+            /// </summary>
+            /// <value>
+            /// The string property value.
+            /// </value>
             [DefaultValue("Default")]
             public string StringProperty { get; set; }
 
+            /// <summary>
+            /// Gets or sets the integer property value.
+            /// </summary>
+            /// <value>
+            /// The integer property value.
+            /// </value>
             [DefaultValue(1)]
             public int IntegerProperty { get; set; }
 
+            /// <summary>
+            /// Gets or sets the floating binary point property value.
+            /// </summary>
+            /// <value>
+            /// The floating binary point property value.
+            /// </value>
             [DefaultValue(1.1f)]
-            public float FloatingBinaryProperty { get; set; }
+            public float FloatingBinaryPointProperty { get; set; }
 
+            /// <summary>
+            /// Gets or sets the floating decimal point property value.
+            /// </summary>
+            /// <value>
+            /// The floating decimal point property value.
+            /// </value>
+            [DefaultValue(typeof(decimal), "1.1")]
+            public decimal FloatingDecimalPointProperty { get; set; }
+
+            /// <summary>
+            /// Gets or sets the boolean property value.
+            /// </summary>
+            /// <value>
+            /// The boolean property value.
+            /// </value>
             [DefaultValue(true)]
             public bool BooleanProperty { get; set; }
         }
 
-        [MediaType("DefaultValueServiceTestMediaType")]
-        public class DefaultValueServiceTestMediaType
+        /// <summary>
+        /// The <see cref="DocumentType" /> class.
+        /// </summary>
+        [DocumentType("DocumentType")]
+        protected class DocumentType : ContentType
         {
-            [DefaultValue("Default")]
-            public string StringProperty { get; set; }
+        }
 
-            [DefaultValue(1)]
-            public int IntegerProperty { get; set; }
-
-            [DefaultValue(1.1f)]
-            public float FloatingBinaryProperty { get; set; }
-
-            [DefaultValue(true)]
-            public bool BooleanProperty { get; set; }
+        /// <summary>
+        /// The <see cref="MediaType" /> class.
+        /// </summary>
+        [MediaType("MediaType")]
+        protected class MediaType : ContentType
+        {
         }
     }
 }

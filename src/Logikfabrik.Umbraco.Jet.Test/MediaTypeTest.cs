@@ -9,179 +9,305 @@ namespace Logikfabrik.Umbraco.Jet.Test
     using System.Linq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    /// <summary>
+    /// The <see cref="MediaTypeTest" /> class.
+    /// </summary>
     [TestClass]
-    public class MediaTypeTest
+    public class MediaTypeTest : TestBase
     {
-        private static MediaType GetMediaType()
-        {
-            return new MediaType(typeof(MediaTypeTestMediaType));
-        }
-
+        /// <summary>
+        /// Test to get type for media type.
+        /// </summary>
         [TestMethod]
         public void CanGetTypeFromAttribute()
         {
-            var dt = GetMediaType();
+            var mediaType = new Jet.MediaType(typeof(MediaType));
 
-            Assert.AreSame(typeof(MediaTypeTestMediaType), dt.Type);
+            Assert.AreSame(typeof(MediaType), mediaType.Type);
         }
 
+        /// <summary>
+        /// Test to get name for media type.
+        /// </summary>
         [TestMethod]
         public void CanGetNameFromAttribute()
         {
-            var dt = GetMediaType();
+            var mediaType = new Jet.MediaType(typeof(MediaType));
 
-            Assert.AreEqual("MediaTypeTestMediaType", dt.Name);
+            Assert.AreEqual("MediaType", mediaType.Name);
         }
 
+        /// <summary>
+        /// Test to get alias for media type.
+        /// </summary>
         [TestMethod]
         public void CanGetAliasFromAttribute()
         {
-            var dt = GetMediaType();
+            var mediaType = new Jet.MediaType(typeof(MediaType));
 
-            Assert.AreEqual("mediaTypeTestMediaType", dt.Alias);
+            Assert.AreEqual("mediaType", mediaType.Alias);
         }
 
+        /// <summary>
+        /// Test to get ID for media type.
+        /// </summary>
+        [TestMethod]
+        public void CanGetIdFromAttribute()
+        {
+            var mediaType = new Jet.MediaType(typeof(MediaType));
+
+            Assert.AreEqual(Guid.Parse("7bbd6ff5-54ac-4b5a-80fb-4adabe366bcd"), mediaType.Id);
+        }
+
+        /// <summary>
+        /// Test to get description for media type.
+        /// </summary>
         [TestMethod]
         public void CanGetDescriptionFromAttribute()
         {
-            var dt = GetMediaType();
+            var mediaType = new Jet.MediaType(typeof(MediaType));
 
-            Assert.AreEqual("Description", dt.Description);
+            Assert.AreEqual("Description", mediaType.Description);
         }
 
+        /// <summary>
+        /// Test to get allowed as root for media type.
+        /// </summary>
         [TestMethod]
         public void CanGetAllowedAsRootFromAttribute()
         {
-            var dt = GetMediaType();
+            var mediaType = new Jet.MediaType(typeof(MediaType));
 
-            Assert.AreEqual(true, dt.AllowedAsRoot);
+            Assert.AreEqual(true, mediaType.AllowedAsRoot);
         }
 
+        /// <summary>
+        /// Test to get allowed child node types for media type.
+        /// </summary>
         [TestMethod]
         public void CanGetAllowedChildNodeTypesFromAttribute()
         {
-            var dt = GetMediaType();
+            var mediaType = new Jet.MediaType(typeof(MediaType));
 
-            Assert.IsFalse(dt.AllowedChildNodeTypes.Any());
+            Assert.IsFalse(mediaType.AllowedChildNodeTypes.Any());
         }
 
+        /// <summary>
+        /// Test to get properties for media type.
+        /// </summary>
         [TestMethod]
         public void CanGetProperties()
         {
-            var dt = GetMediaType();
+            var mediaType = new Jet.MediaType(typeof(MediaType));
 
-            Assert.AreEqual(7, dt.Properties.Count());
+            Assert.AreEqual(6, mediaType.Properties.Count());
         }
 
+        /// <summary>
+        /// Test to get <see cref="string" /> property for media type.
+        /// </summary>
         [TestMethod]
         public void CanGetStringProperty()
         {
-            var dt = GetMediaType();
-            var pt = dt.Properties.First(p => p.Name == "StringProperty");
+            var media = new MediaType();
+            var mediaType = new Jet.MediaType(media.GetType());
+            var property = mediaType.Properties.First(p => p.Name == GetPropertyName(() => media.StringProperty));
 
-            Assert.AreSame(typeof(string), pt.Type);
+            Assert.AreSame(typeof(string), property.Type);
         }
 
+        /// <summary>
+        /// Test to get <see cref="int" /> property for media type.
+        /// </summary>
         [TestMethod]
         public void CanGetIntegerProperty()
         {
-            var dt = GetMediaType();
-            var pt = dt.Properties.First(p => p.Name == "IntegerProperty");
+            var media = new MediaType();
+            var mediaType = new Jet.MediaType(media.GetType());
+            var property = mediaType.Properties.First(p => p.Name == GetPropertyName(() => media.IntegerProperty));
 
-            Assert.AreSame(typeof(int), pt.Type);
+            Assert.AreSame(typeof(int), property.Type);
         }
 
+        /// <summary>
+        /// Test to get <see cref="decimal" /> property for media type.
+        /// </summary>
         [TestMethod]
-        public void CanGetFloatingDecimalProperty()
+        public void CanGetFloatingDecimalPointProperty()
         {
-            var dt = GetMediaType();
-            var pt = dt.Properties.First(p => p.Name == "FloatingDecimalProperty");
+            var media = new MediaType();
+            var mediaType = new Jet.MediaType(media.GetType());
+            var property = mediaType.Properties.First(p => p.Name == GetPropertyName(() => media.FloatingDecimalPointProperty));
 
-            Assert.AreSame(typeof(decimal), pt.Type);
+            Assert.AreSame(typeof(decimal), property.Type);
         }
 
+        /// <summary>
+        /// Test to get <see cref="float" /> property for media type.
+        /// </summary>
         [TestMethod]
-        public void CanGetFloatingBinaryProperty()
+        public void CanGetFloatingBinaryPointProperty()
         {
-            var dt = GetMediaType();
-            var pt = dt.Properties.First(p => p.Name == "FloatingBinaryProperty");
+            var media = new MediaType();
+            var mediaType = new Jet.MediaType(media.GetType());
+            var property = mediaType.Properties.First(p => p.Name == GetPropertyName(() => media.FloatingBinaryPointProperty));
 
-            Assert.AreSame(typeof(float), pt.Type);
+            Assert.AreSame(typeof(float), property.Type);
         }
 
+        /// <summary>
+        /// Test to get <see cref="DateTime" /> property for media type.
+        /// </summary>
         [TestMethod]
         public void CanGetDateTimeProperty()
         {
-            var dt = GetMediaType();
-            var pt = dt.Properties.First(p => p.Name == "DateTimeProperty");
+            var media = new MediaType();
+            var mediaType = new Jet.MediaType(media.GetType());
+            var property = mediaType.Properties.First(p => p.Name == GetPropertyName(() => media.DateTimeProperty));
 
-            Assert.AreSame(typeof(DateTime), pt.Type);
+            Assert.AreSame(typeof(DateTime), property.Type);
         }
 
+        /// <summary>
+        /// Test to get <see cref="bool" /> property for media type.
+        /// </summary>
         [TestMethod]
         public void CanGetBooleanProperty()
         {
-            var dt = GetMediaType();
-            var pt = dt.Properties.First(p => p.Name == "BooleanProperty");
+            var media = new MediaType();
+            var mediaType = new Jet.MediaType(media.GetType());
+            var property = mediaType.Properties.First(p => p.Name == GetPropertyName(() => media.BooleanProperty));
 
-            Assert.AreSame(typeof(bool), pt.Type);
+            Assert.AreSame(typeof(bool), property.Type);
         }
 
-        [TestMethod]
-        public void CanGetCustomProperty()
-        {
-            var dt = GetMediaType();
-            var pt = dt.Properties.First(p => p.Name == "MediaTypeTestPropertyTypeProperty");
-
-            Assert.AreSame(typeof(MediaTypeTestPropertyType), pt.Type);
-        }
-
+        /// <summary>
+        /// Test to get non scaffolded property for media type.
+        /// </summary>
         [TestMethod]
         public void CanNotGetNonScaffoldedProperty()
         {
-            var dt = GetMediaType();
-            var pt = dt.Properties.FirstOrDefault(p => p.Name == "NonScaffoldedProperty");
+            var media = new MediaType();
+            var mediaType = new Jet.MediaType(media.GetType());
+            var property = mediaType.Properties.FirstOrDefault(p => p.Name == GetPropertyName(() => media.NonScaffoldedStringProperty));
 
-            Assert.IsNull(pt);
+            Assert.IsNull(property);
         }
 
+        /// <summary>
+        /// Test to get property without setter for media type.
+        /// </summary>
+        [TestMethod]
+        public void CanNotGetPropertyWithoutSetter()
+        {
+            var media = new MediaType();
+            var mediaType = new Jet.MediaType(media.GetType());
+            var property = mediaType.Properties.FirstOrDefault(p => p.Name == GetPropertyName(() => media.StringPropertyWithoutSetter));
+
+            Assert.IsNull(property);
+        }
+
+        /// <summary>
+        /// The <see cref="MediaType" /> class.
+        /// </summary>
         [MediaType(
-            "MediaTypeTestMediaType",
+            "7bbd6ff5-54ac-4b5a-80fb-4adabe366bcd",
+            "MediaType",
             Description = "Description",
             AllowedAsRoot = true,
             AllowedChildNodeTypes = new Type[] { })]
-        public class MediaTypeTestMediaType
+        protected class MediaType
         {
             // ReSharper disable once NotAccessedField.Local
-            private string propertyWithoutGetter;
+            private string stringPropertyWithoutGetter;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="MediaType" /> class.
+            /// </summary>
+            public MediaType()
+            {
+                StringPropertyWithoutSetter = null;
+                stringPropertyWithoutGetter = null;
+            }
+
+            /// <summary>
+            /// Gets or sets the string property value.
+            /// </summary>
+            /// <value>
+            /// The string property value.
+            /// </value>
             public string StringProperty { get; set; }
 
+            /// <summary>
+            /// Gets or sets the integer property value.
+            /// </summary>
+            /// <value>
+            /// The integer property value.
+            /// </value>
             public int IntegerProperty { get; set; }
 
-            public decimal FloatingDecimalProperty { get; set; }
+            /// <summary>
+            /// Gets or sets the floating binary point property value.
+            /// </summary>
+            /// <value>
+            /// The floating binary point property value.
+            /// </value>
+            public float FloatingBinaryPointProperty { get; set; }
 
-            public float FloatingBinaryProperty { get; set; }
+            /// <summary>
+            /// Gets or sets the floating decimal point property value.
+            /// </summary>
+            /// <value>
+            /// The floating decimal point property value.
+            /// </value>
+            public decimal FloatingDecimalPointProperty { get; set; }
 
-            public DateTime DateTimeProperty { get; set; }
-
+            /// <summary>
+            /// Gets or sets the boolean property value.
+            /// </summary>
+            /// <value>
+            /// The boolean property value.
+            /// </value>
             public bool BooleanProperty { get; set; }
 
-            public MediaTypeTestPropertyType MediaTypeTestPropertyTypeProperty { get; set; }
+            /// <summary>
+            /// Gets or sets the DateTime property value.
+            /// </summary>
+            /// <value>
+            /// The DateTime property value.
+            /// </value>
+            public DateTime DateTimeProperty { get; set; }
+
+            /// <summary>
+            /// Gets or sets the non scaffolded string property value.
+            /// </summary>
+            /// <value>
+            /// The non scaffolded string property value.
+            /// </value>
+            [ScaffoldColumn(false)]
+            public string NonScaffoldedStringProperty { get; set; }
+
+            /// <summary>
+            /// Gets the string property value, for property without setter.
+            /// </summary>
+            /// <value>
+            /// The string property value.
+            /// </value>
+            public string StringPropertyWithoutSetter { get; }
+
+            /// <summary>
+            /// Sets the string property value, for property without getter.
+            /// </summary>
+            /// <value>
+            /// The string property value.
+            /// </value>
+            public string StringPropertyWithoutGetter
+            {
+                set { stringPropertyWithoutGetter = value; }
+            }
 
             // ReSharper disable once UnusedMember.Local
-            private string PrivateProperty { get; set; }
-
-            [ScaffoldColumn(false)]
-            public string NonScaffoldedProperty { get; set; }
-
-            public string PropertyWithoutSetter { get; } = null;
-
-            public string PropertyWithoutGetter { set { propertyWithoutGetter = value; } }
-        }
-
-        public class MediaTypeTestPropertyType
-        {
+            private string PrivateStringProperty { get; set; }
         }
     }
 }

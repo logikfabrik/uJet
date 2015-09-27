@@ -242,7 +242,12 @@
     <Compile Include="DataTypeSynchronizationServiceTest.cs" />
     <Compile Include="DocumentTypeSynchronizationServiceTest.cs" />
     <Compile Include="MediaTypeSynchronizationServiceTest.cs" />
-    <Compile Include="TypeUtility.cs" />
+    <Compile Include="TestBase.cs" />
+    <Compile Include="Utilities\DataTypeUtility.cs" />
+    <Compile Include="Utilities\DocumentTypeUtility.cs" />
+    <Compile Include="Utilities\MediaTypeUtility.cs" />
+    <Compile Include="Utilities\MemberTypeUtility.cs" />
+    <Compile Include="Utilities\TypeUtility.cs" />
     <Compile Include="Web\Data\Converters\FloatingDecimalPointPropertyValueConverterTest.cs" />
     <Compile Include="Web\Data\Converters\FloatingBinaryPointPropertyValueConverterTest.cs" />
     <Compile Include="Web\Data\Converters\HtmlStringPropertyValueConverterTest.cs" />

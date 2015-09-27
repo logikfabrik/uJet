@@ -276,10 +276,22 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(type));
             }
 
-            return from property in type.GetProperties()
-                   let attribute = property.GetCustomAttribute<ScaffoldColumnAttribute>()
-                   where (attribute == null || attribute.Scaffold) && property.CanRead && property.CanWrite
-                   select new ContentTypeProperty(property);
+            foreach (var property in type.GetProperties())
+            {
+                if (!property.CanRead || !property.CanWrite)
+                {
+                    continue;
+                }
+
+                var attribute = property.GetCustomAttribute<ScaffoldColumnAttribute>();
+
+                if (attribute != null && !attribute.Scaffold)
+                {
+                    continue;
+                }
+
+                yield return new ContentTypeProperty(property);
+            }
         }
     }
 }

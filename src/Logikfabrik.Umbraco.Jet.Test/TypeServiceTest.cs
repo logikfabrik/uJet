@@ -4,19 +4,16 @@
 
 namespace Logikfabrik.Umbraco.Jet.Test
 {
-    using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using System.Reflection.Emit;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Moq;
+    using Utilities;
 
     /// <summary>
     /// The <see cref="TypeServiceTest" /> class.
     /// </summary>
     [TestClass]
-    public class TypeServiceTest
+    public class TypeServiceTest : TestBase
     {
         /// <summary>
         /// Test to get document types.
@@ -24,23 +21,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanGetDocumentTypes()
         {
-            TypeUtility.BuildAction typeAttributeBuildAction = typeBuilder =>
-            {
-                var constructor = typeof(DocumentTypeAttribute).GetConstructor(new[] { typeof(string) });
+            var type = DocumentTypeUtility.GetTypeBuilder().CreateType();
 
-                if (constructor == null)
-                {
-                    return;
-                }
-
-                typeBuilder.SetCustomAttribute(new CustomAttributeBuilder(constructor, new object[] { "Name" }));
-            };
-
-            var type = TypeUtility.CreateType("MyType", new[] { typeAttributeBuildAction });
-
-            Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
-
-            var typeServiceMock = new Mock<TypeService>(getAssemblies) { CallBase = true };
+            var typeServiceMock = GetTypeServiceMock(type);
 
             var documentTypes = typeServiceMock.Object.DocumentTypes;
 
@@ -53,23 +36,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CannotGetAbstractDocumentTypes()
         {
-            TypeUtility.BuildAction typeAttributeBuildAction = typeBuilder =>
-            {
-                var constructor = typeof(DocumentTypeAttribute).GetConstructor(new[] { typeof(string) });
+            var type = DocumentTypeUtility.GetTypeBuilder(TypeAttributes.Abstract).CreateType();
 
-                if (constructor == null)
-                {
-                    return;
-                }
-
-                typeBuilder.SetCustomAttribute(new CustomAttributeBuilder(constructor, new object[] { "Name" }));
-            };
-
-            var type = TypeUtility.CreateType("MyType", TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Abstract, new[] { typeAttributeBuildAction });
-
-            Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
-
-            var typeServiceMock = new Mock<TypeService>(getAssemblies) { CallBase = true };
+            var typeServiceMock = GetTypeServiceMock(type);
 
             var documentTypes = typeServiceMock.Object.DocumentTypes;
 
@@ -82,23 +51,13 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CannotGetDocumentTypesWithoutPublicDefaultConstructor()
         {
-            TypeUtility.BuildAction typeAttributeBuildAction = typeBuilder =>
-            {
-                var constructor = typeof(DocumentTypeAttribute).GetConstructor(new[] { typeof(string) });
+            var typeBuilder = DataTypeUtility.GetTypeBuilder();
 
-                if (constructor == null)
-                {
-                    return;
-                }
+            typeBuilder.DefineDefaultConstructor(MethodAttributes.Private);
 
-                typeBuilder.SetCustomAttribute(new CustomAttributeBuilder(constructor, new object[] { "Name" }));
-            };
+            var type = typeBuilder.CreateType();
 
-            var type = TypeUtility.CreateType("MyType", new[] { typeAttributeBuildAction, TypeUtility.AbstractTypeBuildAction });
-
-            Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
-
-            var typeServiceMock = new Mock<TypeService>(getAssemblies) { CallBase = true };
+            var typeServiceMock = GetTypeServiceMock(type);
 
             var documentTypes = typeServiceMock.Object.DocumentTypes;
 
@@ -111,23 +70,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanGetDataTypes()
         {
-            TypeUtility.BuildAction typeAttributeBuildAction = typeBuilder =>
-            {
-                var constructor = typeof(DataTypeAttribute).GetConstructor(new[] { typeof(Type), typeof(string) });
+            var type = DataTypeUtility.GetTypeBuilder().CreateType();
 
-                if (constructor == null)
-                {
-                    return;
-                }
-
-                typeBuilder.SetCustomAttribute(new CustomAttributeBuilder(constructor, new object[] { typeof(int), "Editor" }));
-            };
-
-            var type = TypeUtility.CreateType("MyType", new[] { typeAttributeBuildAction });
-
-            Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
-
-            var typeServiceMock = new Mock<TypeService>(getAssemblies) { CallBase = true };
+            var typeServiceMock = GetTypeServiceMock(type);
 
             var dataTypes = typeServiceMock.Object.DataTypes;
 
@@ -140,23 +85,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CannotGetAbstractDataTypes()
         {
-            TypeUtility.BuildAction typeAttributeBuildAction = typeBuilder =>
-            {
-                var constructor = typeof(DataTypeAttribute).GetConstructor(new[] { typeof(Type), typeof(string) });
+            var type = DataTypeUtility.GetTypeBuilder(TypeAttributes.Abstract).CreateType();
 
-                if (constructor == null)
-                {
-                    return;
-                }
-
-                typeBuilder.SetCustomAttribute(new CustomAttributeBuilder(constructor, new object[] { typeof(int), "Editor" }));
-            };
-
-            var type = TypeUtility.CreateType("MyType", TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Abstract, new[] { typeAttributeBuildAction });
-
-            Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
-
-            var typeServiceMock = new Mock<TypeService>(getAssemblies) { CallBase = true };
+            var typeServiceMock = GetTypeServiceMock(type);
 
             var dataTypes = typeServiceMock.Object.DataTypes;
 
@@ -169,23 +100,13 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CannotGetDataTypesWithoutPublicDefaultConstructor()
         {
-            TypeUtility.BuildAction typeAttributeBuildAction = typeBuilder =>
-            {
-                var constructor = typeof(DataTypeAttribute).GetConstructor(new[] { typeof(Type), typeof(string) });
+            var typeBuilder = DataTypeUtility.GetTypeBuilder();
 
-                if (constructor == null)
-                {
-                    return;
-                }
+            typeBuilder.DefineDefaultConstructor(MethodAttributes.Private);
 
-                typeBuilder.SetCustomAttribute(new CustomAttributeBuilder(constructor, new object[] { typeof(int), "Editor" }));
-            };
+            var type = typeBuilder.CreateType();
 
-            var type = TypeUtility.CreateType("MyType", new[] { typeAttributeBuildAction, TypeUtility.AbstractTypeBuildAction });
-
-            Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
-
-            var typeServiceMock = new Mock<TypeService>(getAssemblies) { CallBase = true };
+            var typeServiceMock = GetTypeServiceMock(type);
 
             var dataTypes = typeServiceMock.Object.DataTypes;
 
@@ -198,23 +119,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanGetMediaTypes()
         {
-            TypeUtility.BuildAction typeAttributeBuildAction = typeBuilder =>
-            {
-                var constructor = typeof(MediaTypeAttribute).GetConstructor(new[] { typeof(string) });
+            var type = MediaTypeUtility.GetTypeBuilder().CreateType();
 
-                if (constructor == null)
-                {
-                    return;
-                }
-
-                typeBuilder.SetCustomAttribute(new CustomAttributeBuilder(constructor, new object[] { "Name" }));
-            };
-
-            var type = TypeUtility.CreateType("MyType", new[] { typeAttributeBuildAction });
-
-            Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
-
-            var typeServiceMock = new Mock<TypeService>(getAssemblies) { CallBase = true };
+            var typeServiceMock = GetTypeServiceMock(type);
 
             var mediaTypes = typeServiceMock.Object.MediaTypes;
 
@@ -227,23 +134,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CannotGetAbstractMediaTypes()
         {
-            TypeUtility.BuildAction typeAttributeBuildAction = typeBuilder =>
-            {
-                var constructor = typeof(MediaTypeAttribute).GetConstructor(new[] { typeof(string) });
+            var type = MediaTypeUtility.GetTypeBuilder(TypeAttributes.Abstract).CreateType();
 
-                if (constructor == null)
-                {
-                    return;
-                }
-
-                typeBuilder.SetCustomAttribute(new CustomAttributeBuilder(constructor, new object[] { "Name" }));
-            };
-
-            var type = TypeUtility.CreateType("MyType", TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Abstract, new[] { typeAttributeBuildAction });
-
-            Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
-
-            var typeServiceMock = new Mock<TypeService>(getAssemblies) { CallBase = true };
+            var typeServiceMock = GetTypeServiceMock(type);
 
             var mediaTypes = typeServiceMock.Object.MediaTypes;
 
@@ -256,23 +149,13 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CannotGetMediaTypesWithoutPublicDefaultConstructor()
         {
-            TypeUtility.BuildAction typeAttributeBuildAction = typeBuilder =>
-            {
-                var constructor = typeof(MediaTypeAttribute).GetConstructor(new[] { typeof(string) });
+            var typeBuilder = MediaTypeUtility.GetTypeBuilder();
 
-                if (constructor == null)
-                {
-                    return;
-                }
+            typeBuilder.DefineDefaultConstructor(MethodAttributes.Private);
 
-                typeBuilder.SetCustomAttribute(new CustomAttributeBuilder(constructor, new object[] { "Name" }));
-            };
+            var type = typeBuilder.CreateType();
 
-            var type = TypeUtility.CreateType("MyType", new[] { typeAttributeBuildAction, TypeUtility.AbstractTypeBuildAction });
-
-            Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
-
-            var typeServiceMock = new Mock<TypeService>(getAssemblies) { CallBase = true };
+            var typeServiceMock = GetTypeServiceMock(type);
 
             var mediaTypes = typeServiceMock.Object.MediaTypes;
 
@@ -285,23 +168,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanGetMemberTypes()
         {
-            TypeUtility.BuildAction typeAttributeBuildAction = typeBuilder =>
-            {
-                var constructor = typeof(MemberTypeAttribute).GetConstructor(new Type[] { });
+            var type = MemberTypeUtility.GetTypeBuilder().CreateType();
 
-                if (constructor == null)
-                {
-                    return;
-                }
-
-                typeBuilder.SetCustomAttribute(new CustomAttributeBuilder(constructor, new object[] { }));
-            };
-
-            var type = TypeUtility.CreateType("MyType", new[] { typeAttributeBuildAction });
-
-            Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
-
-            var typeServiceMock = new Mock<TypeService>(getAssemblies) { CallBase = true };
+            var typeServiceMock = GetTypeServiceMock(type);
 
             var memberTypes = typeServiceMock.Object.MemberTypes;
 
@@ -314,23 +183,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CannotGetAbstractMemberTypes()
         {
-            TypeUtility.BuildAction typeAttributeBuildAction = typeBuilder =>
-            {
-                var constructor = typeof(MemberTypeAttribute).GetConstructor(new Type[] { });
+            var type = MemberTypeUtility.GetTypeBuilder(TypeAttributes.Abstract).CreateType();
 
-                if (constructor == null)
-                {
-                    return;
-                }
-
-                typeBuilder.SetCustomAttribute(new CustomAttributeBuilder(constructor, new object[] { }));
-            };
-
-            var type = TypeUtility.CreateType("MyType", TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Abstract, new[] { typeAttributeBuildAction });
-
-            Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
-
-            var typeServiceMock = new Mock<TypeService>(getAssemblies) { CallBase = true };
+            var typeServiceMock = GetTypeServiceMock(type);
 
             var memberTypes = typeServiceMock.Object.MemberTypes;
 
@@ -343,23 +198,13 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CannotGetMemberTypesWithoutPublicDefaultConstructor()
         {
-            TypeUtility.BuildAction typeAttributeBuildAction = typeBuilder =>
-            {
-                var constructor = typeof(MemberTypeAttribute).GetConstructor(new Type[] { });
+            var typeBuilder = MemberTypeUtility.GetTypeBuilder();
 
-                if (constructor == null)
-                {
-                    return;
-                }
+            typeBuilder.DefineDefaultConstructor(MethodAttributes.Private);
 
-                typeBuilder.SetCustomAttribute(new CustomAttributeBuilder(constructor, new object[] { }));
-            };
+            var type = typeBuilder.CreateType();
 
-            var type = TypeUtility.CreateType("MyType", new[] { typeAttributeBuildAction, TypeUtility.AbstractTypeBuildAction });
-
-            Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
-
-            var typeServiceMock = new Mock<TypeService>(getAssemblies) { CallBase = true };
+            var typeServiceMock = GetTypeServiceMock(type);
 
             var memberTypes = typeServiceMock.Object.MemberTypes;
 
