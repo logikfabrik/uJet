@@ -7,8 +7,16 @@ namespace Logikfabrik.Umbraco.Jet.Test.Utilities
     using System.Reflection;
     using System.Reflection.Emit;
 
+    /// <summary>
+    /// The <see cref="DocumentTypeUtility" /> class.
+    /// </summary>
     public static class DocumentTypeUtility
     {
+        /// <summary>
+        /// Gets a type builder.
+        /// </summary>
+        /// <param name="typeAttributes">The type attributes.</param>
+        /// <returns>A type builder.</returns>
         public static TypeBuilder GetTypeBuilder(TypeAttributes? typeAttributes = null)
         {
             var typeBuilder = TypeUtility.GetTypeBuilder("MyDocumentType", TypeUtility.GetTypeAttributes(typeAttributes));

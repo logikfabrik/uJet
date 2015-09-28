@@ -8,8 +8,16 @@ namespace Logikfabrik.Umbraco.Jet.Test.Utilities
     using System.Reflection;
     using System.Reflection.Emit;
 
+    /// <summary>
+    /// The <see cref="DataTypeUtility" /> class.
+    /// </summary>
     public static class DataTypeUtility
     {
+        /// <summary>
+        /// Gets a type builder.
+        /// </summary>
+        /// <param name="typeAttributes">The type attributes.</param>
+        /// <returns>A type builder.</returns>
         public static TypeBuilder GetTypeBuilder(TypeAttributes? typeAttributes = null)
         {
             var typeBuilder = TypeUtility.GetTypeBuilder("MyDataType", TypeUtility.GetTypeAttributes(typeAttributes));
@@ -21,7 +29,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Utilities
                 return null;
             }
 
-            typeBuilder.SetCustomAttribute(new CustomAttributeBuilder(constructor, new object[] { typeof(int), "Editor" }));
+            typeBuilder.SetCustomAttribute(new CustomAttributeBuilder(constructor, new object[] { typeof(object), "Editor" }));
 
             return typeBuilder;
         }

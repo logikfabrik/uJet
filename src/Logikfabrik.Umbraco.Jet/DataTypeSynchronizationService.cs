@@ -97,6 +97,120 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
+        /// Synchronizes data type by name.
+        /// </summary>
+        /// <param name="dataTypeDefinitions">The data type definitions.</param>
+        /// <param name="dataType">The data type.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dataTypeDefinitions" />, or <paramref name="dataType" /> are <c>null</c>.</exception>
+        /// <exception cref="ArgumentException">Thrown if the data type identifier is not <c>null</c>.</exception>
+        internal virtual void SynchronizeByName(IEnumerable<IDataTypeDefinition> dataTypeDefinitions, DataType dataType)
+        {
+            if (dataTypeDefinitions == null)
+            {
+                throw new ArgumentNullException(nameof(dataTypeDefinitions));
+            }
+
+            if (dataType == null)
+            {
+                throw new ArgumentNullException(nameof(dataType));
+            }
+
+            if (dataType.Id.HasValue)
+            {
+                throw new ArgumentException("Data type ID must be null.", nameof(dataType));
+            }
+
+            var dtd = dataTypeDefinitions.FirstOrDefault(type => type.Name == dataType.Name);
+
+            if (dtd == null)
+            {
+                CreateDataType(dataType);
+            }
+            else
+            {
+                UpdateDataType(dtd, dataType);
+            }
+        }
+
+        /// <summary>
+        /// Synchronizes data type by identifier.
+        /// </summary>
+        /// <param name="dataTypeDefinitions">The data type definitions.</param>
+        /// <param name="dataType">The data type.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dataTypeDefinitions" />, or <paramref name="dataType" /> are <c>null</c>.</exception>
+        /// <exception cref="ArgumentException">Thrown if the data type identifier is <c>null</c>.</exception>
+        internal virtual void SynchronizeById(IEnumerable<IDataTypeDefinition> dataTypeDefinitions, DataType dataType)
+        {
+            if (dataTypeDefinitions == null)
+            {
+                throw new ArgumentNullException(nameof(dataTypeDefinitions));
+            }
+
+            if (dataType == null)
+            {
+                throw new ArgumentNullException(nameof(dataType));
+            }
+
+            if (!dataType.Id.HasValue)
+            {
+                throw new ArgumentException("Data type ID cannot be null.", nameof(dataType));
+            }
+
+            IDataTypeDefinition dtd = null;
+
+            var id = dataTypeRepository.GetDefinitionId(dataType.Id.Value);
+
+            if (id.HasValue)
+            {
+                // The data type has been synchronized before. Get the matching data type definition.
+                // It might have been removed using the back office.
+                dtd = dataTypeDefinitions.FirstOrDefault(type => type.Id == id.Value);
+            }
+
+            if (dtd == null)
+            {
+                CreateDataType(dataType);
+
+                // Get the created data type definition.
+                dtd =
+                    dataTypeService.GetDataTypeDefinitionByPropertyEditorAlias(dataType.Editor)
+                        .First(type => type.Name == dataType.Name);
+
+                // Connect the data type and the created data type definition.
+                dataTypeRepository.SetDefinitionId(dataType.Id.Value, dtd.Id);
+            }
+            else
+            {
+                UpdateDataType(dtd, dataType);
+            }
+        }
+
+        /// <summary>
+        /// Updates the data type.
+        /// </summary>
+        /// <param name="dataTypeDefinition">The data type definition.</param>
+        /// <param name="dataType">The data type to update.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dataTypeDefinition" />, or <paramref name="dataType" /> are <c>null</c>.</exception>
+        internal virtual void UpdateDataType(IDataTypeDefinition dataTypeDefinition, DataType dataType)
+        {
+            if (dataTypeDefinition == null)
+            {
+                throw new ArgumentNullException(nameof(dataTypeDefinition));
+            }
+
+            if (dataType == null)
+            {
+                throw new ArgumentNullException(nameof(dataType));
+            }
+
+            dataTypeDefinition.Name = dataType.Name;
+            dataTypeDefinition.PropertyEditorAlias = dataType.Editor;
+            dataTypeDefinition.DatabaseType = GetDatabaseType(dataType);
+
+            dataTypeService.Save(dataTypeDefinition);
+        }
+
+        /// <summary>
         /// Validates the data type identifier.
         /// </summary>
         /// <param name="dataTypes">The data types.</param>
@@ -177,95 +291,6 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Synchronizes data type by name.
-        /// </summary>
-        /// <param name="dataTypeDefinitions">The data type definitions.</param>
-        /// <param name="dataType">The data type.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dataTypeDefinitions" />, or <paramref name="dataType" /> are <c>null</c>.</exception>
-        /// <exception cref="ArgumentException">Thrown if the data type identifier is not <c>null</c>.</exception>
-        private void SynchronizeByName(IEnumerable<IDataTypeDefinition> dataTypeDefinitions, DataType dataType)
-        {
-            if (dataTypeDefinitions == null)
-            {
-                throw new ArgumentNullException(nameof(dataTypeDefinitions));
-            }
-
-            if (dataType == null)
-            {
-                throw new ArgumentNullException(nameof(dataType));
-            }
-
-            if (dataType.Id.HasValue)
-            {
-                throw new ArgumentException("Data type ID must be null.", nameof(dataType));
-            }
-
-            var dtd = dataTypeDefinitions.FirstOrDefault(type => type.Name == dataType.Name);
-
-            if (dtd == null)
-            {
-                CreateDataType(dataType);
-            }
-            else
-            {
-                UpdateDataType(dtd, dataType);
-            }
-        }
-
-        /// <summary>
-        /// Synchronizes data type by identifier.
-        /// </summary>
-        /// <param name="dataTypeDefinitions">The data type definitions.</param>
-        /// <param name="dataType">The data type.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dataTypeDefinitions" />, or <paramref name="dataType" /> are <c>null</c>.</exception>
-        /// <exception cref="ArgumentException">Thrown if the data type identifier is <c>null</c>.</exception>
-        private void SynchronizeById(IEnumerable<IDataTypeDefinition> dataTypeDefinitions, DataType dataType)
-        {
-            if (dataTypeDefinitions == null)
-            {
-                throw new ArgumentNullException(nameof(dataTypeDefinitions));
-            }
-
-            if (dataType == null)
-            {
-                throw new ArgumentNullException(nameof(dataType));
-            }
-
-            if (!dataType.Id.HasValue)
-            {
-                throw new ArgumentException("Data type ID cannot be null.", nameof(dataType));
-            }
-
-            IDataTypeDefinition dtd = null;
-
-            var id = dataTypeRepository.GetDefinitionId(dataType.Id.Value);
-
-            if (id.HasValue)
-            {
-                // The data type has been synchronized before. Get the matching data type definition.
-                // It might have been removed using the back office.
-                dtd = dataTypeDefinitions.FirstOrDefault(type => type.Id == id.Value);
-            }
-
-            if (dtd == null)
-            {
-                CreateDataType(dataType);
-
-                // Get the created data type definition.
-                dtd =
-                    dataTypeService.GetDataTypeDefinitionByPropertyEditorAlias(dataType.Editor)
-                        .First(type => type.Name == dataType.Name);
-
-                // Connect the data type and the created data type definition.
-                dataTypeRepository.SetDefinitionId(dataType.Id.Value, dtd.Id);
-            }
-            else
-            {
-                UpdateDataType(dtd, dataType);
-            }
-        }
-
-        /// <summary>
         /// Creates the data type.
         /// </summary>
         /// <param name="dataType">The data type to create.</param>
@@ -282,31 +307,6 @@ namespace Logikfabrik.Umbraco.Jet
                 Name = dataType.Name,
                 DatabaseType = GetDatabaseType(dataType)
             };
-
-            dataTypeService.Save(dataTypeDefinition);
-        }
-
-        /// <summary>
-        /// Updates the data type.
-        /// </summary>
-        /// <param name="dataTypeDefinition">The data type definition.</param>
-        /// <param name="dataType">The data type to update.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dataTypeDefinition" />, or <paramref name="dataType" /> are <c>null</c>.</exception>
-        private void UpdateDataType(IDataTypeDefinition dataTypeDefinition, DataType dataType)
-        {
-            if (dataTypeDefinition == null)
-            {
-                throw new ArgumentNullException(nameof(dataTypeDefinition));
-            }
-
-            if (dataType == null)
-            {
-                throw new ArgumentNullException(nameof(dataType));
-            }
-
-            dataTypeDefinition.Name = dataType.Name;
-            dataTypeDefinition.PropertyEditorAlias = dataType.Editor;
-            dataTypeDefinition.DatabaseType = GetDatabaseType(dataType);
 
             dataTypeService.Save(dataTypeDefinition);
         }

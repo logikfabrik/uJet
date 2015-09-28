@@ -237,11 +237,13 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Configuration\JetConfigurationManagerTest.cs" />
+    <Compile Include="DataTypeTest.cs" />
     <Compile Include="DefaultValueServiceTest.cs" />
     <Compile Include="DocumentTypeTest.cs" />
     <Compile Include="DataTypeSynchronizationServiceTest.cs" />
     <Compile Include="DocumentTypeSynchronizationServiceTest.cs" />
     <Compile Include="MediaTypeSynchronizationServiceTest.cs" />
+    <Compile Include="MemberTypeTest.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="Utilities\DataTypeUtility.cs" />
     <Compile Include="Utilities\DocumentTypeUtility.cs" />

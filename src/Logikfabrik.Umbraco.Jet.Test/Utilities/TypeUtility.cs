@@ -13,6 +13,11 @@ namespace Logikfabrik.Umbraco.Jet.Test.Utilities
     /// </summary>
     public class TypeUtility
     {
+        /// <summary>
+        /// Gets the type attributes.
+        /// </summary>
+        /// <param name="typeAttributes">The type attributes.</param>
+        /// <returns>The type attributes.</returns>
         public static TypeAttributes GetTypeAttributes(TypeAttributes? typeAttributes = null)
         {
             if (!typeAttributes.HasValue)
@@ -33,6 +38,12 @@ namespace Logikfabrik.Umbraco.Jet.Test.Utilities
             return typeAttributes.Value;
         }
 
+        /// <summary>
+        /// Gets a type builder.
+        /// </summary>
+        /// <param name="typeName">Name of the type.</param>
+        /// <param name="typeAttributes">The type attributes.</param>
+        /// <returns>A type builder.</returns>
         public static TypeBuilder GetTypeBuilder(string typeName, TypeAttributes typeAttributes)
         {
             var assemblyName = new AssemblyName("Logikfabrik.Umbraco.Jet.Test.Types");
@@ -41,40 +52,6 @@ namespace Logikfabrik.Umbraco.Jet.Test.Utilities
                 .DefineType(typeName, typeAttributes);
 
             return typeBuilder;
-        }
-
-        public static void AddProperty<T>(TypeBuilder myTypeBuilder, string propertyName, T propertyValue)
-        {
-            var fieldBuilder = myTypeBuilder.DefineField(char.ToLowerInvariant(propertyName[0]) + propertyName.Substring(1), typeof(T), FieldAttributes.Private);
-
-            var propertyBuilder = myTypeBuilder.DefineProperty(propertyName, PropertyAttributes.HasDefault, typeof(T),
-                null);
-
-            const MethodAttributes methodAttributes =
-                MethodAttributes.Public | MethodAttributes.SpecialName | MethodAttributes.HideBySig;
-
-            var getMethodBuilder = myTypeBuilder.DefineMethod(string.Concat("get_", propertyName), methodAttributes, typeof(T), Type.EmptyTypes);
-            var getGenerator = getMethodBuilder.GetILGenerator();
-
-            getGenerator.Emit(OpCodes.Ldarg_0);
-            getGenerator.Emit(OpCodes.Ldfld, fieldBuilder);
-            getGenerator.Emit(OpCodes.Ret);
-
-            var setMethodBuilder = myTypeBuilder.DefineMethod(string.Concat("set_", propertyName), methodAttributes, null, new[] { typeof(T) });
-            var setGenerator = setMethodBuilder.GetILGenerator();
-
-            setGenerator.Emit(OpCodes.Ldarg_0);
-            setGenerator.Emit(OpCodes.Ldarg_1);
-            setGenerator.Emit(OpCodes.Stfld, fieldBuilder);
-            setGenerator.Emit(OpCodes.Ret);
-
-            propertyBuilder.SetGetMethod(getMethodBuilder);
-            propertyBuilder.SetSetMethod(setMethodBuilder);
-        }
-
-        public static T GetPropertyValue<T>(object obj, string propertyName)
-        {
-            return (T)obj.GetType().GetProperty(propertyName).GetValue(obj, null);
         }
     }
 }

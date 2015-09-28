@@ -15,6 +15,11 @@ namespace Logikfabrik.Umbraco.Jet.Test
     /// </summary>
     public abstract class TestBase
     {
+        /// <summary>
+        /// Gets the type service mock.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>The type service mock.</returns>
         protected static Mock<TypeService> GetTypeServiceMock(Type type)
         {
             Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
