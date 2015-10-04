@@ -5,6 +5,7 @@
 namespace Logikfabrik.Umbraco.Jet.Test
 {
     using System;
+    using System.Collections.Generic;
     using Data;
     using Extensions;
     using global::Umbraco.Core.Models;
@@ -13,7 +14,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
     using Moq;
 
     /// <summary>
-    /// The <see cref="DataTypeSynchronizationServiceTest" /> class.
+    /// The <see cref="MediaTypeSynchronizationServiceTest" /> class.
     /// </summary>
     [TestClass]
     public class MediaTypeSynchronizationServiceTest
@@ -22,139 +23,206 @@ namespace Logikfabrik.Umbraco.Jet.Test
         private const string NameForMediaTypeWithId = "MediaTypeWithId";
         private const string NameForMediaTypeWithoutId = "MediaTypeWithoutId";
 
+        /// <summary>
+        /// Test to create media type with and without ID.
+        /// </summary>
         [TestMethod]
         public void CanCreateMediaTypeWithAndWithoutId()
         {
-            var contentTypeService = new Mock<IContentTypeService>();
-            var contentTypeRepository = new Mock<IContentTypeRepository>();
-            var typeService = new Mock<ITypeService>();
-            var withIdMediaType = new Mock<IMediaType>();
-            var withoutIdMediaType = new Mock<IMediaType>();
+            var typeServiceMock = new Mock<ITypeService>();
 
-            withIdMediaType.SetupAllProperties();
-            withoutIdMediaType.SetupAllProperties();
+            typeServiceMock.Setup(m => m.MediaTypes).Returns(new[] { typeof(MediaTypeWithId), typeof(MediaTypeWithoutId) });
 
-            contentTypeService.Setup(m => m.GetAllMediaTypes()).Returns(new IMediaType[] { });
-            contentTypeService.Setup(m => m.Save(It.IsAny<IMediaType>(), It.IsAny<int>()))
-                .Callback<IMediaType, int>((ct, userId) =>
-                {
-                    switch (ct.Name)
-                    {
-                        case NameForMediaTypeWithId:
-                            withIdMediaType.Object.Name = ct.Name;
-                            break;
+            var mediaTypeWithIdMock = new Mock<IMediaType>();
 
-                        case NameForMediaTypeWithoutId:
-                            withoutIdMediaType.Object.Name = ct.Name;
-                            break;
-                    }
-                });
-            contentTypeService.Setup(m => m.GetMediaType(It.Is<string>(v => v == NameForMediaTypeWithId.Alias())))
-                .Returns(withIdMediaType.Object);
-            contentTypeService.Setup(m => m.GetMediaType(It.Is<string>(v => v == NameForMediaTypeWithoutId.Alias())))
-                .Returns(withoutIdMediaType.Object);
-            contentTypeRepository.Setup(m => m.GetContentTypeId(It.IsAny<Guid>())).Returns((int?)null);
-            typeService.SetupGet(m => m.MediaTypes).Returns(new[] { typeof(MediaTypeWithId), typeof(MediaTypeWithoutId) });
+            var mediaTypeWithoutIdMock = new Mock<IMediaType>();
 
-            var mediaTypeSynchronizationService = new MediaTypeSynchronizationService(
-                contentTypeService.Object, contentTypeRepository.Object, typeService.Object);
+            var contentTypeServiceMock = new Mock<IContentTypeService>();
 
-            mediaTypeSynchronizationService.Synchronize();
+            contentTypeServiceMock.Setup(m => m.GetAllMediaTypes()).Returns(new IMediaType[] { });
+            contentTypeServiceMock.Setup(m => m.GetMediaType(NameForMediaTypeWithId.Alias())).Returns(mediaTypeWithIdMock.Object);
+            contentTypeServiceMock.Setup(m => m.GetMediaType(NameForMediaTypeWithoutId.Alias())).Returns(mediaTypeWithoutIdMock.Object);
 
-            Assert.AreEqual(NameForMediaTypeWithId, withIdMediaType.Object.Name);
-            Assert.AreEqual(NameForMediaTypeWithoutId, withoutIdMediaType.Object.Name);
+            var contentTypeRepositoryMock = new Mock<IContentTypeRepository>();
+
+            contentTypeRepositoryMock.Setup(m => m.GetContentTypeId(It.IsAny<Guid>())).Returns((int?)null);
+
+            var mediaTypeSynchronizationServiceMock = new Mock<MediaTypeSynchronizationService>(
+                contentTypeServiceMock.Object,
+                contentTypeRepositoryMock.Object,
+                typeServiceMock.Object)
+            { CallBase = true };
+
+            mediaTypeSynchronizationServiceMock.Object.Synchronize();
+
+            mediaTypeSynchronizationServiceMock
+                .Verify(m => m.SynchronizeById(It.IsAny<IEnumerable<IMediaType>>(), It.IsAny<Jet.MediaType>()), Times.Once);
+
+            mediaTypeSynchronizationServiceMock
+                .Verify(m => m.SynchronizeByName(It.IsAny<IEnumerable<IMediaType>>(), It.IsAny<Jet.MediaType>()), Times.Once);
         }
 
+        /// <summary>
+        /// Test to create media type with ID.
+        /// </summary>
         [TestMethod]
         public void CanCreateMediaTypeWithId()
         {
-            var contentTypeService = new Mock<IContentTypeService>();
-            var contentTypeRepository = new Mock<IContentTypeRepository>();
-            var typeService = new Mock<ITypeService>();
-            var withIdMediaType = new Mock<IMediaType>();
+            var typeServiceMock = new Mock<ITypeService>();
 
-            withIdMediaType.SetupAllProperties();
+            typeServiceMock.Setup(m => m.MediaTypes).Returns(new[] { typeof(MediaTypeWithId) });
 
-            contentTypeService.Setup(m => m.GetAllMediaTypes()).Returns(new IMediaType[] { });
-            contentTypeService.Setup(m => m.Save(It.IsAny<IMediaType>(), It.IsAny<int>()))
-                .Callback<IMediaType, int>((ct, userId) =>
-                {
-                    withIdMediaType.Object.Name = ct.Name;
-                });
-            contentTypeService.Setup(m => m.GetMediaType(It.Is<string>(v => v == NameForMediaTypeWithId.Alias())))
-                .Returns(withIdMediaType.Object);
-            contentTypeRepository.Setup(m => m.GetContentTypeId(It.IsAny<Guid>())).Returns((int?)null);
-            typeService.SetupGet(m => m.MediaTypes).Returns(new[] { typeof(MediaTypeWithId) });
+            var mediaTypeMock = new Mock<IMediaType>();
 
-            var mediaTypeSynchronizationService = new MediaTypeSynchronizationService(
-                contentTypeService.Object, contentTypeRepository.Object, typeService.Object);
+            var contentTypeServiceMock = new Mock<IContentTypeService>();
 
-            mediaTypeSynchronizationService.Synchronize();
+            contentTypeServiceMock.Setup(m => m.GetAllMediaTypes()).Returns(new IMediaType[] { });
+            contentTypeServiceMock.Setup(m => m.GetMediaType(NameForMediaTypeWithId.Alias())).Returns(mediaTypeMock.Object);
 
-            Assert.AreEqual(NameForMediaTypeWithId, withIdMediaType.Object.Name);
+            var contentTypeRepositoryMock = new Mock<IContentTypeRepository>();
+
+            contentTypeRepositoryMock.Setup(m => m.GetContentTypeId(It.IsAny<Guid>())).Returns((int?)null);
+
+            var mediaTypeSynchronizationServiceMock = new Mock<MediaTypeSynchronizationService>(
+                contentTypeServiceMock.Object,
+                contentTypeRepositoryMock.Object,
+                typeServiceMock.Object)
+            { CallBase = true };
+
+            mediaTypeSynchronizationServiceMock.Object.Synchronize();
+
+            mediaTypeSynchronizationServiceMock
+                .Verify(m => m.SynchronizeById(It.IsAny<IEnumerable<IMediaType>>(), It.IsAny<Jet.MediaType>()), Times.Once);
         }
 
+        /// <summary>
+        /// Test to create media type without ID.
+        /// </summary>
         [TestMethod]
         public void CanCreateMediaTypeWithoutId()
         {
-            var contentTypeService = new Mock<IContentTypeService>();
-            var contentTypeRepository = new Mock<IContentTypeRepository>();
-            var typeService = new Mock<ITypeService>();
-            var withoutIdMediaType = new Mock<IMediaType>();
+            var typeServiceMock = new Mock<ITypeService>();
 
-            withoutIdMediaType.SetupAllProperties();
+            typeServiceMock.Setup(m => m.MediaTypes).Returns(new[] { typeof(MediaTypeWithoutId) });
 
-            contentTypeService.Setup(m => m.GetAllMediaTypes()).Returns(new IMediaType[] { });
-            contentTypeService.Setup(m => m.Save(It.IsAny<IMediaType>(), It.IsAny<int>()))
-                .Callback<IMediaType, int>((ct, userId) =>
-                {
-                    withoutIdMediaType.Object.Name = ct.Name;
-                });
-            contentTypeService.Setup(m => m.GetMediaType(It.Is<string>(v => v == NameForMediaTypeWithoutId.Alias())))
-                .Returns(withoutIdMediaType.Object);
-            contentTypeRepository.Setup(m => m.GetContentTypeId(It.IsAny<Guid>())).Returns((int?)null);
-            typeService.SetupGet(m => m.MediaTypes).Returns(new[] { typeof(MediaTypeWithoutId) });
+            var mediaTypeMock = new Mock<IMediaType>();
 
-            var mediaTypeSynchronizationService = new MediaTypeSynchronizationService(
-                contentTypeService.Object, contentTypeRepository.Object, typeService.Object);
+            var contentTypeServiceMock = new Mock<IContentTypeService>();
 
-            mediaTypeSynchronizationService.Synchronize();
+            contentTypeServiceMock.Setup(m => m.GetAllMediaTypes()).Returns(new IMediaType[] { });
+            contentTypeServiceMock.Setup(m => m.GetMediaType(NameForMediaTypeWithoutId.Alias())).Returns(mediaTypeMock.Object);
 
-            Assert.AreEqual(NameForMediaTypeWithoutId, withoutIdMediaType.Object.Name);
+            var contentTypeRepositoryMock = new Mock<IContentTypeRepository>();
+
+            contentTypeRepositoryMock.Setup(m => m.GetContentTypeId(It.IsAny<Guid>())).Returns((int?)null);
+
+            var mediaTypeSynchronizationServiceMock = new Mock<MediaTypeSynchronizationService>(
+                contentTypeServiceMock.Object,
+                contentTypeRepositoryMock.Object,
+                typeServiceMock.Object)
+            { CallBase = true };
+
+            mediaTypeSynchronizationServiceMock.Object.Synchronize();
+
+            mediaTypeSynchronizationServiceMock
+                .Verify(m => m.SynchronizeByName(It.IsAny<IEnumerable<IMediaType>>(), It.IsAny<Jet.MediaType>()), Times.Once);
         }
 
+        /// <summary>
+        /// Test to update media type with ID.
+        /// </summary>
+        [TestMethod]
+        public void CanUpdateMediaTypeWithId()
+        {
+            var typeServiceMock = new Mock<ITypeService>();
+
+            typeServiceMock.Setup(m => m.MediaTypes).Returns(new[] { typeof(MediaTypeWithId) });
+
+            var mediaTypeMock = new Mock<IMediaType>();
+
+            mediaTypeMock.SetupAllProperties();
+
+            var contentTypeServiceMock = new Mock<IContentTypeService>();
+
+            contentTypeServiceMock.Setup(m => m.GetAllMediaTypes()).Returns(new[] { mediaTypeMock.Object });
+            contentTypeServiceMock.Setup(m => m.GetMediaType(NameForMediaTypeWithId.Alias())).Returns(mediaTypeMock.Object);
+
+            var contentTypeRepositoryMock = new Mock<IContentTypeRepository>();
+
+            contentTypeRepositoryMock.Setup(m => m.GetContentTypeId(Guid.Parse(IdForMediaTypeWithId))).Returns(mediaTypeMock.Object.Id);
+
+            var mediaTypeSynchronizationServiceMock = new Mock<MediaTypeSynchronizationService>(
+                contentTypeServiceMock.Object,
+                contentTypeRepositoryMock.Object,
+                typeServiceMock.Object)
+            { CallBase = true };
+
+            mediaTypeSynchronizationServiceMock.Object.Synchronize();
+
+            mediaTypeSynchronizationServiceMock.Verify(m => m.UpdateMediaType(mediaTypeMock.Object, It.IsAny<Jet.MediaType>()), Times.Once);
+        }
+
+        /// <summary>
+        /// Test to update name for media type with ID.
+        /// </summary>
         [TestMethod]
         public void CanUpdateNameForMediaTypeWithId()
         {
-            var contentTypeService = new Mock<IContentTypeService>();
-            var contentTypeRepository = new Mock<IContentTypeRepository>();
-            var typeService = new Mock<ITypeService>();
-            var withIdDbMediaType = new Mock<IMediaType>();
-            var withIdMediaType = new Mock<IMediaType>();
+            var typeServiceMock = new Mock<ITypeService>();
 
-            withIdDbMediaType.SetupAllProperties();
-            withIdDbMediaType.Object.Id = 1234;
-            withIdDbMediaType.Object.Name = "DbMediaTypeWithId";
+            typeServiceMock.Setup(m => m.MediaTypes).Returns(new[] { typeof(MediaTypeWithId) });
 
-            withIdMediaType.SetupAllProperties();
+            var mediaTypeMock = new Mock<IMediaType>();
 
-            contentTypeService.Setup(m => m.GetAllMediaTypes()).Returns(new[] { withIdDbMediaType.Object });
-            contentTypeService.Setup(m => m.Save(It.IsAny<IMediaType>(), It.IsAny<int>()))
-                .Callback<IMediaType, int>((ct, userId) =>
-                {
-                    withIdMediaType.Object.Name = ct.Name;
-                });
-            contentTypeService.Setup(m => m.GetMediaType(It.Is<string>(v => v == NameForMediaTypeWithId.Alias())))
-                .Returns(withIdMediaType.Object);
-            contentTypeRepository.Setup(m => m.GetContentTypeId(It.IsAny<Guid>())).Returns((int?)null);
-            typeService.SetupGet(m => m.MediaTypes).Returns(new[] { typeof(MediaTypeWithId) });
+            mediaTypeMock.SetupAllProperties();
+
+            var contentTypeServiceMock = new Mock<IContentTypeService>();
+
+            contentTypeServiceMock.Setup(m => m.GetAllMediaTypes()).Returns(new[] { mediaTypeMock.Object });
+            contentTypeServiceMock.Setup(m => m.GetMediaType(NameForMediaTypeWithId.Alias())).Returns(mediaTypeMock.Object);
+
+            var contentTypeRepositoryMock = new Mock<IContentTypeRepository>();
+
+            contentTypeRepositoryMock.Setup(m => m.GetContentTypeId(Guid.Parse(IdForMediaTypeWithId))).Returns(mediaTypeMock.Object.Id);
 
             var mediaTypeSynchronizationService = new MediaTypeSynchronizationService(
-                contentTypeService.Object, contentTypeRepository.Object, typeService.Object);
+                contentTypeServiceMock.Object,
+                contentTypeRepositoryMock.Object,
+                typeServiceMock.Object);
 
             mediaTypeSynchronizationService.Synchronize();
 
-            Assert.AreEqual(NameForMediaTypeWithId, withIdMediaType.Object.Name);
+            mediaTypeMock.VerifySet(m => m.Name = NameForMediaTypeWithId, Times.Once);
+        }
+
+        /// <summary>
+        /// Test to update media type without ID.
+        /// </summary>
+        [TestMethod]
+        public void CanUpdateMediaTypeWithoutId()
+        {
+            var typeServiceMock = new Mock<ITypeService>();
+
+            typeServiceMock.Setup(m => m.MediaTypes).Returns(new[] { typeof(MediaTypeWithoutId) });
+
+            var mediaTypeMock = new Mock<IMediaType>();
+
+            mediaTypeMock.Setup(m => m.Alias).Returns(NameForMediaTypeWithoutId.Alias());
+
+            var contentTypeServiceMock = new Mock<IContentTypeService>();
+
+            contentTypeServiceMock.Setup(m => m.GetAllMediaTypes()).Returns(new[] { mediaTypeMock.Object });
+            contentTypeServiceMock.Setup(m => m.GetMediaType(NameForMediaTypeWithoutId.Alias())).Returns(mediaTypeMock.Object);
+
+            var mediaTypeSynchronizationServiceMock = new Mock<MediaTypeSynchronizationService>(
+                contentTypeServiceMock.Object,
+                new Mock<IContentTypeRepository>().Object,
+                typeServiceMock.Object)
+            { CallBase = true };
+
+            mediaTypeSynchronizationServiceMock.Object.Synchronize();
+
+            mediaTypeSynchronizationServiceMock.Verify(m => m.UpdateMediaType(mediaTypeMock.Object, It.IsAny<Jet.MediaType>()), Times.Once);
         }
 
         /// <summary>
