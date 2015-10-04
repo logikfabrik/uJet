@@ -17,12 +17,12 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// <summary>
         /// The inner dictionary.
         /// </summary>
-        private readonly Dictionary<Type, IDataTypeDefinitionMapping> innerDictionary = new Dictionary<Type, IDataTypeDefinitionMapping>();
+        private readonly Dictionary<Type, IDataTypeDefinitionMapping> _innerDictionary = new Dictionary<Type, IDataTypeDefinitionMapping>();
 
         /// <summary>
         /// The default mapping.
         /// </summary>
-        private IDefaultDataTypeDefinitionMapping defaultMapping;
+        private IDefaultDataTypeDefinitionMapping _defaultMapping;
 
         /// <summary>
         /// Gets or sets the default mapping.
@@ -32,8 +32,8 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// </value>
         public IDefaultDataTypeDefinitionMapping DefaultMapping
         {
-            get { return defaultMapping ?? (defaultMapping = new DefaultDataTypeDefinitionMapping()); }
-            set { defaultMapping = value; }
+            get { return _defaultMapping ?? (_defaultMapping = new DefaultDataTypeDefinitionMapping()); }
+            set { _defaultMapping = value; }
         }
 
         /// <summary>
@@ -44,17 +44,17 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// <summary>
         /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.
         /// </summary>
-        public int Count => innerDictionary.Count;
+        public int Count => _innerDictionary.Count;
 
         /// <summary>
         /// Gets an <see cref="T:System.Collections.Generic.ICollection`1" /> containing the keys of the <see cref="T:System.Collections.Generic.IDictionary`2" />.
         /// </summary>
-        public ICollection<Type> Keys => innerDictionary.Keys;
+        public ICollection<Type> Keys => _innerDictionary.Keys;
 
         /// <summary>
         /// Gets an <see cref="T:System.Collections.Generic.ICollection`1" /> containing the values in the <see cref="T:System.Collections.Generic.IDictionary`2" />.
         /// </summary>
-        public ICollection<IDataTypeDefinitionMapping> Values => innerDictionary.Values;
+        public ICollection<IDataTypeDefinitionMapping> Values => _innerDictionary.Values;
 
         /// <summary>
         /// Gets or sets the element with the specified key.
@@ -63,8 +63,8 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// <returns>The element with the specified key.</returns>
         public IDataTypeDefinitionMapping this[Type key]
         {
-            get { return innerDictionary[key]; }
-            set { innerDictionary[key] = value; }
+            get { return _innerDictionary[key]; }
+            set { _innerDictionary[key] = value; }
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// </returns>
         public IEnumerator<KeyValuePair<Type, IDataTypeDefinitionMapping>> GetEnumerator()
         {
-            return innerDictionary.GetEnumerator();
+            return _innerDictionary.GetEnumerator();
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
         public void Add(KeyValuePair<Type, IDataTypeDefinitionMapping> item)
         {
-            innerDictionary.Add(item.Key, item.Value);
+            _innerDictionary.Add(item.Key, item.Value);
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// </summary>
         public void Clear()
         {
-            innerDictionary.Clear();
+            _innerDictionary.Clear();
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// </returns>
         public bool Contains(KeyValuePair<Type, IDataTypeDefinitionMapping> item)
         {
-            return innerDictionary.ContainsKey(item.Key);
+            return _innerDictionary.ContainsKey(item.Key);
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// <param name="index">The index.</param>
         public void CopyTo(KeyValuePair<Type, IDataTypeDefinitionMapping>[] array, int index)
         {
-            var a = innerDictionary.ToArray();
+            var a = _innerDictionary.ToArray();
 
             a.CopyTo(array, index);
         }
@@ -139,7 +139,7 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// </returns>
         public bool Remove(KeyValuePair<Type, IDataTypeDefinitionMapping> item)
         {
-            return innerDictionary.Remove(item.Key);
+            return _innerDictionary.Remove(item.Key);
         }
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// </returns>
         public bool ContainsKey(Type key)
         {
-            return innerDictionary.ContainsKey(key);
+            return _innerDictionary.ContainsKey(key);
         }
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// <param name="value">The object to use as the value of the element to add.</param>
         public void Add(Type key, IDataTypeDefinitionMapping value)
         {
-            innerDictionary.Add(key, value);
+            _innerDictionary.Add(key, value);
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// </returns>
         public bool Remove(Type key)
         {
-            return innerDictionary.Remove(key);
+            return _innerDictionary.Remove(key);
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// </returns>
         public bool TryGetValue(Type key, out IDataTypeDefinitionMapping value)
         {
-            return innerDictionary.TryGetValue(key, out value);
+            return _innerDictionary.TryGetValue(key, out value);
         }
     }
 }

@@ -5,7 +5,7 @@ uJet supports document types, media types, and data types.
 
 Document Types
 ==============
-A document type is created by decorating a public non-abstract class, with a constructor that takes no parameters, using the `DocumentTypeAttribute` attribute.
+A document type is created by decorating a public non-abstract class, with a default constructor that takes no parameters, using the `DocumentTypeAttribute` attribute.
 
 .. code-block:: csharp
    
@@ -106,7 +106,7 @@ The default template (alias) of the document type.
 
 Media Types
 ===========
-A media type is created by decorating a public non-abstract class, with a constructor that takes no parameters, using the `MediaTypeAttribute` attribute.
+A media type is created by decorating a public non-abstract class, with a default constructor that takes no parameters, using the `MediaTypeAttribute` attribute.
 
 .. code-block:: csharp
    
@@ -171,7 +171,7 @@ Inherited from the `ContentTypeAttribute` attribute. The allowed child media typ
 
 Data Types
 ==========
-A data type is created by decorating a public non-abstract class, with a constructor that takes no parameters, using the `DataTypeAttribute` attribute.
+A data type is created by decorating a public non-abstract class, with a default constructor that takes no parameters, using the `DataTypeAttribute` attribute.
 
 .. code-block:: csharp
    

@@ -24,27 +24,27 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// The document types.
         /// </summary>
-        private readonly Lazy<IEnumerable<Type>> documentTypes;
+        private readonly Lazy<IEnumerable<Type>> _documentTypes;
 
         /// <summary>
         /// The data types.
         /// </summary>
-        private readonly Lazy<IEnumerable<Type>> dataTypes;
+        private readonly Lazy<IEnumerable<Type>> _dataTypes;
 
         /// <summary>
         /// The media types.
         /// </summary>
-        private readonly Lazy<IEnumerable<Type>> mediaTypes;
+        private readonly Lazy<IEnumerable<Type>> _mediaTypes;
 
         /// <summary>
         /// The member types.
         /// </summary>
-        private readonly Lazy<IEnumerable<Type>> memberTypes;
+        private readonly Lazy<IEnumerable<Type>> _memberTypes;
 
         /// <summary>
         /// The assemblies.
         /// </summary>
-        private readonly Lazy<IEnumerable<Assembly>> assemblies;
+        private readonly Lazy<IEnumerable<Assembly>> _assemblies;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TypeService" /> class.
@@ -58,11 +58,11 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(getAssemblies));
             }
 
-            assemblies = new Lazy<IEnumerable<Assembly>>(getAssemblies);
-            documentTypes = new Lazy<IEnumerable<Type>>(GetDocumentTypes);
-            dataTypes = new Lazy<IEnumerable<Type>>(GetDataTypes);
-            mediaTypes = new Lazy<IEnumerable<Type>>(GetMediaTypes);
-            memberTypes = new Lazy<IEnumerable<Type>>(GetMemberTypes);
+            _assemblies = new Lazy<IEnumerable<Assembly>>(getAssemblies);
+            _documentTypes = new Lazy<IEnumerable<Type>>(GetDocumentTypes);
+            _dataTypes = new Lazy<IEnumerable<Type>>(GetDataTypes);
+            _mediaTypes = new Lazy<IEnumerable<Type>>(GetMediaTypes);
+            _memberTypes = new Lazy<IEnumerable<Type>>(GetMemberTypes);
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The document types.
         /// </value>
-        public IEnumerable<Type> DocumentTypes => documentTypes.Value;
+        public IEnumerable<Type> DocumentTypes => _documentTypes.Value;
 
         /// <summary>
         /// Gets or sets the data types within the current application domain.
@@ -91,7 +91,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The data types.
         /// </value>
-        public IEnumerable<Type> DataTypes => dataTypes.Value;
+        public IEnumerable<Type> DataTypes => _dataTypes.Value;
 
         /// <summary>
         /// Gets or sets the media types within the current application domain.
@@ -99,7 +99,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The media types.
         /// </value>
-        public IEnumerable<Type> MediaTypes => mediaTypes.Value;
+        public IEnumerable<Type> MediaTypes => _mediaTypes.Value;
 
         /// <summary>
         /// Gets or sets the member types within the current application domain.
@@ -107,7 +107,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The member types.
         /// </value>
-        public IEnumerable<Type> MemberTypes => memberTypes.Value;
+        public IEnumerable<Type> MemberTypes => _memberTypes.Value;
 
         /// <summary>
         /// Gets the assemblies to be scanned for content types, within the current application domain.
@@ -172,7 +172,7 @@ namespace Logikfabrik.Umbraco.Jet
 
             var types = new List<Type>();
 
-            foreach (var assembly in assemblies.Value)
+            foreach (var assembly in _assemblies.Value)
             {
                 types.AddRange(GetTypes(assembly).Where(predicate));
             }

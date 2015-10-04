@@ -14,7 +14,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <summary>
         /// The database wrapper.
         /// </summary>
-        private readonly IDatabaseWrapper databaseWrapper;
+        private readonly IDatabaseWrapper _databaseWrapper;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentTypeRepository" /> class.
@@ -28,7 +28,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
                 throw new ArgumentNullException(nameof(databaseWrapper));
             }
 
-            this.databaseWrapper = databaseWrapper;
+            _databaseWrapper = databaseWrapper;
         }
 
         /// <summary>
@@ -38,12 +38,12 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <returns>The content type identifier.</returns>
         public int? GetContentTypeId(Guid id)
         {
-            if (!databaseWrapper.TableExist<ContentTypeRow>())
+            if (!_databaseWrapper.TableExist<ContentTypeRow>())
             {
                 return null;
             }
 
-            var row = databaseWrapper.GetRow<ContentTypeRow>(id);
+            var row = _databaseWrapper.GetRow<ContentTypeRow>(id);
 
             return row?.ContentTypeId;
         }
@@ -55,12 +55,12 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <returns>The property type identifier.</returns>
         public int? GetPropertyTypeId(Guid id)
         {
-            if (!databaseWrapper.TableExist<PropertyTypeRow>())
+            if (!_databaseWrapper.TableExist<PropertyTypeRow>())
             {
                 return null;
             }
 
-            var row = databaseWrapper.GetRow<PropertyTypeRow>(id);
+            var row = _databaseWrapper.GetRow<PropertyTypeRow>(id);
 
             return row?.PropertyTypeId;
         }
@@ -74,8 +74,8 @@ namespace Logikfabrik.Umbraco.Jet.Data
         {
             var row = new ContentTypeRow { Id = id, ContentTypeId = contentTypeId };
 
-            databaseWrapper.CreateTable<ContentTypeRow>();
-            databaseWrapper.InsertRow(row, id);
+            _databaseWrapper.CreateTable<ContentTypeRow>();
+            _databaseWrapper.InsertRow(row, id);
         }
 
         /// <summary>
@@ -87,8 +87,8 @@ namespace Logikfabrik.Umbraco.Jet.Data
         {
             var row = new PropertyTypeRow { Id = id, PropertyTypeId = propertyTypeId };
 
-            databaseWrapper.CreateTable<PropertyTypeRow>();
-            databaseWrapper.InsertRow(row, id);
+            _databaseWrapper.CreateTable<PropertyTypeRow>();
+            _databaseWrapper.InsertRow(row, id);
         }
     }
 }

@@ -20,12 +20,12 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// The type service.
         /// </summary>
-        private readonly ITypeService typeService;
+        private readonly ITypeService _typeService;
 
         /// <summary>
         /// The file service.
         /// </summary>
-        private readonly IFileService fileService;
+        private readonly IFileService _fileService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DocumentTypeSynchronizationService" /> class.
@@ -64,8 +64,8 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(fileService));
             }
 
-            this.fileService = fileService;
-            this.typeService = typeService;
+            _fileService = fileService;
+            _typeService = typeService;
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         public override void Synchronize()
         {
-            var documentTypes = typeService.DocumentTypes.Select(t => new DocumentType(t)).ToArray();
+            var documentTypes = _typeService.DocumentTypes.Select(t => new DocumentType(t)).ToArray();
 
             ValidateDocumentTypeId(documentTypes);
             ValidateDocumentTypeAlias(documentTypes);
@@ -313,7 +313,7 @@ namespace Logikfabrik.Umbraco.Jet
             if (documentType.Templates != null && !documentType.Templates.Any())
             {
                 templates =
-                    fileService.GetTemplates(documentType.Templates.ToArray()).Where(template => template != null);
+                    _fileService.GetTemplates(documentType.Templates.ToArray()).Where(template => template != null);
             }
 
             contentType.AllowedTemplates = templates;
@@ -341,7 +341,7 @@ namespace Logikfabrik.Umbraco.Jet
 
             if (!string.IsNullOrWhiteSpace(documentType.DefaultTemplate))
             {
-                template = fileService.GetTemplate(documentType.DefaultTemplate);
+                template = _fileService.GetTemplate(documentType.DefaultTemplate);
             }
 
             contentType.SetDefaultTemplate(template);

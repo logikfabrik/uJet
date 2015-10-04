@@ -20,17 +20,17 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// The data type repository.
         /// </summary>
-        private readonly IDataTypeRepository dataTypeRepository;
+        private readonly IDataTypeRepository _dataTypeRepository;
 
         /// <summary>
         /// The data type service.
         /// </summary>
-        private readonly IDataTypeService dataTypeService;
+        private readonly IDataTypeService _dataTypeService;
 
         /// <summary>
         /// The type service.
         /// </summary>
-        private readonly ITypeService typeService;
+        private readonly ITypeService _typeService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataTypeSynchronizationService" /> class.
@@ -70,9 +70,9 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(typeService));
             }
 
-            this.dataTypeService = dataTypeService;
-            this.dataTypeRepository = dataTypeRepository;
-            this.typeService = typeService;
+            _dataTypeService = dataTypeService;
+            _dataTypeRepository = dataTypeRepository;
+            _typeService = typeService;
         }
 
         /// <summary>
@@ -80,19 +80,19 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         public void Synchronize()
         {
-            var dataTypes = typeService.DataTypes.Select(t => new DataType(t)).ToArray();
+            var dataTypes = _typeService.DataTypes.Select(t => new DataType(t)).ToArray();
 
             ValidateDataTypeId(dataTypes);
             ValidateDataTypeName(dataTypes);
 
             foreach (var dataType in dataTypes.Where(dt => dt.Id.HasValue))
             {
-                SynchronizeById(dataTypeService.GetAllDataTypeDefinitions(), dataType);
+                SynchronizeById(_dataTypeService.GetAllDataTypeDefinitions(), dataType);
             }
 
             foreach (var dataType in dataTypes.Where(dt => !dt.Id.HasValue))
             {
-                SynchronizeByName(dataTypeService.GetAllDataTypeDefinitions(), dataType);
+                SynchronizeByName(_dataTypeService.GetAllDataTypeDefinitions(), dataType);
             }
         }
 
@@ -158,7 +158,7 @@ namespace Logikfabrik.Umbraco.Jet
 
             IDataTypeDefinition dtd = null;
 
-            var id = dataTypeRepository.GetDefinitionId(dataType.Id.Value);
+            var id = _dataTypeRepository.GetDefinitionId(dataType.Id.Value);
 
             if (id.HasValue)
             {
@@ -173,11 +173,11 @@ namespace Logikfabrik.Umbraco.Jet
 
                 // Get the created data type definition.
                 dtd =
-                    dataTypeService.GetDataTypeDefinitionByPropertyEditorAlias(dataType.Editor)
+                    _dataTypeService.GetDataTypeDefinitionByPropertyEditorAlias(dataType.Editor)
                         .First(type => type.Name == dataType.Name);
 
                 // Connect the data type and the created data type definition.
-                dataTypeRepository.SetDefinitionId(dataType.Id.Value, dtd.Id);
+                _dataTypeRepository.SetDefinitionId(dataType.Id.Value, dtd.Id);
             }
             else
             {
@@ -207,7 +207,7 @@ namespace Logikfabrik.Umbraco.Jet
             dataTypeDefinition.PropertyEditorAlias = dataType.Editor;
             dataTypeDefinition.DatabaseType = GetDatabaseType(dataType);
 
-            dataTypeService.Save(dataTypeDefinition);
+            _dataTypeService.Save(dataTypeDefinition);
         }
 
         /// <summary>
@@ -308,7 +308,7 @@ namespace Logikfabrik.Umbraco.Jet
                 DatabaseType = GetDatabaseType(dataType)
             };
 
-            dataTypeService.Save(dataTypeDefinition);
+            _dataTypeService.Save(dataTypeDefinition);
         }
     }
 }

@@ -276,6 +276,7 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(type));
             }
 
+            // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (var property in type.GetProperties())
             {
                 if (!property.CanRead || !property.CanWrite)

@@ -18,17 +18,17 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// <summary>
         /// The supported hints.
         /// </summary>
-        private readonly IDictionary<string, KeyValuePair<Type, DataTypeDefinition>> supportedHints;
+        private readonly IDictionary<string, KeyValuePair<Type, DataTypeDefinition>> _supportedHints;
 
         /// <summary>
         /// The data type service.
         /// </summary>
-        private readonly IDataTypeService dataTypeService;
+        private readonly IDataTypeService _dataTypeService;
 
         /// <summary>
         /// The mapped definitions.
         /// </summary>
-        private readonly IDictionary<DataTypeDefinition, IDataTypeDefinition> mappedDefinitions = new Dictionary<DataTypeDefinition, IDataTypeDefinition>();
+        private readonly IDictionary<DataTypeDefinition, IDataTypeDefinition> _mappedDefinitions = new Dictionary<DataTypeDefinition, IDataTypeDefinition>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultDataTypeDefinitionMapping" /> class.
@@ -56,8 +56,8 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
                 throw new ArgumentNullException(nameof(supportedHints));
             }
 
-            this.dataTypeService = dataTypeService;
-            this.supportedHints = supportedHints;
+            _dataTypeService = dataTypeService;
+            _supportedHints = supportedHints;
         }
 
         /// <summary>
@@ -183,7 +183,7 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
 
             KeyValuePair<Type, DataTypeDefinition> v;
 
-            if (!supportedHints.TryGetValue(uiHint, out v))
+            if (!_supportedHints.TryGetValue(uiHint, out v))
             {
                 return null;
             }
@@ -205,19 +205,19 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         {
             IDataTypeDefinition v;
 
-            if (mappedDefinitions.TryGetValue(dataTypeDefinition, out v))
+            if (_mappedDefinitions.TryGetValue(dataTypeDefinition, out v))
             {
                 return v;
             }
 
-            v = dataTypeService.GetDataTypeDefinitionById((int)dataTypeDefinition);
+            v = _dataTypeService.GetDataTypeDefinitionById((int)dataTypeDefinition);
 
             if (v == null)
             {
                 return null;
             }
 
-            mappedDefinitions.Add(dataTypeDefinition, v);
+            _mappedDefinitions.Add(dataTypeDefinition, v);
 
             return v;
         }

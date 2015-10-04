@@ -20,22 +20,22 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// <summary>
         /// The content type service.
         /// </summary>
-        private readonly IContentTypeService contentTypeService;
+        private readonly IContentTypeService _contentTypeService;
 
         /// <summary>
         /// The document type service.
         /// </summary>
-        private readonly ITypeService documentTypeService;
+        private readonly ITypeService _documentTypeService;
 
         /// <summary>
         /// The file service.
         /// </summary>
-        private readonly IFileService fileService;
+        private readonly IFileService _fileService;
 
         /// <summary>
         /// The preview template.
         /// </summary>
-        private ITemplate previewTemplate;
+        private ITemplate _previewTemplate;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PreviewTemplateSynchronizationService" /> class.
@@ -75,9 +75,9 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
                 throw new ArgumentNullException(nameof(documentTypeService));
             }
 
-            this.contentTypeService = contentTypeService;
-            this.fileService = fileService;
-            this.documentTypeService = documentTypeService;
+            _contentTypeService = contentTypeService;
+            _fileService = fileService;
+            _documentTypeService = documentTypeService;
         }
 
         /// <summary>
@@ -85,9 +85,9 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// </summary>
         public void Synchronize()
         {
-            var contentTypes = contentTypeService.GetAllContentTypes().ToArray();
+            var contentTypes = _contentTypeService.GetAllContentTypes().ToArray();
 
-            foreach (var type in documentTypeService.DocumentTypes.Where(t => Attribute.IsDefined(t, typeof(PreviewTemplateAttribute))))
+            foreach (var type in _documentTypeService.DocumentTypes.Where(t => Attribute.IsDefined(t, typeof(PreviewTemplateAttribute))))
             {
                 var contentType = contentTypes.FirstOrDefault(t => t.Alias == new DocumentType(type).Alias);
 
@@ -118,7 +118,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
             contentType.AllowedTemplates = allowedTemplates;
             contentType.SetDefaultTemplate(template);
 
-            contentTypeService.Save(contentType);
+            _contentTypeService.Save(contentType);
         }
 
         /// <summary>
@@ -157,21 +157,21 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// <returns>The preview template.</returns>
         private ITemplate GetPreviewTemplate()
         {
-            if (previewTemplate != null)
+            if (_previewTemplate != null)
             {
-                return previewTemplate;
+                return _previewTemplate;
             }
 
-            previewTemplate = fileService.GetTemplate(PreviewTemplateAttribute.TemplateName.Alias());
+            _previewTemplate = _fileService.GetTemplate(PreviewTemplateAttribute.TemplateName.Alias());
 
-            if (previewTemplate != null)
+            if (_previewTemplate != null)
             {
-                return previewTemplate;
+                return _previewTemplate;
             }
 
             var previewTemplateAlias = PreviewTemplateAttribute.TemplateName.Alias();
 
-            fileService.SaveTemplate(
+            _fileService.SaveTemplate(
                 new Template(
                     string.Concat(previewTemplateAlias, ".cshtml"),
                     PreviewTemplateAttribute.TemplateName,
@@ -180,9 +180,9 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
                     Content = $"@inherits {typeof(global::Umbraco.Web.Mvc.UmbracoTemplatePage)}"
                 });
 
-            previewTemplate = fileService.GetTemplate(PreviewTemplateAttribute.TemplateName.Alias());
+            _previewTemplate = _fileService.GetTemplate(PreviewTemplateAttribute.TemplateName.Alias());
 
-            return previewTemplate;
+            return _previewTemplate;
         }
     }
 }

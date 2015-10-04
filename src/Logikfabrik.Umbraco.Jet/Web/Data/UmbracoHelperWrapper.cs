@@ -16,7 +16,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// <summary>
         /// The Umbraco helper.
         /// </summary>
-        private readonly UmbracoHelper umbracoHelper;
+        private readonly UmbracoHelper _umbracoHelper;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UmbracoHelperWrapper" /> class.
@@ -38,7 +38,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
                 throw new ArgumentNullException(nameof(umbracoHelper));
             }
 
-            this.umbracoHelper = umbracoHelper;
+            _umbracoHelper = umbracoHelper;
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// </returns>
         public IPublishedContent TypedDocument(int id)
         {
-            return umbracoHelper.TypedContent(id);
+            return _umbracoHelper.TypedContent(id);
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// </returns>
         public IPublishedContent TypedMedia(int id)
         {
-            return umbracoHelper.TypedMedia(id);
+            return _umbracoHelper.TypedMedia(id);
         }
     }
 }

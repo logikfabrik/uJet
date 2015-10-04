@@ -18,7 +18,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// Value indicating whether this <see cref="ContentTypeProperty" /> has a default value.
         /// </summary>
-        private readonly bool hasDefaultValue;
+        private readonly bool _hasDefaultValue;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentTypeProperty" /> class.
@@ -38,7 +38,7 @@ namespace Logikfabrik.Umbraco.Jet
             Alias = GetAlias(property);
             RegularExpression = GetRegularExpression(property);
             UIHint = GetUIHint(property);
-            DefaultValue = GetDefaultValue(property, out hasDefaultValue);
+            DefaultValue = GetDefaultValue(property, out _hasDefaultValue);
 
             var attribute = property.GetCustomAttribute<DisplayAttribute>();
 
@@ -139,7 +139,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// Gets a value indicating whether this <see cref="ContentTypeProperty" /> has a default value.
         /// </summary>
-        public bool HasDefaultValue => hasDefaultValue;
+        public bool HasDefaultValue => _hasDefaultValue;
 
         /// <summary>
         /// Gets the identifier.

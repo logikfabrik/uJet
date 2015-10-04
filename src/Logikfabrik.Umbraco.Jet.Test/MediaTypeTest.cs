@@ -219,7 +219,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         protected class MediaType
         {
             // ReSharper disable once NotAccessedField.Local
-            private string stringPropertyWithoutGetter;
+            private string _stringPropertyWithoutGetter;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="MediaType" /> class.
@@ -227,7 +227,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             public MediaType()
             {
                 StringPropertyWithoutSetter = null;
-                stringPropertyWithoutGetter = null;
+                _stringPropertyWithoutGetter = null;
             }
 
             /// <summary>
@@ -303,7 +303,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             /// </value>
             public string StringPropertyWithoutGetter
             {
-                set { stringPropertyWithoutGetter = value; }
+                set { _stringPropertyWithoutGetter = value; }
             }
 
             // ReSharper disable once UnusedMember.Local

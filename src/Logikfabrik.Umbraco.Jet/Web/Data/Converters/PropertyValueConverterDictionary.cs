@@ -17,22 +17,22 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
         /// <summary>
         /// The inner dictionary.
         /// </summary>
-        private readonly Dictionary<Type, IEnumerable<IPropertyValueConverter>> innerDictionary = new Dictionary<Type, IEnumerable<IPropertyValueConverter>>();
+        private readonly Dictionary<Type, IEnumerable<IPropertyValueConverter>> _innerDictionary = new Dictionary<Type, IEnumerable<IPropertyValueConverter>>();
 
         /// <summary>
         /// Gets an <see cref="T:System.Collections.Generic.ICollection`1" /> containing the keys of the <see cref="T:System.Collections.Generic.IDictionary`2" />.
         /// </summary>
-        public ICollection<Type> Keys => innerDictionary.Keys;
+        public ICollection<Type> Keys => _innerDictionary.Keys;
 
         /// <summary>
         /// Gets an <see cref="T:System.Collections.Generic.ICollection`1" /> containing the values in the <see cref="T:System.Collections.Generic.IDictionary`2" />.
         /// </summary>
-        public ICollection<IEnumerable<IPropertyValueConverter>> Values => innerDictionary.Values;
+        public ICollection<IEnumerable<IPropertyValueConverter>> Values => _innerDictionary.Values;
 
         /// <summary>
         /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.
         /// </summary>
-        public int Count => innerDictionary.Count;
+        public int Count => _innerDictionary.Count;
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.
@@ -46,8 +46,8 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
         /// <returns>The element with the specified key.</returns>
         public IEnumerable<IPropertyValueConverter> this[Type key]
         {
-            get { return innerDictionary[key]; }
-            set { innerDictionary[key] = value; }
+            get { return _innerDictionary[key]; }
+            set { _innerDictionary[key] = value; }
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
         /// </returns>
         public IEnumerator<KeyValuePair<Type, IEnumerable<IPropertyValueConverter>>> GetEnumerator()
         {
-            return innerDictionary.GetEnumerator();
+            return _innerDictionary.GetEnumerator();
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
         /// <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
         public void Add(KeyValuePair<Type, IEnumerable<IPropertyValueConverter>> item)
         {
-            innerDictionary.Add(item.Key, item.Value);
+            _innerDictionary.Add(item.Key, item.Value);
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
         /// </summary>
         public void Clear()
         {
-            innerDictionary.Clear();
+            _innerDictionary.Clear();
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
         /// </returns>
         public bool Contains(KeyValuePair<Type, IEnumerable<IPropertyValueConverter>> item)
         {
-            return innerDictionary.ContainsKey(item.Key);
+            return _innerDictionary.ContainsKey(item.Key);
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
         /// <param name="index">The index.</param>
         public void CopyTo(KeyValuePair<Type, IEnumerable<IPropertyValueConverter>>[] array, int index)
         {
-            var a = innerDictionary.ToArray();
+            var a = _innerDictionary.ToArray();
 
             a.CopyTo(array, index);
         }
@@ -122,7 +122,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
         /// </returns>
         public bool Remove(KeyValuePair<Type, IEnumerable<IPropertyValueConverter>> item)
         {
-            return innerDictionary.Remove(item.Key);
+            return _innerDictionary.Remove(item.Key);
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
         /// </returns>
         public bool ContainsKey(Type key)
         {
-            return innerDictionary.ContainsKey(key);
+            return _innerDictionary.ContainsKey(key);
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
         /// <param name="value">The object to use as the value of the element to add.</param>
         public void Add(Type key, IEnumerable<IPropertyValueConverter> value)
         {
-            innerDictionary.Add(key, value);
+            _innerDictionary.Add(key, value);
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
         /// </returns>
         public bool Remove(Type key)
         {
-            return innerDictionary.Remove(key);
+            return _innerDictionary.Remove(key);
         }
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
         /// </returns>
         public bool TryGetValue(Type key, out IEnumerable<IPropertyValueConverter> value)
         {
-            return innerDictionary.TryGetValue(key, out value);
+            return _innerDictionary.TryGetValue(key, out value);
         }
     }
 }

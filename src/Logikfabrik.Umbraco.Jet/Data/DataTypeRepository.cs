@@ -14,7 +14,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <summary>
         /// The database wrapper.
         /// </summary>
-        private readonly IDatabaseWrapper databaseWrapper;
+        private readonly IDatabaseWrapper _databaseWrapper;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataTypeRepository" /> class.
@@ -28,7 +28,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
                 throw new ArgumentNullException(nameof(databaseWrapper));
             }
 
-            this.databaseWrapper = databaseWrapper;
+            _databaseWrapper = databaseWrapper;
         }
 
         /// <summary>
@@ -40,12 +40,12 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// </returns>
         public int? GetDefinitionId(Guid id)
         {
-            if (!databaseWrapper.TableExist<DataTypeRow>())
+            if (!_databaseWrapper.TableExist<DataTypeRow>())
             {
                 return null;
             }
 
-            var row = databaseWrapper.GetRow<DataTypeRow>(id);
+            var row = _databaseWrapper.GetRow<DataTypeRow>(id);
 
             return row?.DefinitionId;
         }
@@ -59,8 +59,8 @@ namespace Logikfabrik.Umbraco.Jet.Data
         {
             var row = new DataTypeRow { Id = id, DefinitionId = definitionId };
 
-            databaseWrapper.CreateTable<DataTypeRow>();
-            databaseWrapper.InsertRow(row, id);
+            _databaseWrapper.CreateTable<DataTypeRow>();
+            _databaseWrapper.InsertRow(row, id);
         }
     }
 }

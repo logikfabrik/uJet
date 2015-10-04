@@ -21,12 +21,12 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// <summary>
         /// The file service.
         /// </summary>
-        private readonly IFileService fileService;
+        private readonly IFileService _fileService;
 
         /// <summary>
         /// The template service.
         /// </summary>
-        private readonly ITemplateService templateService;
+        private readonly ITemplateService _templateService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TemplateSynchronizationService" /> class.
@@ -58,8 +58,8 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
                 throw new ArgumentNullException(nameof(templateService));
             }
 
-            this.fileService = fileService;
-            this.templateService = templateService;
+            _fileService = fileService;
+            _templateService = templateService;
         }
 
         /// <summary>
@@ -84,8 +84,8 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         internal IEnumerable<string> GetTemplatesToAdd()
         {
             var templates =
-                fileService.GetTemplates().Where(template => template != null).Select(template => template.Alias);
-            var templatePaths = templateService.TemplatePaths;
+                _fileService.GetTemplates().Where(template => template != null).Select(template => template.Alias);
+            var templatePaths = _templateService.TemplatePaths;
 
             return from templatePath in templatePaths
                    let alias = Path.GetFileNameWithoutExtension(templatePath).Alias()
@@ -106,7 +106,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
                 throw new ArgumentNullException(nameof(templatePaths));
             }
 
-            var templates = templatePaths.Select(templateService.GetTemplate);
+            var templates = templatePaths.Select(_templateService.GetTemplate);
 
             return templates;
         }
@@ -123,7 +123,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
                 throw new ArgumentNullException(nameof(templates));
             }
 
-            fileService.SaveTemplate(templates);
+            _fileService.SaveTemplate(templates);
         }
     }
 }

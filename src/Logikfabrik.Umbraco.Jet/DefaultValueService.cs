@@ -19,7 +19,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// The type service.
         /// </summary>
-        private readonly ITypeService typeService;
+        private readonly ITypeService _typeService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultValueService" /> class.
@@ -41,7 +41,7 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(typeService));
             }
 
-            this.typeService = typeService;
+            _typeService = typeService;
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(content));
             }
 
-            var type = typeService.DocumentTypes.FirstOrDefault(t => t.Name.Alias() == content.ContentType.Alias);
+            var type = _typeService.DocumentTypes.FirstOrDefault(t => t.Name.Alias() == content.ContentType.Alias);
 
             if (type == null)
             {
@@ -114,7 +114,7 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(content));
             }
 
-            var type = typeService.MediaTypes.FirstOrDefault(t => t.Name.Alias() == content.ContentType.Alias);
+            var type = _typeService.MediaTypes.FirstOrDefault(t => t.Name.Alias() == content.ContentType.Alias);
 
             if (type == null)
             {

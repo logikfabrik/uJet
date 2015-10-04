@@ -20,7 +20,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// The type service.
         /// </summary>
-        private readonly ITypeService typeService;
+        private readonly ITypeService _typeService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MediaTypeSynchronizationService" /> class.
@@ -51,7 +51,7 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(typeService));
             }
 
-            this.typeService = typeService;
+            _typeService = typeService;
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         public override void Synchronize()
         {
-            var mediaTypes = typeService.MediaTypes.Select(t => new MediaType(t)).ToArray();
+            var mediaTypes = _typeService.MediaTypes.Select(t => new MediaType(t)).ToArray();
 
             ValidateMediaTypeId(mediaTypes);
             ValidateMediaTypeAlias(mediaTypes);

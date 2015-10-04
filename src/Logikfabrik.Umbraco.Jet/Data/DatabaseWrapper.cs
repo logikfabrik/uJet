@@ -16,7 +16,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <summary>
         /// The database.
         /// </summary>
-        private readonly Database database;
+        private readonly Database _database;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DatabaseWrapper" /> class.
@@ -30,7 +30,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
                 throw new ArgumentNullException(nameof(database));
             }
 
-            this.database = database;
+            _database = database;
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
                 throw new ArgumentNullException(nameof(primaryKey));
             }
 
-            return database.SingleOrDefault<T>(primaryKey);
+            return _database.SingleOrDefault<T>(primaryKey);
         }
 
         /// <summary>
@@ -64,13 +64,13 @@ namespace Logikfabrik.Umbraco.Jet.Data
                 throw new ArgumentNullException(nameof(row));
             }
 
-            if (!database.Exists<T>(primaryKey))
+            if (!_database.Exists<T>(primaryKey))
             {
-                database.Insert(row);
+                _database.Insert(row);
             }
             else
             {
-                database.Update(row);
+                _database.Update(row);
             }
         }
 
@@ -85,7 +85,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         {
             var tableName = GetTableName<T>();
 
-            return database.TableExist(tableName);
+            return _database.TableExist(tableName);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
                 return;
             }
 
-            database.CreateTable<T>();
+            _database.CreateTable<T>();
         }
 
         /// <summary>
