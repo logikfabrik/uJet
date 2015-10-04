@@ -1,4 +1,5 @@
 version: 3.2.0.{build}
+skip_tags: true
 os: Visual Studio 2015
 platform: Any CPU
 configuration: Release
@@ -7,4 +8,4 @@ before_build:
 build:
   project: src/Logikfabrik.Umbraco.Jet.sln
   publish_nuget: true
-  verbosity: normal
+  verbosity: minimal
