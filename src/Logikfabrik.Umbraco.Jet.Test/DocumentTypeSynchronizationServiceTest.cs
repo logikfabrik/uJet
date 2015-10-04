@@ -5,182 +5,253 @@
 namespace Logikfabrik.Umbraco.Jet.Test
 {
     using System;
+    using System.Collections.Generic;
     using Data;
     using Extensions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Moq;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Moq;
 
+    /// <summary>
+    /// The <see cref="DocumentTypeSynchronizationServiceTest" /> class.
+    /// </summary>
     [TestClass]
     public class DocumentTypeSynchronizationServiceTest
     {
-        private const string IdForDocumentTypeWithId = "D7B9B7F5-B2ED-4C2F-8239-9A2F50D14054";
+        private const string IdForDocumentTypeWithId = "d7b9b7f5-b2ed-4c2f-8239-9a2f50d14054";
         private const string NameForDocumentTypeWithId = "DocumentTypeWithId";
         private const string NameForDocumentTypeWithoutId = "DocumentTypeWithoutId";
         private const string DefaultTemplateForDocumentTypeWithId = "DefaultTemplateForDocumentTypeWithId";
         private const string DefaultTemplateForDocumentTypeWithoutId = "DefaultTemplateForDocumentTypeWithoutId";
 
+        /// <summary>
+        /// Test to create document type with and without ID.
+        /// </summary>
         [TestMethod]
         public void CanCreateDocumentTypeWithAndWithoutId()
         {
-            var contentTypeService = new Mock<IContentTypeService>();
-            var contentTypeRepository = new Mock<IContentTypeRepository>();
-            var fileService = new Mock<IFileService>();
-            var typeService = new Mock<ITypeService>();
-            var withIdContentType = new Mock<IContentType>();
-            var withoutIdContentType = new Mock<IContentType>();
+            var typeServiceMock = new Mock<ITypeService>();
 
-            withIdContentType.SetupAllProperties();
-            withoutIdContentType.SetupAllProperties();
+            typeServiceMock.Setup(m => m.DocumentTypes).Returns(new[] { typeof(DocumentTypeWithId), typeof(DocumentTypeWithoutId) });
 
-            contentTypeService.Setup(m => m.GetAllContentTypes()).Returns(new IContentType[] { });
-            contentTypeService.Setup(m => m.Save(It.IsAny<IContentType>(), It.IsAny<int>()))
-                .Callback<IContentType, int>((ct, userId) =>
-                {
-                    switch (ct.Name)
-                    {
-                        case NameForDocumentTypeWithId:
-                            withIdContentType.Object.Name = ct.Name;
-                            break;
+            var contentTypeWithIdMock = new Mock<IContentType>();
 
-                        case NameForDocumentTypeWithoutId:
-                            withoutIdContentType.Object.Name = ct.Name;
-                            break;
-                    }
-                });
-            contentTypeService.Setup(m => m.GetContentType(It.Is<string>(v => v == NameForDocumentTypeWithId.Alias())))
-                .Returns(withIdContentType.Object);
-            contentTypeService.Setup(m => m.GetContentType(It.Is<string>(v => v == NameForDocumentTypeWithoutId.Alias())))
-                .Returns(withoutIdContentType.Object);
-            contentTypeRepository.Setup(m => m.GetContentTypeId(It.IsAny<Guid>())).Returns((int?)null);
-            typeService.SetupGet(m => m.DocumentTypes).Returns(new[] { typeof(DocumentTypeWithId), typeof(DocumentTypeWithoutId) });
+            var contentTypeWithoutIdMock = new Mock<IContentType>();
 
-            var documentTypeSynchronizationService = new DocumentTypeSynchronizationService(
-                contentTypeService.Object,
-                contentTypeRepository.Object,
-                typeService.Object,
-                fileService.Object);
+            var contentTypeServiceMock = new Mock<IContentTypeService>();
 
-            documentTypeSynchronizationService.Synchronize();
+            contentTypeServiceMock.Setup(m => m.GetAllContentTypes()).Returns(new IContentType[] { });
+            contentTypeServiceMock.Setup(m => m.GetContentType(NameForDocumentTypeWithId.Alias())).Returns(contentTypeWithIdMock.Object);
+            contentTypeServiceMock.Setup(m => m.GetContentType(NameForDocumentTypeWithoutId.Alias())).Returns(contentTypeWithoutIdMock.Object);
 
-            Assert.AreEqual(NameForDocumentTypeWithId, withIdContentType.Object.Name);
-            Assert.AreEqual(NameForDocumentTypeWithoutId, withoutIdContentType.Object.Name);
+            var contentTypeRepositoryMock = new Mock<IContentTypeRepository>();
+
+            contentTypeRepositoryMock.Setup(m => m.GetContentTypeId(It.IsAny<Guid>())).Returns((int?)null);
+
+            var documentTypeSynchronizationServiceMock = new Mock<DocumentTypeSynchronizationService>(
+                contentTypeServiceMock.Object,
+                contentTypeRepositoryMock.Object,
+                typeServiceMock.Object,
+                new Mock<IFileService>().Object)
+            { CallBase = true };
+
+            documentTypeSynchronizationServiceMock.Object.Synchronize();
+
+            documentTypeSynchronizationServiceMock
+                .Verify(m => m.SynchronizeById(It.IsAny<IEnumerable<IContentType>>(), It.IsAny<DocumentType>()), Times.Once);
+
+            documentTypeSynchronizationServiceMock
+                .Verify(m => m.SynchronizeByName(It.IsAny<IEnumerable<IContentType>>(), It.IsAny<DocumentType>()), Times.Once);
         }
 
+        /// <summary>
+        /// Test to create document type with ID.
+        /// </summary>
         [TestMethod]
         public void CanCreateDocumentTypeWithId()
         {
-            var contentTypeService = new Mock<IContentTypeService>();
-            var contentTypeRepository = new Mock<IContentTypeRepository>();
-            var fileService = new Mock<IFileService>();
-            var typeService = new Mock<ITypeService>();
-            var withIdContentType = new Mock<IContentType>();
+            var typeServiceMock = new Mock<ITypeService>();
 
-            withIdContentType.SetupAllProperties();
+            typeServiceMock.Setup(m => m.DocumentTypes).Returns(new[] { typeof(DocumentTypeWithId) });
 
-            contentTypeService.Setup(m => m.GetAllContentTypes()).Returns(new IContentType[] { });
-            contentTypeService.Setup(m => m.Save(It.IsAny<IContentType>(), It.IsAny<int>()))
-                .Callback<IContentType, int>((ct, userId) =>
-                {
-                    withIdContentType.Object.Name = ct.Name;
-                });
-            contentTypeService.Setup(m => m.GetContentType(It.Is<string>(v => v == NameForDocumentTypeWithId.Alias())))
-                .Returns(withIdContentType.Object);
-            contentTypeRepository.Setup(m => m.GetContentTypeId(It.IsAny<Guid>())).Returns((int?)null);
-            typeService.SetupGet(m => m.DocumentTypes).Returns(new[] { typeof(DocumentTypeWithId) });
+            var contentTypeMock = new Mock<IContentType>();
 
-            var documentTypeSynchronizationService = new DocumentTypeSynchronizationService(
-                contentTypeService.Object, contentTypeRepository.Object, typeService.Object, fileService.Object);
+            var contentTypeServiceMock = new Mock<IContentTypeService>();
 
-            documentTypeSynchronizationService.Synchronize();
+            contentTypeServiceMock.Setup(m => m.GetAllContentTypes()).Returns(new IContentType[] { });
+            contentTypeServiceMock.Setup(m => m.GetContentType(NameForDocumentTypeWithId.Alias())).Returns(contentTypeMock.Object);
 
-            Assert.AreEqual(NameForDocumentTypeWithId, withIdContentType.Object.Name);
+            var contentTypeRepositoryMock = new Mock<IContentTypeRepository>();
+
+            contentTypeRepositoryMock.Setup(m => m.GetContentTypeId(It.IsAny<Guid>())).Returns((int?)null);
+
+            var documentTypeSynchronizationServiceMock = new Mock<DocumentTypeSynchronizationService>(
+                contentTypeServiceMock.Object,
+                contentTypeRepositoryMock.Object,
+                typeServiceMock.Object,
+                new Mock<IFileService>().Object)
+            { CallBase = true };
+
+            documentTypeSynchronizationServiceMock.Object.Synchronize();
+
+            documentTypeSynchronizationServiceMock
+                .Verify(m => m.SynchronizeById(It.IsAny<IEnumerable<IContentType>>(), It.IsAny<DocumentType>()), Times.Once);
         }
 
+        /// <summary>
+        /// Test to create document type without ID.
+        /// </summary>
         [TestMethod]
         public void CanCreateDocumentTypeWithoutId()
         {
-            var contentTypeService = new Mock<IContentTypeService>();
-            var contentTypeRepository = new Mock<IContentTypeRepository>();
-            var fileService = new Mock<IFileService>();
-            var typeService = new Mock<ITypeService>();
-            var withoutIdContentType = new Mock<IContentType>();
+            var typeServiceMock = new Mock<ITypeService>();
 
-            withoutIdContentType.SetupAllProperties();
+            typeServiceMock.Setup(m => m.DocumentTypes).Returns(new[] { typeof(DocumentTypeWithoutId) });
 
-            contentTypeService.Setup(m => m.GetAllContentTypes()).Returns(new IContentType[] { });
-            contentTypeService.Setup(m => m.Save(It.IsAny<IContentType>(), It.IsAny<int>()))
-                .Callback<IContentType, int>((ct, userId) =>
-                {
-                    withoutIdContentType.Object.Name = ct.Name;
-                });
-            contentTypeService.Setup(m => m.GetContentType(It.Is<string>(v => v == NameForDocumentTypeWithoutId.Alias())))
-                .Returns(withoutIdContentType.Object);
-            contentTypeRepository.Setup(m => m.GetContentTypeId(It.IsAny<Guid>())).Returns((int?)null);
-            typeService.SetupGet(m => m.DocumentTypes).Returns(new[] { typeof(DocumentTypeWithoutId) });
+            var contentTypeMock = new Mock<IContentType>();
 
-            var documentTypeSynchronizationService = new DocumentTypeSynchronizationService(
-                contentTypeService.Object, contentTypeRepository.Object, typeService.Object, fileService.Object);
+            var contentTypeServiceMock = new Mock<IContentTypeService>();
 
-            documentTypeSynchronizationService.Synchronize();
+            contentTypeServiceMock.Setup(m => m.GetAllContentTypes()).Returns(new IContentType[] { });
+            contentTypeServiceMock.Setup(m => m.GetContentType(NameForDocumentTypeWithoutId.Alias())).Returns(contentTypeMock.Object);
 
-            Assert.AreEqual(NameForDocumentTypeWithoutId, withoutIdContentType.Object.Name);
+            var contentTypeRepositoryMock = new Mock<IContentTypeRepository>();
+
+            contentTypeRepositoryMock.Setup(m => m.GetContentTypeId(It.IsAny<Guid>())).Returns((int?)null);
+
+            var documentTypeSynchronizationServiceMock = new Mock<DocumentTypeSynchronizationService>(
+                contentTypeServiceMock.Object,
+                contentTypeRepositoryMock.Object,
+                typeServiceMock.Object,
+                new Mock<IFileService>().Object)
+            { CallBase = true };
+
+            documentTypeSynchronizationServiceMock.Object.Synchronize();
+
+            documentTypeSynchronizationServiceMock
+                .Verify(m => m.SynchronizeByName(It.IsAny<IEnumerable<IContentType>>(), It.IsAny<DocumentType>()), Times.Once);
         }
 
+        /// <summary>
+        /// Test to update document type with ID.
+        /// </summary>
+        [TestMethod]
+        public void CanUpdateDocumentTypeWithId()
+        {
+            var typeServiceMock = new Mock<ITypeService>();
+
+            typeServiceMock.Setup(m => m.DocumentTypes).Returns(new[] { typeof(DocumentTypeWithId) });
+
+            var contentTypeMock = new Mock<IContentType>();
+
+            contentTypeMock.SetupAllProperties();
+
+            var contentTypeServiceMock = new Mock<IContentTypeService>();
+
+            contentTypeServiceMock.Setup(m => m.GetAllContentTypes()).Returns(new[] { contentTypeMock.Object });
+            contentTypeServiceMock.Setup(m => m.GetContentType(NameForDocumentTypeWithId.Alias())).Returns(contentTypeMock.Object);
+
+            var contentTypeRepositoryMock = new Mock<IContentTypeRepository>();
+
+            contentTypeRepositoryMock.Setup(m => m.GetContentTypeId(Guid.Parse(IdForDocumentTypeWithId))).Returns(contentTypeMock.Object.Id);
+
+            var documentTypeSynchronizationServiceMock = new Mock<DocumentTypeSynchronizationService>(
+                contentTypeServiceMock.Object,
+                contentTypeRepositoryMock.Object,
+                typeServiceMock.Object,
+                new Mock<IFileService>().Object)
+            { CallBase = true };
+
+            documentTypeSynchronizationServiceMock.Object.Synchronize();
+
+            documentTypeSynchronizationServiceMock.Verify(m => m.UpdateDocumentType(contentTypeMock.Object, It.IsAny<DocumentType>()), Times.Once);
+        }
+
+        /// <summary>
+        /// Test to update name for document type with ID.
+        /// </summary>
         [TestMethod]
         public void CanUpdateNameForDocumentTypeWithId()
         {
-            var contentTypeService = new Mock<IContentTypeService>();
-            var contentTypeRepository = new Mock<IContentTypeRepository>();
-            var fileService = new Mock<IFileService>();
-            var typeService = new Mock<ITypeService>();
-            var withIdDbContentType = new Mock<IContentType>();
-            var withIdContentType = new Mock<IContentType>();
+            var typeServiceMock = new Mock<ITypeService>();
 
-            withIdDbContentType.SetupAllProperties();
-            withIdDbContentType.Object.Id = 1234;
-            withIdDbContentType.Object.Name = "DbDocumentTypeWithId";
+            typeServiceMock.Setup(m => m.DocumentTypes).Returns(new[] { typeof(DocumentTypeWithId) });
 
-            withIdContentType.SetupAllProperties();
+            var contentTypeMock = new Mock<IContentType>();
 
-            contentTypeService.Setup(m => m.GetAllContentTypes()).Returns(new[] { withIdDbContentType.Object });
-            contentTypeService.Setup(m => m.Save(It.IsAny<IContentType>(), It.IsAny<int>()))
-                .Callback<IContentType, int>((ct, userId) =>
-                {
-                    withIdContentType.Object.Name = ct.Name;
-                });
-            contentTypeService.Setup(m => m.GetContentType(It.Is<string>(v => v == NameForDocumentTypeWithId.Alias())))
-                .Returns(withIdContentType.Object);
-            contentTypeRepository.Setup(m => m.GetContentTypeId(It.IsAny<Guid>())).Returns((int?)null);
-            typeService.SetupGet(m => m.DocumentTypes).Returns(new[] { typeof(DocumentTypeWithId) });
+            contentTypeMock.SetupAllProperties();
+
+            var contentTypeServiceMock = new Mock<IContentTypeService>();
+
+            contentTypeServiceMock.Setup(m => m.GetAllContentTypes()).Returns(new[] { contentTypeMock.Object });
+            contentTypeServiceMock.Setup(m => m.GetContentType(NameForDocumentTypeWithId.Alias())).Returns(contentTypeMock.Object);
+
+            var contentTypeRepositoryMock = new Mock<IContentTypeRepository>();
+
+            contentTypeRepositoryMock.Setup(m => m.GetContentTypeId(Guid.Parse(IdForDocumentTypeWithId))).Returns(contentTypeMock.Object.Id);
 
             var documentTypeSynchronizationService = new DocumentTypeSynchronizationService(
-                contentTypeService.Object, contentTypeRepository.Object, typeService.Object, fileService.Object);
+                contentTypeServiceMock.Object,
+                contentTypeRepositoryMock.Object,
+                typeServiceMock.Object,
+                new Mock<IFileService>().Object);
 
             documentTypeSynchronizationService.Synchronize();
 
-            Assert.AreEqual(NameForDocumentTypeWithId, withIdContentType.Object.Name);
+            contentTypeMock.VerifySet(m => m.Name = NameForDocumentTypeWithId, Times.Once);
         }
 
-        [DocumentType(IdForDocumentTypeWithId, NameForDocumentTypeWithId, DefaultTemplate = DefaultTemplateForDocumentTypeWithId)]
-        public class DocumentTypeWithId
+        /// <summary>
+        /// Test to update document type without ID.
+        /// </summary>
+        [TestMethod]
+        public void CanUpdateDocumentTypeWithoutId()
+        {
+            var typeServiceMock = new Mock<ITypeService>();
+
+            typeServiceMock.Setup(m => m.DocumentTypes).Returns(new[] { typeof(DocumentTypeWithoutId) });
+
+            var contentTypeMock = new Mock<IContentType>();
+
+            contentTypeMock.Setup(m => m.Alias).Returns(NameForDocumentTypeWithoutId.Alias());
+
+            var contentTypeServiceMock = new Mock<IContentTypeService>();
+
+            contentTypeServiceMock.Setup(m => m.GetAllContentTypes()).Returns(new[] { contentTypeMock.Object });
+            contentTypeServiceMock.Setup(m => m.GetContentType(NameForDocumentTypeWithoutId.Alias())).Returns(contentTypeMock.Object);
+
+            var documentTypeSynchronizationServiceMock = new Mock<DocumentTypeSynchronizationService>(
+                contentTypeServiceMock.Object,
+                new Mock<IContentTypeRepository>().Object,
+                typeServiceMock.Object,
+                new Mock<IFileService>().Object)
+            { CallBase = true };
+
+            documentTypeSynchronizationServiceMock.Object.Synchronize();
+
+            documentTypeSynchronizationServiceMock.Verify(m => m.UpdateDocumentType(contentTypeMock.Object, It.IsAny<DocumentType>()), Times.Once);
+        }
+
+        /// <summary>
+        /// The <see cref="DocumentTypeWithId" /> class.
+        /// </summary>
+        [DocumentType(
+            IdForDocumentTypeWithId,
+            NameForDocumentTypeWithId,
+            DefaultTemplate = DefaultTemplateForDocumentTypeWithId)]
+        protected class DocumentTypeWithId
         {
         }
 
-        [DocumentType(NameForDocumentTypeWithoutId, DefaultTemplate = DefaultTemplateForDocumentTypeWithoutId)]
-        public class DocumentTypeWithoutId
+        /// <summary>
+        /// The <see cref="DocumentTypeWithoutId" /> class.
+        /// </summary>
+        [DocumentType(
+            NameForDocumentTypeWithoutId,
+            DefaultTemplate = DefaultTemplateForDocumentTypeWithoutId)]
+        protected class DocumentTypeWithoutId
         {
-        }
-
-        public class DocumentTypeWithPropertyWithId
-        {
-            // TODO: Test.
-        }
-
-        public class DocumentTypeWithPropertyWithoutId
-        {
-            // TODO: Test.
         }
     }
 }

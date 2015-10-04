@@ -92,6 +92,121 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
+        /// Synchronizes document type by name.
+        /// </summary>
+        /// <param name="contentTypes">The content types.</param>
+        /// <param name="documentType">The document type.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypes" />, or <paramref name="documentType" /> are <c>null</c>.</exception>
+        /// <exception cref="ArgumentException">Thrown if the document type identifier is not <c>null</c>.</exception>
+        internal virtual void SynchronizeByName(IEnumerable<IContentType> contentTypes, DocumentType documentType)
+        {
+            if (contentTypes == null)
+            {
+                throw new ArgumentNullException(nameof(contentTypes));
+            }
+
+            if (documentType == null)
+            {
+                throw new ArgumentNullException(nameof(documentType));
+            }
+
+            if (documentType.Id.HasValue)
+            {
+                throw new ArgumentException("Document type ID must be null.", nameof(documentType));
+            }
+
+            var ct = contentTypes.FirstOrDefault(type => type.Alias == documentType.Alias);
+
+            if (ct == null)
+            {
+                CreateDocumentType(documentType);
+            }
+            else
+            {
+                UpdateDocumentType(ct, documentType);
+            }
+        }
+
+        /// <summary>
+        /// Synchronizes document type by identifier.
+        /// </summary>
+        /// <param name="contentTypes">The content types.</param>
+        /// <param name="documentType">The document type.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypes" />, or <paramref name="documentType" /> are <c>null</c>.</exception>
+        /// <exception cref="ArgumentException">Thrown if the document type identifier is <c>null</c>.</exception>
+        internal virtual void SynchronizeById(IEnumerable<IContentType> contentTypes, DocumentType documentType)
+        {
+            if (contentTypes == null)
+            {
+                throw new ArgumentNullException(nameof(contentTypes));
+            }
+
+            if (documentType == null)
+            {
+                throw new ArgumentNullException(nameof(documentType));
+            }
+
+            if (!documentType.Id.HasValue)
+            {
+                throw new ArgumentException("Document type ID cannot be null.", nameof(documentType));
+            }
+
+            IContentType ct = null;
+
+            var id = ContentTypeRepository.GetContentTypeId(documentType.Id.Value);
+
+            if (id.HasValue)
+            {
+                // The document type has been synchronized before. Get the matching content type.
+                // It might have been removed using the back office.
+                ct = contentTypes.FirstOrDefault(type => type.Id == id.Value);
+            }
+
+            if (ct == null)
+            {
+                CreateDocumentType(documentType);
+
+                // Get the created content type.
+                ct = ContentTypeService.GetContentType(documentType.Alias);
+
+                // Connect the document type and the created content type.
+                ContentTypeRepository.SetContentTypeId(documentType.Id.Value, ct.Id);
+            }
+            else
+            {
+                UpdateDocumentType(ct, documentType);
+            }
+        }
+
+        /// <summary>
+        /// Updates the document type.
+        /// </summary>
+        /// <param name="contentType">The content type.</param>
+        /// <param name="documentType">The document type to update.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentType" />, or <paramref name="documentType" /> are <c>null</c>.</exception>
+        internal virtual void UpdateDocumentType(IContentType contentType, DocumentType documentType)
+        {
+            if (contentType == null)
+            {
+                throw new ArgumentNullException(nameof(contentType));
+            }
+
+            if (documentType == null)
+            {
+                throw new ArgumentNullException(nameof(documentType));
+            }
+
+            UpdateContentType(contentType, () => new ContentType(-1), documentType);
+            SetTemplates(contentType, documentType);
+            SetDefaultTemplate(contentType, documentType);
+
+            ContentTypeService.Save(contentType);
+
+            // Update tracking.
+            SetPropertyTypeId(ContentTypeService.GetContentType(contentType.Alias), documentType);
+        }
+
+        /// <summary>
         /// Validates the document type identifier.
         /// </summary>
         /// <param name="documentTypes">The document types.</param>
@@ -153,93 +268,6 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Synchronizes document type by name.
-        /// </summary>
-        /// <param name="contentTypes">The content types.</param>
-        /// <param name="documentType">The document type.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypes" />, or <paramref name="documentType" /> are <c>null</c>.</exception>
-        /// <exception cref="ArgumentException">Thrown if the document type identifier is not <c>null</c>.</exception>
-        private void SynchronizeByName(IEnumerable<IContentType> contentTypes, DocumentType documentType)
-        {
-            if (contentTypes == null)
-            {
-                throw new ArgumentNullException(nameof(contentTypes));
-            }
-
-            if (documentType == null)
-            {
-                throw new ArgumentNullException(nameof(documentType));
-            }
-
-            if (documentType.Id.HasValue)
-            {
-                throw new ArgumentException("Document type ID must be null.", nameof(documentType));
-            }
-
-            var ct = contentTypes.FirstOrDefault(type => type.Alias == documentType.Alias);
-
-            if (ct == null)
-            {
-                CreateDocumentType(documentType);
-            }
-            else
-            {
-                UpdateDocumentType(ct, documentType);
-            }
-        }
-
-        /// <summary>
-        /// Synchronizes document type by identifier.
-        /// </summary>
-        /// <param name="contentTypes">The content types.</param>
-        /// <param name="documentType">The document type.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypes" />, or <paramref name="documentType" /> are <c>null</c>.</exception>
-        /// <exception cref="ArgumentException">Thrown if the document type identifier is <c>null</c>.</exception>
-        private void SynchronizeById(IEnumerable<IContentType> contentTypes, DocumentType documentType)
-        {
-            if (contentTypes == null)
-            {
-                throw new ArgumentNullException(nameof(contentTypes));
-            }
-
-            if (documentType == null)
-            {
-                throw new ArgumentNullException(nameof(documentType));
-            }
-
-            if (!documentType.Id.HasValue)
-            {
-                throw new ArgumentException("Document type ID cannot be null.", nameof(documentType));
-            }
-
-            IContentType ct = null;
-
-            var id = ContentTypeRepository.GetContentTypeId(documentType.Id.Value);
-
-            if (id.HasValue)
-            {
-                // The document type has been synchronized before. Get the matching content type.
-                // It might have been removed using the back office.
-                ct = contentTypes.FirstOrDefault(type => type.Id == id.Value);
-            }
-
-            if (ct == null)
-            {
-                CreateDocumentType(documentType);
-
-                // Get the created content type.
-                ct = ContentTypeService.GetContentType(documentType.Alias);
-
-                // Connect the document type and the created content type.
-                ContentTypeRepository.SetContentTypeId(documentType.Id.Value, ct.Id);
-            }
-            else
-            {
-                UpdateDocumentType(ct, documentType);
-            }
-        }
-
-        /// <summary>
         /// Creates the document type.
         /// </summary>
         /// <param name="documentType">The document type to create.</param>
@@ -253,34 +281,6 @@ namespace Logikfabrik.Umbraco.Jet
 
             var contentType = (IContentType)CreateContentType(() => new ContentType(-1), documentType);
 
-            SetTemplates(contentType, documentType);
-            SetDefaultTemplate(contentType, documentType);
-
-            ContentTypeService.Save(contentType);
-
-            // Update tracking.
-            SetPropertyTypeId(ContentTypeService.GetContentType(contentType.Alias), documentType);
-        }
-
-        /// <summary>
-        /// Updates the document type.
-        /// </summary>
-        /// <param name="contentType">The content type.</param>
-        /// <param name="documentType">The document type to update.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentType" />, or <paramref name="documentType" /> are <c>null</c>.</exception>
-        private void UpdateDocumentType(IContentType contentType, DocumentType documentType)
-        {
-            if (contentType == null)
-            {
-                throw new ArgumentNullException(nameof(contentType));
-            }
-
-            if (documentType == null)
-            {
-                throw new ArgumentNullException(nameof(documentType));
-            }
-
-            UpdateContentType(contentType, () => new ContentType(-1), documentType);
             SetTemplates(contentType, documentType);
             SetDefaultTemplate(contentType, documentType);
 

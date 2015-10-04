@@ -31,6 +31,13 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <returns>The row.</returns>
         T GetRow<T>(object primaryKey);
 
+        /// <summary>
+        /// Gets a value indicating whether a table of the specified type exists.
+        /// </summary>
+        /// <typeparam name="T">The table type.</typeparam>
+        /// <returns>
+        ///   <c>true</c> if a table of the specified type exists; otherwise, <c>false</c>.
+        /// </returns>
         bool TableExist<T>();
     }
 }

@@ -7,15 +7,18 @@ namespace Logikfabrik.Umbraco.Jet.Test
     using System;
     using Data;
     using Extensions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Moq;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Moq;
 
+    /// <summary>
+    /// The <see cref="DataTypeSynchronizationServiceTest" /> class.
+    /// </summary>
     [TestClass]
     public class MediaTypeSynchronizationServiceTest
     {
-        private const string IdForMediaTypeWithId = "D7B9B7F5-B2ED-4C2F-8239-9A2F50D14054";
+        private const string IdForMediaTypeWithId = "d7b9b7f5-b2ed-4c2f-8239-9a2f50d14054";
         private const string NameForMediaTypeWithId = "MediaTypeWithId";
         private const string NameForMediaTypeWithoutId = "MediaTypeWithoutId";
 
@@ -154,24 +157,23 @@ namespace Logikfabrik.Umbraco.Jet.Test
             Assert.AreEqual(NameForMediaTypeWithId, withIdMediaType.Object.Name);
         }
 
-        [MediaType(IdForMediaTypeWithId, NameForMediaTypeWithId)]
-        public class MediaTypeWithId
+        /// <summary>
+        /// The <see cref="MediaTypeWithId" /> class.
+        /// </summary>
+        [MediaType(
+            IdForMediaTypeWithId,
+            NameForMediaTypeWithId)]
+        protected class MediaTypeWithId
         {
         }
 
-        [MediaType(NameForMediaTypeWithoutId)]
-        public class MediaTypeWithoutId
+        /// <summary>
+        /// The <see cref="MediaTypeWithoutId" /> class.
+        /// </summary>
+        [MediaType(
+            NameForMediaTypeWithoutId)]
+        protected class MediaTypeWithoutId
         {
-        }
-
-        public class MediaTypeWithPropertyWithId
-        {
-            // TODO: Test.
-        }
-
-        public class MediaTypeWithPropertyWithoutId
-        {
-            // TODO: Test.
         }
     }
 }
