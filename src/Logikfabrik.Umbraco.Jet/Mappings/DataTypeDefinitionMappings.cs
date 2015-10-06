@@ -13,17 +13,12 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
     public static class DataTypeDefinitionMappings
     {
         /// <summary>
-        /// The shared mappings.
-        /// </summary>
-        private static readonly DataTypeDefinitionMappingDictionary SharedMappings = GetDefaultMappings();
-
-        /// <summary>
         /// Gets the mappings.
         /// </summary>
         /// <value>
         /// The mappings.
         /// </value>
-        public static DataTypeDefinitionMappingDictionary Mappings => SharedMappings;
+        public static DataTypeDefinitionMappingDictionary Mappings { get; } = GetDefaultMappings();
 
         /// <summary>
         /// Gets the definition mapping.
@@ -40,7 +35,7 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
 
             IDataTypeDefinitionMapping mapping;
 
-            if (!SharedMappings.TryGetValue(fromType, out mapping))
+            if (!Mappings.TryGetValue(fromType, out mapping))
             {
                 return null;
             }
@@ -65,9 +60,9 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
             // Query the default data type definition mapping.
             if (!string.IsNullOrWhiteSpace(uiHint))
             {
-                if (SharedMappings.DefaultMapping.CanMapToDefinition(uiHint, fromType))
+                if (Mappings.DefaultMapping.CanMapToDefinition(uiHint, fromType))
                 {
-                    return SharedMappings.DefaultMapping.GetMappedDefinition(uiHint, fromType);
+                    return Mappings.DefaultMapping.GetMappedDefinition(uiHint, fromType);
                 }
             }
 

@@ -20,7 +20,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Utilities
         /// <returns>A type builder.</returns>
         public static TypeBuilder GetTypeBuilder(TypeAttributes? typeAttributes = null)
         {
-            var typeBuilder = TypeUtility.GetTypeBuilder("MyDataType", TypeUtility.GetTypeAttributes(typeAttributes));
+            var typeBuilder = TypeUtility.GetTypeBuilder("MyMemberType", TypeUtility.GetTypeAttributes(typeAttributes));
 
             var constructor = typeof(MemberTypeAttribute).GetConstructor(new Type[] { });
 

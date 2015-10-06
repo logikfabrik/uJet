@@ -23,7 +23,7 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         protected abstract Type[] SupportedTypes { get; }
 
         /// <summary>
-        /// Determines whether this instance can map the specified from type to a definition.
+        /// Determines whether this instance can map the specified type to a definition.
         /// </summary>
         /// <param name="fromType">From type.</param>
         /// <returns>

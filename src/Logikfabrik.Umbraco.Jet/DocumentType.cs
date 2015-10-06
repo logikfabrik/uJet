@@ -9,7 +9,7 @@ namespace Logikfabrik.Umbraco.Jet
     using Extensions;
 
     /// <summary>
-    /// The <see cref="MediaType" /> class.
+    /// The <see cref="DocumentType" /> class.
     /// </summary>
     public class DocumentType : ContentType<DocumentTypeAttribute>
     {

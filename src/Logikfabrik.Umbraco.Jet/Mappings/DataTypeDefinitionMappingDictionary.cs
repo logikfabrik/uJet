@@ -82,7 +82,7 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// Returns an enumerator that iterates through a collection.
         /// </summary>
         /// <returns>
-        /// An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.
+        /// An <see cref="IEnumerator" /> object that can be used to iterate through the collection.
         /// </returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
@@ -135,7 +135,7 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// </summary>
         /// <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
         /// <returns>
-        ///   <c>true</c> if <paramref name="item" /> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, false. This method also returns false if <paramref name="item" /> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1" />.
+        ///   <c>true</c> if <paramref name="item" /> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, <c>false</c>. This method also returns <c>false</c> if <paramref name="item" /> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1" />.
         /// </returns>
         public bool Remove(KeyValuePair<Type, IDataTypeDefinitionMapping> item)
         {
@@ -147,7 +147,7 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// </summary>
         /// <param name="key">The key to locate in the <see cref="T:System.Collections.Generic.IDictionary`2" />.</param>
         /// <returns>
-        ///   <c>true</c> if the <see cref="T:System.Collections.Generic.IDictionary`2" /> contains an element with the key; otherwise, false.
+        ///   <c>true</c> if the <see cref="T:System.Collections.Generic.IDictionary`2" /> contains an element with the key; otherwise, <c>false</c>.
         /// </returns>
         public bool ContainsKey(Type key)
         {
@@ -169,7 +169,7 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// </summary>
         /// <param name="key">The key of the element to remove.</param>
         /// <returns>
-        ///   <c>true</c> if the element is successfully removed; otherwise, false. This method also returns false if <paramref name="key" /> was not found in the original <see cref="T:System.Collections.Generic.IDictionary`2" />.
+        ///   <c>true</c> if the element is successfully removed; otherwise, <c>false</c>. This method also returns <c>false</c> if <paramref name="key" /> was not found in the original <see cref="T:System.Collections.Generic.IDictionary`2" />.
         /// </returns>
         public bool Remove(Type key)
         {

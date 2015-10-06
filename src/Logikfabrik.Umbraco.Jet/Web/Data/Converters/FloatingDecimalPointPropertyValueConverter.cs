@@ -9,7 +9,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
     using System.Linq;
 
     /// <summary>
-    /// The <see cref="FloatingDecimalPointPropertyValueConverter" /> class.
+    /// The <see cref="FloatingDecimalPointPropertyValueConverter" /> class for type <see cref="decimal" />.
     /// </summary>
     public class FloatingDecimalPointPropertyValueConverter : IPropertyValueConverter
     {

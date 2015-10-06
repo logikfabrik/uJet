@@ -9,7 +9,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
     using System.Linq;
 
     /// <summary>
-    /// The <see cref="FloatingBinaryPointPropertyValueConverter" /> class.
+    /// The <see cref="FloatingBinaryPointPropertyValueConverter" /> class for types <see cref="float" /> and <see cref="double" />.
     /// </summary>
     public class FloatingBinaryPointPropertyValueConverter : IPropertyValueConverter
     {

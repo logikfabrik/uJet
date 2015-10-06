@@ -9,7 +9,7 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
     using global::Umbraco.Core.Models;
 
     /// <summary>
-    /// The <see cref="IntegerDataTypeDefinitionMapping" /> class for type <see cref="int" />.
+    /// The <see cref="IntegerDataTypeDefinitionMapping" /> class for types <see cref="short" /> and <see cref="int" />, signed and unsigned.
     /// </summary>
     public class IntegerDataTypeDefinitionMapping : DataTypeDefinitionMapping
     {

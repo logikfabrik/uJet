@@ -14,15 +14,10 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
     public class PropertyValueConverters
     {
         /// <summary>
-        /// The shared converters.
-        /// </summary>
-        private static readonly PropertyValueConverterDictionary SharedConverters = GetDefaultConverters();
-
-        /// <summary>
         /// Gets the converters.
         /// </summary>
         /// <value>The converters.</value>
-        public static PropertyValueConverterDictionary Converters => SharedConverters;
+        public static PropertyValueConverterDictionary Converters { get; } = GetDefaultConverters();
 
         /// <summary>
         /// Gets the converter.
@@ -30,7 +25,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
         /// <param name="uiHint">The UI hint.</param>
         /// <param name="from">From type.</param>
         /// <param name="to">To type.</param>
-        /// <returns>The converter</returns>
+        /// <returns>The converter.</returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="from" />, or <paramref name="to" /> are <c>null</c>.</exception>
         internal static IPropertyValueConverter GetConverter(string uiHint, Type from, Type to)
         {
@@ -46,7 +41,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
 
             IEnumerable<IPropertyValueConverter> converters;
 
-            return !SharedConverters.TryGetValue(to, out converters)
+            return !Converters.TryGetValue(to, out converters)
                 ? null
                 : converters.FirstOrDefault(c => c.CanConvertValue(uiHint, @from, to));
         }

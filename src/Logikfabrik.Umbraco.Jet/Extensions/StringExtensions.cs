@@ -10,9 +10,9 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
     public static class StringExtensions
     {
         /// <summary>
-        /// Gets the Umbraco alias.
+        /// Gets the Umbraco alias for the specified string.
         /// </summary>
-        /// <param name="s">The string.</param>
+        /// <param name="s">The string to get the Umbraco alias for.</param>
         /// <returns>The Umbraco alias.</returns>
         public static string Alias(this string s)
         {

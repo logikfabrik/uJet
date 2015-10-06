@@ -21,7 +21,7 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
         /// </returns>
         public static bool IsDocumentType(this Type type)
         {
-            return HasAttribute<DocumentTypeAttribute>(type);
+            return IsValidAndHasAttribute<DocumentTypeAttribute>(type);
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
         /// </returns>
         public static bool IsDataType(this Type type)
         {
-            return HasAttribute<DataTypeAttribute>(type);
+            return IsValidAndHasAttribute<DataTypeAttribute>(type);
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
         /// </returns>
         public static bool IsMediaType(this Type type)
         {
-            return HasAttribute<MediaTypeAttribute>(type);
+            return IsValidAndHasAttribute<MediaTypeAttribute>(type);
         }
 
         /// <summary>
@@ -57,18 +57,18 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
         /// </returns>
         public static bool IsMemberType(this Type type)
         {
-            return HasAttribute<MemberTypeAttribute>(type);
+            return IsValidAndHasAttribute<MemberTypeAttribute>(type);
         }
 
         /// <summary>
-        /// Determines whether the type has an attribute of the specified type.
+        /// Determines whether the type is valid an has an attribute of the specified type.
         /// </summary>
         /// <typeparam name="T">The attribute type.</typeparam>
         /// <param name="type">The type.</param>
         /// <returns>
-        ///   <c>true</c> if the type has an attribute of the specified type; otherwise, <c>false</c>.
+        ///   <c>true</c> if the type is valid and has an attribute of the specified type; otherwise, <c>false</c>.
         /// </returns>
-        private static bool HasAttribute<T>(Type type) where T : Attribute
+        private static bool IsValidAndHasAttribute<T>(Type type) where T : Attribute
         {
             if (type == null)
             {
