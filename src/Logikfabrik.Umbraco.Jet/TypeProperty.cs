@@ -1,4 +1,4 @@
-﻿// <copyright file="ContentTypeProperty.cs" company="Logikfabrik">
+﻿// <copyright file="TypeProperty.cs" company="Logikfabrik">
 //   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -11,21 +11,21 @@ namespace Logikfabrik.Umbraco.Jet
     using Extensions;
 
     /// <summary>
-    /// The <see cref="ContentTypeProperty" /> class.
+    /// The <see cref="TypeProperty" /> class.
     /// </summary>
-    public class ContentTypeProperty
+    public class TypeProperty
     {
         /// <summary>
-        /// Value indicating whether this <see cref="ContentTypeProperty" /> has a default value.
+        /// Value indicating whether this <see cref="TypeProperty" /> has a default value.
         /// </summary>
         private readonly bool _hasDefaultValue;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContentTypeProperty" /> class.
+        /// Initializes a new instance of the <see cref="TypeProperty" /> class.
         /// </summary>
         /// <param name="property">The property.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="property" /> is <c>null</c>.</exception>
-        public ContentTypeProperty(PropertyInfo property)
+        public TypeProperty(PropertyInfo property)
         {
             if (property == null)
             {
@@ -81,7 +81,7 @@ namespace Logikfabrik.Umbraco.Jet
         public string Alias { get; }
 
         /// <summary>
-        /// Gets a value indicating whether this <see cref="ContentTypeProperty" /> is mandatory.
+        /// Gets a value indicating whether this <see cref="TypeProperty" /> is mandatory.
         /// </summary>
         /// <value>
         ///   <c>true</c> if mandatory; otherwise, <c>false</c>.
@@ -137,7 +137,7 @@ namespace Logikfabrik.Umbraco.Jet
         public object DefaultValue { get; }
 
         /// <summary>
-        /// Gets a value indicating whether this <see cref="ContentTypeProperty" /> has a default value.
+        /// Gets a value indicating whether this <see cref="TypeProperty" /> has a default value.
         /// </summary>
         public bool HasDefaultValue => _hasDefaultValue;
 
@@ -212,7 +212,7 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Gets a value indicating whether this <see cref="ContentTypeProperty" /> is mandatory.
+        /// Gets a value indicating whether this <see cref="TypeProperty" /> is mandatory.
         /// </summary>
         /// <param name="property">The property.</param>
         /// <returns>
@@ -232,7 +232,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// Gets the default value.
         /// </summary>
         /// <param name="property">The property.</param>
-        /// <param name="hasDefaultValue"><c>true</c> if this <see cref="ContentTypeProperty" /> has a default value; otherwise, <c>false</c>.</param>
+        /// <param name="hasDefaultValue"><c>true</c> if this <see cref="TypeProperty" /> has a default value; otherwise, <c>false</c>.</param>
         /// <returns>The default value.</returns>
         private static object GetDefaultValue(PropertyInfo property, out bool hasDefaultValue)
         {

@@ -9,21 +9,15 @@ namespace Logikfabrik.Umbraco.Jet
     /// <summary>
     /// The <see cref="ContentTypeAttribute" /> class.
     /// </summary>
-    public abstract class ContentTypeAttribute : IdAttribute
+    public abstract class ContentTypeAttribute : BaseTypeAttribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentTypeAttribute" /> class.
         /// </summary>
         /// <param name="name">The name.</param>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="name" /> is <c>null</c>, or white space.</exception>
         protected ContentTypeAttribute(string name)
+            : base(name)
         {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentException("Name cannot be null or white space.", nameof(name));
-            }
-
-            Name = name;
         }
 
         /// <summary>
@@ -31,46 +25,9 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="name">The name.</param>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="name" /> is <c>null</c>, or white space.</exception>
         protected ContentTypeAttribute(string id, string name)
-            : base(id)
+            : base(id, name)
         {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentException("Name cannot be null or white space.", nameof(name));
-            }
-
-            Name = name;
-        }
-
-        /// <summary>
-        /// Gets the name.
-        /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
-        public string Name { get; }
-
-        /// <summary>
-        /// Gets or sets the description.
-        /// </summary>
-        /// <value>
-        /// The description.
-        /// </value>
-        public string Description
-        {
-            get; set;
-        }
-
-        /// <summary>
-        /// Gets or sets the icon.
-        /// </summary>
-        /// <value>
-        /// The icon.
-        /// </value>
-        public string Icon
-        {
-            get; set;
         }
 
         /// <summary>

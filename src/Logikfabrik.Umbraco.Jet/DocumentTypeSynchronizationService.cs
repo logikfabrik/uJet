@@ -75,30 +75,39 @@ namespace Logikfabrik.Umbraco.Jet
         {
             var documentTypes = _typeService.DocumentTypes.Select(t => new DocumentType(t)).ToArray();
 
+            // No document types; there's nothing to sync.
+            if (!documentTypes.Any())
+            {
+                return;
+            }
+
             ValidateDocumentTypeId(documentTypes);
             ValidateDocumentTypeAlias(documentTypes);
 
+            // WARNING: This might cause issues; the array of types only contains the initial types, not including ones added/updated during sync.
+            var types = ContentTypeService.GetAllContentTypes().ToArray();
+
             foreach (var documentType in documentTypes.Where(dt => dt.Id.HasValue))
             {
-                SynchronizeById(ContentTypeService.GetAllContentTypes(), documentType);
+                SynchronizeById(types, documentType);
             }
 
             foreach (var documentType in documentTypes.Where(dt => !dt.Id.HasValue))
             {
-                SynchronizeByName(ContentTypeService.GetAllContentTypes(), documentType);
+                SynchronizeByAlias(types, documentType);
             }
 
-            SetAllowedContentTypes(ContentTypeService.GetAllContentTypes().Cast<IContentTypeBase>().ToArray(), documentTypes);
+            SetAllowedContentTypes(types.Cast<IContentTypeBase>().ToArray(), documentTypes);
         }
 
         /// <summary>
-        /// Synchronizes document type by name.
+        /// Synchronizes document type by alias.
         /// </summary>
         /// <param name="contentTypes">The content types.</param>
         /// <param name="documentType">The document type.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypes" />, or <paramref name="documentType" /> are <c>null</c>.</exception>
         /// <exception cref="ArgumentException">Thrown if the document type identifier is not <c>null</c>.</exception>
-        internal virtual void SynchronizeByName(IEnumerable<IContentType> contentTypes, DocumentType documentType)
+        internal virtual void SynchronizeByAlias(IEnumerable<IContentType> contentTypes, DocumentType documentType)
         {
             if (contentTypes == null)
             {
@@ -279,15 +288,15 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(documentType));
             }
 
-            var contentType = (IContentType)CreateContentType(() => new ContentType(-1), documentType);
+            var t = (IContentType)CreateContentType(() => new ContentType(-1), documentType);
 
-            SetTemplates(contentType, documentType);
-            SetDefaultTemplate(contentType, documentType);
+            SetTemplates(t, documentType);
+            SetDefaultTemplate(t, documentType);
 
-            ContentTypeService.Save(contentType);
+            ContentTypeService.Save(t);
 
             // Update tracking.
-            SetPropertyTypeId(ContentTypeService.GetContentType(contentType.Alias), documentType);
+            SetPropertyTypeId(ContentTypeService.GetContentType(t.Alias), documentType);
         }
 
         /// <summary>

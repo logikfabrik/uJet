@@ -82,17 +82,26 @@ namespace Logikfabrik.Umbraco.Jet
         {
             var dataTypes = _typeService.DataTypes.Select(t => new DataType(t)).ToArray();
 
+            // No data types; there's nothing to sync.
+            if (!dataTypes.Any())
+            {
+                return;
+            }
+
             ValidateDataTypeId(dataTypes);
             ValidateDataTypeName(dataTypes);
 
+            // WARNING: This might cause issues; the array of types only contains the initial types, not including ones added/updated during sync.
+            var types = _dataTypeService.GetAllDataTypeDefinitions().ToArray();
+
             foreach (var dataType in dataTypes.Where(dt => dt.Id.HasValue))
             {
-                SynchronizeById(_dataTypeService.GetAllDataTypeDefinitions(), dataType);
+                SynchronizeById(types, dataType);
             }
 
             foreach (var dataType in dataTypes.Where(dt => !dt.Id.HasValue))
             {
-                SynchronizeByName(_dataTypeService.GetAllDataTypeDefinitions(), dataType);
+                SynchronizeByName(types, dataType);
             }
         }
 

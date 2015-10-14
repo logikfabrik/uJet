@@ -1,3 +1,6 @@
+## Unreleased
+* 2015-10-14 Added support for member types.
+
 ## 3.2.0.0
 * 2015-08-30 Compiled using Umbraco 7.2.8 binaries.
 * 2015-08-30 Reverted changes to the `JetViewEngine` made 2015-05-04.

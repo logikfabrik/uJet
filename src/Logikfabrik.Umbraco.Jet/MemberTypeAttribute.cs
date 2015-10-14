@@ -12,7 +12,25 @@ namespace Logikfabrik.Umbraco.Jet
     [AttributeUsage(
         AttributeTargets.Class,
         Inherited = false)]
-    public class MemberTypeAttribute : IdAttribute
+    public class MemberTypeAttribute : BaseTypeAttribute
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MemberTypeAttribute" /> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        public MemberTypeAttribute(string name)
+            : base(name)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MemberTypeAttribute" /> class.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="name">The name.</param>
+        protected MemberTypeAttribute(string id, string name)
+            : base(id, name)
+        {
+        }
     }
 }

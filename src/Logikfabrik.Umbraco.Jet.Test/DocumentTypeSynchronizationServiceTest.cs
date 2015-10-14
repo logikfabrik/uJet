@@ -62,7 +62,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
                 .Verify(m => m.SynchronizeById(It.IsAny<IEnumerable<IContentType>>(), It.IsAny<DocumentType>()), Times.Once);
 
             documentTypeSynchronizationServiceMock
-                .Verify(m => m.SynchronizeByName(It.IsAny<IEnumerable<IContentType>>(), It.IsAny<DocumentType>()), Times.Once);
+                .Verify(m => m.SynchronizeByAlias(It.IsAny<IEnumerable<IContentType>>(), It.IsAny<DocumentType>()), Times.Once);
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             documentTypeSynchronizationServiceMock.Object.Synchronize();
 
             documentTypeSynchronizationServiceMock
-                .Verify(m => m.SynchronizeByName(It.IsAny<IEnumerable<IContentType>>(), It.IsAny<DocumentType>()), Times.Once);
+                .Verify(m => m.SynchronizeByAlias(It.IsAny<IEnumerable<IContentType>>(), It.IsAny<DocumentType>()), Times.Once);
         }
 
         /// <summary>

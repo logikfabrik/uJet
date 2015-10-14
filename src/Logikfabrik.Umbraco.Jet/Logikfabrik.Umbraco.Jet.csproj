@@ -226,6 +226,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationHandler.cs" />
+    <Compile Include="BaseType.cs" />
+    <Compile Include="BaseTypeAttribute.cs" />
+    <Compile Include="BaseTypeSynchronizationService.cs" />
     <Compile Include="Configuration\JetAssemblyElement.cs" />
     <Compile Include="Configuration\JetAssemblyElementCollection.cs" />
     <Compile Include="Configuration\JetConfigurationManager.cs" />
@@ -233,7 +236,7 @@
     <Compile Include="Configuration\SynchronizationMode.cs" />
     <Compile Include="ContentType.cs" />
     <Compile Include="ContentTypeAttribute.cs" />
-    <Compile Include="ContentTypeProperty.cs" />
+    <Compile Include="TypeProperty.cs" />
     <Compile Include="ContentTypeSynchronizationService.cs" />
     <Compile Include="DataType.cs" />
     <Compile Include="DataTypeAttribute.cs" />
@@ -248,6 +251,7 @@
     <Compile Include="Data\IDataTypeRepository.cs" />
     <Compile Include="Data\PropertyTypeRow.cs" />
     <Compile Include="IdAttribute.cs" />
+    <Compile Include="MemberType.cs" />
     <Compile Include="MemberTypeAttribute.cs" />
     <Compile Include="MemberTypeSynchronizationService.cs" />
     <Compile Include="Web\Data\ContentService.cs" />

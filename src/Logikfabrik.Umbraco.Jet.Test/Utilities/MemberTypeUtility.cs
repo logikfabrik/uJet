@@ -4,7 +4,6 @@
 
 namespace Logikfabrik.Umbraco.Jet.Test.Utilities
 {
-    using System;
     using System.Reflection;
     using System.Reflection.Emit;
 
@@ -22,14 +21,14 @@ namespace Logikfabrik.Umbraco.Jet.Test.Utilities
         {
             var typeBuilder = TypeUtility.GetTypeBuilder("MyMemberType", TypeUtility.GetTypeAttributes(typeAttributes));
 
-            var constructor = typeof(MemberTypeAttribute).GetConstructor(new Type[] { });
+            var constructor = typeof(MemberTypeAttribute).GetConstructor(new[] { typeof(string) });
 
             if (constructor == null)
             {
                 return null;
             }
 
-            typeBuilder.SetCustomAttribute(new CustomAttributeBuilder(constructor, new object[] { }));
+            typeBuilder.SetCustomAttribute(new CustomAttributeBuilder(constructor, new object[] { "Name" }));
 
             return typeBuilder;
         }

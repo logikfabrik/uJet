@@ -6,6 +6,7 @@ namespace Logikfabrik.Umbraco.Jet
 {
     using System;
     using System.Collections.Generic;
+    using System.Reflection;
     using Extensions;
 
     /// <summary>
@@ -26,7 +27,7 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentException($"Type {type} is not a document type.", nameof(type));
             }
 
-            var attribute = GetAttribute();
+            var attribute = type.GetCustomAttribute<DocumentTypeAttribute>();
 
             Templates = GetTemplates(attribute);
             DefaultTemplate = GetDefaultTemplate(attribute);

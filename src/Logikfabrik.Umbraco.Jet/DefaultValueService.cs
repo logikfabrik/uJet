@@ -154,38 +154,38 @@ namespace Logikfabrik.Umbraco.Jet
         /// Sets the default value.
         /// </summary>
         /// <param name="content">The content to set default values for.</param>
-        /// <param name="contentTypeProperty">The content type property.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" />, or <paramref name="contentTypeProperty" /> are <c>null</c>.</exception>
-        private static void SetDefaultValue(IContentBase content, ContentTypeProperty contentTypeProperty)
+        /// <param name="typeProperty">The type property.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" />, or <paramref name="typeProperty" /> are <c>null</c>.</exception>
+        private static void SetDefaultValue(IContentBase content, TypeProperty typeProperty)
         {
             if (content == null)
             {
                 throw new ArgumentNullException(nameof(content));
             }
 
-            if (contentTypeProperty == null)
+            if (typeProperty == null)
             {
-                throw new ArgumentNullException(nameof(contentTypeProperty));
+                throw new ArgumentNullException(nameof(typeProperty));
             }
 
-            if (!contentTypeProperty.HasDefaultValue)
+            if (!typeProperty.HasDefaultValue)
             {
                 return;
             }
 
-            var value = content.GetValue(contentTypeProperty.Alias);
+            var value = content.GetValue(typeProperty.Alias);
 
             if (value != null)
             {
                 return;
             }
 
-            if (!CanSetDefaultValue(contentTypeProperty.Type, contentTypeProperty.DefaultValue))
+            if (!CanSetDefaultValue(typeProperty.Type, typeProperty.DefaultValue))
             {
                 return;
             }
 
-            content.SetValue(contentTypeProperty.Alias, contentTypeProperty.DefaultValue);
+            content.SetValue(typeProperty.Alias, typeProperty.DefaultValue);
         }
 
         private static bool CanSetDefaultValue(Type propertyType, object defaultValue)

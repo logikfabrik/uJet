@@ -59,7 +59,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
                 .Verify(m => m.SynchronizeById(It.IsAny<IEnumerable<IMediaType>>(), It.IsAny<Jet.MediaType>()), Times.Once);
 
             mediaTypeSynchronizationServiceMock
-                .Verify(m => m.SynchronizeByName(It.IsAny<IEnumerable<IMediaType>>(), It.IsAny<Jet.MediaType>()), Times.Once);
+                .Verify(m => m.SynchronizeByAlias(It.IsAny<IEnumerable<IMediaType>>(), It.IsAny<Jet.MediaType>()), Times.Once);
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             mediaTypeSynchronizationServiceMock.Object.Synchronize();
 
             mediaTypeSynchronizationServiceMock
-                .Verify(m => m.SynchronizeByName(It.IsAny<IEnumerable<IMediaType>>(), It.IsAny<Jet.MediaType>()), Times.Once);
+                .Verify(m => m.SynchronizeByAlias(It.IsAny<IEnumerable<IMediaType>>(), It.IsAny<Jet.MediaType>()), Times.Once);
         }
 
         /// <summary>
