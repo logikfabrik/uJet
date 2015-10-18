@@ -245,6 +245,7 @@
     <Compile Include="DataTypeSynchronizationServiceTest.cs" />
     <Compile Include="DocumentTypeSynchronizationServiceTest.cs" />
     <Compile Include="MediaTypeSynchronizationServiceTest.cs" />
+    <Compile Include="MemberTypeSynchronizationServiceTest.cs" />
     <Compile Include="MemberTypeTest.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="Utilities\DataTypeUtility.cs" />

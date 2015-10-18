@@ -28,7 +28,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="name">The name.</param>
-        protected MemberTypeAttribute(string id, string name)
+        public MemberTypeAttribute(string id, string name)
             : base(id, name)
         {
         }
