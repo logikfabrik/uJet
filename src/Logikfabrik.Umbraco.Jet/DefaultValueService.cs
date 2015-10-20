@@ -16,9 +16,6 @@ namespace Logikfabrik.Umbraco.Jet
     /// </summary>
     public class DefaultValueService
     {
-        /// <summary>
-        /// The type service.
-        /// </summary>
         private readonly ITypeService _typeService;
 
         /// <summary>
@@ -127,24 +124,64 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// Sets the default values.
         /// </summary>
-        /// <typeparam name="T">The content type.</typeparam>
         /// <param name="content">The content to set default values for.</param>
-        /// <param name="contentType">The content type.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" />, or <paramref name="contentType" /> are <c>null</c>.</exception>
-        private static void SetDefaultValues<T>(IContentBase content, ContentType<T> contentType)
-            where T : ContentTypeAttribute
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" /> is <c>null</c>.</exception>
+        public void SetDefaultValues(IEnumerable<IMember> content)
         {
             if (content == null)
             {
                 throw new ArgumentNullException(nameof(content));
             }
 
-            if (contentType == null)
+            foreach (var c in content)
             {
-                throw new ArgumentNullException(nameof(contentType));
+                SetDefaultValues(c);
+            }
+        }
+
+        /// <summary>
+        /// Sets the default values.
+        /// </summary>
+        /// <param name="content">The content to set default values for.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" /> is <c>null</c>.</exception>
+        public void SetDefaultValues(IMember content)
+        {
+            if (content == null)
+            {
+                throw new ArgumentNullException(nameof(content));
             }
 
-            foreach (var property in contentType.Properties)
+            var type = _typeService.MediaTypes.FirstOrDefault(t => t.Name.Alias() == content.ContentType.Alias);
+
+            if (type == null)
+            {
+                return;
+            }
+
+            SetDefaultValues(content, new MediaType(type));
+        }
+
+        /// <summary>
+        /// Sets the default values.
+        /// </summary>
+        /// <typeparam name="T">The content type.</typeparam>
+        /// <param name="content">The content to set default values for.</param>
+        /// <param name="baseType">The base type.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" />, or <paramref name="baseType" /> are <c>null</c>.</exception>
+        private static void SetDefaultValues<T>(IContentBase content, BaseType<T> baseType)
+            where T : BaseTypeAttribute
+        {
+            if (content == null)
+            {
+                throw new ArgumentNullException(nameof(content));
+            }
+
+            if (baseType == null)
+            {
+                throw new ArgumentNullException(nameof(baseType));
+            }
+
+            foreach (var property in baseType.Properties)
             {
                 SetDefaultValue(content, property);
             }

@@ -8,6 +8,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Collections.Generic;
     using System.Linq;
     using Data;
+    using global::Umbraco.Core;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
 
@@ -16,15 +17,19 @@ namespace Logikfabrik.Umbraco.Jet
     /// </summary>
     public class MemberTypeSynchronizationService : BaseTypeSynchronizationService
     {
-        /// <summary>
-        /// The member type service.
-        /// </summary>
         private readonly IMemberTypeService _memberTypeService;
+        private readonly ITypeService _typeService;
 
         /// <summary>
-        /// The type service.
+        /// Initializes a new instance of the <see cref="MemberTypeSynchronizationService" /> class.
         /// </summary>
-        private readonly ITypeService _typeService;
+        public MemberTypeSynchronizationService()
+            : this(
+                ApplicationContext.Current.Services.MemberTypeService,
+                new ContentTypeRepository(new DatabaseWrapper(ApplicationContext.Current.DatabaseContext.Database)),
+                TypeService.Instance)
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MemberTypeSynchronizationService"/> class.

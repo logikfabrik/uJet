@@ -17,14 +17,7 @@ namespace Logikfabrik.Umbraco.Jet
     /// </summary>
     public class DocumentTypeSynchronizationService : ContentTypeSynchronizationService
     {
-        /// <summary>
-        /// The type service.
-        /// </summary>
         private readonly ITypeService _typeService;
-
-        /// <summary>
-        /// The file service.
-        /// </summary>
         private readonly IFileService _fileService;
 
         /// <summary>

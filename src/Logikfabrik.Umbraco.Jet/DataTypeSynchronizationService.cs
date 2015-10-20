@@ -17,19 +17,8 @@ namespace Logikfabrik.Umbraco.Jet
     /// </summary>
     public class DataTypeSynchronizationService : ISynchronizationService
     {
-        /// <summary>
-        /// The data type repository.
-        /// </summary>
         private readonly IDataTypeRepository _dataTypeRepository;
-
-        /// <summary>
-        /// The data type service.
-        /// </summary>
         private readonly IDataTypeService _dataTypeService;
-
-        /// <summary>
-        /// The type service.
-        /// </summary>
         private readonly ITypeService _typeService;
 
         /// <summary>

@@ -55,11 +55,19 @@ namespace Logikfabrik.Umbraco.Jet
                     new MediaTypeSynchronizationService().Synchronize();
                 }
 
+                if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.MemberTypes))
+                {
+                    new MemberTypeSynchronizationService().Synchronize();
+                }
+
                 // Wire up handler for document type default values.
                 ContentService.Saving += (sender, args) => new DefaultValueService().SetDefaultValues(args.SavedEntities);
 
                 // Wire up handler for media type default values.
                 MediaService.Saving += (sender, args) => new DefaultValueService().SetDefaultValues(args.SavedEntities);
+
+                // Wire up handler for member type default values.
+                MemberService.Saving += (sender, args) => new DefaultValueService().SetDefaultValues(args.SavedEntities);
 
                 configured = true;
             }
