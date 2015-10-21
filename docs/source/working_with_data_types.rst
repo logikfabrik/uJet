@@ -4,7 +4,7 @@ Working with Data Types
 
 Data Type Definition Mappings
 =============================
-When creating a document type or media type with properties, the Umbraco data types used are inferred by the .NET data types of the properties declared. A property of type `bool` will be mapped to the data type `True/False` by default, a property of type `string` the data type `Textstring` and so on.
+When creating a document type, media type, or member type with properties, the Umbraco data types used are inferred by the .NET data types of the properties declared. A property of type `bool` will be mapped to the data type `True/False` by default, a property of type `string` the data type `Textstring` and so on.
 
 .NET data types are mapped to Umbraco data types using data type definition mappings (DTDM). The Umbraco data type mapped will determine how Umbraco stores the property value in the database, and what property editor to use for editing the property value in the Umbraco back office.
 

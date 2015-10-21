@@ -1,7 +1,7 @@
 ******************
 Working with Types
 ******************
-uJet supports document types, media types, and data types.
+uJet supports document types, media types, member types and data types.
 
 Document Types
 ==============
@@ -11,7 +11,7 @@ A document type is created by decorating a public non-abstract class, with a def
    
    using Logikfabrik.Umbraco.Jet;
 
-   namespace Example.Mvc.Models.DocumentTypes
+   namespace Example.Models.DocumentTypes
    {
        [DocumentType("My Page")]
        public class MyPage
@@ -60,7 +60,7 @@ Inherited from the `ContentTypeAttribute` attribute. The allowed child document 
 
    using Logikfabrik.Umbraco.Jet;
 
-   namespace Example.Mvc.Models.DocumentTypes
+   namespace Example.Models.DocumentTypes
    {
        [DocumentType("My Page", AllowedChildNodeTypes = new[] {typeof(OurPage), typeof(TheirPage)})]
        public class MyPage
@@ -76,7 +76,7 @@ The available templates (aliases) of the document type.
 
    using Logikfabrik.Umbraco.Jet;
 
-   namespace Example.Mvc.Models.DocumentTypes
+   namespace Example.Models.DocumentTypes
    {
        [DocumentType("My Page", Templates = new []{"ourTemplate", "theirTemplate"})]
        public class MyPage
@@ -94,7 +94,7 @@ The default template (alias) of the document type.
 
    using Logikfabrik.Umbraco.Jet;
 
-   namespace Example.Mvc.Models.DocumentTypes
+   namespace Example.Models.DocumentTypes
    {
        [DocumentType("My Page", DefaultTemplate = "myTemplate")]
        public class MyPage
@@ -112,7 +112,7 @@ A media type is created by decorating a public non-abstract class, with a defaul
    
    using Logikfabrik.Umbraco.Jet;
 
-   namespace Example.Mvc.Models.MediaTypes
+   namespace Example.Models.MediaTypes
    {
        [MediaType("My Media")]
        public class MyMedia
@@ -161,13 +161,54 @@ Inherited from the `ContentTypeAttribute` attribute. The allowed child media typ
 
    using Logikfabrik.Umbraco.Jet;
 
-   namespace Example.Mvc.Models.MediaTypes
+   namespace Example.Models.MediaTypes
    {
        [DocumentType("My Media", AllowedChildNodeTypes = new[] {typeof(OurMedia), typeof(TheirMedia)})]
        public class MyMedia
        {
        }
    }
+
+Member Types
+============
+A member type is created by decorating a public non-abstract class, with a default constructor that takes no parameters, using the `MemberTypeAttribute` attribute.
+
+.. code-block:: csharp
+   
+   using Logikfabrik.Umbraco.Jet;
+
+   namespace Example.Models.MemberTypes
+   {
+       [MemberType("My Member")]
+       public class MyMember
+       {
+       }
+   }
+
+.. tip::
+   Your member type classes can be concidered models. Following MVC convention, models are placed in the `Models\\` folder. It's recommended to place all member type classes in `Models\\MemberTypes\\`.
+
+When your Umbraco application is started, uJet will scan all assemblies in the app domain, looking for member type classes. Found classes will be used as blueprints to synchronize your database.
+
+.. note::
+   Assemblies to scan can be configured. Having uJet scan all app domain assemblies will have an impact on performance. Configuring assemblies is recommended if synchronization is enabled in your production environment.
+
+MemberTypeAttribute Properties
+------------------------------
+The following member type properties can be set using the `MemberTypeAttribute` attribute.
+
+Name
+^^^^
+**Required**
+Inherited from the `ContentTypeAttribute` attribute. The name of the member type. The member type name is displayed in the Umbraco back office.
+
+Description
+^^^^^^^^^^^
+Inherited from the `ContentTypeAttribute` attribute. A description of the member type. The member type description is displayed in the Umbraco back office.
+
+Icon
+^^^^
+Inherited from the `ContentTypeAttribute` attribute. The icon for the member type. The member type icon is displayed in the Umbraco back office.
 
 Data Types
 ==========
@@ -177,7 +218,7 @@ A data type is created by decorating a public non-abstract class, with a default
    
    using Logikfabrik.Umbraco.Jet;
 
-   namespace Example.Mvc.Models.DataTypes
+   namespace Example.Models.DataTypes
    {
        [DataType(typeof(int), "Umbraco.MediaPicker")]
        public class MyData

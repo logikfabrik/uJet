@@ -1,0 +1,1 @@
+nuget pack Logikfabrik.Umbraco.Jet\Logikfabrik.Umbraco.Jet.csproj -Build -MSBuildVersion 14 -Prop Configuration=Release

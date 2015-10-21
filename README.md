@@ -19,7 +19,7 @@ uJet is easy to use. Add a reference to uJet. Then create your types and decorat
 
 ### Quick Start Example
 1. Get, compile, and reference the source code - or use the NuGet.
-2. Create a model; in this case a document type. Use data annotations for editorial support (validation) in the back office. Properties such as `Id`, `Url` and `Name` will be mapped by convention.
+2. Create a model; in this case a document type. Use data annotations for editorial support (e.g. validation and defaults) in the back office.
 3. Create a view. Name it according to the action method defined in the controller, `Views\MyPage\Index.cshtml`.
 4. Create a controller inheriting from `Logikfabrik.Umbraco.Jet.Web.Mvc.JetController`.
 5. Run your application and log in to Umbraco. The document type *My page* should now be available. Pages you create using this document type will all be handled by the `MyPageController`. **It's that easy!**
@@ -29,7 +29,7 @@ uJet is easy to use. Add a reference to uJet. Then create your types and decorat
 using Logikfabrik.Umbraco.Jet;
 using System.ComponentModel.DataAnnotations;
 
-namespace Example.Mvc.Models
+namespace Example.Models
 {
     [DocumentType(
         "My page",
@@ -53,7 +53,7 @@ namespace Example.Mvc.Models
 
 **View**
 ```html
-@model Example.Mvc.Models.MyPage
+@model Example.Models.MyPage
 
 <!DOCTYPE html>
 <html>
@@ -69,11 +69,11 @@ namespace Example.Mvc.Models
 
 **Controller**
 ```csharp
-using Example.Mvc.Models;
+using Example.Models;
 using Logikfabrik.Umbraco.Jet.Web.Mvc;
 using System.Web.Mvc;
 
-namespace Example.Mvc.Controllers
+namespace Example.Controllers
 {
     public class MyPageController : JetController
     {

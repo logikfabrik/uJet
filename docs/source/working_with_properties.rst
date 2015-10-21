@@ -1,9 +1,9 @@
 ***********************
 Working with Properties
 ***********************
-Document and media type properties are created by adding properties with public getters and setters to classes decorated using the `DocumentTypeAttribute` or `MediaTypeAttribute` attributes.
+Document, media, and member type properties are created by adding properties with public getters and setters to classes decorated using the `DocumentTypeAttribute`, `MediaTypeAttribute`, or `MemberTypeAttribute` attributes.
 
-When your Umbraco application is started, uJet will scan your document and media type classes, looking for properties. Found properties will be used as blueprints to synchronize your database.
+When your Umbraco application is started, uJet will scan your document, media, and member type classes, looking for properties. Found properties will be used as blueprints to synchronize your database.
 
 Data Annotations
 ================
@@ -29,7 +29,7 @@ Properties decorated using the `RequiredAttribute` attribute will be mandatory i
    using Logikfabrik.Umbraco.Jet;
    using System.ComponentModel.DataAnnotations;
 
-   namespace Example.Mvc.Models.DocumentTypes
+   namespace Example.Models.DocumentTypes
    {
        [DocumentType("My Page")]
        public class MyPage
@@ -48,7 +48,7 @@ Properties decorated using the `DefaultValueAttribute` attribute will have a def
    using Logikfabrik.Umbraco.Jet;
    using System.ComponentModel;
 
-   namespace Example.Mvc.Models.DocumentTypes
+   namespace Example.Models.DocumentTypes
    {
        [DocumentType("My Page")]
        public class MyPage
@@ -67,7 +67,7 @@ Properties decorated using the `RegularExpressionAttribute` attribute will be va
    using Logikfabrik.Umbraco.Jet;
    using System.ComponentModel.DataAnnotations;
 
-   namespace Example.Mvc.Models.DocumentTypes
+   namespace Example.Models.DocumentTypes
    {
        [DocumentType("My Page")]
        public class MyPage
@@ -86,7 +86,7 @@ Use the `DisplayAttribute` attribute to customize the property name and descript
    using Logikfabrik.Umbraco.Jet;
    using System.ComponentModel.DataAnnotations;
 
-   namespace Example.Mvc.Models.DocumentTypes
+   namespace Example.Models.DocumentTypes
    {
        [DocumentType("My Page")]
        public class MyPage
@@ -105,7 +105,7 @@ Use the `UIHintAttribute` attribute to specify the Umbraco data type used. The U
    using Logikfabrik.Umbraco.Jet;
    using System.ComponentModel.DataAnnotations;
 
-   namespace Example.Mvc.Models.DocumentTypes
+   namespace Example.Models.DocumentTypes
    {
        [DocumentType("My Page")]
        public class MyPage
@@ -124,7 +124,7 @@ Properties decorated using the `ScaffoldColumnAttribute` attribute (set to false
    using Logikfabrik.Umbraco.Jet;
    using System.ComponentModel.DataAnnotations;
 
-   namespace Example.Mvc.Models.DocumentTypes
+   namespace Example.Models.DocumentTypes
    {
        [DocumentType("My Page")]
        public class MyPage
