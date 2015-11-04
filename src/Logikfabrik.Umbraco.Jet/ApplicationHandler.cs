@@ -8,7 +8,7 @@ namespace Logikfabrik.Umbraco.Jet
     using global::Umbraco.Core;
 
     /// <summary>
-    /// The <see cref="ApplicationHandler" /> class.
+    /// The <see cref="ApplicationHandler" /> class. Base class for subscribing to Umbraco application events.
     /// </summary>
     public abstract class ApplicationHandler : IApplicationEventHandler
     {

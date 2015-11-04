@@ -7,7 +7,7 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
     using System.Linq;
 
     /// <summary>
-    /// The <see cref="JetConfigurationManager" /> class.
+    /// The <see cref="JetConfigurationManager" /> class. Manager for uJet configuration.
     /// </summary>
     public static class JetConfigurationManager
     {
