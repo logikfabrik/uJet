@@ -4,7 +4,7 @@ Working with Data Types
 
 Data Type Definition Mappings
 =============================
-When creating a document type, media type, or member type with properties, the Umbraco data types used are inferred by the .NET data types of the properties declared. A property of type `bool` will be mapped to the data type `True/False` by default, a property of type `string` the data type `Textstring` and so on.
+When creating a document type, media type, or member type with properties, the Umbraco data types used are inferred by the .NET data types of the properties declared. A property of type `bool` will be mapped to the data type `True/False` by default, a property of type `string` to the data type `Textstring` and so on.
 
 .NET data types are mapped to Umbraco data types using data type definition mappings (DTDM). The Umbraco data type mapped will determine how Umbraco stores the property value in the database, and what property editor to use for editing the property value in the Umbraco back office.
 
@@ -43,14 +43,24 @@ StringDTDM
 ^^^^^^^^^^
 Will map .NET type `string` to the Umbraco data type `Textstring`.
 
+Custom Data Type Definition Mappings
+------------------------------------
+uJet can easily be extended to support additional .NET types and Umbraco data types. Implement the `IDataTypeDefinitionMapping` interface and add the implementation to the list of data type definition mappings by calling `DataTypeDefinitionMappings.Mappings.Add()`.
+
 Property Value Converters
 =========================
-The Umbraco database schema has it's limitations; the Umbraco database schema for Microsoft SQL Server supports property values of types `int`, `datetime`, `nvarchar`, and `ntext`. .NET types without a supported SQL Server counterpart must therefore be stored as `nvarchar` or `ntext`. Property value converters are used to convert property values stored as `nvarchar` or `ntext` to .NET types on model binding, e.g. `decimal` and `float`.
+The Umbraco database schema has it's limitations; e.g. the Umbraco database schema for Microsoft SQL Server supports property values of types `int`, `datetime`, `nvarchar`, and `ntext`. .NET types without a supported SQL Server counterpart must therefore be stored as `nvarchar` or `ntext`. Property value converters (PVC) are used to convert property values stored as `nvarchar` or `ntext` to .NET types on model binding, e.g. `decimal` and `float`.
+
+Property value converters can also be used to add support for custom complex types.
 
 Built-in Property Value Converters
 ----------------------------------
-The following property value converters are built into uJet.
+The following property value converters are built into uJet. Class names have been shortened.
 
-* `FloatingBinaryPointPropertyValueConverter`
-* `FloatingDecimalPointPropertyValueConverter`
-* `HtmlStringPropertyValueConverter`
+* `FloatingBinaryPointPVC`
+* `FloatingDecimalPointPVC`
+* `HtmlStringPVC`
+
+Custom Property Value Converters
+--------------------------------
+uJet can easily be extended to support additional .NET types. Implement the `IPropertyValueConverter` interface and add the implementation to the list of property value converters by calling `PropertyValueConverters.Converters.Add()`.

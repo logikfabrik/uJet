@@ -17,7 +17,8 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="type">The type.</param>
         /// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is not a media type.</exception>
-        public MediaType(Type type) : base(type)
+        public MediaType(Type type)
+            : base(type)
         {
             if (!type.IsMediaType())
             {

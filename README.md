@@ -1,10 +1,10 @@
 # uJet [![Build status](https://ci.appveyor.com/api/projects/status/2ce4vbe5dexoqey7?svg=true)](https://ci.appveyor.com/project/logikfabrik/ujet) [![Docs status](https://readthedocs.org/projects/pip/badge/)](http://ujet.readthedocs.org/)
 
-Umbraco Jet (uJet) is a Code First approach to building MVC applications in Umbraco 7. Declare your document, media, and data types in code, and have uJet move them into Umbraco for you - simplifying development, deployment and versioning.
+Umbraco Jet (uJet) is a Code First approach to building MVC applications in Umbraco 7. Declare your document, media, member, and data types in code, and have uJet move them into Umbraco for you - simplifying development, deployment and versioning.
 
 uJet is capable of serving you with instances of your document types. With uJet you're no longer bound by the `RenderModel`, or by the constraints set by the built-in `ControllerActionInvoker`. uJet brings you strongly typed views without you having to roll your own view models.
 
-uJet is a developer tool for Umbraco 7, released as Open Source (MIT). It supports document types, media types, data types, and template synchronization.
+uJet is a developer tool for Umbraco 7, released as Open Source (MIT). It supports document types, media types, member types, data types, and template synchronization.
 
 ### Documentation
 Online documentation can be found at [http://ujet.readthedocs.org/](http://ujet.readthedocs.org/).
@@ -15,7 +15,7 @@ PM> Install-Package uJet
 ```
 
 ## How To
-uJet is easy to use. Add a reference to uJet. Then create your types and decorate them using the `DocumentType`, `MediaType`, and `DataType` attributes. Fire up your application and all of your types will now be available in the Umbraco back office.
+uJet is easy to use. Add a reference to uJet. Then create your types and decorate them using the `DocumentType`, `MediaType`, `MemberType` and `DataType` attributes. Fire up your application and all of your types will now be available in the Umbraco back office.
 
 ### Quick Start Example
 1. Get, compile, and reference the source code - or use the NuGet.

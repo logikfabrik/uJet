@@ -14,7 +14,8 @@ namespace Logikfabrik.Umbraco.Jet
     /// The <see cref="BaseType{T}" /> class.
     /// </summary>
     /// <typeparam name="T">The <see cref="BaseTypeAttribute" /> type.</typeparam>
-    public abstract class BaseType<T> where T : BaseTypeAttribute
+    public abstract class BaseType<T>
+        where T : BaseTypeAttribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseType{T}" /> class.

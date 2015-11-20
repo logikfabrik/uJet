@@ -21,6 +21,5 @@ Contents
    working_with_data_types
    working_with_templates
    working_with_mvc_conventions
-   extending_ujet
    license
    contributions

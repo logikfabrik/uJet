@@ -7,8 +7,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
     using System;
     using System.ComponentModel;
     using System.Linq;
-    using Extensions;
     using global::Umbraco.Core.Models;
+    using Jet.Extensions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
 

@@ -76,7 +76,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
 
             var name = Path.GetFileNameWithoutExtension(templatePath);
 
-            return new Template(templatePath, name, name.Alias()) { Content = GetContent(templatePath) };
+            return new Template(name, name.Alias()) { Content = GetContent(templatePath) };
         }
 
         /// <summary>

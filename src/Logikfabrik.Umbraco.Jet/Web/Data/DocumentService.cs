@@ -39,7 +39,8 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// <param name="id">The document identifier.</param>
         /// <returns>A document.</returns>
         /// <exception cref="ArgumentException">Thrown if <typeparamref name="T" /> is not a document type.</exception>
-        public T GetDocument<T>(int id) where T : class, new()
+        public T GetDocument<T>(int id)
+            where T : class, new()
         {
             if (!typeof(T).IsDocumentType())
             {
@@ -57,7 +58,8 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// <returns>A document.</returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" /> is <c>null</c>.</exception>
         /// <exception cref="ArgumentException">Thrown if <typeparamref name="T" /> is not a document type.</exception>
-        public T GetDocument<T>(IPublishedContent content) where T : class, new()
+        public T GetDocument<T>(IPublishedContent content)
+            where T : class, new()
         {
             if (content == null)
             {

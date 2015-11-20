@@ -4,7 +4,7 @@
 
 namespace Logikfabrik.Umbraco.Jet.Test.Web.Mvc
 {
-    using Extensions;
+    using Jet.Extensions;
     using Jet.Web.Mvc;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 

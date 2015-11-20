@@ -4,6 +4,8 @@
 
 namespace Logikfabrik.Umbraco.Jet.Extensions
 {
+    using System.Text.RegularExpressions;
+
     /// <summary>
     /// The <see cref="StringExtensions" /> class.
     /// </summary>
@@ -21,7 +23,7 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
                 return null;
             }
 
-            s = s.Replace(" ", string.Empty);
+            s = Regex.Replace(s, @"[^a-zA-Z0-9]", string.Empty);
 
             return s.Length < 2 ? s.ToLowerInvariant() : string.Concat(char.ToLowerInvariant(s[0]), s.Substring(1));
         }

@@ -13,7 +13,8 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// Creates the table.
         /// </summary>
         /// <typeparam name="T">The row type.</typeparam>
-        void CreateTable<T>() where T : new();
+        void CreateTable<T>()
+            where T : new();
 
         /// <summary>
         /// Inserts the row.
@@ -21,7 +22,8 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <typeparam name="T">The row type.</typeparam>
         /// <param name="row">The row.</param>
         /// <param name="primaryKey">The primary key.</param>
-        void InsertRow<T>(T row, object primaryKey) where T : class;
+        void InsertRow<T>(T row, object primaryKey)
+            where T : class;
 
         /// <summary>
         /// Gets the row.

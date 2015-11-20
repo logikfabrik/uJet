@@ -1,7 +1,7 @@
 ************
 Installation
 ************
-uJet can be installed by downloading, and compiling the uJet source code, and then referencing the uJet assembly. Or by using a precompiled assembly through NuGet.
+uJet can be installed by downloading, and compiling the uJet source code, and then referencing the compiled uJet assembly. Or by using a precompiled assembly through NuGet.
 
 NuGet
 -----

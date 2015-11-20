@@ -6,30 +6,43 @@ namespace Logikfabrik.Umbraco.Jet.Data
 {
     using System;
     using System.Reflection;
+    using global::Umbraco.Core.Logging;
     using global::Umbraco.Core.Persistence;
+    using global::Umbraco.Core.Persistence.SqlSyntax;
 
     /// <summary>
     /// The <see cref="DatabaseWrapper" /> class.
     /// </summary>
     public class DatabaseWrapper : IDatabaseWrapper
     {
-        /// <summary>
-        /// The database.
-        /// </summary>
+        private readonly DatabaseSchemaHelper _databaseSchemaHelper;
         private readonly Database _database;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DatabaseWrapper" /> class.
         /// </summary>
         /// <param name="database">The database.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="database" /> is <c>null</c>.</exception>
-        public DatabaseWrapper(Database database)
+        /// <param name="logger">The logger.</param>
+        /// <param name="syntaxProvider">The syntax provider.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="database" />, <paramref name="logger" />, or <paramref name="syntaxProvider" /> are <c>null</c>.</exception>
+        public DatabaseWrapper(Database database, ILogger logger, ISqlSyntaxProvider syntaxProvider)
         {
             if (database == null)
             {
                 throw new ArgumentNullException(nameof(database));
             }
 
+            if (logger == null)
+            {
+                throw new ArgumentNullException(nameof(logger));
+            }
+
+            if (syntaxProvider == null)
+            {
+                throw new ArgumentNullException(nameof(syntaxProvider));
+            }
+
+            _databaseSchemaHelper = new DatabaseSchemaHelper(database, logger, syntaxProvider);
             _database = database;
         }
 
@@ -57,7 +70,8 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <param name="row">The row.</param>
         /// <param name="primaryKey">The primary key.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="row" /> is <c>null</c>.</exception>
-        public void InsertRow<T>(T row, object primaryKey) where T : class
+        public void InsertRow<T>(T row, object primaryKey)
+            where T : class
         {
             if (row == null)
             {
@@ -85,21 +99,22 @@ namespace Logikfabrik.Umbraco.Jet.Data
         {
             var tableName = GetTableName<T>();
 
-            return _database.TableExist(tableName);
+            return _databaseSchemaHelper.TableExist(tableName);
         }
 
         /// <summary>
         /// Creates the table.
         /// </summary>
         /// <typeparam name="T">The row type.</typeparam>
-        public void CreateTable<T>() where T : new()
+        public void CreateTable<T>()
+            where T : new()
         {
             if (TableExist<T>())
             {
                 return;
             }
 
-            _database.CreateTable<T>();
+            _databaseSchemaHelper.CreateTable<T>();
         }
 
         /// <summary>

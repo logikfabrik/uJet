@@ -5,6 +5,10 @@ Document, media, and member type properties are created by adding properties wit
 
 When your Umbraco application is started, uJet will scan your document, media, and member type classes, looking for properties. Found properties will be used as blueprints to synchronize your database.
 
+Property Tracking
+^^^^^^^^^^^^^^^^^
+As of version 3.0.0.0 uJet supports property tracking.
+
 Data Annotations
 ================
 Data annotations can be used to customize the user experience in the Umbraco back office, e.g. to set property name and description.
@@ -155,4 +159,4 @@ uJet supports the following .NET data types out-of-the-box.
 * `DateTime` and `DateTime?`
 
 .. seealso::
-   The uJet .NET data type support can be extended by writing custom data type definition mappings. For more information on the topic of custom data type definitions see :doc:`extending_ujet`.
+   The uJet .NET data type support can be extended by writing custom data type definition mappings and property value converters. For more information on the topic of custom data type definitions and property value converters see :doc:`working_with_data_types`.

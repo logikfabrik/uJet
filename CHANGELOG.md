@@ -1,5 +1,7 @@
 ## Unreleased
 * 2015-10-14 Added support for member types.
+* 2015-11-20 Improved the way type aliases are generated.
+* 2015-08-30 Compiled using Umbraco 7.3.1 binaries (untested).
 
 ## 3.2.0.0
 * 2015-08-30 Compiled using Umbraco 7.2.8 binaries.

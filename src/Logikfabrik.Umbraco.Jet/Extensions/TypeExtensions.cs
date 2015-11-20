@@ -68,7 +68,8 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
         /// <returns>
         ///   <c>true</c> if the type is valid and has an attribute of the specified type; otherwise, <c>false</c>.
         /// </returns>
-        private static bool IsValidAndHasAttribute<T>(Type type) where T : Attribute
+        private static bool IsValidAndHasAttribute<T>(Type type)
+            where T : Attribute
         {
             if (type == null)
             {

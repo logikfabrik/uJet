@@ -9,7 +9,9 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Linq;
     using Data;
     using global::Umbraco.Core;
+    using global::Umbraco.Core.Logging;
     using global::Umbraco.Core.Models;
+    using global::Umbraco.Core.ObjectResolution;
     using global::Umbraco.Core.Services;
 
     /// <summary>
@@ -27,7 +29,7 @@ namespace Logikfabrik.Umbraco.Jet
         public DataTypeSynchronizationService()
             : this(
                 ApplicationContext.Current.Services.DataTypeService,
-                new DataTypeRepository(new DatabaseWrapper(ApplicationContext.Current.DatabaseContext.Database)),
+                new DataTypeRepository(new DatabaseWrapper(ApplicationContext.Current.DatabaseContext.Database, ResolverBase<LoggerResolver>.Current.Logger, ApplicationContext.Current.DatabaseContext.SqlSyntax)),
                 TypeService.Instance)
         {
         }
@@ -300,7 +302,7 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(dataType));
             }
 
-            var dataTypeDefinition = new DataTypeDefinition(-1, dataType.Editor)
+            var dataTypeDefinition = new DataTypeDefinition(dataType.Editor)
             {
                 Name = dataType.Name,
                 DatabaseType = GetDatabaseType(dataType)

@@ -39,7 +39,8 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// <param name="id">The media identifier.</param>
         /// <returns>The media.</returns>
         /// <exception cref="ArgumentException">Thrown if <typeparamref name="T" /> is not a media type.</exception>
-        public T GetMedia<T>(int id) where T : class, new()
+        public T GetMedia<T>(int id)
+            where T : class, new()
         {
             if (!typeof(T).IsMediaType())
             {
@@ -57,7 +58,8 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// <returns>The media.</returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" /> is <c>null</c>.</exception>
         /// <exception cref="ArgumentException">Thrown if <typeparamref name="T" /> is not a media type.</exception>
-        public T GetMedia<T>(IPublishedContent content) where T : class, new()
+        public T GetMedia<T>(IPublishedContent content)
+            where T : class, new()
         {
             if (content == null)
             {

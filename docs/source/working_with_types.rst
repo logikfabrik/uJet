@@ -3,6 +3,14 @@ Working with Types
 ******************
 uJet supports document types, media types, member types and data types.
 
+Type Tracking
+^^^^^^^^^^^^^
+As of version 3.0.0.0 uJet supports type tracking.
+
+When a document, media, or member type is synchronized, uJet tries to match the type declared in code with a type definition. uJet creates an Umbraco alias for the type, based on the type name (namespace excluded), and uses that alias to look for a matching type definition in the database. If a match is found the definition is updated; if not, a new type definition is created. Renaming a type that has been synchronized, in code or using the Umbraco back office, will cause duplicate definitions to be created, with different aliases.
+
+Type tracking refers to the use of the `id` parameter when declaring document types, media types, and member types in code. Using the `id` parameter uJet can keep track of types and their corresponding type definitions without relying on the type names. With type tracking types can be renamed; uJet will keep your Umbraco database synchronized.
+
 Document Types
 ==============
 A document type is created by decorating a public non-abstract class, with a default constructor that takes no parameters, using the `DocumentTypeAttribute` attribute.
@@ -28,8 +36,24 @@ When your Umbraco application is started, uJet will scan all assemblies in the a
    Assemblies to scan can be configured. Having uJet scan all app domain assemblies will have an impact on performance. Configuring assemblies is recommended if synchronization is enabled in your production environment.
 
 DocumentTypeAttribute Properties
-----------------------------------
+--------------------------------
 The following document type properties can be set using the `DocumentTypeAttribute` attribute.
+
+Id
+^^
+Inherited from the `IdAttribute` attribute. The document type identifier. Specifying a document type identifier will enable document type tracking. Tracked document types can be renamed; uJet will keep your Umbraco database synchronized.
+
+.. code-block:: csharp
+
+	using Logikfabrik.Umbraco.Jet;
+
+	namespace Example.Models.DocumentTypes
+	{
+		[DocumentType("F3D4B9F1-711D-40A8-9091-FF5104CE0ACE", "My Page")]
+		public class MyPage
+		{
+		}
+	}
 
 Name
 ^^^^
@@ -129,8 +153,24 @@ When your Umbraco application is started, uJet will scan all assemblies in the a
    Assemblies to scan can be configured. Having uJet scan all app domain assemblies will have an impact on performance. Configuring assemblies is recommended if synchronization is enabled in your production environment.
    
 MediaTypeAttribute Properties
--------------------------------
+-----------------------------
 The following media type properties can be set using the `MediaTypeAttribute` attribute.
+
+Id
+^^
+Inherited from the `IdAttribute` attribute. The media type identifier. Specifying a media type identifier will enable media type tracking. Tracked media types can be renamed; uJet will keep your Umbraco database synchronized.
+
+.. code-block:: csharp
+
+   using Logikfabrik.Umbraco.Jet;
+
+   namespace Example.Models.MediaTypes
+   {
+       [MediaType("6E1F2ED5-CBC2-4B46-AE70-79C5C6A9FACC", "My Media")]
+       public class MyMedia
+       {
+       }
+   }
 
 Name
 ^^^^
@@ -163,7 +203,7 @@ Inherited from the `ContentTypeAttribute` attribute. The allowed child media typ
 
    namespace Example.Models.MediaTypes
    {
-       [DocumentType("My Media", AllowedChildNodeTypes = new[] {typeof(OurMedia), typeof(TheirMedia)})]
+       [MediaType("My Media", AllowedChildNodeTypes = new[] {typeof(OurMedia), typeof(TheirMedia)})]
        public class MyMedia
        {
        }
@@ -196,6 +236,22 @@ When your Umbraco application is started, uJet will scan all assemblies in the a
 MemberTypeAttribute Properties
 ------------------------------
 The following member type properties can be set using the `MemberTypeAttribute` attribute.
+
+Id
+^^
+Inherited from the `IdAttribute` attribute. The member type identifier. Specifying a member type identifier will enable member type tracking. Tracked member types can be renamed; uJet will keep your Umbraco database synchronized.
+
+.. code-block:: csharp
+   
+   using Logikfabrik.Umbraco.Jet;
+
+   namespace Example.Models.MemberTypes
+   {
+       [MemberType("DAE131E7-1159-4841-A669-3A39A4190903", "My Member")]
+       public class MyMember
+       {
+       }
+   }
 
 Name
 ^^^^

@@ -18,7 +18,8 @@ namespace Logikfabrik.Umbraco.Jet
         /// Initializes a new instance of the <see cref="MediaTypeAttribute" /> class.
         /// </summary>
         /// <param name="name">The name.</param>
-        public MediaTypeAttribute(string name) : base(name)
+        public MediaTypeAttribute(string name)
+            : base(name)
         {
         }
 
@@ -27,7 +28,8 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="name">The name.</param>
-        public MediaTypeAttribute(string id, string name) : base(id, name)
+        public MediaTypeAttribute(string id, string name)
+            : base(id, name)
         {
         }
     }

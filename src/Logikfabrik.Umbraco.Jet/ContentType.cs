@@ -13,7 +13,8 @@ namespace Logikfabrik.Umbraco.Jet
     /// The <see cref="ContentType{T}" /> class.
     /// </summary>
     /// <typeparam name="T">The <see cref="ContentTypeAttribute" /> type.</typeparam>
-    public abstract class ContentType<T> : BaseType<T> where T : ContentTypeAttribute
+    public abstract class ContentType<T> : BaseType<T>
+        where T : ContentTypeAttribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentType{T}" /> class.

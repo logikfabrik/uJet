@@ -49,7 +49,8 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// Prevents a default instance of the <see cref="TypeService" /> class from being created.
         /// </summary>
-        private TypeService() : this(GetAssemblies)
+        private TypeService()
+            : this(GetAssemblies)
         {
         }
 

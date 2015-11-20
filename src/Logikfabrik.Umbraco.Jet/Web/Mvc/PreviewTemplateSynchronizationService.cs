@@ -173,7 +173,6 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
 
             _fileService.SaveTemplate(
                 new Template(
-                    string.Concat(previewTemplateAlias, ".cshtml"),
                     PreviewTemplateAttribute.TemplateName,
                     previewTemplateAlias)
                 {
