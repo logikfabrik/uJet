@@ -5,8 +5,7 @@ Document, media, and member type properties are created by adding properties wit
 
 When your Umbraco application is started, uJet will scan your document, media, and member type classes, looking for properties. Found properties will be used as blueprints to synchronize your database.
 
-Property Tracking
-^^^^^^^^^^^^^^^^^
+**Property Tracking**
 As of version 3.0.0.0 uJet supports property tracking.
 
 Data Annotations

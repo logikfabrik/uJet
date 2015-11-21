@@ -3,8 +3,7 @@ Working with Types
 ******************
 uJet supports document types, media types, member types and data types.
 
-Type Tracking
-^^^^^^^^^^^^^
+**Type Tracking**
 As of version 3.0.0.0 uJet supports type tracking.
 
 When a document, media, or member type is synchronized, uJet tries to match the type declared in code with a type definition. uJet creates an Umbraco alias for the type, based on the type name (namespace excluded), and uses that alias to look for a matching type definition in the database. If a match is found the definition is updated; if not, a new type definition is created. Renaming a type that has been synchronized, in code or using the Umbraco back office, will cause duplicate definitions to be created, with different aliases.
