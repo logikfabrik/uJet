@@ -1,3 +1,6 @@
+## Unreleased
+* 2015-11-29 Added mapping by convention for properties `CreatorId`, `CreatorName`, `WriterId`, `WriterName`, `DocumentTypeId`, and `DocumentTypeAlias`.
+
 ## 3.3.0.0
 * 2015-11-20 Compiled using Umbraco 7.3.1 binaries.
 * 2015-11-20 Improved the way type aliases are generated.

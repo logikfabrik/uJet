@@ -7,7 +7,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
 
     /// <summary>
-    /// The <see cref="DataTypeAttribute" /> class.
+    /// The <see cref="DataTypeAttribute" /> class. Attribute for data type annotation.
     /// </summary>
     [AttributeUsage(
         AttributeTargets.Class,

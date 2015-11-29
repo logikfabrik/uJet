@@ -7,7 +7,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
 
     /// <summary>
-    /// The <see cref="DocumentTypeAttribute" /> class.
+    /// The <see cref="DocumentTypeAttribute" /> class. Attribute for document type annotation.
     /// </summary>
     [AttributeUsage(
         AttributeTargets.Class,

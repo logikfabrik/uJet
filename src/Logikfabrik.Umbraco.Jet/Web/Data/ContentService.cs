@@ -106,8 +106,18 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
             MapProperty(model, GetPropertyName(() => content.Id), content.Id);
             MapProperty(model, GetPropertyName(() => content.Url), content.Url);
             MapProperty(model, GetPropertyName(() => content.Name), content.Name);
+
             MapProperty(model, GetPropertyName(() => content.CreateDate), content.CreateDate);
             MapProperty(model, GetPropertyName(() => content.UpdateDate), content.UpdateDate);
+
+            MapProperty(model, GetPropertyName(() => content.CreatorId), content.CreatorId);
+            MapProperty(model, GetPropertyName(() => content.CreatorName), content.CreatorName);
+
+            MapProperty(model, GetPropertyName(() => content.WriterId), content.WriterId);
+            MapProperty(model, GetPropertyName(() => content.WriterName), content.WriterName);
+
+            MapProperty(model, GetPropertyName(() => content.DocumentTypeId), content.DocumentTypeId);
+            MapProperty(model, GetPropertyName(() => content.DocumentTypeAlias), content.DocumentTypeAlias);
         }
 
         /// <summary>

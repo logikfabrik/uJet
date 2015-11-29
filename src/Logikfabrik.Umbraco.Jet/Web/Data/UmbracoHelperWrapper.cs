@@ -13,9 +13,6 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
     /// </summary>
     public class UmbracoHelperWrapper : IUmbracoHelperWrapper
     {
-        /// <summary>
-        /// The Umbraco helper.
-        /// </summary>
         private readonly UmbracoHelper _umbracoHelper;
 
         /// <summary>

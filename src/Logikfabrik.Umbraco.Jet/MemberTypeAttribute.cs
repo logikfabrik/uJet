@@ -7,7 +7,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
 
     /// <summary>
-    /// The <see cref="MemberTypeAttribute" /> class.
+    /// The <see cref="MemberTypeAttribute" /> class. Attribute for member type annotation.
     /// </summary>
     [AttributeUsage(
         AttributeTargets.Class,
