@@ -11,9 +11,6 @@ namespace Logikfabrik.Umbraco.Jet.Data
     /// </summary>
     public class DataTypeRepository : IDataTypeRepository
     {
-        /// <summary>
-        /// The database wrapper.
-        /// </summary>
         private readonly IDatabaseWrapper _databaseWrapper;
 
         /// <summary>

@@ -11,7 +11,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
     /// <summary>
     /// The <see cref="PropertyValueConverters" /> class.
     /// </summary>
-    public class PropertyValueConverters
+    public static class PropertyValueConverters
     {
         /// <summary>
         /// Gets the converters.

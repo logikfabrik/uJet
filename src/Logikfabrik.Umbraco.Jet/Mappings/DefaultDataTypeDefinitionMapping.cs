@@ -15,19 +15,8 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
     /// </summary>
     public class DefaultDataTypeDefinitionMapping : IDefaultDataTypeDefinitionMapping
     {
-        /// <summary>
-        /// The supported hints.
-        /// </summary>
         private readonly IDictionary<string, KeyValuePair<Type, DataTypeDefinition>> _supportedHints;
-
-        /// <summary>
-        /// The data type service.
-        /// </summary>
         private readonly IDataTypeService _dataTypeService;
-
-        /// <summary>
-        /// The mapped definitions.
-        /// </summary>
         private readonly IDictionary<DataTypeDefinition, IDataTypeDefinition> _mappedDefinitions = new Dictionary<DataTypeDefinition, IDataTypeDefinition>();
 
         /// <summary>

@@ -14,9 +14,6 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
     /// </summary>
     public class PropertyValueConverterDictionary : IDictionary<Type, IEnumerable<IPropertyValueConverter>>
     {
-        /// <summary>
-        /// The inner dictionary.
-        /// </summary>
         private readonly Dictionary<Type, IEnumerable<IPropertyValueConverter>> _innerDictionary = new Dictionary<Type, IEnumerable<IPropertyValueConverter>>();
 
         /// <summary>
