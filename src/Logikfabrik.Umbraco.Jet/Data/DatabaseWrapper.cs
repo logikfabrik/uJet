@@ -47,7 +47,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         }
 
         /// <summary>
-        /// Gets the object.
+        /// Gets the object of the specified object type with the specified primary key.
         /// </summary>
         /// <typeparam name="T">The object type.</typeparam>
         /// <param name="primaryKey">The primary key.</param>
@@ -64,7 +64,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         }
 
         /// <summary>
-        /// Inserts the object.
+        /// Inserts the specified object.
         /// </summary>
         /// <typeparam name="T">The object type.</typeparam>
         /// <param name="obj">The object.</param>

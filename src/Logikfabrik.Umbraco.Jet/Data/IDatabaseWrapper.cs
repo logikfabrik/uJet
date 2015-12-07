@@ -25,7 +25,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         void CreateTable(Type type);
 
         /// <summary>
-        /// Inserts the object.
+        /// Inserts the specified object.
         /// </summary>
         /// <typeparam name="T">The object type.</typeparam>
         /// <param name="obj">The object.</param>
@@ -34,7 +34,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
             where T : class;
 
         /// <summary>
-        /// Gets the object.
+        /// Gets the object of the specified object type with the specified primary key.
         /// </summary>
         /// <typeparam name="T">The object type.</typeparam>
         /// <param name="primaryKey">The primary key.</param>
