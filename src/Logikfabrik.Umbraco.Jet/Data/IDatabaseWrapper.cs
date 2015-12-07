@@ -10,36 +10,36 @@ namespace Logikfabrik.Umbraco.Jet.Data
     public interface IDatabaseWrapper
     {
         /// <summary>
-        /// Creates the table.
+        /// Creates the table for the specified object type.
         /// </summary>
-        /// <typeparam name="T">The row type.</typeparam>
+        /// <typeparam name="T">The object type.</typeparam>
         void CreateTable<T>()
             where T : new();
 
         /// <summary>
-        /// Inserts the row.
+        /// Inserts the object.
         /// </summary>
-        /// <typeparam name="T">The row type.</typeparam>
-        /// <param name="row">The row.</param>
+        /// <typeparam name="T">The object type.</typeparam>
+        /// <param name="obj">The object.</param>
         /// <param name="primaryKey">The primary key.</param>
-        void InsertRow<T>(T row, object primaryKey)
+        void Insert<T>(T obj, object primaryKey)
             where T : class;
 
         /// <summary>
-        /// Gets the row.
+        /// Gets the object.
         /// </summary>
-        /// <typeparam name="T">The row type.</typeparam>
+        /// <typeparam name="T">The object type.</typeparam>
         /// <param name="primaryKey">The primary key.</param>
-        /// <returns>The row.</returns>
-        T GetRow<T>(object primaryKey);
+        /// <returns>The object.</returns>
+        T Get<T>(object primaryKey);
 
         /// <summary>
-        /// Gets a value indicating whether a table of the specified type exists.
+        /// Gets a value indicating whether a table for the specified object type exists.
         /// </summary>
-        /// <typeparam name="T">The table type.</typeparam>
+        /// <typeparam name="T">The object type.</typeparam>
         /// <returns>
-        ///   <c>true</c> if a table of the specified type exists; otherwise, <c>false</c>.
+        ///   <c>true</c> if a table of for the specified object type exists; otherwise, <c>false</c>.
         /// </returns>
-        bool TableExist<T>();
+        bool TableExists<T>();
     }
 }

@@ -37,14 +37,14 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// </returns>
         public int? GetDefinitionId(Guid id)
         {
-            if (!_databaseWrapper.TableExist<DataTypeRow>())
+            if (!_databaseWrapper.TableExists<DataType>())
             {
                 return null;
             }
 
-            var row = _databaseWrapper.GetRow<DataTypeRow>(id);
+            var dataType = _databaseWrapper.Get<DataType>(id);
 
-            return row?.DefinitionId;
+            return dataType?.DefinitionId;
         }
 
         /// <summary>
@@ -54,10 +54,10 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <param name="definitionId">The definition identifier.</param>
         public void SetDefinitionId(Guid id, int definitionId)
         {
-            var row = new DataTypeRow { Id = id, DefinitionId = definitionId };
+            var dataType = new DataType { Id = id, DefinitionId = definitionId };
 
-            _databaseWrapper.CreateTable<DataTypeRow>();
-            _databaseWrapper.InsertRow(row, id);
+            _databaseWrapper.CreateTable<DataType>();
+            _databaseWrapper.Insert(dataType, id);
         }
     }
 }

@@ -55,10 +55,10 @@ namespace Logikfabrik.Umbraco.Jet.Test
             dataTypeSynchronizationServiceMock.Object.Synchronize();
 
             dataTypeSynchronizationServiceMock
-                .Verify(m => m.SynchronizeById(It.IsAny<IEnumerable<IDataTypeDefinition>>(), It.IsAny<DataType>()), Times.Once);
+                .Verify(m => m.SynchronizeById(It.IsAny<IEnumerable<IDataTypeDefinition>>(), It.IsAny<Jet.DataType>()), Times.Once);
 
             dataTypeSynchronizationServiceMock
-                .Verify(m => m.SynchronizeByName(It.IsAny<IEnumerable<IDataTypeDefinition>>(), It.IsAny<DataType>()), Times.Once);
+                .Verify(m => m.SynchronizeByName(It.IsAny<IEnumerable<IDataTypeDefinition>>(), It.IsAny<Jet.DataType>()), Times.Once);
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             dataTypeSynchronizationServiceMock.Object.Synchronize();
 
             dataTypeSynchronizationServiceMock
-                .Verify(m => m.SynchronizeById(It.IsAny<IEnumerable<IDataTypeDefinition>>(), It.IsAny<DataType>()), Times.Once);
+                .Verify(m => m.SynchronizeById(It.IsAny<IEnumerable<IDataTypeDefinition>>(), It.IsAny<Jet.DataType>()), Times.Once);
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             dataTypeSynchronizationServiceMock.Object.Synchronize();
 
             dataTypeSynchronizationServiceMock
-                .Verify(m => m.SynchronizeByName(It.IsAny<IEnumerable<IDataTypeDefinition>>(), It.IsAny<DataType>()), Times.Once);
+                .Verify(m => m.SynchronizeByName(It.IsAny<IEnumerable<IDataTypeDefinition>>(), It.IsAny<Jet.DataType>()), Times.Once);
         }
 
         /// <summary>
@@ -148,7 +148,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             dataTypeSynchronizationServiceMock.Object.Synchronize();
 
-            dataTypeSynchronizationServiceMock.Verify(m => m.UpdateDataType(dataTypeDefinitionMock.Object, It.IsAny<DataType>()), Times.Once);
+            dataTypeSynchronizationServiceMock.Verify(m => m.UpdateDataType(dataTypeDefinitionMock.Object, It.IsAny<Jet.DataType>()), Times.Once);
         }
 
         /// <summary>
@@ -241,7 +241,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             dataTypeSynchronizationServiceMock.Object.Synchronize();
 
-            dataTypeSynchronizationServiceMock.Verify(m => m.UpdateDataType(dataTypeDefinitionMock.Object, It.IsAny<DataType>()), Times.Once);
+            dataTypeSynchronizationServiceMock.Verify(m => m.UpdateDataType(dataTypeDefinitionMock.Object, It.IsAny<Jet.DataType>()), Times.Once);
         }
 
         /// <summary>

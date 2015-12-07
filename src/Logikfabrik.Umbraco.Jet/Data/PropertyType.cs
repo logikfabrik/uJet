@@ -1,4 +1,4 @@
-﻿// <copyright file="ContentTypeRow.cs" company="Logikfabrik">
+﻿// <copyright file="PropertyType.cs" company="Logikfabrik">
 //   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -8,11 +8,11 @@ namespace Logikfabrik.Umbraco.Jet.Data
     using global::Umbraco.Core.Persistence;
 
     /// <summary>
-    /// The <see cref="ContentTypeRow" /> class.
+    /// The <see cref="PropertyType" /> class.
     /// </summary>
-    [TableName("uJetContentType")]
+    [TableName("uJetPropertyType")]
     [PrimaryKey("Id", autoIncrement = false)]
-    public class ContentTypeRow
+    public class PropertyType
     {
         /// <summary>
         /// Gets or sets the identifier.
@@ -23,11 +23,11 @@ namespace Logikfabrik.Umbraco.Jet.Data
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the content type identifier.
+        /// Gets or sets the property type identifier.
         /// </summary>
         /// <value>
-        /// The content type identifier.
+        /// The property type identifier.
         /// </value>
-        public int ContentTypeId { get; set; }
+        public int PropertyTypeId { get; set; }
     }
 }

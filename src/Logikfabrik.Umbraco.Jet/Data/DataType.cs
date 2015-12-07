@@ -1,4 +1,4 @@
-﻿// <copyright file="DataTypeRow.cs" company="Logikfabrik">
+﻿// <copyright file="DataType.cs" company="Logikfabrik">
 //   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -8,11 +8,11 @@ namespace Logikfabrik.Umbraco.Jet.Data
     using global::Umbraco.Core.Persistence;
 
     /// <summary>
-    /// The <see cref="DataTypeRow" /> class.
+    /// The <see cref="DataType" /> class.
     /// </summary>
     [TableName("uJetDataType")]
     [PrimaryKey("Id", autoIncrement = false)]
-    public class DataTypeRow
+    public class DataType
     {
         /// <summary>
         /// Gets or sets the identifier.

@@ -200,7 +200,7 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(documentType));
             }
 
-            UpdateContentType(contentType, () => new ContentType(-1), documentType);
+            UpdateContentType(contentType, () => new global::Umbraco.Core.Models.ContentType(-1), documentType);
             SetTemplates(contentType, documentType);
             SetDefaultTemplate(contentType, documentType);
 
@@ -283,7 +283,7 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(documentType));
             }
 
-            var t = (IContentType)CreateContentType(() => new ContentType(-1), documentType);
+            var t = (IContentType)CreateContentType(() => new global::Umbraco.Core.Models.ContentType(-1), documentType);
 
             SetTemplates(t, documentType);
             SetDefaultTemplate(t, documentType);

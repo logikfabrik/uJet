@@ -293,13 +293,13 @@
     <Compile Include="DataTypeSynchronizationService.cs" />
     <Compile Include="Data\ContentTypeRepository.cs" />
     <Compile Include="Data\DataTypeRepository.cs" />
-    <Compile Include="Data\ContentTypeRow.cs" />
-    <Compile Include="Data\DataTypeRow.cs" />
+    <Compile Include="Data\ContentType.cs" />
+    <Compile Include="Data\DataType.cs" />
     <Compile Include="Data\IContentTypeRepository.cs" />
     <Compile Include="Data\IDatabaseWrapper.cs" />
     <Compile Include="Data\DatabaseWrapper.cs" />
     <Compile Include="Data\IDataTypeRepository.cs" />
-    <Compile Include="Data\PropertyTypeRow.cs" />
+    <Compile Include="Data\PropertyType.cs" />
     <Compile Include="IdAttribute.cs" />
     <Compile Include="MemberType.cs" />
     <Compile Include="MemberTypeAttribute.cs" />

@@ -144,7 +144,7 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(memberType));
             }
 
-            UpdateBaseType(contentType, () => new ContentType(-1), memberType);
+            UpdateBaseType(contentType, () => new global::Umbraco.Core.Models.ContentType(-1), memberType);
 
             SynchronizePropertyTypes(contentType, memberType.Properties);
 

@@ -47,13 +47,13 @@ namespace Logikfabrik.Umbraco.Jet.Data
         }
 
         /// <summary>
-        /// Gets the row.
+        /// Gets the object.
         /// </summary>
-        /// <typeparam name="T">The row type.</typeparam>
+        /// <typeparam name="T">The object type.</typeparam>
         /// <param name="primaryKey">The primary key.</param>
-        /// <returns>The row.</returns>
+        /// <returns>The object.</returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="primaryKey" /> is <c>null</c>.</exception>
-        public T GetRow<T>(object primaryKey)
+        public T Get<T>(object primaryKey)
         {
             if (primaryKey == null)
             {
@@ -64,38 +64,38 @@ namespace Logikfabrik.Umbraco.Jet.Data
         }
 
         /// <summary>
-        /// Inserts the row.
+        /// Inserts the object.
         /// </summary>
-        /// <typeparam name="T">The row type.</typeparam>
-        /// <param name="row">The row.</param>
+        /// <typeparam name="T">The object type.</typeparam>
+        /// <param name="obj">The object.</param>
         /// <param name="primaryKey">The primary key.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="row" /> is <c>null</c>.</exception>
-        public void InsertRow<T>(T row, object primaryKey)
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="obj" /> is <c>null</c>.</exception>
+        public void Insert<T>(T obj, object primaryKey)
             where T : class
         {
-            if (row == null)
+            if (obj == null)
             {
-                throw new ArgumentNullException(nameof(row));
+                throw new ArgumentNullException(nameof(obj));
             }
 
             if (!_database.Exists<T>(primaryKey))
             {
-                _database.Insert(row);
+                _database.Insert(obj);
             }
             else
             {
-                _database.Update(row);
+                _database.Update(obj);
             }
         }
 
         /// <summary>
-        /// Gets a value indicating whether a table of the specified type exists.
+        /// Gets a value indicating whether a table for the specified object type exists.
         /// </summary>
-        /// <typeparam name="T">The table type.</typeparam>
+        /// <typeparam name="T">The object type.</typeparam>
         /// <returns>
-        ///   <c>true</c> if a table of the specified type exists; otherwise, <c>false</c>.
+        ///   <c>true</c> if a table of for the specified object type exists; otherwise, <c>false</c>.
         /// </returns>
-        public bool TableExist<T>()
+        public bool TableExists<T>()
         {
             var tableName = GetTableName<T>();
 
@@ -103,13 +103,13 @@ namespace Logikfabrik.Umbraco.Jet.Data
         }
 
         /// <summary>
-        /// Creates the table.
+        /// Creates the table for the specified object type.
         /// </summary>
-        /// <typeparam name="T">The row type.</typeparam>
+        /// <typeparam name="T">The object type.</typeparam>
         public void CreateTable<T>()
             where T : new()
         {
-            if (TableExist<T>())
+            if (TableExists<T>())
             {
                 return;
             }
@@ -120,7 +120,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <summary>
         /// Gets the name of the table.
         /// </summary>
-        /// <typeparam name="T">The row type.</typeparam>
+        /// <typeparam name="T">The object type.</typeparam>
         /// <returns>The name of the table.</returns>
         private static string GetTableName<T>()
         {

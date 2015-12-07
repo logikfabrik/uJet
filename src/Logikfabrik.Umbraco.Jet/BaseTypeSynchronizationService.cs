@@ -179,7 +179,7 @@ namespace Logikfabrik.Umbraco.Jet
 
                 var id = ContentTypeRepository.GetPropertyTypeId(property.Id.Value);
 
-                PropertyType pt;
+                global::Umbraco.Core.Models.PropertyType pt;
 
                 if (id.HasValue)
                 {
@@ -220,7 +220,7 @@ namespace Logikfabrik.Umbraco.Jet
 
             var definition = GetDataTypeDefinition(typeProperty);
 
-            var propertyType = new PropertyType(definition)
+            var propertyType = new global::Umbraco.Core.Models.PropertyType(definition)
             {
                 Name = typeProperty.Name,
                 Alias = typeProperty.Alias,
@@ -287,7 +287,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="propertyType">Type of the property.</param>
         /// <param name="typeProperty">The type property.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeBase" />, <paramref name="propertyType" />, or <paramref name="typeProperty" /> are <c>null</c>.</exception>
-        private static void UpdatePropertyType(IContentTypeBase contentTypeBase, PropertyType propertyType, TypeProperty typeProperty)
+        private static void UpdatePropertyType(IContentTypeBase contentTypeBase, global::Umbraco.Core.Models.PropertyType propertyType, TypeProperty typeProperty)
         {
             if (contentTypeBase == null)
             {
@@ -382,7 +382,7 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentException("Type property ID cannot be null.", nameof(typeProperty));
             }
 
-            PropertyType pt = null;
+            global::Umbraco.Core.Models.PropertyType pt = null;
 
             var id = ContentTypeRepository.GetPropertyTypeId(typeProperty.Id.Value);
 
