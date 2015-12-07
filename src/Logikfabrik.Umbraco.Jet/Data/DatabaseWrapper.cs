@@ -97,7 +97,27 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// </returns>
         public bool TableExists<T>()
         {
-            var tableName = GetTableName<T>();
+            var tableName = GetTableName(typeof(T));
+
+            return _databaseSchemaHelper.TableExist(tableName);
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether a table for the specified object type exists.
+        /// </summary>
+        /// <param name="type">The object type.</param>
+        /// <returns>
+        ///   <c>true</c> if a table of for the specified object type exists; otherwise, <c>false</c>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="type" /> is <c>null</c>.</exception>
+        public bool TableExists(Type type)
+        {
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
+            var tableName = GetTableName(type);
 
             return _databaseSchemaHelper.TableExist(tableName);
         }
@@ -118,13 +138,38 @@ namespace Logikfabrik.Umbraco.Jet.Data
         }
 
         /// <summary>
-        /// Gets the name of the table.
+        /// Creates the table for the specified object type.
         /// </summary>
-        /// <typeparam name="T">The object type.</typeparam>
-        /// <returns>The name of the table.</returns>
-        private static string GetTableName<T>()
+        /// <param name="type">The object type.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="type" /> is <c>null</c>.</exception>
+        public void CreateTable(Type type)
         {
-            var attribute = typeof(T).GetCustomAttribute<TableNameAttribute>();
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
+            if (TableExists(type))
+            {
+                return;
+            }
+
+            _databaseSchemaHelper.CreateTable(true, type);
+        }
+
+        /// <summary>
+        /// Gets the name of the table for the specified object type.
+        /// </summary>
+        /// <param name="type">The object type.</param>
+        /// <returns>The name of the table.</returns>
+        protected static string GetTableName(Type type)
+        {
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
+            var attribute = type.GetCustomAttribute<TableNameAttribute>();
 
             return attribute?.Value;
         }

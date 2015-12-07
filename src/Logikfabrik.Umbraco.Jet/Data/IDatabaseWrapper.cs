@@ -4,6 +4,8 @@
 
 namespace Logikfabrik.Umbraco.Jet.Data
 {
+    using System;
+
     /// <summary>
     /// The <see cref="IDatabaseWrapper" /> interface.
     /// </summary>
@@ -15,6 +17,12 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <typeparam name="T">The object type.</typeparam>
         void CreateTable<T>()
             where T : new();
+
+        /// <summary>
+        /// Creates the table for the specified object type.
+        /// </summary>
+        /// <param name="type">The object type.</param>
+        void CreateTable(Type type);
 
         /// <summary>
         /// Inserts the object.
@@ -41,5 +49,14 @@ namespace Logikfabrik.Umbraco.Jet.Data
         ///   <c>true</c> if a table of for the specified object type exists; otherwise, <c>false</c>.
         /// </returns>
         bool TableExists<T>();
+
+        /// <summary>
+        /// Gets a value indicating whether a table for the specified object type exists.
+        /// </summary>
+        /// <param name="type">The object type.</param>
+        /// <returns>
+        ///   <c>true</c> if a table of for the specified object type exists; otherwise, <c>false</c>.
+        /// </returns>
+        bool TableExists(Type type);
     }
 }
