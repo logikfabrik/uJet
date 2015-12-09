@@ -145,7 +145,8 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
         /// <summary>
         /// Test to get document for invalid document type.
         /// </summary>
-        [TestMethod, ExpectedException(typeof(ArgumentException))]
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
         public void CanNotGetDocumentForInvalidDocumentType()
         {
             var type = TypeUtility.GetTypeBuilder("MyType", TypeUtility.GetTypeAttributes()).CreateType();
@@ -462,7 +463,9 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
             /// <value>
             /// The boolean property value.
             /// </value>
+#pragma warning disable SA1623
             public bool BooleanProperty { get; set; }
+#pragma warning restore SA1623
 
             /// <summary>
             /// Gets or sets the DateTime property value.

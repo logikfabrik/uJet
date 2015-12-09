@@ -60,7 +60,7 @@ namespace Logikfabrik.Umbraco.Jet
         public static ITypeService Instance => instance ?? (instance = new TypeService());
 
         /// <summary>
-        /// Gets or sets the document types within the current application domain.
+        /// Gets the document types within the current application domain.
         /// </summary>
         /// <value>
         /// The document types.
@@ -68,7 +68,7 @@ namespace Logikfabrik.Umbraco.Jet
         public IEnumerable<Type> DocumentTypes => _documentTypes.Value;
 
         /// <summary>
-        /// Gets or sets the data types within the current application domain.
+        /// Gets the data types within the current application domain.
         /// </summary>
         /// <value>
         /// The data types.
@@ -76,7 +76,7 @@ namespace Logikfabrik.Umbraco.Jet
         public IEnumerable<Type> DataTypes => _dataTypes.Value;
 
         /// <summary>
-        /// Gets or sets the media types within the current application domain.
+        /// Gets the media types within the current application domain.
         /// </summary>
         /// <value>
         /// The media types.
@@ -84,7 +84,7 @@ namespace Logikfabrik.Umbraco.Jet
         public IEnumerable<Type> MediaTypes => _mediaTypes.Value;
 
         /// <summary>
-        /// Gets or sets the member types within the current application domain.
+        /// Gets the member types within the current application domain.
         /// </summary>
         /// <value>
         /// The member types.

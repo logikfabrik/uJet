@@ -16,7 +16,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Utilities
         /// <summary>
         /// Gets the type attributes.
         /// </summary>
-        /// <param name="typeAttributes">The type attributes.</param>
+        /// <param name="typeAttributes">The type attributes, if any.</param>
         /// <returns>The type attributes.</returns>
         public static TypeAttributes GetTypeAttributes(TypeAttributes? typeAttributes = null)
         {

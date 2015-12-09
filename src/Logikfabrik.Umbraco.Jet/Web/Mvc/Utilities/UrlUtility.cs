@@ -10,7 +10,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc.Utilities
     using System.Web;
 
     /// <summary>
-    /// The <see cref="UrlUtility" /> class.
+    /// The <see cref="UrlUtility" /> class. Utility class for URL generation.
     /// </summary>
     public static class UrlUtility
     {
@@ -18,7 +18,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc.Utilities
         /// Gets a URL using the specified node identifier.
         /// </summary>
         /// <param name="nodeId">The node identifier.</param>
-        /// <returns>The URL.</returns>
+        /// <returns>A URL for the specified node.</returns>
         public static string GetUrl(int nodeId)
         {
             return GetUrl(nodeId, null);
@@ -29,7 +29,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc.Utilities
         /// </summary>
         /// <param name="nodeId">The node identifier.</param>
         /// <param name="query">The query.</param>
-        /// <returns>The URL.</returns>
+        /// <returns>A URL for the specified node with query.</returns>
         public static string GetUrl(int nodeId, object query)
         {
             var url = umbraco.library.NiceUrl(nodeId);
@@ -41,7 +41,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc.Utilities
         /// Gets a URL using the specified URL.
         /// </summary>
         /// <param name="url">The URL.</param>
-        /// <returns>The URL.</returns>
+        /// <returns>A URL.</returns>
         public static string GetUrl(string url)
         {
             return GetUrl(url, null);
@@ -52,7 +52,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc.Utilities
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <param name="query">The query.</param>
-        /// <returns>The URL.</returns>
+        /// <returns>A URL with query.</returns>
         public static string GetUrl(string url, object query)
         {
             var q = new NameValueCollection();
@@ -76,7 +76,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc.Utilities
         /// Gets a query using the specified query.
         /// </summary>
         /// <param name="query">The query.</param>
-        /// <returns>The query.</returns>
+        /// <returns>A query.</returns>
         private static string GetQuery(NameValueCollection query)
         {
             if (query.Count == 0)

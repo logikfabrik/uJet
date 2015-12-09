@@ -225,7 +225,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
             /// The boolean property value.
             /// </value>
             [DefaultValue(true)]
+#pragma warning disable SA1623
             public bool BooleanProperty { get; set; }
+#pragma warning restore SA1623
         }
 
         /// <summary>

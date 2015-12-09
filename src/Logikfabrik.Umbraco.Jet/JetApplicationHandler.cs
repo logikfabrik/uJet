@@ -9,7 +9,7 @@ namespace Logikfabrik.Umbraco.Jet
     using global::Umbraco.Core.Services;
 
     /// <summary>
-    /// The <see cref="JetApplicationHandler" /> class.
+    /// The <see cref="JetApplicationHandler" /> class. Class for subscribing to Umbraco application events, setting up uJet.
     /// </summary>
     public class JetApplicationHandler : ApplicationHandler
     {

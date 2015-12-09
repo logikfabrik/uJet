@@ -35,6 +35,6 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
         /// <summary>
         /// Scan and synchronize classes annotated using the <see cref="MemberTypeAttribute" /> class.
         /// </summary>
-        MemberTypes
+        MemberTypes = 8
     }
 }

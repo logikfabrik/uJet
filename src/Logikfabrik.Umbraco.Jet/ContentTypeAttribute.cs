@@ -42,7 +42,7 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Gets a value indicating whether content of this type can be created at the root of the content tree.
+        /// Gets or sets a value indicating whether content of this type can be created at the root of the content tree.
         /// </summary>
         /// <value>
         ///   <c>true</c> if allowed as root; otherwise, <c>false</c>.

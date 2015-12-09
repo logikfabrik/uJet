@@ -292,7 +292,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
             /// <value>
             /// The boolean property value.
             /// </value>
+#pragma warning disable SA1623
             public bool BooleanProperty { get; set; }
+#pragma warning restore SA1623
 
             /// <summary>
             /// Gets or sets the DateTime property value.
