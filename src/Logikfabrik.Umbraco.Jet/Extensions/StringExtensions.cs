@@ -15,8 +15,9 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
         /// Gets the Umbraco alias for the specified string.
         /// </summary>
         /// <param name="s">The string to get the Umbraco alias for.</param>
+        /// <param name="firstLetterToLower">If set to false (standard is true), the alias is not forced to have an upper chase as first charachter.</param>
         /// <returns>The Umbraco alias.</returns>
-        public static string Alias(this string s)
+        public static string Alias(this string s, bool firstLetterToLower = true)
         {
             if (s == null)
             {
@@ -25,7 +26,9 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
 
             s = Regex.Replace(s, @"[^a-zA-Z0-9]", string.Empty);
 
-            return s.Length < 2 ? s.ToLowerInvariant() : string.Concat(char.ToLowerInvariant(s[0]), s.Substring(1));
+            return firstLetterToLower 
+                ? s.Length < 2 ? s.ToLowerInvariant() : string.Concat(char.ToLowerInvariant(s[0]), s.Substring(1))
+                : s;
         }
     }
 }
