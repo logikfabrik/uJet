@@ -76,7 +76,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
 
             var name = Path.GetFileNameWithoutExtension(templatePath);
 
-            return new Template(name, name.Alias()) { Content = GetContent(templatePath) };
+            return new Template(name, name.Alias(false)) { Content = GetContent(templatePath) };
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
              */
             Func<string, string> getPath = path => Path.GetFileName(path) ?? string.Empty;
 
-            return paths.Where(path => !getPath(path).StartsWith("_"));
+            return paths.Where(path => !getPath(path).StartsWith("_", StringComparison.Ordinal));
         }
 
         /// <summary>
