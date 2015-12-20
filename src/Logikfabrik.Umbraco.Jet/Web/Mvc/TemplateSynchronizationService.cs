@@ -88,7 +88,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
             var templatePaths = _templateService.TemplatePaths;
 
             return from templatePath in templatePaths
-                   let alias = Path.GetFileNameWithoutExtension(templatePath).Alias(false)
+                   let alias = Path.GetFileNameWithoutExtension(templatePath).Alias()
                    where !templates.Contains(alias)
                    select templatePath;
         }
