@@ -32,24 +32,6 @@ namespace Logikfabrik.Umbraco.Jet.Test.Extensions
         }
 
         /// <summary>
-        /// Test to get get alias for1 letter first letter not lowercase and first letter is not changed.
-        /// </summary>
-        [TestMethod]
-        public void CanGetAliasFor1LetterFirstLetterNotLowercase()
-        {
-            Assert.AreEqual("u", "u".Alias(false));
-        }
-
-        /// <summary>
-        /// Test to get get alias for1 letter first letter is uppercase and first letter is not changed.
-        /// </summary>
-        [TestMethod]
-        public void CanGetAliasFor1LetterFirstLetterIsLowercase()
-        {
-            Assert.AreEqual("U", "U".Alias(false));
-        }
-
-        /// <summary>
         /// Test to get alias for word with valid characters.
         /// </summary>
         [TestMethod]
