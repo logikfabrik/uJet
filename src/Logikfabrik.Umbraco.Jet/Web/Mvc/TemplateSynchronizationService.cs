@@ -8,7 +8,6 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using Extensions;
     using global::Umbraco.Core;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
@@ -83,13 +82,15 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// <returns>The templates to add.</returns>
         internal IEnumerable<string> GetTemplatesToAdd()
         {
-            var templates =
-                _fileService.GetTemplates().Where(template => template != null).Select(template => template.Alias);
+            var templates = _fileService.GetTemplates().Where(template => template != null).Select(template => template.Alias);
             var templatePaths = _templateService.TemplatePaths;
 
+            /* Templates created using the back office might not have a conventional Umbraco alias in regards to case. We must
+             * therefore not take case into account when getting templates to add.
+             */
             return from templatePath in templatePaths
-                   let alias = Path.GetFileNameWithoutExtension(templatePath).Alias()
-                   where !templates.Contains(alias)
+                   let alias = Path.GetFileNameWithoutExtension(templatePath)
+                   where !templates.Contains(alias, StringComparer.InvariantCultureIgnoreCase)
                    select templatePath;
         }
 
