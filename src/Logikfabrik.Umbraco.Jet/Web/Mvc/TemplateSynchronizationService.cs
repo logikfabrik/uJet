@@ -8,6 +8,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Text.RegularExpressions;
     using global::Umbraco.Core;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
@@ -17,15 +18,9 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     /// </summary>
     public class TemplateSynchronizationService : ISynchronizationService
     {
-        /// <summary>
-        /// The file service.
-        /// </summary>
         private readonly IFileService _fileService;
-
-        /// <summary>
-        /// The template service.
-        /// </summary>
         private readonly ITemplateService _templateService;
+        private readonly Regex _layoutRegex = new Regex("(?s:(?<=@{.*Layout\\s*=\\s*\").*(?=.cshtml\";.+}))");
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TemplateSynchronizationService" /> class.
@@ -66,14 +61,31 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// </summary>
         public void Synchronize()
         {
-            var templatesToAdd = GetTemplatesToAdd(GetTemplatesToAdd()).ToArray();
+            AddNewTemplates();
+            UpdateTemplates();
+        }
 
-            if (!templatesToAdd.Any())
+        /// <summary>
+        /// Gets the template layout.
+        /// </summary>
+        /// <param name="template">The template.</param>
+        /// <returns>The template layout, without extension (.cshtml);</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="template" /> is <c>null</c>.</exception>
+        internal string GetLayout(ITemplate template)
+        {
+            if (template == null)
             {
-                return;
+                throw new ArgumentNullException(nameof(template));
             }
 
-            AddTemplates(templatesToAdd);
+            if (string.IsNullOrWhiteSpace(template.Content))
+            {
+                return null;
+            }
+
+            var match = _layoutRegex.Match(template.Content);
+
+            return !match.Success ? null : match.Value;
         }
 
         /// <summary>
@@ -82,11 +94,12 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// <returns>The templates to add.</returns>
         internal IEnumerable<string> GetTemplatesToAdd()
         {
-            var templates = _fileService.GetTemplates().Where(template => template != null).Select(template => template.Alias);
+            var templates = _fileService.GetTemplates().Select(template => template.Alias);
             var templatePaths = _templateService.TemplatePaths;
 
-            /* Templates created using the back office might not have a conventional Umbraco alias in regards to case. We must
-             * therefore not take case into account when getting templates to add.
+            /*
+             * Templates created using the back office might not have a conventional Umbraco alias in regards
+             * to case. We must therefore not take case into account when getting templates to add.
              */
             return from templatePath in templatePaths
                    let alias = Path.GetFileNameWithoutExtension(templatePath)
@@ -113,18 +126,78 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         }
 
         /// <summary>
-        /// Adds the templates.
+        /// Adds new templates.
         /// </summary>
-        /// <param name="templates">The templates.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="templates" /> is <c>null</c>.</exception>
-        private void AddTemplates(IEnumerable<ITemplate> templates)
+        private void AddNewTemplates()
+        {
+            var templatesToAdd = GetTemplatesToAdd(GetTemplatesToAdd()).ToArray();
+
+            if (!templatesToAdd.Any())
+            {
+                return;
+            }
+
+            _fileService.SaveTemplate(templatesToAdd);
+        }
+
+        private ITemplate GetMasterTemplate(IEnumerable<ITemplate> templates, ITemplate template)
         {
             if (templates == null)
             {
                 throw new ArgumentNullException(nameof(templates));
             }
 
-            _fileService.SaveTemplate(templates);
+            if (template == null)
+            {
+                throw new ArgumentNullException(nameof(template));
+            }
+
+            var layout = GetLayout(template);
+
+            /*
+             * Templates created using the back office might not have a conventional Umbraco alias in regards
+             * to case. We must therefore not take case into account when getting master templates.
+             */
+            return layout == null ? null : templates.FirstOrDefault(t => t.Alias.Equals(layout, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        private IEnumerable<ITemplate> GetTemplatesToUpdate(IEnumerable<ITemplate> templates)
+        {
+            if (templates == null)
+            {
+                throw new ArgumentNullException(nameof(templates));
+            }
+
+            var t = templates.ToArray();
+
+            foreach (var template in t)
+            {
+                var masterTemplate = GetMasterTemplate(t, template);
+
+                if (masterTemplate == null)
+                {
+                    continue;
+                }
+
+                template.SetMasterTemplate(masterTemplate);
+
+                yield return template;
+            }
+        }
+
+        /// <summary>
+        /// Updates the templates.
+        /// </summary>
+        private void UpdateTemplates()
+        {
+            var templatesToUpdate = GetTemplatesToUpdate(_fileService.GetTemplates()).ToArray();
+
+            if (!templatesToUpdate.Any())
+            {
+                return;
+            }
+
+            _fileService.SaveTemplate(templatesToUpdate);
         }
     }
 }

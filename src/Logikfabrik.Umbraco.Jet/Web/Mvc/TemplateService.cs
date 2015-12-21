@@ -16,9 +16,6 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     /// </summary>
     public class TemplateService : ITemplateService
     {
-        /// <summary>
-        /// The template service instance.
-        /// </summary>
         private static ITemplateService instance;
 
         /// <summary>

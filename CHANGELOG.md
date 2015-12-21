@@ -1,4 +1,7 @@
 ## Unreleased
+* 2015-12-21 Added support for nested templates (layouts/masters).
+* 2015-12-21 Fixed an issue with templates being duplicated on synchronization.
+* 2015-12-09 Compiled using Umbraco 7.3.4 binaries.
 * 2015-11-29 Added mapping by convention for properties `CreatorId`, `CreatorName`, `WriterId`, `WriterName`, `DocumentTypeId`, and `DocumentTypeAlias`.
 
 ## 3.3.0.0

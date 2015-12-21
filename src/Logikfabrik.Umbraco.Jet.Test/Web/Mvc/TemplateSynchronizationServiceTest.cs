@@ -33,6 +33,32 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Mvc
         }
 
         /// <summary>
+        /// Test to get layout (master) for template with layout.
+        /// </summary>
+        [TestMethod]
+        public void CanGetLayoutForTemplateWithLayout()
+        {
+            var service = GetTemplateSynchronizationService();
+
+            var template = GetTemplateMock(GetTemplatePath("Template1.cshtml"));
+
+            Assert.AreEqual("Template1Master", service.GetLayout(template));
+        }
+
+        /// <summary>
+        /// Test to get layout (master) for template without layout.
+        /// </summary>
+        [TestMethod]
+        public void CanNotGetLayoutForTemplateWithoutLayout()
+        {
+            var service = GetTemplateSynchronizationService();
+
+            var template = GetTemplateMock(GetTemplatePath("Template2.cshtml"));
+
+            Assert.IsNull(service.GetLayout(template));
+        }
+
+        /// <summary>
         /// Test to get paths to templates to add.
         /// </summary>
         [TestMethod]
@@ -55,6 +81,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Mvc
             var templateMock = new Mock<ITemplate>();
 
             templateMock.Setup(m => m.Path).Returns(templatePath);
+            templateMock.Setup(m => m.Content).Returns(System.IO.File.ReadAllText(templatePath));
 
             return templateMock.Object;
         }
