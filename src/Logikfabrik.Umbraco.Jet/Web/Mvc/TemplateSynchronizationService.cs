@@ -66,10 +66,10 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         }
 
         /// <summary>
-        /// Gets the template layout.
+        /// Gets the template layout (master).
         /// </summary>
         /// <param name="template">The template.</param>
-        /// <returns>The template layout, without extension (.cshtml);</returns>
+        /// <returns>The template layout, without extension (.cshtml).</returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="template" /> is <c>null</c>.</exception>
         internal string GetLayout(ITemplate template)
         {
@@ -168,6 +168,11 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
                 throw new ArgumentNullException(nameof(templates));
             }
 
+            /*
+             * It's possible a template is changed through VS or the file system, changing the layout assignment.
+             * This has nothing to do with whether the template is new or not; if the layout is changed Umbraco
+             * needs to be synchronized.
+             */
             var t = templates.ToArray();
 
             foreach (var template in t)
@@ -176,6 +181,13 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
 
                 if (masterTemplate == null)
                 {
+                    // No layout/master has been set, or a matching master template does not exist.
+                    continue;
+                }
+
+                if (template.MasterTemplateAlias.Equals(masterTemplate.Alias, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    // The current master template matches the layout/master. There's no need to update the template.
                     continue;
                 }
 
