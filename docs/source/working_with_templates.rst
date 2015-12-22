@@ -17,6 +17,6 @@ Preview Template
 ----------------
 The preview button in the Umbraco back office does not support documents of types without templates. This is by design in Umbraco.
 
-When developing applications in uJet, using default MVC conventions, Umbraco templates will not be used. And, as a result, the preview button will be unavailable.
+When developing applications in uJet, using ASP.NET MVC conventions, Umbraco templates are not be used. And, as a result, the preview button will be unavailable.
 
-.. seealso:: For more information on the topic of MVC conventions see :doc:`working_with_mvc_conventions`.
+.. seealso:: For more information on the topic of ASP.NET MVC conventions see :doc:`working_with_mvc_conventions`.

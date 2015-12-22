@@ -27,7 +27,7 @@ A document type is created by decorating a public non-abstract class, with a def
    }
 
 .. tip::
-   Your document type classes can be concidered models. Following MVC convention, models are placed in the `Models\\` folder. It's recommended to place all document type classes in `Models\\DocumentTypes\\`.
+   Your document type classes can be concidered models. Following ASP.NET MVC conventions, models are placed in the `Models\\` folder. It's recommended to place all document type classes in `Models\\DocumentTypes\\`.
 
 When your Umbraco application is started, uJet will scan all assemblies in the app domain, looking for document type classes. Found classes will be used as blueprints to synchronize your database.
 
@@ -44,15 +44,15 @@ Inherited from the `IdAttribute` attribute. The document type identifier. Specif
 
 .. code-block:: csharp
 
-	using Logikfabrik.Umbraco.Jet;
+   using Logikfabrik.Umbraco.Jet;
 
-	namespace Example.Models.DocumentTypes
-	{
-		[DocumentType("F3D4B9F1-711D-40A8-9091-FF5104CE0ACE", "My Page")]
-		public class MyPage
-		{
-		}
-	}
+   namespace Example.Models.DocumentTypes
+   {
+       [DocumentType("F3D4B9F1-711D-40A8-9091-FF5104CE0ACE", "My Page")]
+       public class MyPage
+       {
+       }
+   }
 
 Name
 ^^^^
@@ -144,7 +144,7 @@ A media type is created by decorating a public non-abstract class, with a defaul
    }
 
 .. tip::
-   Your media type classes can be concidered models. Following MVC convention, models are placed in the `Models\\` folder. It's recommended to place all media type classes in `Models\\MediaTypes\\`.
+   Your media type classes can be concidered models. Following ASP.NET MVC conventions, models are placed in the `Models\\` folder. It's recommended to place all media type classes in `Models\\MediaTypes\\`.
 
 When your Umbraco application is started, uJet will scan all assemblies in the app domain, looking for media type classes. Found classes will be used as blueprints to synchronize your database.
 
@@ -225,7 +225,7 @@ A member type is created by decorating a public non-abstract class, with a defau
    }
 
 .. tip::
-   Your member type classes can be concidered models. Following MVC convention, models are placed in the `Models\\` folder. It's recommended to place all member type classes in `Models\\MemberTypes\\`.
+   Your member type classes can be concidered models. Following ASP.NET MVC conventions, models are placed in the `Models\\` folder. It's recommended to place all member type classes in `Models\\MemberTypes\\`.
 
 When your Umbraco application is started, uJet will scan all assemblies in the app domain, looking for member type classes. Found classes will be used as blueprints to synchronize your database.
 
@@ -282,7 +282,7 @@ A data type is created by decorating a public non-abstract class, with a default
    }
 
 .. tip::
-   Your data type classes can be concidered models. Following MVC convention, models are placed in the `Models\\` folder. It's recommended to place all data type classes in `Models\\DataTypes\\`.
+   Your data type classes can be concidered models. Following ASP.NET MVC conventions, models are placed in the `Models\\` folder. It's recommended to place all data type classes in `Models\\DataTypes\\`.
 
 When your Umbraco application is started, uJet will scan all assemblies in the app domain, looking for data type classes. Found classes will be used as blueprints to synchronize your database.
 
