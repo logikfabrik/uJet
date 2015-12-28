@@ -85,6 +85,62 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
+        /// Creates a new member type using the uJet member type.
+        /// </summary>
+        /// <param name="jetMemberType">The uJet member type.</param>
+        /// <returns>The created member type.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="jetMemberType" /> is <c>null</c>.</exception>
+        internal virtual IMemberType CreateMemberType(MemberType jetMemberType)
+        {
+            if (jetMemberType == null)
+            {
+                throw new ArgumentNullException(nameof(jetMemberType));
+            }
+
+            var memberType = (IMemberType)CreateBaseContentType(() => new global::Umbraco.Core.Models.MemberType(-1), jetMemberType);
+
+            SynchronizePropertyTypes(memberType, jetMemberType.Properties);
+
+            _memberTypeService.Save(memberType);
+
+            // We get the member type once more to refresh it after updating it.
+            memberType = _memberTypeService.Get(memberType.Alias);
+
+            // Update tracking.
+            SetPropertyTypeId(memberType, jetMemberType);
+
+            return memberType;
+        }
+
+        /// <summary>
+        /// Updates the member type to match the uJet member type.
+        /// </summary>
+        /// <param name="memberType">The member type to update.</param>
+        /// <param name="jetMemberType">The uJet member type.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="memberType" />, or <paramref name="jetMemberType" /> are <c>null</c>.</exception>
+        internal virtual void UpdateMemberType(IMemberType memberType, MemberType jetMemberType)
+        {
+            if (memberType == null)
+            {
+                throw new ArgumentNullException(nameof(memberType));
+            }
+
+            if (jetMemberType == null)
+            {
+                throw new ArgumentNullException(nameof(jetMemberType));
+            }
+
+            UpdateBaseContentType(memberType, () => new global::Umbraco.Core.Models.ContentType(-1), jetMemberType);
+
+            SynchronizePropertyTypes(memberType, jetMemberType.Properties);
+
+            _memberTypeService.Save(memberType);
+
+            // Update tracking. We get the member type once more to refresh it after updating it.
+            SetPropertyTypeId(_memberTypeService.Get(memberType.Alias), jetMemberType);
+        }
+
+        /// <summary>
         /// Validates the uJet member type identifiers.
         /// </summary>
         /// <param name="jetMemberTypes">The uJet member types.</param>
@@ -168,62 +224,6 @@ namespace Logikfabrik.Umbraco.Jet
             {
                 UpdateMemberType(memberType, jetMemberType);
             }
-        }
-
-        /// <summary>
-        /// Creates a new member type using the uJet member type.
-        /// </summary>
-        /// <param name="jetMemberType">The uJet member type.</param>
-        /// <returns>The created member type.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="jetMemberType" /> is <c>null</c>.</exception>
-        internal virtual IMemberType CreateMemberType(MemberType jetMemberType)
-        {
-            if (jetMemberType == null)
-            {
-                throw new ArgumentNullException(nameof(jetMemberType));
-            }
-
-            var memberType = (IMemberType)CreateBaseContentType(() => new global::Umbraco.Core.Models.MemberType(-1), jetMemberType);
-
-            SynchronizePropertyTypes(memberType, jetMemberType.Properties);
-
-            _memberTypeService.Save(memberType);
-
-            // We get the member type once more to refresh it after updating it.
-            memberType = _memberTypeService.Get(memberType.Alias);
-
-            // Update tracking.
-            SetPropertyTypeId(memberType, jetMemberType);
-
-            return memberType;
-        }
-
-        /// <summary>
-        /// Updates the member type to match the uJet member type.
-        /// </summary>
-        /// <param name="memberType">The member type to update.</param>
-        /// <param name="jetMemberType">The uJet member type.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="memberType" />, or <paramref name="jetMemberType" /> are <c>null</c>.</exception>
-        internal virtual void UpdateMemberType(IMemberType memberType, MemberType jetMemberType)
-        {
-            if (memberType == null)
-            {
-                throw new ArgumentNullException(nameof(memberType));
-            }
-
-            if (jetMemberType == null)
-            {
-                throw new ArgumentNullException(nameof(jetMemberType));
-            }
-
-            UpdateBaseContentType(memberType, () => new global::Umbraco.Core.Models.ContentType(-1), jetMemberType);
-
-            SynchronizePropertyTypes(memberType, jetMemberType.Properties);
-
-            _memberTypeService.Save(memberType);
-
-            // Update tracking. We get the member type once more to refresh it after updating it.
-            SetPropertyTypeId(_memberTypeService.Get(memberType.Alias), jetMemberType);
         }
     }
 }

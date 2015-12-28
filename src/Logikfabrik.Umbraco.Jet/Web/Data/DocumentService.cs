@@ -83,13 +83,12 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// <exception cref="ArgumentException">Thrown if media type with alias <paramref name="documentTypeAlias" /> can not be found.</exception>
         public object GetDocument(int id, string documentTypeAlias)
         {
+            // TODO: Rewrite the document type look-up; it does not support ID.
             var documentType = TypeService.DocumentTypes.FirstOrDefault(t => t.Name.Alias() == documentTypeAlias);
 
             if (documentType == null)
             {
-                throw new ArgumentException(
-                    $"Document type with alias {documentTypeAlias} could not be found.",
-                    nameof(documentTypeAlias));
+                throw new ArgumentException($"Document type with alias {documentTypeAlias} could not be found.", nameof(documentTypeAlias));
             }
 
             return GetDocument(UmbracoHelper.TypedDocument(id), documentType);
@@ -120,7 +119,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
                 throw new ArgumentException($"Type {documentType} is not a document type.", nameof(documentType));
             }
 
-            return GetContent(content, documentType);
+            return GetMappedContent(content, documentType);
         }
     }
 }

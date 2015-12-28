@@ -43,13 +43,5 @@ namespace Logikfabrik.Umbraco.Jet
         /// The member types.
         /// </value>
         IEnumerable<Type> MemberTypes { get; }
-
-        /// <summary>
-        /// Gets the composition for the specified type.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <param name="predicate">The predicate.</param>
-        /// <returns>The composition for the specified type.</returns>
-        IDictionary<Type, IEnumerable<Type>> GetComposition(Type type, Func<Type, bool> predicate);
     }
 }

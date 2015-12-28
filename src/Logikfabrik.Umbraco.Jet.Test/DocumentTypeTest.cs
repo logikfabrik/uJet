@@ -5,7 +5,6 @@
 namespace Logikfabrik.Umbraco.Jet.Test
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -22,7 +21,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanGetDefaultTemplateFromAttribute()
         {
-            var documentType = new Jet.DocumentType(typeof(DocumentType), new Dictionary<Type, IEnumerable<Type>> { { typeof(DocumentType), new List<Type> { typeof(DocumentType) } } });
+            var documentType = new Jet.DocumentType(typeof(DocumentType));
 
             Assert.AreEqual("DefaultTemplate", documentType.DefaultTemplate);
         }
@@ -33,7 +32,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanGetTemplatesFromAttribute()
         {
-            var documentType = new Jet.DocumentType(typeof(DocumentType), new Dictionary<Type, IEnumerable<Type>> { { typeof(DocumentType), new List<Type> { typeof(DocumentType) } } });
+            var documentType = new Jet.DocumentType(typeof(DocumentType));
 
             Assert.IsFalse(documentType.Templates.Any());
         }
@@ -44,7 +43,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanGetTypeFromAttribute()
         {
-            var documentType = new Jet.DocumentType(typeof(DocumentType), new Dictionary<Type, IEnumerable<Type>> { { typeof(DocumentType), new List<Type> { typeof(DocumentType) } } });
+            var documentType = new Jet.DocumentType(typeof(DocumentType));
 
             Assert.AreSame(typeof(DocumentType), documentType.Type);
         }
@@ -55,7 +54,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanGetNameFromAttribute()
         {
-            var documentType = new Jet.DocumentType(typeof(DocumentType), new Dictionary<Type, IEnumerable<Type>> { { typeof(DocumentType), new List<Type> { typeof(DocumentType) } } });
+            var documentType = new Jet.DocumentType(typeof(DocumentType));
 
             Assert.AreEqual("DocumentType", documentType.Name);
         }
@@ -66,7 +65,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanGetAliasFromAttribute()
         {
-            var documentType = new Jet.DocumentType(typeof(DocumentType), new Dictionary<Type, IEnumerable<Type>> { { typeof(DocumentType), new List<Type> { typeof(DocumentType) } } });
+            var documentType = new Jet.DocumentType(typeof(DocumentType));
 
             Assert.AreEqual("documentType", documentType.Alias);
         }
@@ -77,7 +76,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanGetIdFromAttribute()
         {
-            var documentType = new Jet.DocumentType(typeof(DocumentType), new Dictionary<Type, IEnumerable<Type>> { { typeof(DocumentType), new List<Type> { typeof(DocumentType) } } });
+            var documentType = new Jet.DocumentType(typeof(DocumentType));
 
             Assert.AreEqual(Guid.Parse("85384e6c-9001-4c02-8b0e-eb76f1edabc7"), documentType.Id);
         }
@@ -88,7 +87,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanGetDescriptionFromAttribute()
         {
-            var documentType = new Jet.DocumentType(typeof(DocumentType), new Dictionary<Type, IEnumerable<Type>> { { typeof(DocumentType), new List<Type> { typeof(DocumentType) } } });
+            var documentType = new Jet.DocumentType(typeof(DocumentType));
 
             Assert.AreEqual("Description", documentType.Description);
         }
@@ -99,7 +98,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanGetAllowedAsRootFromAttribute()
         {
-            var documentType = new Jet.DocumentType(typeof(DocumentType), new Dictionary<Type, IEnumerable<Type>> { { typeof(DocumentType), new List<Type> { typeof(DocumentType) } } });
+            var documentType = new Jet.DocumentType(typeof(DocumentType));
 
             Assert.AreEqual(true, documentType.AllowedAsRoot);
         }
@@ -110,7 +109,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanGetAllowedChildNodeTypesFromAttribute()
         {
-            var documentType = new Jet.DocumentType(typeof(DocumentType), new Dictionary<Type, IEnumerable<Type>> { { typeof(DocumentType), new List<Type> { typeof(DocumentType) } } });
+            var documentType = new Jet.DocumentType(typeof(DocumentType));
 
             Assert.IsFalse(documentType.AllowedChildNodeTypes.Any());
         }
@@ -121,7 +120,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanGetProperties()
         {
-            var documentType = new Jet.DocumentType(typeof(DocumentType), new Dictionary<Type, IEnumerable<Type>> { { typeof(DocumentType), new List<Type> { typeof(DocumentType) } } });
+            var documentType = new Jet.DocumentType(typeof(DocumentType));
 
             Assert.AreEqual(6, documentType.Properties.Count());
         }
@@ -133,7 +132,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         public void CanGetStringProperty()
         {
             var document = new DocumentType();
-            var documentType = new Jet.DocumentType(document.GetType(), new Dictionary<Type, IEnumerable<Type>> { { document.GetType(), new List<Type> { document.GetType() } } });
+            var documentType = new Jet.DocumentType(document.GetType());
             var property = documentType.Properties.First(p => p.Name == GetPropertyName(() => document.StringProperty));
 
             Assert.AreSame(typeof(string), property.Type);
@@ -146,7 +145,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         public void CanGetIntegerProperty()
         {
             var document = new DocumentType();
-            var documentType = new Jet.DocumentType(document.GetType(), new Dictionary<Type, IEnumerable<Type>> { { document.GetType(), new List<Type> { document.GetType() } } });
+            var documentType = new Jet.DocumentType(document.GetType());
             var property = documentType.Properties.First(p => p.Name == GetPropertyName(() => document.IntegerProperty));
 
             Assert.AreSame(typeof(int), property.Type);
@@ -159,7 +158,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         public void CanGetFloatingDecimalPointProperty()
         {
             var document = new DocumentType();
-            var documentType = new Jet.DocumentType(document.GetType(), new Dictionary<Type, IEnumerable<Type>> { { document.GetType(), new List<Type> { document.GetType() } } });
+            var documentType = new Jet.DocumentType(document.GetType());
             var property = documentType.Properties.First(p => p.Name == GetPropertyName(() => document.FloatingDecimalPointProperty));
 
             Assert.AreSame(typeof(decimal), property.Type);
@@ -172,7 +171,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         public void CanGetFloatingBinaryPointProperty()
         {
             var document = new DocumentType();
-            var documentType = new Jet.DocumentType(document.GetType(), new Dictionary<Type, IEnumerable<Type>> { { document.GetType(), new List<Type> { document.GetType() } } });
+            var documentType = new Jet.DocumentType(document.GetType());
             var property = documentType.Properties.First(p => p.Name == GetPropertyName(() => document.FloatingBinaryPointProperty));
 
             Assert.AreSame(typeof(float), property.Type);
@@ -185,7 +184,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         public void CanGetDateTimeProperty()
         {
             var document = new DocumentType();
-            var documentType = new Jet.DocumentType(document.GetType(), new Dictionary<Type, IEnumerable<Type>> { { document.GetType(), new List<Type> { document.GetType() } } });
+            var documentType = new Jet.DocumentType(document.GetType());
             var property = documentType.Properties.First(p => p.Name == GetPropertyName(() => document.DateTimeProperty));
 
             Assert.AreSame(typeof(DateTime), property.Type);
@@ -198,7 +197,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         public void CanGetBooleanProperty()
         {
             var document = new DocumentType();
-            var documentType = new Jet.DocumentType(document.GetType(), new Dictionary<Type, IEnumerable<Type>> { { document.GetType(), new List<Type> { document.GetType() } } });
+            var documentType = new Jet.DocumentType(document.GetType());
             var property = documentType.Properties.First(p => p.Name == GetPropertyName(() => document.BooleanProperty));
 
             Assert.AreSame(typeof(bool), property.Type);
@@ -211,7 +210,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         public void CannotGetNonScaffoldedProperty()
         {
             var document = new DocumentType();
-            var documentType = new Jet.DocumentType(document.GetType(), new Dictionary<Type, IEnumerable<Type>> { { document.GetType(), new List<Type> { document.GetType() } } });
+            var documentType = new Jet.DocumentType(document.GetType());
             var property = documentType.Properties.FirstOrDefault(p => p.Name == GetPropertyName(() => document.NonScaffoldedStringProperty));
 
             Assert.IsNull(property);
@@ -224,7 +223,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         public void CannotGetPropertyWithoutSetter()
         {
             var document = new DocumentType();
-            var documentType = new Jet.DocumentType(document.GetType(), new Dictionary<Type, IEnumerable<Type>> { { document.GetType(), new List<Type> { document.GetType() } } });
+            var documentType = new Jet.DocumentType(document.GetType());
             var property = documentType.Properties.FirstOrDefault(p => p.Name == GetPropertyName(() => document.StringPropertyWithoutSetter));
 
             Assert.IsNull(property);

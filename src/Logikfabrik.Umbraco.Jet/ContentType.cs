@@ -16,21 +16,16 @@ namespace Logikfabrik.Umbraco.Jet
     public abstract class ContentType<T> : BaseType<T>
         where T : ContentTypeAttribute
     {
+        private readonly Lazy<IDictionary<Type, IEnumerable<Type>>> _composition;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentType{T}" /> class.
         /// </summary>
         /// <param name="type">The type.</param>
-        /// <param name="composition">The type composition.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="composition" /> is <c>null</c>.</exception>
-        protected ContentType(Type type, IDictionary<Type, IEnumerable<Type>> composition)
+        protected ContentType(Type type)
             : base(type)
         {
-            if (composition == null)
-            {
-                throw new ArgumentNullException(nameof(composition));
-            }
-
-            Composition = composition;
+            _composition = new Lazy<IDictionary<Type, IEnumerable<Type>>>(GetComposition);
 
             var attribute = type.GetCustomAttribute<T>();
 
@@ -69,34 +64,54 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The composition.
         /// </value>
-        public IDictionary<Type, IEnumerable<Type>> Composition { get; }
+        public IDictionary<Type, IEnumerable<Type>> Composition => _composition.Value;
 
         /// <summary>
         /// Gets the properties.
         /// </summary>
-        /// <param name="type">The type.</param>
         /// <returns>The properties.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="type" /> is <c>null</c>.</exception>
-        protected override IEnumerable<TypeProperty> GetProperties(Type type)
+        protected override IEnumerable<TypeProperty> GetProperties()
         {
-            if (type == null)
+            var properties = Composition[Type].SelectMany(t => t.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly));
+
+            return from property in properties where IsValidProperty(property) select new TypeProperty(property);
+        }
+
+        /// <summary>
+        /// Gets the composition.
+        /// </summary>
+        /// <returns>The composition.</returns>
+        protected abstract IDictionary<Type, IEnumerable<Type>> GetComposition();
+
+        /// <summary>
+        /// Gets the composition for the specified type.
+        /// </summary>
+        /// <param name="predicate">The predicate.</param>
+        /// <returns>The composition for the specified type.</returns>
+        protected IDictionary<Type, IEnumerable<Type>> GetComposition(Func<Type, bool> predicate)
+        {
+            if (predicate == null)
             {
-                throw new ArgumentNullException(nameof(type));
+                throw new ArgumentNullException(nameof(predicate));
             }
 
-            var types = Composition[type];
-            var properties = types.SelectMany(t => t.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly));
+            var composition = new Dictionary<Type, IEnumerable<Type>>();
+            List<Type> compositionTypes = null;
 
-            // ReSharper disable once LoopCanBeConvertedToQuery
-            foreach (var property in properties)
+            foreach (var t in GetInheritance())
             {
-                if (!IsValidProperty(property))
+                if (predicate(t))
                 {
-                    continue;
+                    composition.Add(t, new List<Type> { t });
+                    compositionTypes = (List<Type>)composition[t];
                 }
-
-                yield return new TypeProperty(property);
+                else
+                {
+                    compositionTypes?.Add(t);
+                }
             }
+
+            return composition;
         }
 
         /// <summary>
@@ -147,6 +162,14 @@ namespace Logikfabrik.Umbraco.Jet
             }
 
             return attribute.AllowedChildNodeTypes?.Where(t => t.GetCustomAttribute<T>(false) != null) ?? new Type[] { };
+        }
+
+        private IEnumerable<Type> GetInheritance()
+        {
+            for (var t = Type; t != null; t = t.BaseType)
+            {
+                yield return t;
+            }
         }
     }
 }

@@ -7,6 +7,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Linq;
     using System.Reflection;
     using Extensions;
 
@@ -32,8 +33,8 @@ namespace Logikfabrik.Umbraco.Jet
             }
 
             Type = type;
-            Alias = GetAlias(type);
-            _properties = new Lazy<IEnumerable<TypeProperty>>(() => GetProperties(type));
+            Alias = GetAlias();
+            _properties = new Lazy<IEnumerable<TypeProperty>>(GetProperties);
 
             var attribute = type.GetCustomAttribute<T>();
 
@@ -102,26 +103,10 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// Gets the properties.
         /// </summary>
-        /// <param name="type">The type.</param>
         /// <returns>The properties.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="type" /> is <c>null</c>.</exception>
-        protected virtual IEnumerable<TypeProperty> GetProperties(Type type)
+        protected virtual IEnumerable<TypeProperty> GetProperties()
         {
-            if (type == null)
-            {
-                throw new ArgumentNullException(nameof(type));
-            }
-
-            // ReSharper disable once LoopCanBeConvertedToQuery
-            foreach (var property in type.GetProperties())
-            {
-                if (!IsValidProperty(property))
-                {
-                    continue;
-                }
-
-                yield return new TypeProperty(property);
-            }
+            return from property in Type.GetProperties() where IsValidProperty(property) select new TypeProperty(property);
         }
 
         /// <summary>
@@ -144,22 +129,6 @@ namespace Logikfabrik.Umbraco.Jet
             var attribute = property.GetCustomAttribute<ScaffoldColumnAttribute>();
 
             return attribute == null || attribute.Scaffold;
-        }
-
-        /// <summary>
-        /// Gets the alias.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns>The alias.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="type" /> is <c>null</c>.</exception>
-        private static string GetAlias(Type type)
-        {
-            if (type == null)
-            {
-                throw new ArgumentNullException(nameof(type));
-            }
-
-            return type.Name.Alias();
         }
 
         /// <summary>
@@ -224,6 +193,15 @@ namespace Logikfabrik.Umbraco.Jet
             }
 
             return attribute.Description;
+        }
+
+        /// <summary>
+        /// Gets the alias.
+        /// </summary>
+        /// <returns>The alias.</returns>
+        private string GetAlias()
+        {
+            return Type.Name.Alias();
         }
     }
 }

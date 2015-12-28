@@ -84,10 +84,6 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
             {
                 return false;
             }
-            catch (ReflectionTypeLoadException)
-            {
-                return false;
-            }
         }
 
         /// <summary>

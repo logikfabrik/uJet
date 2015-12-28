@@ -83,13 +83,12 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// <exception cref="ArgumentException">Thrown if media type with alias <paramref name="mediaTypeAlias" /> can not be found.</exception>
         public object GetMedia(int id, string mediaTypeAlias)
         {
+            // TODO: Rewrite the media type look-up; it does not support ID.
             var mediaType = TypeService.MediaTypes.FirstOrDefault(t => t.Name.Alias() == mediaTypeAlias);
 
             if (mediaType == null)
             {
-                throw new ArgumentException(
-                    $"Media type with alias {mediaTypeAlias} could not be found.",
-                    nameof(mediaTypeAlias));
+                throw new ArgumentException($"Media type with alias {mediaTypeAlias} could not be found.", nameof(mediaTypeAlias));
             }
 
             return GetMedia(UmbracoHelper.TypedMedia(id), mediaType);
@@ -120,7 +119,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
                 throw new ArgumentException($"Type {mediaType} is not a media type.", nameof(mediaType));
             }
 
-            return GetContent(content, mediaType);
+            return GetMappedContent(content, mediaType);
         }
     }
 }

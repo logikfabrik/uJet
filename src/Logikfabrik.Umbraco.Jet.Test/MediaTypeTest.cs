@@ -7,7 +7,6 @@ namespace Logikfabrik.Umbraco.Jet.Test
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
-    using System.Collections.Generic;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
@@ -22,7 +21,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanGetTypeFromAttribute()
         {
-            var mediaType = new Jet.MediaType(typeof(MediaType), new Dictionary<Type, IEnumerable<Type>> { { typeof(MediaType), new List<Type> { typeof(MediaType) } } });
+            var mediaType = new Jet.MediaType(typeof(MediaType));
 
             Assert.AreSame(typeof(MediaType), mediaType.Type);
         }
@@ -33,7 +32,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanGetNameFromAttribute()
         {
-            var mediaType = new Jet.MediaType(typeof(MediaType), new Dictionary<Type, IEnumerable<Type>> { { typeof(MediaType), new List<Type> { typeof(MediaType) } } });
+            var mediaType = new Jet.MediaType(typeof(MediaType));
 
             Assert.AreEqual("MediaType", mediaType.Name);
         }
@@ -44,7 +43,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanGetAliasFromAttribute()
         {
-            var mediaType = new Jet.MediaType(typeof(MediaType), new Dictionary<Type, IEnumerable<Type>> { { typeof(MediaType), new List<Type> { typeof(MediaType) } } });
+            var mediaType = new Jet.MediaType(typeof(MediaType));
 
             Assert.AreEqual("mediaType", mediaType.Alias);
         }
@@ -55,7 +54,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanGetIdFromAttribute()
         {
-            var mediaType = new Jet.MediaType(typeof(MediaType), new Dictionary<Type, IEnumerable<Type>> { { typeof(MediaType), new List<Type> { typeof(MediaType) } } });
+            var mediaType = new Jet.MediaType(typeof(MediaType));
 
             Assert.AreEqual(Guid.Parse("7bbd6ff5-54ac-4b5a-80fb-4adabe366bcd"), mediaType.Id);
         }
@@ -66,7 +65,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanGetDescriptionFromAttribute()
         {
-            var mediaType = new Jet.MediaType(typeof(MediaType), new Dictionary<Type, IEnumerable<Type>> { { typeof(MediaType), new List<Type> { typeof(MediaType) } } });
+            var mediaType = new Jet.MediaType(typeof(MediaType));
 
             Assert.AreEqual("Description", mediaType.Description);
         }
@@ -77,7 +76,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanGetAllowedAsRootFromAttribute()
         {
-            var mediaType = new Jet.MediaType(typeof(MediaType), new Dictionary<Type, IEnumerable<Type>> { { typeof(MediaType), new List<Type> { typeof(MediaType) } } });
+            var mediaType = new Jet.MediaType(typeof(MediaType));
 
             Assert.AreEqual(true, mediaType.AllowedAsRoot);
         }
@@ -88,7 +87,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanGetAllowedChildNodeTypesFromAttribute()
         {
-            var mediaType = new Jet.MediaType(typeof(MediaType), new Dictionary<Type, IEnumerable<Type>> { { typeof(MediaType), new List<Type> { typeof(MediaType) } } });
+            var mediaType = new Jet.MediaType(typeof(MediaType));
 
             Assert.IsFalse(mediaType.AllowedChildNodeTypes.Any());
         }
@@ -99,7 +98,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanGetProperties()
         {
-            var mediaType = new Jet.MediaType(typeof(MediaType), new Dictionary<Type, IEnumerable<Type>> { { typeof(MediaType), new List<Type> { typeof(MediaType) } } });
+            var mediaType = new Jet.MediaType(typeof(MediaType));
 
             Assert.AreEqual(6, mediaType.Properties.Count());
         }
@@ -111,7 +110,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         public void CanGetStringProperty()
         {
             var media = new MediaType();
-            var mediaType = new Jet.MediaType(media.GetType(), new Dictionary<Type, IEnumerable<Type>> { { media.GetType(), new List<Type> { media.GetType() } } });
+            var mediaType = new Jet.MediaType(media.GetType());
             var property = mediaType.Properties.First(p => p.Name == GetPropertyName(() => media.StringProperty));
 
             Assert.AreSame(typeof(string), property.Type);
@@ -124,7 +123,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         public void CanGetIntegerProperty()
         {
             var media = new MediaType();
-            var mediaType = new Jet.MediaType(media.GetType(), new Dictionary<Type, IEnumerable<Type>> { { media.GetType(), new List<Type> { media.GetType() } } });
+            var mediaType = new Jet.MediaType(media.GetType());
             var property = mediaType.Properties.First(p => p.Name == GetPropertyName(() => media.IntegerProperty));
 
             Assert.AreSame(typeof(int), property.Type);
@@ -137,7 +136,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         public void CanGetFloatingDecimalPointProperty()
         {
             var media = new MediaType();
-            var mediaType = new Jet.MediaType(media.GetType(), new Dictionary<Type, IEnumerable<Type>> { { media.GetType(), new List<Type> { media.GetType() } } });
+            var mediaType = new Jet.MediaType(media.GetType());
             var property = mediaType.Properties.First(p => p.Name == GetPropertyName(() => media.FloatingDecimalPointProperty));
 
             Assert.AreSame(typeof(decimal), property.Type);
@@ -150,7 +149,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         public void CanGetFloatingBinaryPointProperty()
         {
             var media = new MediaType();
-            var mediaType = new Jet.MediaType(media.GetType(), new Dictionary<Type, IEnumerable<Type>> { { media.GetType(), new List<Type> { media.GetType() } } });
+            var mediaType = new Jet.MediaType(media.GetType());
             var property = mediaType.Properties.First(p => p.Name == GetPropertyName(() => media.FloatingBinaryPointProperty));
 
             Assert.AreSame(typeof(float), property.Type);
@@ -163,7 +162,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         public void CanGetDateTimeProperty()
         {
             var media = new MediaType();
-            var mediaType = new Jet.MediaType(media.GetType(), new Dictionary<Type, IEnumerable<Type>> { { media.GetType(), new List<Type> { media.GetType() } } });
+            var mediaType = new Jet.MediaType(media.GetType());
             var property = mediaType.Properties.First(p => p.Name == GetPropertyName(() => media.DateTimeProperty));
 
             Assert.AreSame(typeof(DateTime), property.Type);
@@ -176,7 +175,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         public void CanGetBooleanProperty()
         {
             var media = new MediaType();
-            var mediaType = new Jet.MediaType(media.GetType(), new Dictionary<Type, IEnumerable<Type>> { { media.GetType(), new List<Type> { media.GetType() } } });
+            var mediaType = new Jet.MediaType(media.GetType());
             var property = mediaType.Properties.First(p => p.Name == GetPropertyName(() => media.BooleanProperty));
 
             Assert.AreSame(typeof(bool), property.Type);
@@ -189,7 +188,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         public void CannotGetNonScaffoldedProperty()
         {
             var media = new MediaType();
-            var mediaType = new Jet.MediaType(media.GetType(), new Dictionary<Type, IEnumerable<Type>> { { media.GetType(), new List<Type> { media.GetType() } } });
+            var mediaType = new Jet.MediaType(media.GetType());
             var property = mediaType.Properties.FirstOrDefault(p => p.Name == GetPropertyName(() => media.NonScaffoldedStringProperty));
 
             Assert.IsNull(property);
@@ -202,7 +201,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         public void CannotGetPropertyWithoutSetter()
         {
             var media = new MediaType();
-            var mediaType = new Jet.MediaType(media.GetType(), new Dictionary<Type, IEnumerable<Type>> { { media.GetType(), new List<Type> { media.GetType() } } });
+            var mediaType = new Jet.MediaType(media.GetType());
             var property = mediaType.Properties.FirstOrDefault(p => p.Name == GetPropertyName(() => media.StringPropertyWithoutSetter));
 
             Assert.IsNull(property);

@@ -68,7 +68,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         public override void Synchronize()
         {
-            var jetDocumentTypes = _typeService.DocumentTypes.Select(t => new DocumentType(t, _typeService.GetComposition(t, Extensions.TypeExtensions.IsDocumentType))).ToArray();
+            var jetDocumentTypes = _typeService.DocumentTypes.Select(t => new DocumentType(t)).ToArray();
 
             // No document types; there's nothing to sync.
             if (!jetDocumentTypes.Any())
@@ -89,10 +89,67 @@ namespace Logikfabrik.Umbraco.Jet
             // We get all document types once more to refresh them after creating/updating them.
             documentTypes = ContentTypeService.GetAllContentTypes().Cast<IContentTypeBase>().ToArray();
 
-            Func<Type, ContentType<DocumentTypeAttribute>> constructor = t => new DocumentType(t, _typeService.GetComposition(t, Extensions.TypeExtensions.IsDocumentType));
+            Func<Type, ContentType<DocumentTypeAttribute>> constructor = t => new DocumentType(t);
 
             SetAllowedContentTypes(documentTypes, jetDocumentTypes.Cast<ContentType<DocumentTypeAttribute>>().ToArray(), constructor);
             SetComposition(documentTypes, jetDocumentTypes.Cast<ContentType<DocumentTypeAttribute>>().ToArray(), constructor);
+        }
+
+        /// <summary>
+        /// Creates a new document type using the uJet document type.
+        /// </summary>
+        /// <param name="jetDocumentType">The uJet document type.</param>
+        /// <returns>The created document type.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="jetDocumentType" /> is <c>null</c>.</exception>
+        internal virtual IContentType CreateDocumentType(DocumentType jetDocumentType)
+        {
+            if (jetDocumentType == null)
+            {
+                throw new ArgumentNullException(nameof(jetDocumentType));
+            }
+
+            var documentType = (IContentType)CreateContentType(() => new global::Umbraco.Core.Models.ContentType(-1), jetDocumentType);
+
+            SetAllowedTemplates(documentType, jetDocumentType);
+            SetDefaultTemplate(documentType, jetDocumentType);
+
+            ContentTypeService.Save(documentType);
+
+            // We get the document type once more to refresh it after updating it.
+            documentType = ContentTypeService.GetContentType(documentType.Alias);
+
+            // Update tracking.
+            SetPropertyTypeId(documentType, jetDocumentType);
+
+            return documentType;
+        }
+
+        /// <summary>
+        /// Updates the document type to match the uJet document type.
+        /// </summary>
+        /// <param name="documentType">The document type to update.</param>
+        /// <param name="jetDocumentType">The uJet document type.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="documentType" />, or <paramref name="jetDocumentType" /> are <c>null</c>.</exception>
+        internal virtual void UpdateDocumentType(IContentType documentType, DocumentType jetDocumentType)
+        {
+            if (documentType == null)
+            {
+                throw new ArgumentNullException(nameof(documentType));
+            }
+
+            if (jetDocumentType == null)
+            {
+                throw new ArgumentNullException(nameof(jetDocumentType));
+            }
+
+            UpdateContentType(documentType, () => new global::Umbraco.Core.Models.ContentType(-1), jetDocumentType);
+            SetAllowedTemplates(documentType, jetDocumentType);
+            SetDefaultTemplate(documentType, jetDocumentType);
+
+            ContentTypeService.Save(documentType);
+
+            // Update tracking. We get the document type once more to refresh it after updating it.
+            SetPropertyTypeId(ContentTypeService.GetContentType(documentType.Alias), jetDocumentType);
         }
 
         /// <summary>
@@ -179,63 +236,6 @@ namespace Logikfabrik.Umbraco.Jet
             {
                 UpdateDocumentType(documentType, jetDocumentType);
             }
-        }
-
-        /// <summary>
-        /// Creates a new document type using the uJet document type.
-        /// </summary>
-        /// <param name="jetDocumentType">The uJet document type.</param>
-        /// <returns>The created document type.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="jetDocumentType" /> is <c>null</c>.</exception>
-        internal virtual IContentType CreateDocumentType(DocumentType jetDocumentType)
-        {
-            if (jetDocumentType == null)
-            {
-                throw new ArgumentNullException(nameof(jetDocumentType));
-            }
-
-            var documentType = (IContentType)CreateContentType(() => new global::Umbraco.Core.Models.ContentType(-1), jetDocumentType);
-
-            SetAllowedTemplates(documentType, jetDocumentType);
-            SetDefaultTemplate(documentType, jetDocumentType);
-
-            ContentTypeService.Save(documentType);
-
-            // We get the document type once more to refresh it after updating it.
-            documentType = ContentTypeService.GetContentType(documentType.Alias);
-
-            // Update tracking.
-            SetPropertyTypeId(documentType, jetDocumentType);
-
-            return documentType;
-        }
-
-        /// <summary>
-        /// Updates the document type to match the uJet document type.
-        /// </summary>
-        /// <param name="documentType">The document type to update.</param>
-        /// <param name="jetDocumentType">The uJet document type.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="documentType" />, or <paramref name="jetDocumentType" /> are <c>null</c>.</exception>
-        internal virtual void UpdateDocumentType(IContentType documentType, DocumentType jetDocumentType)
-        {
-            if (documentType == null)
-            {
-                throw new ArgumentNullException(nameof(documentType));
-            }
-
-            if (jetDocumentType == null)
-            {
-                throw new ArgumentNullException(nameof(jetDocumentType));
-            }
-
-            UpdateContentType(documentType, () => new global::Umbraco.Core.Models.ContentType(-1), jetDocumentType);
-            SetAllowedTemplates(documentType, jetDocumentType);
-            SetDefaultTemplate(documentType, jetDocumentType);
-
-            ContentTypeService.Save(documentType);
-
-            // Update tracking. We get the document type once more to refresh it after updating it.
-            SetPropertyTypeId(ContentTypeService.GetContentType(documentType.Alias), jetDocumentType);
         }
 
         /// <summary>

@@ -2,8 +2,6 @@
 //   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
-using Logikfabrik.Umbraco.Jet.Extensions;
-
 namespace Logikfabrik.Umbraco.Jet.Test
 {
     using System.Linq;
@@ -213,118 +211,118 @@ namespace Logikfabrik.Umbraco.Jet.Test
             Assert.IsFalse(memberTypes.Any());
         }
 
-        [TestMethod]
-        public void CanGetCompositionForDocumentTypeWithoutBaseClass()
-        {
-            var typeServiceMock = GetTypeServiceMock(typeof(DocumentTypeA));
+        //[TestMethod]
+        //public void CanGetCompositionForDocumentTypeWithoutBaseClass()
+        //{
+        //    var typeServiceMock = GetTypeServiceMock(typeof(DocumentTypeA));
 
-            var composition = typeServiceMock.Object.GetComposition(typeof(DocumentTypeA), TypeExtensions.IsDocumentType);
+        //    var composition = typeServiceMock.Object.GetComposition(typeof(DocumentTypeA), TypeExtensions.IsDocumentType);
 
-            Assert.AreEqual(1, composition.Count);
-            Assert.AreEqual(2, composition[typeof(DocumentTypeA)].Count());
-        }
+        //    Assert.AreEqual(1, composition.Count);
+        //    Assert.AreEqual(2, composition[typeof(DocumentTypeA)].Count());
+        //}
 
-        [TestMethod]
-        public void CanGetCompositionForDocumentTypeWithPublicBaseClass()
-        {
-            var typeServiceMock = GetTypeServiceMock(typeof(DocumentTypeB));
+        //[TestMethod]
+        //public void CanGetCompositionForDocumentTypeWithPublicBaseClass()
+        //{
+        //    var typeServiceMock = GetTypeServiceMock(typeof(DocumentTypeB));
 
-            var composition = typeServiceMock.Object.GetComposition(typeof(DocumentTypeB), TypeExtensions.IsDocumentType);
+        //    var composition = typeServiceMock.Object.GetComposition(typeof(DocumentTypeB), TypeExtensions.IsDocumentType);
 
-            Assert.AreEqual(1, composition.Count);
-            Assert.AreEqual(3, composition[typeof(DocumentTypeB)].Count());
-        }
+        //    Assert.AreEqual(1, composition.Count);
+        //    Assert.AreEqual(3, composition[typeof(DocumentTypeB)].Count());
+        //}
 
-        [TestMethod]
-        public void CanGetCompositionForDocumentTypeWithAbstractBaseClass()
-        {
-            var typeServiceMock = GetTypeServiceMock(typeof(DocumentTypeC));
+        //[TestMethod]
+        //public void CanGetCompositionForDocumentTypeWithAbstractBaseClass()
+        //{
+        //    var typeServiceMock = GetTypeServiceMock(typeof(DocumentTypeC));
 
-            var composition = typeServiceMock.Object.GetComposition(typeof(DocumentTypeC), TypeExtensions.IsDocumentType);
+        //    var composition = typeServiceMock.Object.GetComposition(typeof(DocumentTypeC), TypeExtensions.IsDocumentType);
 
-            Assert.AreEqual(1, composition.Count);
-            Assert.AreEqual(3, composition[typeof(DocumentTypeC)].Count());
-        }
+        //    Assert.AreEqual(1, composition.Count);
+        //    Assert.AreEqual(3, composition[typeof(DocumentTypeC)].Count());
+        //}
 
-        [TestMethod]
-        public void CanGetCompositionForDocumentTypeWithPublicDocumentTypeBaseClass()
-        {
-            var typeServiceMock = GetTypeServiceMock(typeof(DocumentTypeE));
+        //[TestMethod]
+        //public void CanGetCompositionForDocumentTypeWithPublicDocumentTypeBaseClass()
+        //{
+        //    var typeServiceMock = GetTypeServiceMock(typeof(DocumentTypeE));
 
-            var composition = typeServiceMock.Object.GetComposition(typeof(DocumentTypeE), TypeExtensions.IsDocumentType);
+        //    var composition = typeServiceMock.Object.GetComposition(typeof(DocumentTypeE), TypeExtensions.IsDocumentType);
 
-            Assert.AreEqual(2, composition.Count);
-            Assert.AreEqual(2, composition[typeof(DocumentTypeD)].Count());
-            Assert.AreEqual(2, composition[typeof(DocumentTypeE)].Count());
-        }
+        //    Assert.AreEqual(2, composition.Count);
+        //    Assert.AreEqual(2, composition[typeof(DocumentTypeD)].Count());
+        //    Assert.AreEqual(2, composition[typeof(DocumentTypeE)].Count());
+        //}
 
-        /// <summary>
-        /// The <see cref="DocumentTypeA" /> class.
-        /// </summary>
-        [DocumentType("DocumentTypeA")]
-        public class DocumentTypeA
-        {
-            public string Property1 { get; set; }
-        }
+        ///// <summary>
+        ///// The <see cref="DocumentTypeA" /> class.
+        ///// </summary>
+        //[DocumentType("DocumentTypeA")]
+        //public class DocumentTypeA
+        //{
+        //    public string Property1 { get; set; }
+        //}
 
-        /// <summary>
-        /// The <see cref="DocumentTypeBBaseClass" /> class.
-        /// </summary>
-        public class DocumentTypeBBaseClass
-        {
-            public string Property1 { get; set; }
-        }
+        ///// <summary>
+        ///// The <see cref="DocumentTypeBBaseClass" /> class.
+        ///// </summary>
+        //public class DocumentTypeBBaseClass
+        //{
+        //    public string Property1 { get; set; }
+        //}
 
-        /// <summary>
-        /// The <see cref="DocumentTypeB" /> class.
-        /// </summary>
-        [DocumentType("DocumentTypeB")]
-        public class DocumentTypeB : DocumentTypeBBaseClass
-        {
-            public string Property2 { get; set; }
-        }
+        ///// <summary>
+        ///// The <see cref="DocumentTypeB" /> class.
+        ///// </summary>
+        //[DocumentType("DocumentTypeB")]
+        //public class DocumentTypeB : DocumentTypeBBaseClass
+        //{
+        //    public string Property2 { get; set; }
+        //}
 
-        /// <summary>
-        /// The <see cref="DocumentTypeCBaseClass" /> class.
-        /// </summary>
-        public abstract class DocumentTypeCBaseClass
-        {
-            public string Property1 { get; set; }
-        }
+        ///// <summary>
+        ///// The <see cref="DocumentTypeCBaseClass" /> class.
+        ///// </summary>
+        //public abstract class DocumentTypeCBaseClass
+        //{
+        //    public string Property1 { get; set; }
+        //}
 
-        /// <summary>
-        /// The <see cref="DocumentTypeC" /> class.
-        /// </summary>
-        [DocumentType("DocumentTypeC")]
-        public class DocumentTypeC : DocumentTypeCBaseClass
-        {
-            public string Property2 { get; set; }
-        }
+        ///// <summary>
+        ///// The <see cref="DocumentTypeC" /> class.
+        ///// </summary>
+        //[DocumentType("DocumentTypeC")]
+        //public class DocumentTypeC : DocumentTypeCBaseClass
+        //{
+        //    public string Property2 { get; set; }
+        //}
 
-        /// <summary>
-        /// The <see cref="DocumentTypeD" /> class.
-        /// </summary>
-        [DocumentType("DocumentTypeD")]
-        public class DocumentTypeD
-        {
-            public string Property1 { get; set; }
-        }
+        ///// <summary>
+        ///// The <see cref="DocumentTypeD" /> class.
+        ///// </summary>
+        //[DocumentType("DocumentTypeD")]
+        //public class DocumentTypeD
+        //{
+        //    public string Property1 { get; set; }
+        //}
 
-        /// <summary>
-        /// The <see cref="DocumentTypeEBaseClass" /> class.
-        /// </summary>
-        public abstract class DocumentTypeEBaseClass : DocumentTypeD
-        {
-            public string Property2 { get; set; }
-        }
+        ///// <summary>
+        ///// The <see cref="DocumentTypeEBaseClass" /> class.
+        ///// </summary>
+        //public abstract class DocumentTypeEBaseClass : DocumentTypeD
+        //{
+        //    public string Property2 { get; set; }
+        //}
 
-        /// <summary>
-        /// The <see cref="DocumentTypeE" /> class.
-        /// </summary>
-        [DocumentType("DocumentTypeE")]
-        public class DocumentTypeE : DocumentTypeEBaseClass
-        {
-            public string Property3 { get; set; }
-        }
+        ///// <summary>
+        ///// The <see cref="DocumentTypeE" /> class.
+        ///// </summary>
+        //[DocumentType("DocumentTypeE")]
+        //public class DocumentTypeE : DocumentTypeEBaseClass
+        //{
+        //    public string Property3 { get; set; }
+        //}
     }
 }

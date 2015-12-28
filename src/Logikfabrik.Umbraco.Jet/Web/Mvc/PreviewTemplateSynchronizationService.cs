@@ -75,7 +75,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
 
             foreach (var type in _typeService.DocumentTypes.Where(t => Attribute.IsDefined(t, typeof(PreviewTemplateAttribute))))
             {
-                var contentType = contentTypes.FirstOrDefault(t => t.Alias == new DocumentType(type, _typeService.GetComposition(type, Extensions.TypeExtensions.IsDocumentType)).Alias);
+                var contentType = contentTypes.FirstOrDefault(t => t.Alias == new DocumentType(type).Alias);
 
                 if (contentType == null)
                 {

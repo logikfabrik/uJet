@@ -58,7 +58,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         public override void Synchronize()
         {
-            var jetMediaTypes = _typeService.MediaTypes.Select(t => new MediaType(t, _typeService.GetComposition(t, Extensions.TypeExtensions.IsMediaType))).ToArray();
+            var jetMediaTypes = _typeService.MediaTypes.Select(t => new MediaType(t)).ToArray();
 
             // No media types; there's nothing to sync.
             if (!jetMediaTypes.Any())
@@ -79,10 +79,62 @@ namespace Logikfabrik.Umbraco.Jet
             // We get all media types once more to refresh them after creating/updating them.
             mediaTypes = ContentTypeService.GetAllMediaTypes().Cast<IContentTypeBase>().ToArray();
 
-            Func<Type, ContentType<MediaTypeAttribute>> constructor = t => new MediaType(t, _typeService.GetComposition(t, Extensions.TypeExtensions.IsMediaType));
+            Func<Type, ContentType<MediaTypeAttribute>> constructor = t => new MediaType(t);
 
             SetAllowedContentTypes(mediaTypes, jetMediaTypes.Cast<ContentType<MediaTypeAttribute>>().ToArray(), constructor);
             SetComposition(mediaTypes, jetMediaTypes.Cast<ContentType<MediaTypeAttribute>>().ToArray(), constructor);
+        }
+
+        /// <summary>
+        /// Creates a new media type using the uJet media type.
+        /// </summary>
+        /// <param name="jetMediaType">The uJet media type.</param>
+        /// <returns>The created media type.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="jetMediaType" /> is <c>null</c>.</exception>
+        internal virtual IMediaType CreateMediaType(MediaType jetMediaType)
+        {
+            if (jetMediaType == null)
+            {
+                throw new ArgumentNullException(nameof(jetMediaType));
+            }
+
+            var mediaType = (IMediaType)CreateContentType(() => new global::Umbraco.Core.Models.MediaType(-1), jetMediaType);
+
+            ContentTypeService.Save(mediaType);
+
+            // We get the media type once more to refresh it after updating it.
+            mediaType = ContentTypeService.GetMediaType(mediaType.Alias);
+
+            // Update tracking.
+            SetPropertyTypeId(mediaType, jetMediaType);
+
+            return mediaType;
+        }
+
+        /// <summary>
+        /// Updates the media type to match the uJet media type.
+        /// </summary>
+        /// <param name="mediaType">The media type to update.</param>
+        /// <param name="jetMediaType">The uJet media type.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="mediaType" />, or <paramref name="jetMediaType" /> are <c>null</c>.</exception>
+        internal virtual void UpdateMediaType(IMediaType mediaType, MediaType jetMediaType)
+        {
+            if (mediaType == null)
+            {
+                throw new ArgumentNullException(nameof(mediaType));
+            }
+
+            if (jetMediaType == null)
+            {
+                throw new ArgumentNullException(nameof(jetMediaType));
+            }
+
+            UpdateContentType(mediaType, () => new global::Umbraco.Core.Models.MediaType(-1), jetMediaType);
+
+            ContentTypeService.Save(mediaType);
+
+            // Update tracking. We get the media type once more to refresh it after updating it.
+            SetPropertyTypeId(ContentTypeService.GetMediaType(mediaType.Alias), jetMediaType);
         }
 
         /// <summary>
@@ -169,58 +221,6 @@ namespace Logikfabrik.Umbraco.Jet
             {
                 UpdateMediaType(mediaType, jetMediaType);
             }
-        }
-
-        /// <summary>
-        /// Creates a new media type using the uJet media type.
-        /// </summary>
-        /// <param name="jetMediaType">The uJet media type.</param>
-        /// <returns>The created media type.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="jetMediaType" /> is <c>null</c>.</exception>
-        internal virtual IMediaType CreateMediaType(MediaType jetMediaType)
-        {
-            if (jetMediaType == null)
-            {
-                throw new ArgumentNullException(nameof(jetMediaType));
-            }
-
-            var mediaType = (IMediaType)CreateContentType(() => new global::Umbraco.Core.Models.MediaType(-1), jetMediaType);
-
-            ContentTypeService.Save(mediaType);
-
-            // We get the media type once more to refresh it after updating it.
-            mediaType = ContentTypeService.GetMediaType(mediaType.Alias);
-
-            // Update tracking.
-            SetPropertyTypeId(mediaType, jetMediaType);
-
-            return mediaType;
-        }
-
-        /// <summary>
-        /// Updates the media type to match the uJet media type.
-        /// </summary>
-        /// <param name="mediaType">The media type to update.</param>
-        /// <param name="jetMediaType">The uJet media type.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="mediaType" />, or <paramref name="jetMediaType" /> are <c>null</c>.</exception>
-        internal virtual void UpdateMediaType(IMediaType mediaType, MediaType jetMediaType)
-        {
-            if (mediaType == null)
-            {
-                throw new ArgumentNullException(nameof(mediaType));
-            }
-
-            if (jetMediaType == null)
-            {
-                throw new ArgumentNullException(nameof(jetMediaType));
-            }
-
-            UpdateContentType(mediaType, () => new global::Umbraco.Core.Models.MediaType(-1), jetMediaType);
-
-            ContentTypeService.Save(mediaType);
-
-            // Update tracking. We get the media type once more to refresh it after updating it.
-            SetPropertyTypeId(ContentTypeService.GetMediaType(mediaType.Alias), jetMediaType);
         }
     }
 }

@@ -53,15 +53,15 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
         private static PropertyValueConverterDictionary GetDefaultConverters()
         {
             return new PropertyValueConverterDictionary
-                {
-                    { typeof(string), new[] { new HtmlStringPropertyValueConverter() } },
-                    { typeof(decimal), new[] { new FloatingDecimalPointPropertyValueConverter() } },
-                    { typeof(decimal?), new[] { new FloatingDecimalPointPropertyValueConverter() } },
-                    { typeof(float), new[] { new FloatingBinaryPointPropertyValueConverter() } },
-                    { typeof(float?), new[] { new FloatingBinaryPointPropertyValueConverter() } },
-                    { typeof(double), new[] { new FloatingBinaryPointPropertyValueConverter() } },
-                    { typeof(double?), new[] { new FloatingBinaryPointPropertyValueConverter() } }
-                };
+            {
+                { typeof(string), new[] { new HtmlStringPropertyValueConverter() } },
+                { typeof(decimal), new[] { new FloatingDecimalPointPropertyValueConverter() } },
+                { typeof(decimal?), new[] { new FloatingDecimalPointPropertyValueConverter() } },
+                { typeof(float), new[] { new FloatingBinaryPointPropertyValueConverter() } },
+                { typeof(float?), new[] { new FloatingBinaryPointPropertyValueConverter() } },
+                { typeof(double), new[] { new FloatingBinaryPointPropertyValueConverter() } },
+                { typeof(double?), new[] { new FloatingBinaryPointPropertyValueConverter() } }
+            };
         }
     }
 }

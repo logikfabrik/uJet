@@ -17,15 +17,24 @@ namespace Logikfabrik.Umbraco.Jet
         /// Initializes a new instance of the <see cref="MediaType" /> class.
         /// </summary>
         /// <param name="type">The type.</param>
-        /// <param name="composition">The type composition.</param>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is not a media type.</exception>
-        public MediaType(Type type, IDictionary<Type, IEnumerable<Type>> composition)
-            : base(type, composition)
+        public MediaType(Type type)
+            : base(type)
         {
             if (!type.IsMediaType())
             {
                 throw new ArgumentException($"Type {type} is not a media type.", nameof(type));
             }
+        }
+
+        /// <summary>
+        /// Gets the composition.
+        /// </summary>
+        /// <returns>
+        /// The composition.
+        /// </returns>
+        protected override IDictionary<Type, IEnumerable<Type>> GetComposition()
+        {
+            return GetComposition(TypeExtensions.IsMediaType);
         }
     }
 }
