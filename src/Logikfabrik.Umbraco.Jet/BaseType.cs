@@ -17,6 +17,8 @@ namespace Logikfabrik.Umbraco.Jet
     public abstract class BaseType<T>
         where T : BaseTypeAttribute
     {
+        private readonly Lazy<IEnumerable<TypeProperty>> _properties;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseType{T}" /> class.
         /// </summary>
@@ -31,7 +33,7 @@ namespace Logikfabrik.Umbraco.Jet
 
             Type = type;
             Alias = GetAlias(type);
-            Properties = GetProperties(type);
+            _properties = new Lazy<IEnumerable<TypeProperty>>(() => GetProperties(type));
 
             var attribute = type.GetCustomAttribute<T>();
 
@@ -79,7 +81,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The properties.
         /// </value>
-        public IEnumerable<TypeProperty> Properties { get; }
+        public IEnumerable<TypeProperty> Properties => _properties.Value;
 
         /// <summary>
         /// Gets the description.
@@ -96,6 +98,53 @@ namespace Logikfabrik.Umbraco.Jet
         /// The icon.
         /// </value>
         public string Icon { get; }
+
+        /// <summary>
+        /// Gets the properties.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>The properties.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="type" /> is <c>null</c>.</exception>
+        protected virtual IEnumerable<TypeProperty> GetProperties(Type type)
+        {
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            foreach (var property in type.GetProperties())
+            {
+                if (!IsValidProperty(property))
+                {
+                    continue;
+                }
+
+                yield return new TypeProperty(property);
+            }
+        }
+
+        /// <summary>
+        /// Determines whether the specified property is valid.
+        /// </summary>
+        /// <param name="property">The property.</param>
+        /// <returns><c>true</c> if valid; otherwise, <c>false</c>.</returns>
+        protected bool IsValidProperty(PropertyInfo property)
+        {
+            if (property == null)
+            {
+                throw new ArgumentNullException(nameof(property));
+            }
+
+            if (!property.CanRead || !property.CanWrite)
+            {
+                return false;
+            }
+
+            var attribute = property.GetCustomAttribute<ScaffoldColumnAttribute>();
+
+            return attribute == null || attribute.Scaffold;
+        }
 
         /// <summary>
         /// Gets the alias.
@@ -175,38 +224,6 @@ namespace Logikfabrik.Umbraco.Jet
             }
 
             return attribute.Description;
-        }
-
-        /// <summary>
-        /// Gets the properties.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns>The properties.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="type" /> is <c>null</c>.</exception>
-        private static IEnumerable<TypeProperty> GetProperties(Type type)
-        {
-            if (type == null)
-            {
-                throw new ArgumentNullException(nameof(type));
-            }
-
-            // ReSharper disable once LoopCanBeConvertedToQuery
-            foreach (var property in type.GetProperties())
-            {
-                if (!property.CanRead || !property.CanWrite)
-                {
-                    continue;
-                }
-
-                var attribute = property.GetCustomAttribute<ScaffoldColumnAttribute>();
-
-                if (attribute != null && !attribute.Scaffold)
-                {
-                    continue;
-                }
-
-                yield return new TypeProperty(property);
-            }
         }
     }
 }

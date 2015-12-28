@@ -20,9 +20,18 @@ namespace Logikfabrik.Umbraco.Jet
         /// Initializes a new instance of the <see cref="ContentType{T}" /> class.
         /// </summary>
         /// <param name="type">The type.</param>
-        protected ContentType(Type type)
+        /// <param name="composition">The type composition.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="composition" /> is <c>null</c>.</exception>
+        protected ContentType(Type type, IDictionary<Type, IEnumerable<Type>> composition)
             : base(type)
         {
+            if (composition == null)
+            {
+                throw new ArgumentNullException(nameof(composition));
+            }
+
+            Composition = composition;
+
             var attribute = type.GetCustomAttribute<T>();
 
             Thumbnail = GetThumbnail(attribute);
@@ -53,6 +62,42 @@ namespace Logikfabrik.Umbraco.Jet
         /// The allowed child node types.
         /// </value>
         public IEnumerable<Type> AllowedChildNodeTypes { get; }
+
+        /// <summary>
+        /// Gets the composition.
+        /// </summary>
+        /// <value>
+        /// The composition.
+        /// </value>
+        public IDictionary<Type, IEnumerable<Type>> Composition { get; }
+
+        /// <summary>
+        /// Gets the properties.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>The properties.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="type" /> is <c>null</c>.</exception>
+        protected override IEnumerable<TypeProperty> GetProperties(Type type)
+        {
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
+            var types = Composition[type];
+            var properties = types.SelectMany(t => t.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly));
+
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            foreach (var property in properties)
+            {
+                if (!IsValidProperty(property))
+                {
+                    continue;
+                }
+
+                yield return new TypeProperty(property);
+            }
+        }
 
         /// <summary>
         /// Gets the thumbnail.
@@ -101,7 +146,7 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(attribute));
             }
 
-            return attribute.AllowedChildNodeTypes?.Where(t => t.GetCustomAttribute<T>() != null) ?? new Type[] { };
+            return attribute.AllowedChildNodeTypes?.Where(t => t.GetCustomAttribute<T>(false) != null) ?? new Type[] { };
         }
     }
 }

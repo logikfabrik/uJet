@@ -2,10 +2,11 @@
 //   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
+using System.Reflection;
+
 namespace Logikfabrik.Umbraco.Jet.Test
 {
     using System;
-    using System.Collections.Generic;
     using Data;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
@@ -34,6 +35,11 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var typeServiceMock = new Mock<ITypeService>();
 
             typeServiceMock.Setup(m => m.DocumentTypes).Returns(new[] { typeof(DocumentTypeWithId), typeof(DocumentTypeWithoutId) });
+            typeServiceMock.Setup(m => m.GetComposition(It.IsAny<Type>(), It.IsAny<Func<Type, bool>>())).Returns(
+                (Type type, Func<Type, bool> predicate) =>
+                {
+                    return new TypeService(() => new Assembly[] { }).GetComposition(type, predicate);
+                });
 
             var contentTypeWithIdMock = new Mock<IContentType>();
 
@@ -59,10 +65,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             documentTypeSynchronizationServiceMock.Object.Synchronize();
 
             documentTypeSynchronizationServiceMock
-                .Verify(m => m.SynchronizeById(It.IsAny<IEnumerable<IContentType>>(), It.IsAny<DocumentType>()), Times.Once);
-
-            documentTypeSynchronizationServiceMock
-                .Verify(m => m.SynchronizeByAlias(It.IsAny<IEnumerable<IContentType>>(), It.IsAny<DocumentType>()), Times.Once);
+                .Verify(m => m.CreateDocumentType(It.IsAny<DocumentType>()), Times.Exactly(2));
         }
 
         /// <summary>
@@ -74,6 +77,11 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var typeServiceMock = new Mock<ITypeService>();
 
             typeServiceMock.Setup(m => m.DocumentTypes).Returns(new[] { typeof(DocumentTypeWithId) });
+            typeServiceMock.Setup(m => m.GetComposition(It.IsAny<Type>(), It.IsAny<Func<Type, bool>>())).Returns(
+                (Type type, Func<Type, bool> predicate) =>
+                {
+                    return new TypeService(() => new Assembly[] { }).GetComposition(type, predicate);
+                });
 
             var contentTypeMock = new Mock<IContentType>();
 
@@ -96,7 +104,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             documentTypeSynchronizationServiceMock.Object.Synchronize();
 
             documentTypeSynchronizationServiceMock
-                .Verify(m => m.SynchronizeById(It.IsAny<IEnumerable<IContentType>>(), It.IsAny<DocumentType>()), Times.Once);
+                .Verify(m => m.CreateDocumentType(It.IsAny<DocumentType>()), Times.Once);
         }
 
         /// <summary>
@@ -108,6 +116,11 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var typeServiceMock = new Mock<ITypeService>();
 
             typeServiceMock.Setup(m => m.DocumentTypes).Returns(new[] { typeof(DocumentTypeWithoutId) });
+            typeServiceMock.Setup(m => m.GetComposition(It.IsAny<Type>(), It.IsAny<Func<Type, bool>>())).Returns(
+                (Type type, Func<Type, bool> predicate) =>
+                {
+                    return new TypeService(() => new Assembly[] { }).GetComposition(type, predicate);
+                });
 
             var contentTypeMock = new Mock<IContentType>();
 
@@ -130,7 +143,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             documentTypeSynchronizationServiceMock.Object.Synchronize();
 
             documentTypeSynchronizationServiceMock
-                .Verify(m => m.SynchronizeByAlias(It.IsAny<IEnumerable<IContentType>>(), It.IsAny<DocumentType>()), Times.Once);
+                .Verify(m => m.CreateDocumentType(It.IsAny<DocumentType>()), Times.Once);
         }
 
         /// <summary>
@@ -142,6 +155,11 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var typeServiceMock = new Mock<ITypeService>();
 
             typeServiceMock.Setup(m => m.DocumentTypes).Returns(new[] { typeof(DocumentTypeWithId) });
+            typeServiceMock.Setup(m => m.GetComposition(It.IsAny<Type>(), It.IsAny<Func<Type, bool>>())).Returns(
+                (Type type, Func<Type, bool> predicate) =>
+                {
+                    return new TypeService(() => new Assembly[] { }).GetComposition(type, predicate);
+                });
 
             var contentTypeMock = new Mock<IContentType>();
 
@@ -177,6 +195,11 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var typeServiceMock = new Mock<ITypeService>();
 
             typeServiceMock.Setup(m => m.DocumentTypes).Returns(new[] { typeof(DocumentTypeWithId) });
+            typeServiceMock.Setup(m => m.GetComposition(It.IsAny<Type>(), It.IsAny<Func<Type, bool>>())).Returns(
+                (Type type, Func<Type, bool> predicate) =>
+                {
+                    return new TypeService(() => new Assembly[] { }).GetComposition(type, predicate);
+                });
 
             var contentTypeMock = new Mock<IContentType>();
 
@@ -211,6 +234,11 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var typeServiceMock = new Mock<ITypeService>();
 
             typeServiceMock.Setup(m => m.DocumentTypes).Returns(new[] { typeof(DocumentTypeWithoutId) });
+            typeServiceMock.Setup(m => m.GetComposition(It.IsAny<Type>(), It.IsAny<Func<Type, bool>>())).Returns(
+                (Type type, Func<Type, bool> predicate) =>
+                {
+                    return new TypeService(() => new Assembly[] { }).GetComposition(type, predicate);
+                });
 
             var contentTypeMock = new Mock<IContentType>();
 

@@ -68,287 +68,230 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         public override void Synchronize()
         {
-            var documentTypes = _typeService.DocumentTypes.Select(t => new DocumentType(t)).ToArray();
+            var jetDocumentTypes = _typeService.DocumentTypes.Select(t => new DocumentType(t, _typeService.GetComposition(t, Extensions.TypeExtensions.IsDocumentType))).ToArray();
 
             // No document types; there's nothing to sync.
-            if (!documentTypes.Any())
+            if (!jetDocumentTypes.Any())
             {
                 return;
             }
 
-            ValidateDocumentTypeId(documentTypes);
-            ValidateDocumentTypeAlias(documentTypes);
+            ValidateDocumentTypeId(jetDocumentTypes);
+            ValidateDocumentTypeAlias(jetDocumentTypes);
 
-            // WARNING: This might cause issues; the array of types only contains the initial types, not including ones added/updated during sync.
-            var types = ContentTypeService.GetAllContentTypes().ToArray();
+            var documentTypes = ContentTypeService.GetAllContentTypes().Cast<IContentTypeBase>().ToArray();
 
-            foreach (var documentType in documentTypes.Where(dt => dt.Id.HasValue))
+            foreach (var jetMediaType in jetDocumentTypes)
             {
-                SynchronizeById(types, documentType);
+                Synchronize(documentTypes, jetMediaType);
             }
 
-            foreach (var documentType in documentTypes.Where(dt => !dt.Id.HasValue))
-            {
-                SynchronizeByAlias(types, documentType);
-            }
+            // We get all document types once more to refresh them after creating/updating them.
+            documentTypes = ContentTypeService.GetAllContentTypes().Cast<IContentTypeBase>().ToArray();
 
-            SetAllowedContentTypes(types.Cast<IContentTypeBase>().ToArray(), documentTypes);
+            Func<Type, ContentType<DocumentTypeAttribute>> constructor = t => new DocumentType(t, _typeService.GetComposition(t, Extensions.TypeExtensions.IsDocumentType));
+
+            SetAllowedContentTypes(documentTypes, jetDocumentTypes.Cast<ContentType<DocumentTypeAttribute>>().ToArray(), constructor);
+            SetComposition(documentTypes, jetDocumentTypes.Cast<ContentType<DocumentTypeAttribute>>().ToArray(), constructor);
         }
 
         /// <summary>
-        /// Synchronizes document type by alias.
+        /// Validates the uJet document type identifiers.
         /// </summary>
-        /// <param name="contentTypes">The content types.</param>
-        /// <param name="documentType">The document type.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypes" />, or <paramref name="documentType" /> are <c>null</c>.</exception>
-        /// <exception cref="ArgumentException">Thrown if the document type identifier is not <c>null</c>.</exception>
-        internal virtual void SynchronizeByAlias(IEnumerable<IContentType> contentTypes, DocumentType documentType)
+        /// <param name="jetDocumentTypes">The uJet document types.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="jetDocumentTypes" /> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if an identifier in <paramref name="jetDocumentTypes" /> is conflicting.</exception>
+        private static void ValidateDocumentTypeId(IEnumerable<DocumentType> jetDocumentTypes)
         {
-            if (contentTypes == null)
+            if (jetDocumentTypes == null)
             {
-                throw new ArgumentNullException(nameof(contentTypes));
-            }
-
-            if (documentType == null)
-            {
-                throw new ArgumentNullException(nameof(documentType));
-            }
-
-            if (documentType.Id.HasValue)
-            {
-                throw new ArgumentException("Document type ID must be null.", nameof(documentType));
-            }
-
-            var ct = contentTypes.FirstOrDefault(type => type.Alias == documentType.Alias);
-
-            if (ct == null)
-            {
-                CreateDocumentType(documentType);
-            }
-            else
-            {
-                UpdateDocumentType(ct, documentType);
-            }
-        }
-
-        /// <summary>
-        /// Synchronizes document type by identifier.
-        /// </summary>
-        /// <param name="contentTypes">The content types.</param>
-        /// <param name="documentType">The document type.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypes" />, or <paramref name="documentType" /> are <c>null</c>.</exception>
-        /// <exception cref="ArgumentException">Thrown if the document type identifier is <c>null</c>.</exception>
-        internal virtual void SynchronizeById(IEnumerable<IContentType> contentTypes, DocumentType documentType)
-        {
-            if (contentTypes == null)
-            {
-                throw new ArgumentNullException(nameof(contentTypes));
-            }
-
-            if (documentType == null)
-            {
-                throw new ArgumentNullException(nameof(documentType));
-            }
-
-            if (!documentType.Id.HasValue)
-            {
-                throw new ArgumentException("Document type ID cannot be null.", nameof(documentType));
-            }
-
-            IContentType ct = null;
-
-            var id = ContentTypeRepository.GetContentTypeId(documentType.Id.Value);
-
-            if (id.HasValue)
-            {
-                // The document type has been synchronized before. Get the matching content type.
-                // It might have been removed using the back office.
-                ct = contentTypes.FirstOrDefault(type => type.Id == id.Value);
-            }
-
-            if (ct == null)
-            {
-                CreateDocumentType(documentType);
-
-                // Get the created content type.
-                ct = ContentTypeService.GetContentType(documentType.Alias);
-
-                // Connect the document type and the created content type.
-                ContentTypeRepository.SetContentTypeId(documentType.Id.Value, ct.Id);
-            }
-            else
-            {
-                UpdateDocumentType(ct, documentType);
-            }
-        }
-
-        /// <summary>
-        /// Updates the document type.
-        /// </summary>
-        /// <param name="contentType">The content type.</param>
-        /// <param name="documentType">The document type to update.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentType" />, or <paramref name="documentType" /> are <c>null</c>.</exception>
-        internal virtual void UpdateDocumentType(IContentType contentType, DocumentType documentType)
-        {
-            if (contentType == null)
-            {
-                throw new ArgumentNullException(nameof(contentType));
-            }
-
-            if (documentType == null)
-            {
-                throw new ArgumentNullException(nameof(documentType));
-            }
-
-            UpdateContentType(contentType, () => new global::Umbraco.Core.Models.ContentType(-1), documentType);
-            SetTemplates(contentType, documentType);
-            SetDefaultTemplate(contentType, documentType);
-
-            ContentTypeService.Save(contentType);
-
-            // Update tracking.
-            SetPropertyTypeId(ContentTypeService.GetContentType(contentType.Alias), documentType);
-        }
-
-        /// <summary>
-        /// Validates the document type identifier.
-        /// </summary>
-        /// <param name="documentTypes">The document types.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="documentTypes" /> is <c>null</c>.</exception>
-        /// <exception cref="InvalidOperationException">Thrown if an identifier in <paramref name="documentTypes" /> is conflicting.</exception>
-        private static void ValidateDocumentTypeId(IEnumerable<DocumentType> documentTypes)
-        {
-            if (documentTypes == null)
-            {
-                throw new ArgumentNullException(nameof(documentTypes));
+                throw new ArgumentNullException(nameof(jetDocumentTypes));
             }
 
             var set = new HashSet<Guid>();
 
-            foreach (var documentType in documentTypes)
+            foreach (var jetDocumentType in jetDocumentTypes)
             {
-                if (!documentType.Id.HasValue)
+                if (!jetDocumentType.Id.HasValue)
                 {
                     continue;
                 }
 
-                if (set.Contains(documentType.Id.Value))
+                if (set.Contains(jetDocumentType.Id.Value))
                 {
-                    throw new InvalidOperationException(
-                        $"ID conflict for document type {documentType.Name}. ID {documentType.Id.Value} is already in use.");
+                    throw new InvalidOperationException($"ID conflict for document type {jetDocumentType.Name}. ID {jetDocumentType.Id.Value} is already in use.");
                 }
 
-                set.Add(documentType.Id.Value);
+                set.Add(jetDocumentType.Id.Value);
             }
         }
 
         /// <summary>
-        /// Validates the document type alias.
+        /// Validates the uJet document type aliases.
         /// </summary>
-        /// <param name="documentTypes">The document types.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="documentTypes" /> is <c>null</c>.</exception>
-        /// <exception cref="InvalidOperationException">Thrown if an alias in <paramref name="documentTypes" /> is conflicting.</exception>
-        private static void ValidateDocumentTypeAlias(IEnumerable<DocumentType> documentTypes)
+        /// <param name="jetDocumentTypes">The uJet document types.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="jetDocumentTypes" /> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if an alias in <paramref name="jetDocumentTypes" /> is conflicting.</exception>
+        private static void ValidateDocumentTypeAlias(IEnumerable<DocumentType> jetDocumentTypes)
+        {
+            if (jetDocumentTypes == null)
+            {
+                throw new ArgumentNullException(nameof(jetDocumentTypes));
+            }
+
+            var set = new HashSet<string>();
+
+            foreach (var jetDocumentType in jetDocumentTypes)
+            {
+                if (set.Contains(jetDocumentType.Alias))
+                {
+                    throw new InvalidOperationException(string.Format("Alias conflict for document type {0}. Alias {0} is already in use.", jetDocumentType.Alias));
+                }
+
+                set.Add(jetDocumentType.Alias);
+            }
+        }
+
+        private void Synchronize(IContentTypeBase[] documentTypes, DocumentType jetDocumentType)
         {
             if (documentTypes == null)
             {
                 throw new ArgumentNullException(nameof(documentTypes));
             }
 
-            var set = new HashSet<string>();
-
-            foreach (var documentType in documentTypes)
+            if (jetDocumentType == null)
             {
-                if (set.Contains(documentType.Alias))
-                {
-                    throw new InvalidOperationException(
-                        string.Format(
-                            "Alias conflict for document type {0}. Alias {0} is already in use.",
-                            documentType.Alias));
-                }
+                throw new ArgumentNullException(nameof(jetDocumentType));
+            }
 
-                set.Add(documentType.Alias);
+            var documentType = GetBaseContentType(documentTypes, jetDocumentType) as IContentType;
+
+            if (documentType == null)
+            {
+                documentType = CreateDocumentType(jetDocumentType);
+
+                if (jetDocumentType.Id.HasValue)
+                {
+                    ContentTypeRepository.SetContentTypeId(jetDocumentType.Id.Value, documentType.Id);
+                }
+            }
+            else
+            {
+                UpdateDocumentType(documentType, jetDocumentType);
             }
         }
 
         /// <summary>
-        /// Creates the document type.
+        /// Creates a new document type using the uJet document type.
         /// </summary>
-        /// <param name="documentType">The document type to create.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="documentType" /> is <c>null</c>.</exception>
-        private void CreateDocumentType(DocumentType documentType)
+        /// <param name="jetDocumentType">The uJet document type.</param>
+        /// <returns>The created document type.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="jetDocumentType" /> is <c>null</c>.</exception>
+        internal virtual IContentType CreateDocumentType(DocumentType jetDocumentType)
         {
-            if (documentType == null)
+            if (jetDocumentType == null)
             {
-                throw new ArgumentNullException(nameof(documentType));
+                throw new ArgumentNullException(nameof(jetDocumentType));
             }
 
-            var t = (IContentType)CreateContentType(() => new global::Umbraco.Core.Models.ContentType(-1), documentType);
+            var documentType = (IContentType)CreateContentType(() => new global::Umbraco.Core.Models.ContentType(-1), jetDocumentType);
 
-            SetTemplates(t, documentType);
-            SetDefaultTemplate(t, documentType);
+            SetAllowedTemplates(documentType, jetDocumentType);
+            SetDefaultTemplate(documentType, jetDocumentType);
 
-            ContentTypeService.Save(t);
+            ContentTypeService.Save(documentType);
+
+            // We get the document type once more to refresh it after updating it.
+            documentType = ContentTypeService.GetContentType(documentType.Alias);
 
             // Update tracking.
-            SetPropertyTypeId(ContentTypeService.GetContentType(t.Alias), documentType);
+            SetPropertyTypeId(documentType, jetDocumentType);
+
+            return documentType;
         }
 
         /// <summary>
-        /// Sets the templates.
+        /// Updates the document type to match the uJet document type.
         /// </summary>
-        /// <param name="contentType">The content type.</param>
-        /// <param name="documentType">The document type.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentType" />, or <paramref name="documentType" /> are <c>null</c>.</exception>
-        private void SetTemplates(IContentType contentType, DocumentType documentType)
+        /// <param name="documentType">The document type to update.</param>
+        /// <param name="jetDocumentType">The uJet document type.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="documentType" />, or <paramref name="jetDocumentType" /> are <c>null</c>.</exception>
+        internal virtual void UpdateDocumentType(IContentType documentType, DocumentType jetDocumentType)
         {
-            if (contentType == null)
-            {
-                throw new ArgumentNullException(nameof(contentType));
-            }
-
             if (documentType == null)
             {
                 throw new ArgumentNullException(nameof(documentType));
+            }
+
+            if (jetDocumentType == null)
+            {
+                throw new ArgumentNullException(nameof(jetDocumentType));
+            }
+
+            UpdateContentType(documentType, () => new global::Umbraco.Core.Models.ContentType(-1), jetDocumentType);
+            SetAllowedTemplates(documentType, jetDocumentType);
+            SetDefaultTemplate(documentType, jetDocumentType);
+
+            ContentTypeService.Save(documentType);
+
+            // Update tracking. We get the document type once more to refresh it after updating it.
+            SetPropertyTypeId(ContentTypeService.GetContentType(documentType.Alias), jetDocumentType);
+        }
+
+        /// <summary>
+        /// Sets the document type allowed templates.
+        /// </summary>
+        /// <param name="documentType">The document type.</param>
+        /// <param name="jetDocumentType">The uJet document type.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="documentType" />, or <paramref name="jetDocumentType" /> are <c>null</c>.</exception>
+        private void SetAllowedTemplates(IContentType documentType, DocumentType jetDocumentType)
+        {
+            if (documentType == null)
+            {
+                throw new ArgumentNullException(nameof(documentType));
+            }
+
+            if (jetDocumentType == null)
+            {
+                throw new ArgumentNullException(nameof(jetDocumentType));
             }
 
             IEnumerable<ITemplate> templates = new ITemplate[] { };
 
-            if (documentType.Templates != null && !documentType.Templates.Any())
+            if (!jetDocumentType.Templates.Any())
             {
-                templates =
-                    _fileService.GetTemplates(documentType.Templates.ToArray()).Where(template => template != null);
+                templates = _fileService.GetTemplates(jetDocumentType.Templates.ToArray());
             }
 
-            contentType.AllowedTemplates = templates;
+            documentType.AllowedTemplates = templates;
         }
 
         /// <summary>
-        /// Sets the default template.
+        /// Sets the document type default template.
         /// </summary>
-        /// <param name="contentType">The content type.</param>
         /// <param name="documentType">The document type.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentType" />, or <paramref name="documentType" /> are <c>null</c>.</exception>
-        private void SetDefaultTemplate(IContentType contentType, DocumentType documentType)
+        /// <param name="jetDocumentType">The uJet document type.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="documentType" />, or <paramref name="jetDocumentType" /> are <c>null</c>.</exception>
+        private void SetDefaultTemplate(IContentType documentType, DocumentType jetDocumentType)
         {
-            if (contentType == null)
-            {
-                throw new ArgumentNullException(nameof(contentType));
-            }
-
             if (documentType == null)
             {
                 throw new ArgumentNullException(nameof(documentType));
             }
 
-            ITemplate template = null;
-
-            if (!string.IsNullOrWhiteSpace(documentType.DefaultTemplate))
+            if (jetDocumentType == null)
             {
-                template = _fileService.GetTemplate(documentType.DefaultTemplate);
+                throw new ArgumentNullException(nameof(jetDocumentType));
             }
 
-            contentType.SetDefaultTemplate(template);
+            ITemplate template = null;
+
+            if (!string.IsNullOrWhiteSpace(jetDocumentType.DefaultTemplate))
+            {
+                template = _fileService.GetTemplate(jetDocumentType.DefaultTemplate);
+            }
+
+            documentType.SetDefaultTemplate(template);
         }
     }
 }

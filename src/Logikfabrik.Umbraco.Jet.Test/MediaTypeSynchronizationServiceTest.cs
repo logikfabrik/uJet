@@ -2,10 +2,11 @@
 //   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
+using System.Reflection;
+
 namespace Logikfabrik.Umbraco.Jet.Test
 {
     using System;
-    using System.Collections.Generic;
     using Data;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
@@ -32,6 +33,11 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var typeServiceMock = new Mock<ITypeService>();
 
             typeServiceMock.Setup(m => m.MediaTypes).Returns(new[] { typeof(MediaTypeWithId), typeof(MediaTypeWithoutId) });
+            typeServiceMock.Setup(m => m.GetComposition(It.IsAny<Type>(), It.IsAny<Func<Type, bool>>())).Returns(
+                (Type type, Func<Type, bool> predicate) =>
+                {
+                    return new TypeService(() => new Assembly[] { }).GetComposition(type, predicate);
+                });
 
             var mediaTypeWithIdMock = new Mock<IMediaType>();
 
@@ -56,10 +62,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             mediaTypeSynchronizationServiceMock.Object.Synchronize();
 
             mediaTypeSynchronizationServiceMock
-                .Verify(m => m.SynchronizeById(It.IsAny<IEnumerable<IMediaType>>(), It.IsAny<Jet.MediaType>()), Times.Once);
-
-            mediaTypeSynchronizationServiceMock
-                .Verify(m => m.SynchronizeByAlias(It.IsAny<IEnumerable<IMediaType>>(), It.IsAny<Jet.MediaType>()), Times.Once);
+                .Verify(m => m.CreateMediaType(It.IsAny<Jet.MediaType>()), Times.Exactly(2));
         }
 
         /// <summary>
@@ -71,6 +74,11 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var typeServiceMock = new Mock<ITypeService>();
 
             typeServiceMock.Setup(m => m.MediaTypes).Returns(new[] { typeof(MediaTypeWithId) });
+            typeServiceMock.Setup(m => m.GetComposition(It.IsAny<Type>(), It.IsAny<Func<Type, bool>>())).Returns(
+                (Type type, Func<Type, bool> predicate) =>
+                {
+                    return new TypeService(() => new Assembly[] { }).GetComposition(type, predicate);
+                });
 
             var mediaTypeMock = new Mock<IMediaType>();
 
@@ -92,7 +100,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             mediaTypeSynchronizationServiceMock.Object.Synchronize();
 
             mediaTypeSynchronizationServiceMock
-                .Verify(m => m.SynchronizeById(It.IsAny<IEnumerable<IMediaType>>(), It.IsAny<Jet.MediaType>()), Times.Once);
+                .Verify(m => m.CreateMediaType(It.IsAny<Jet.MediaType>()), Times.Once);
         }
 
         /// <summary>
@@ -104,6 +112,11 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var typeServiceMock = new Mock<ITypeService>();
 
             typeServiceMock.Setup(m => m.MediaTypes).Returns(new[] { typeof(MediaTypeWithoutId) });
+            typeServiceMock.Setup(m => m.GetComposition(It.IsAny<Type>(), It.IsAny<Func<Type, bool>>())).Returns(
+                (Type type, Func<Type, bool> predicate) =>
+                {
+                    return new TypeService(() => new Assembly[] { }).GetComposition(type, predicate);
+                });
 
             var mediaTypeMock = new Mock<IMediaType>();
 
@@ -125,7 +138,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             mediaTypeSynchronizationServiceMock.Object.Synchronize();
 
             mediaTypeSynchronizationServiceMock
-                .Verify(m => m.SynchronizeByAlias(It.IsAny<IEnumerable<IMediaType>>(), It.IsAny<Jet.MediaType>()), Times.Once);
+                .Verify(m => m.CreateMediaType(It.IsAny<Jet.MediaType>()), Times.Once);
         }
 
         /// <summary>
@@ -137,6 +150,11 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var typeServiceMock = new Mock<ITypeService>();
 
             typeServiceMock.Setup(m => m.MediaTypes).Returns(new[] { typeof(MediaTypeWithId) });
+            typeServiceMock.Setup(m => m.GetComposition(It.IsAny<Type>(), It.IsAny<Func<Type, bool>>())).Returns(
+                (Type type, Func<Type, bool> predicate) =>
+                {
+                    return new TypeService(() => new Assembly[] { }).GetComposition(type, predicate);
+                });
 
             var mediaTypeMock = new Mock<IMediaType>();
 
@@ -171,6 +189,11 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var typeServiceMock = new Mock<ITypeService>();
 
             typeServiceMock.Setup(m => m.MediaTypes).Returns(new[] { typeof(MediaTypeWithId) });
+            typeServiceMock.Setup(m => m.GetComposition(It.IsAny<Type>(), It.IsAny<Func<Type, bool>>())).Returns(
+                (Type type, Func<Type, bool> predicate) =>
+                {
+                    return new TypeService(() => new Assembly[] { }).GetComposition(type, predicate);
+                });
 
             var mediaTypeMock = new Mock<IMediaType>();
 
@@ -204,6 +227,11 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var typeServiceMock = new Mock<ITypeService>();
 
             typeServiceMock.Setup(m => m.MediaTypes).Returns(new[] { typeof(MediaTypeWithoutId) });
+            typeServiceMock.Setup(m => m.GetComposition(It.IsAny<Type>(), It.IsAny<Func<Type, bool>>())).Returns(
+                (Type type, Func<Type, bool> predicate) =>
+                {
+                    return new TypeService(() => new Assembly[] { }).GetComposition(type, predicate);
+                });
 
             var mediaTypeMock = new Mock<IMediaType>();
 

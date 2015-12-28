@@ -17,24 +17,10 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     /// </summary>
     public class PreviewTemplateSynchronizationService : ISynchronizationService
     {
-        /// <summary>
-        /// The content type service.
-        /// </summary>
         private readonly IContentTypeService _contentTypeService;
-
-        /// <summary>
-        /// The document type service.
-        /// </summary>
-        private readonly ITypeService _documentTypeService;
-
-        /// <summary>
-        /// The file service.
-        /// </summary>
+        private readonly ITypeService _typeService;
         private readonly IFileService _fileService;
 
-        /// <summary>
-        /// The preview template.
-        /// </summary>
         private ITemplate _previewTemplate;
 
         /// <summary>
@@ -53,12 +39,12 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// </summary>
         /// <param name="contentTypeService">The content type service.</param>
         /// <param name="fileService">The file service.</param>
-        /// <param name="documentTypeService">The document type service.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeService" />, <paramref name="fileService" />, or <paramref name="documentTypeService" /> is <c>null</c>.</exception>
+        /// <param name="typeService">The type service.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeService" />, <paramref name="fileService" />, or <paramref name="typeService" /> is <c>null</c>.</exception>
         public PreviewTemplateSynchronizationService(
             IContentTypeService contentTypeService,
             IFileService fileService,
-            ITypeService documentTypeService)
+            ITypeService typeService)
         {
             if (contentTypeService == null)
             {
@@ -70,14 +56,14 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
                 throw new ArgumentNullException(nameof(fileService));
             }
 
-            if (documentTypeService == null)
+            if (typeService == null)
             {
-                throw new ArgumentNullException(nameof(documentTypeService));
+                throw new ArgumentNullException(nameof(typeService));
             }
 
             _contentTypeService = contentTypeService;
             _fileService = fileService;
-            _documentTypeService = documentTypeService;
+            _typeService = typeService;
         }
 
         /// <summary>
@@ -87,9 +73,9 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         {
             var contentTypes = _contentTypeService.GetAllContentTypes().ToArray();
 
-            foreach (var type in _documentTypeService.DocumentTypes.Where(t => Attribute.IsDefined(t, typeof(PreviewTemplateAttribute))))
+            foreach (var type in _typeService.DocumentTypes.Where(t => Attribute.IsDefined(t, typeof(PreviewTemplateAttribute))))
             {
-                var contentType = contentTypes.FirstOrDefault(t => t.Alias == new DocumentType(type).Alias);
+                var contentType = contentTypes.FirstOrDefault(t => t.Alias == new DocumentType(type, _typeService.GetComposition(type, Extensions.TypeExtensions.IsDocumentType)).Alias);
 
                 if (contentType == null)
                 {

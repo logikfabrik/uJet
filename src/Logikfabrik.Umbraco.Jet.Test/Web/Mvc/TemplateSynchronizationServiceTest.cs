@@ -49,7 +49,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Mvc
         /// Test to get layout (master) for template without layout.
         /// </summary>
         [TestMethod]
-        public void CanNotGetLayoutForTemplateWithoutLayout()
+        public void CannotGetLayoutForTemplateWithoutLayout()
         {
             var service = GetTemplateSynchronizationService();
 

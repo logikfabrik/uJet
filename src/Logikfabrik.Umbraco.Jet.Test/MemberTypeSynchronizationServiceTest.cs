@@ -5,7 +5,6 @@
 namespace Logikfabrik.Umbraco.Jet.Test
 {
     using System;
-    using System.Collections.Generic;
     using Data;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
@@ -56,10 +55,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             memberTypeSynchronizationServiceMock.Object.Synchronize();
 
             memberTypeSynchronizationServiceMock
-                .Verify(m => m.SynchronizeById(It.IsAny<IEnumerable<IMemberType>>(), It.IsAny<Jet.MemberType>()), Times.Once);
-
-            memberTypeSynchronizationServiceMock
-                .Verify(m => m.SynchronizeByAlias(It.IsAny<IEnumerable<IMemberType>>(), It.IsAny<Jet.MemberType>()), Times.Once);
+                .Verify(m => m.CreateMemberType(It.IsAny<Jet.MemberType>()), Times.Exactly(2));
         }
 
         /// <summary>
@@ -92,7 +88,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             memberTypeSynchronizationServiceMock.Object.Synchronize();
 
             memberTypeSynchronizationServiceMock
-                .Verify(m => m.SynchronizeById(It.IsAny<IEnumerable<IMemberType>>(), It.IsAny<Jet.MemberType>()), Times.Once);
+                .Verify(m => m.CreateMemberType(It.IsAny<Jet.MemberType>()), Times.Once);
         }
 
         /// <summary>
@@ -125,7 +121,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             memberTypeSynchronizationServiceMock.Object.Synchronize();
 
             memberTypeSynchronizationServiceMock
-                .Verify(m => m.SynchronizeByAlias(It.IsAny<IEnumerable<IMemberType>>(), It.IsAny<Jet.MemberType>()), Times.Once);
+                .Verify(m => m.CreateMemberType(It.IsAny<Jet.MemberType>()), Times.Once);
         }
 
         /// <summary>

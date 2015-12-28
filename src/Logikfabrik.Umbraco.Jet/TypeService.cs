@@ -92,6 +92,51 @@ namespace Logikfabrik.Umbraco.Jet
         public IEnumerable<Type> MemberTypes => _memberTypes.Value;
 
         /// <summary>
+        /// Gets the composition for the specified type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="predicate">The predicate.</param>
+        /// <returns>The composition for the specified type.</returns>
+        public IDictionary<Type, IEnumerable<Type>> GetComposition(Type type, Func<Type, bool> predicate)
+        {
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
+            var composition = new Dictionary<Type, IEnumerable<Type>>();
+            List<Type> compositionTypes = null;
+
+            foreach (var t in GetInheritance(type))
+            {
+                if (predicate(t))
+                {
+                    composition.Add(t, new List<Type> { t });
+                    compositionTypes = (List<Type>)composition[t];
+                }
+                else
+                {
+                    compositionTypes?.Add(t);
+                }
+            }
+
+            return composition;
+        }
+
+        private static IEnumerable<Type> GetInheritance(Type type)
+        {
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
+            for (var t = type; t != null; t = t.BaseType)
+            {
+                yield return t;
+            }
+        }
+
+        /// <summary>
         /// Gets the assemblies to be scanned for content types, within the current application domain.
         /// </summary>
         /// <returns>The assemblies to be scanned.</returns>
@@ -101,7 +146,7 @@ namespace Logikfabrik.Umbraco.Jet
 
             return !assemblyNames.Any()
                 ? AppDomain.CurrentDomain.GetAssemblies()
-                : AppDomain.CurrentDomain.GetAssemblies().Where(a => assemblyNames.Contains(a.GetName().Name));
+                : AppDomain.CurrentDomain.GetAssemblies().Where(a => assemblyNames.Contains(a.GetName().Name, StringComparer.InvariantCultureIgnoreCase));
         }
 
         /// <summary>

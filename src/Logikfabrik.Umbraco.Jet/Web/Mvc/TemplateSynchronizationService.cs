@@ -185,7 +185,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
                     continue;
                 }
 
-                if (template.MasterTemplateAlias.Equals(masterTemplate.Alias, StringComparison.InvariantCultureIgnoreCase))
+                if (!string.IsNullOrWhiteSpace(template.MasterTemplateAlias) && template.MasterTemplateAlias.Equals(masterTemplate.Alias, StringComparison.InvariantCultureIgnoreCase))
                 {
                     // The current master template matches the layout/master. There's no need to update the template.
                     continue;
@@ -202,7 +202,14 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// </summary>
         private void UpdateTemplates()
         {
-            var templatesToUpdate = GetTemplatesToUpdate(_fileService.GetTemplates()).ToArray();
+            var templates = _fileService.GetTemplates();
+
+            if (templates == null)
+            {
+                return;
+            }
+
+            var templatesToUpdate = GetTemplatesToUpdate(templates).ToArray();
 
             if (!templatesToUpdate.Any())
             {

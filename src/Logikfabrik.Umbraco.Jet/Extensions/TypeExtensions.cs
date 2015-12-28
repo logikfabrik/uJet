@@ -78,7 +78,7 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
 
             try
             {
-                return type.GetCustomAttribute<T>() != null && IsValidType(type);
+                return type.GetCustomAttribute<T>(false) != null && IsValidType(type);
             }
             catch (TypeLoadException)
             {

@@ -18,9 +18,10 @@ namespace Logikfabrik.Umbraco.Jet
         /// Initializes a new instance of the <see cref="DocumentType" /> class.
         /// </summary>
         /// <param name="type">The type.</param>
+        /// <param name="composition">The type composition.</param>
         /// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is not a document type.</exception>
-        public DocumentType(Type type)
-            : base(type)
+        public DocumentType(Type type, IDictionary<Type, IEnumerable<Type>> composition)
+            : base(type, composition)
         {
             if (!type.IsDocumentType())
             {
@@ -78,7 +79,7 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(attribute));
             }
 
-            return attribute.Templates;
+            return attribute.Templates ?? new string[] { };
         }
     }
 }

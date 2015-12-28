@@ -163,7 +163,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         /// Test to get non scaffolded property for member type.
         /// </summary>
         [TestMethod]
-        public void CanNotGetNonScaffoldedProperty()
+        public void CannotGetNonScaffoldedProperty()
         {
             var member = new MemberType();
             var memberType = new Jet.MemberType(member.GetType());
@@ -176,7 +176,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         /// Test to get property without setter for member type.
         /// </summary>
         [TestMethod]
-        public void CanNotGetPropertyWithoutSetter()
+        public void CannotGetPropertyWithoutSetter()
         {
             var member = new MemberType();
             var memberType = new Jet.MemberType(member.GetType());

@@ -65,227 +65,165 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         public override void Synchronize()
         {
-            var memberTypes = _typeService.MemberTypes.Select(t => new MemberType(t)).ToArray();
+            var jetMemberTypes = _typeService.MemberTypes.Select(t => new MemberType(t)).ToArray();
 
             // No member types; there's nothing to sync.
-            if (!memberTypes.Any())
+            if (!jetMemberTypes.Any())
             {
                 return;
             }
 
-            ValidateMemberTypeId(memberTypes);
-            ValidateMemberTypeAlias(memberTypes);
+            ValidateMemberTypeId(jetMemberTypes);
+            ValidateMemberTypeAlias(jetMemberTypes);
 
-            // WARNING: This might cause issues; the array of types only contains the initial types, not including ones added/updated during sync.
-            var types = _memberTypeService.GetAll().ToArray();
+            var memberTypes = _memberTypeService.GetAll().Cast<IContentTypeBase>().ToArray();
 
-            foreach (var memberType in memberTypes.Where(dt => dt.Id.HasValue))
+            foreach (var jetMemberType in jetMemberTypes)
             {
-                SynchronizeById(types, memberType);
-            }
-
-            foreach (var memberType in memberTypes.Where(dt => !dt.Id.HasValue))
-            {
-                SynchronizeByAlias(types, memberType);
+                Synchronize(memberTypes, jetMemberType);
             }
         }
 
         /// <summary>
-        /// Synchronizes member type by alias.
+        /// Validates the uJet member type identifiers.
         /// </summary>
-        /// <param name="contentTypes">The content types.</param>
-        /// <param name="memberType">The member type.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypes" />, or <paramref name="memberType" /> are <c>null</c>.</exception>
-        /// <exception cref="ArgumentException">Thrown if the member type identifier is not <c>null</c>.</exception>
-        internal virtual void SynchronizeByAlias(IEnumerable<IMemberType> contentTypes, MemberType memberType)
+        /// <param name="jetMemberTypes">The uJet member types.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="jetMemberTypes" /> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if an identifier in <paramref name="jetMemberTypes" /> is conflicting.</exception>
+        private static void ValidateMemberTypeId(IEnumerable<MemberType> jetMemberTypes)
         {
-            if (contentTypes == null)
+            if (jetMemberTypes == null)
             {
-                throw new ArgumentNullException(nameof(contentTypes));
-            }
-
-            if (memberType == null)
-            {
-                throw new ArgumentNullException(nameof(memberType));
-            }
-
-            if (memberType.Id.HasValue)
-            {
-                throw new ArgumentException("Member type ID must be null.", nameof(memberType));
-            }
-
-            var ct = contentTypes.FirstOrDefault(type => type.Alias == memberType.Alias);
-
-            if (ct == null)
-            {
-                CreateMemberType(memberType);
-            }
-            else
-            {
-                UpdateMemberType(ct, memberType);
-            }
-        }
-
-        /// <summary>
-        /// Updates the member type.
-        /// </summary>
-        /// <param name="contentType">The content type.</param>
-        /// <param name="memberType">The member type to update.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentType" />, or <paramref name="memberType" /> are <c>null</c>.</exception>
-        internal virtual void UpdateMemberType(IMemberType contentType, MemberType memberType)
-        {
-            if (contentType == null)
-            {
-                throw new ArgumentNullException(nameof(contentType));
-            }
-
-            if (memberType == null)
-            {
-                throw new ArgumentNullException(nameof(memberType));
-            }
-
-            UpdateBaseType(contentType, () => new global::Umbraco.Core.Models.ContentType(-1), memberType);
-
-            SynchronizePropertyTypes(contentType, memberType.Properties);
-
-            _memberTypeService.Save(contentType);
-
-            // Update tracking.
-            SetPropertyTypeId(_memberTypeService.Get(contentType.Alias), memberType);
-        }
-
-        /// <summary>
-        /// Synchronizes member type by identifier.
-        /// </summary>
-        /// <param name="contentTypes">The content types.</param>
-        /// <param name="memberType">The member type.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypes" />, or <paramref name="memberType" /> are <c>null</c>.</exception>
-        /// <exception cref="ArgumentException">Thrown if the member type identifier is <c>null</c>.</exception>
-        internal virtual void SynchronizeById(IEnumerable<IMemberType> contentTypes, MemberType memberType)
-        {
-            if (contentTypes == null)
-            {
-                throw new ArgumentNullException(nameof(contentTypes));
-            }
-
-            if (memberType == null)
-            {
-                throw new ArgumentNullException(nameof(memberType));
-            }
-
-            if (!memberType.Id.HasValue)
-            {
-                throw new ArgumentException("Member type ID cannot be null.", nameof(memberType));
-            }
-
-            IMemberType ct = null;
-
-            var id = ContentTypeRepository.GetContentTypeId(memberType.Id.Value);
-
-            if (id.HasValue)
-            {
-                // The member type has been synchronized before. Get the matching content type.
-                // It might have been removed using the back office.
-                ct = contentTypes.FirstOrDefault(type => type.Id == id.Value);
-            }
-
-            if (ct == null)
-            {
-                CreateMemberType(memberType);
-
-                // Get the created member type.
-                ct = _memberTypeService.Get(memberType.Alias);
-
-                // Connect the member type and the created content type.
-                ContentTypeRepository.SetContentTypeId(memberType.Id.Value, ct.Id);
-            }
-            else
-            {
-                UpdateMemberType(ct, memberType);
-            }
-        }
-
-        /// <summary>
-        /// Validates the member type identifier.
-        /// </summary>
-        /// <param name="memberTypes">The member types.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="memberTypes" /> is <c>null</c>.</exception>
-        /// <exception cref="InvalidOperationException">Thrown if an identifier in <paramref name="memberTypes" /> is conflicting.</exception>
-        private static void ValidateMemberTypeId(IEnumerable<MemberType> memberTypes)
-        {
-            if (memberTypes == null)
-            {
-                throw new ArgumentNullException(nameof(memberTypes));
+                throw new ArgumentNullException(nameof(jetMemberTypes));
             }
 
             var set = new HashSet<Guid>();
 
-            foreach (var memberType in memberTypes)
+            foreach (var jetMemberType in jetMemberTypes)
             {
-                if (!memberType.Id.HasValue)
+                if (!jetMemberType.Id.HasValue)
                 {
                     continue;
                 }
 
-                if (set.Contains(memberType.Id.Value))
+                if (set.Contains(jetMemberType.Id.Value))
                 {
-                    throw new InvalidOperationException(
-                        $"ID conflict for member type {memberType.Name}. ID {memberType.Id.Value} is already in use.");
+                    throw new InvalidOperationException($"ID conflict for member type {jetMemberType.Name}. ID {jetMemberType.Id.Value} is already in use.");
                 }
 
-                set.Add(memberType.Id.Value);
+                set.Add(jetMemberType.Id.Value);
             }
         }
 
         /// <summary>
-        /// Validates the member type alias.
+        /// Validates the uJet member type aliases.
         /// </summary>
-        /// <param name="memberTypes">The document types.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="memberTypes" /> is <c>null</c>.</exception>
-        /// <exception cref="InvalidOperationException">Thrown if an alias in <paramref name="memberTypes" /> is conflicting.</exception>
-        private static void ValidateMemberTypeAlias(IEnumerable<MemberType> memberTypes)
+        /// <param name="jetMemberTypes">The uJet member types.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="jetMemberTypes" /> is <c>null</c>.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if an alias in <paramref name="jetMemberTypes" /> is conflicting.</exception>
+        private static void ValidateMemberTypeAlias(IEnumerable<MemberType> jetMemberTypes)
+        {
+            if (jetMemberTypes == null)
+            {
+                throw new ArgumentNullException(nameof(jetMemberTypes));
+            }
+
+            var set = new HashSet<string>();
+
+            foreach (var jetMemberType in jetMemberTypes)
+            {
+                if (set.Contains(jetMemberType.Alias))
+                {
+                    throw new InvalidOperationException(string.Format("Alias conflict for member type {0}. Alias {0} is already in use.", jetMemberType.Alias));
+                }
+
+                set.Add(jetMemberType.Alias);
+            }
+        }
+
+        private void Synchronize(IContentTypeBase[] memberTypes, MemberType jetMemberType)
         {
             if (memberTypes == null)
             {
                 throw new ArgumentNullException(nameof(memberTypes));
             }
 
-            var set = new HashSet<string>();
-
-            foreach (var memberType in memberTypes)
+            if (jetMemberType == null)
             {
-                if (set.Contains(memberType.Alias))
-                {
-                    throw new InvalidOperationException(
-                        string.Format(
-                            "Alias conflict for member type {0}. Alias {0} is already in use.",
-                            memberType.Alias));
-                }
+                throw new ArgumentNullException(nameof(jetMemberType));
+            }
 
-                set.Add(memberType.Alias);
+            var memberType = GetBaseContentType(memberTypes, jetMemberType) as IMemberType;
+
+            if (memberType == null)
+            {
+                memberType = CreateMemberType(jetMemberType);
+
+                if (jetMemberType.Id.HasValue)
+                {
+                    ContentTypeRepository.SetContentTypeId(jetMemberType.Id.Value, memberType.Id);
+                }
+            }
+            else
+            {
+                UpdateMemberType(memberType, jetMemberType);
             }
         }
 
         /// <summary>
-        /// Creates the member type.
+        /// Creates a new member type using the uJet member type.
         /// </summary>
-        /// <param name="memberType">The member type to create.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="memberType" /> is <c>null</c>.</exception>
-        private void CreateMemberType(MemberType memberType)
+        /// <param name="jetMemberType">The uJet member type.</param>
+        /// <returns>The created member type.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="jetMemberType" /> is <c>null</c>.</exception>
+        internal virtual IMemberType CreateMemberType(MemberType jetMemberType)
+        {
+            if (jetMemberType == null)
+            {
+                throw new ArgumentNullException(nameof(jetMemberType));
+            }
+
+            var memberType = (IMemberType)CreateBaseContentType(() => new global::Umbraco.Core.Models.MemberType(-1), jetMemberType);
+
+            SynchronizePropertyTypes(memberType, jetMemberType.Properties);
+
+            _memberTypeService.Save(memberType);
+
+            // We get the member type once more to refresh it after updating it.
+            memberType = _memberTypeService.Get(memberType.Alias);
+
+            // Update tracking.
+            SetPropertyTypeId(memberType, jetMemberType);
+
+            return memberType;
+        }
+
+        /// <summary>
+        /// Updates the member type to match the uJet member type.
+        /// </summary>
+        /// <param name="memberType">The member type to update.</param>
+        /// <param name="jetMemberType">The uJet member type.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="memberType" />, or <paramref name="jetMemberType" /> are <c>null</c>.</exception>
+        internal virtual void UpdateMemberType(IMemberType memberType, MemberType jetMemberType)
         {
             if (memberType == null)
             {
                 throw new ArgumentNullException(nameof(memberType));
             }
 
-            var t = (IMemberType)CreateBaseType(() => new global::Umbraco.Core.Models.MemberType(-1), memberType);
+            if (jetMemberType == null)
+            {
+                throw new ArgumentNullException(nameof(jetMemberType));
+            }
 
-            SynchronizePropertyTypes(t, memberType.Properties);
+            UpdateBaseContentType(memberType, () => new global::Umbraco.Core.Models.ContentType(-1), jetMemberType);
 
-            _memberTypeService.Save(t);
+            SynchronizePropertyTypes(memberType, jetMemberType.Properties);
 
-            // Update tracking.
-            SetPropertyTypeId(_memberTypeService.Get(t.Alias), memberType);
+            _memberTypeService.Save(memberType);
+
+            // Update tracking. We get the member type once more to refresh it after updating it.
+            SetPropertyTypeId(_memberTypeService.Get(memberType.Alias), jetMemberType);
         }
     }
 }

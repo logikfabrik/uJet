@@ -78,7 +78,7 @@ namespace Logikfabrik.Umbraco.Jet
                 return;
             }
 
-            SetDefaultValues(content, new DocumentType(type));
+            SetDefaultValues(content, new DocumentType(type, _typeService.GetComposition(type, TypeExtensions.IsDocumentType)));
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace Logikfabrik.Umbraco.Jet
                 return;
             }
 
-            SetDefaultValues(content, new MediaType(type));
+            SetDefaultValues(content, new MediaType(type, _typeService.GetComposition(type, TypeExtensions.IsMediaType)));
         }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace Logikfabrik.Umbraco.Jet
                 return;
             }
 
-            SetDefaultValues(content, new MediaType(type));
+            SetDefaultValues(content, new MediaType(type, _typeService.GetComposition(type, TypeExtensions.IsMediaType)));
         }
 
         /// <summary>
