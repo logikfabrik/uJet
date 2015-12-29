@@ -10,15 +10,9 @@ namespace Logikfabrik.Umbraco.Jet.Test.Mappings
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
 
-    /// <summary>
-    /// The <see cref="DataTypeDefinitionMappingsTest" /> class.
-    /// </summary>
     [TestClass]
     public class DataTypeDefinitionMappingsTest
     {
-        /// <summary>
-        /// Test for default definition mapping for type <see cref="bool" />.
-        /// </summary>
         [TestMethod]
         public void CanGetDataTypeDefinitionForBoolean()
         {
@@ -27,9 +21,6 @@ namespace Logikfabrik.Umbraco.Jet.Test.Mappings
             Assert.IsTrue(mapping.CanMapToDefinition(typeof(bool)));
         }
 
-        /// <summary>
-        /// Test for default definition mapping for type <see cref="DateTime" />.
-        /// </summary>
         [TestMethod]
         public void CanGetDataTypeDefinitionForDateTime()
         {
@@ -38,9 +29,6 @@ namespace Logikfabrik.Umbraco.Jet.Test.Mappings
             Assert.IsTrue(mapping.CanMapToDefinition(typeof(DateTime)));
         }
 
-        /// <summary>
-        /// Test for default definition mapping for type <see cref="float" />.
-        /// </summary>
         [TestMethod]
         public void CanGetDataTypeDefinitionForFloatingBinary()
         {
@@ -49,9 +37,6 @@ namespace Logikfabrik.Umbraco.Jet.Test.Mappings
             Assert.IsTrue(mapping.CanMapToDefinition(typeof(float)));
         }
 
-        /// <summary>
-        /// Test for default definition mapping for type <see cref="decimal" />.
-        /// </summary>
         [TestMethod]
         public void CanGetDataTypeDefinitionForFloatingDecimal()
         {
@@ -60,9 +45,6 @@ namespace Logikfabrik.Umbraco.Jet.Test.Mappings
             Assert.IsTrue(mapping.CanMapToDefinition(typeof(decimal)));
         }
 
-        /// <summary>
-        /// Test for default definition mapping for type <see cref="int" />.
-        /// </summary>
         [TestMethod]
         public void CanGetDataTypeDefinitionForInteger()
         {
@@ -71,9 +53,6 @@ namespace Logikfabrik.Umbraco.Jet.Test.Mappings
             Assert.IsTrue(mapping.CanMapToDefinition(typeof(int)));
         }
 
-        /// <summary>
-        /// Test for default definition mapping for type <see cref="string" />.
-        /// </summary>
         [TestMethod]
         public void CanGetDataTypeDefinitionForString()
         {
@@ -82,9 +61,6 @@ namespace Logikfabrik.Umbraco.Jet.Test.Mappings
             Assert.IsTrue(mapping.CanMapToDefinition(typeof(string)));
         }
 
-        /// <summary>
-        /// Test to add definition mapping.
-        /// </summary>
         [TestMethod]
         public void CanAddDataTypeDefinitionMapping()
         {
@@ -100,9 +76,6 @@ namespace Logikfabrik.Umbraco.Jet.Test.Mappings
             Assert.IsTrue(mapping.CanMapToDefinition(typeof(object)));
         }
 
-        /// <summary>
-        /// Test to remove definition mapping.
-        /// </summary>
         [TestMethod]
         public void CanRemoveDataTypeDefinitionMapping()
         {

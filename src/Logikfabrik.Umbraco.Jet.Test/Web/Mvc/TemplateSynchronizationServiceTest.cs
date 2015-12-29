@@ -13,15 +13,9 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Mvc
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
 
-    /// <summary>
-    /// The <see cref="TemplateSynchronizationServiceTest" /> class.
-    /// </summary>
     [TestClass]
     public class TemplateSynchronizationServiceTest
     {
-        /// <summary>
-        /// Test to get templates to add.
-        /// </summary>
         [TestMethod]
         public void CanGetTemplatesToAdd()
         {
@@ -32,9 +26,6 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Mvc
             Assert.AreEqual(2, templatesToAdd.Count());
         }
 
-        /// <summary>
-        /// Test to get layout (master) for template with layout.
-        /// </summary>
         [TestMethod]
         public void CanGetLayoutForTemplateWithLayout()
         {
@@ -45,9 +36,6 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Mvc
             Assert.AreEqual("Template1Master", service.GetLayout(template));
         }
 
-        /// <summary>
-        /// Test to get layout (master) for template without layout.
-        /// </summary>
         [TestMethod]
         public void CannotGetLayoutForTemplateWithoutLayout()
         {
@@ -58,9 +46,6 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Mvc
             Assert.IsNull(service.GetLayout(template));
         }
 
-        /// <summary>
-        /// Test to get paths to templates to add.
-        /// </summary>
         [TestMethod]
         public void CanGetPathsToTemplatesToAdd()
         {

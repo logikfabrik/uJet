@@ -1,4 +1,4 @@
-﻿// <copyright file="DocumentServiceTest.cs" company="Logikfabrik">
+﻿// <copyright file="MediaServiceTest.cs" company="Logikfabrik">
 //   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -13,10 +13,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
     using Utilities;
 
     [TestClass]
-    public class DocumentServiceTest : TestBase
+    public class MediaServiceTest : TestBase
     {
         [TestMethod]
-        public void CanGetDocumentIdByConvention()
+        public void CanGetMediaIdByConvention()
         {
             const int id = 123;
 
@@ -27,15 +27,15 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
 
-            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
+            umbracoHelperWrapperMock.Setup(m => m.TypedMedia(id)).Returns(publishedContentMock.Object);
 
-            var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
+            var media = new MediaService(umbracoHelperWrapperMock.Object).GetMedia<Models.MediaType>(id);
 
-            Assert.AreEqual(id, document.Id);
+            Assert.AreEqual(id, media.Id);
         }
 
         [TestMethod]
-        public void CanGetDocumentUrlByConvention()
+        public void CanGetMediaUrlByConvention()
         {
             const int id = 123;
             const string url = "/umbraco/jet";
@@ -47,15 +47,15 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
 
-            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
+            umbracoHelperWrapperMock.Setup(m => m.TypedMedia(id)).Returns(publishedContentMock.Object);
 
-            var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
+            var media = new MediaService(umbracoHelperWrapperMock.Object).GetMedia<Models.MediaType>(id);
 
-            Assert.AreEqual(url, document.Url);
+            Assert.AreEqual(url, media.Url);
         }
 
         [TestMethod]
-        public void CanGetDocumentNameByConvention()
+        public void CanGetMediaNameByConvention()
         {
             const int id = 123;
             const string name = "Umbraco Jet";
@@ -67,15 +67,15 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
 
-            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
+            umbracoHelperWrapperMock.Setup(m => m.TypedMedia(id)).Returns(publishedContentMock.Object);
 
-            var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
+            var media = new MediaService(umbracoHelperWrapperMock.Object).GetMedia<Models.MediaType>(id);
 
-            Assert.AreEqual(name, document.Name);
+            Assert.AreEqual(name, media.Name);
         }
 
         [TestMethod]
-        public void CanGetDocumentCreateDateByConvention()
+        public void CanGetMediaCreateDateByConvention()
         {
             const int id = 123;
             var createDate = new DateTime(2015, 1, 1);
@@ -87,15 +87,15 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
 
-            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
+            umbracoHelperWrapperMock.Setup(m => m.TypedMedia(id)).Returns(publishedContentMock.Object);
 
-            var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
+            var media = new MediaService(umbracoHelperWrapperMock.Object).GetMedia<Models.MediaType>(id);
 
-            Assert.AreEqual(createDate, document.CreateDate);
+            Assert.AreEqual(createDate, media.CreateDate);
         }
 
         [TestMethod]
-        public void CanGetDocumentUpdateDateByConvention()
+        public void CanGetMediaUpdateDateByConvention()
         {
             const int id = 123;
             var updateDate = new DateTime(2015, 1, 1);
@@ -107,44 +107,44 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
 
-            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
+            umbracoHelperWrapperMock.Setup(m => m.TypedMedia(id)).Returns(publishedContentMock.Object);
 
-            var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
+            var media = new MediaService(umbracoHelperWrapperMock.Object).GetMedia<Models.MediaType>(id);
 
-            Assert.AreEqual(updateDate, document.UpdateDate);
+            Assert.AreEqual(updateDate, media.UpdateDate);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void CanNotGetDocumentForInvalidDocumentType()
+        public void CanNotGetMediaForInvalidMediaType()
         {
             var type = TypeUtility.GetTypeBuilder("MyType", TypeUtility.GetTypeAttributes()).CreateType();
 
             var contentMock = new Mock<IPublishedContent>();
 
-            var service = new DocumentService(new Mock<IUmbracoHelperWrapper>().Object);
+            var service = new MediaService(new Mock<IUmbracoHelperWrapper>().Object);
 
-            service.GetDocument(contentMock.Object, type);
+            service.GetMedia(contentMock.Object, type);
         }
 
         [TestMethod]
-        public void CanGetDocumentForValidDocumentType()
+        public void CanGetMediaForValidMediaType()
         {
-            var type = DocumentTypeUtility.GetTypeBuilder().CreateType();
+            var type = MediaTypeUtility.GetTypeBuilder().CreateType();
 
             var contentMock = new Mock<IPublishedContent>();
 
             contentMock.Setup(m => m.Properties).Returns(new List<IPublishedProperty>());
 
-            var service = new DocumentService(new Mock<IUmbracoHelperWrapper>().Object);
+            var service = new MediaService(new Mock<IUmbracoHelperWrapper>().Object);
 
-            var document = service.GetDocument(contentMock.Object, type);
+            var media = service.GetMedia(contentMock.Object, type);
 
-            Assert.IsNotNull(document);
+            Assert.IsNotNull(media);
         }
 
         [TestMethod]
-        public void CanGetDocumentForDocumentTypeWithStringProperty()
+        public void CanGetMediaForMediaTypeWithStringProperty()
         {
             const int id = 123;
             const string stringPropertyName = "stringProperty";
@@ -164,15 +164,15 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
 
-            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
+            umbracoHelperWrapperMock.Setup(m => m.TypedMedia(id)).Returns(publishedContentMock.Object);
 
-            var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
+            var media = new MediaService(umbracoHelperWrapperMock.Object).GetMedia<Models.MediaType>(id);
 
-            Assert.AreEqual(stringPropertyValue, document.StringProperty);
+            Assert.AreEqual(stringPropertyValue, media.StringProperty);
         }
 
         [TestMethod]
-        public void CanGetDocumentForDocumentTypeWithIntegerProperty()
+        public void CanGetMediaForMediaTypeWithIntegerProperty()
         {
             const int id = 123;
             const string integerPropertyName = "integerProperty";
@@ -192,15 +192,15 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
 
-            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
+            umbracoHelperWrapperMock.Setup(m => m.TypedMedia(id)).Returns(publishedContentMock.Object);
 
-            var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
+            var media = new MediaService(umbracoHelperWrapperMock.Object).GetMedia<Models.MediaType>(id);
 
-            Assert.AreEqual(integerPropertyValue, document.IntegerProperty);
+            Assert.AreEqual(integerPropertyValue, media.IntegerProperty);
         }
 
         [TestMethod]
-        public void CanGetDocumentForDocumentTypeWithFloatingBinaryPointProperty()
+        public void CanGetMediaForMediaTypeWithFloatingBinaryPointProperty()
         {
             const int id = 123;
             const string floatingBinaryPointPropertyName = "FloatingBinaryPointProperty";
@@ -220,15 +220,15 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
 
-            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
+            umbracoHelperWrapperMock.Setup(m => m.TypedMedia(id)).Returns(publishedContentMock.Object);
 
-            var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
+            var media = new MediaService(umbracoHelperWrapperMock.Object).GetMedia<Models.MediaType>(id);
 
-            Assert.AreEqual(floatingBinaryPointPropertyValue, document.FloatingBinaryPointProperty);
+            Assert.AreEqual(floatingBinaryPointPropertyValue, media.FloatingBinaryPointProperty);
         }
 
         [TestMethod]
-        public void CanGetDocumentForDocumentTypeWithFloatingDecimalPointProperty()
+        public void CanGetMediaForMediaTypeWithFloatingDecimalPointProperty()
         {
             const int id = 123;
             const string floatingDecimalPointPropertyName = "FloatingDecimalPointProperty";
@@ -248,15 +248,15 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
 
-            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
+            umbracoHelperWrapperMock.Setup(m => m.TypedMedia(id)).Returns(publishedContentMock.Object);
 
-            var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
+            var media = new MediaService(umbracoHelperWrapperMock.Object).GetMedia<Models.MediaType>(id);
 
-            Assert.AreEqual(floatingDecimalPointPropertyValue, document.FloatingDecimalPointProperty);
+            Assert.AreEqual(floatingDecimalPointPropertyValue, media.FloatingDecimalPointProperty);
         }
 
         [TestMethod]
-        public void CanGetDocumentForDocumentTypeWithBooleanProperty()
+        public void CanGetMediaForMediaTypeWithBooleanProperty()
         {
             const int id = 123;
             const string booleanPropertyName = "BooleanProperty";
@@ -276,15 +276,15 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
 
-            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
+            umbracoHelperWrapperMock.Setup(m => m.TypedMedia(id)).Returns(publishedContentMock.Object);
 
-            var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
+            var media = new MediaService(umbracoHelperWrapperMock.Object).GetMedia<Models.MediaType>(id);
 
-            Assert.AreEqual(booleanPropertyValue, document.BooleanProperty);
+            Assert.AreEqual(booleanPropertyValue, media.BooleanProperty);
         }
 
         [TestMethod]
-        public void CanGetDocumentForDocumentTypeWithDateTimeProperty()
+        public void CanGetMediaForMediaTypeWithDateTimeProperty()
         {
             const int id = 123;
             const string dateTimePropertyName = "DateTimeProperty";
@@ -304,11 +304,11 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
 
-            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
+            umbracoHelperWrapperMock.Setup(m => m.TypedMedia(id)).Returns(publishedContentMock.Object);
 
-            var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
+            var media = new MediaService(umbracoHelperWrapperMock.Object).GetMedia<Models.MediaType>(id);
 
-            Assert.AreEqual(dateTimePropertyValue, document.DateTimeProperty);
+            Assert.AreEqual(dateTimePropertyValue, media.DateTimeProperty);
         }
     }
 }

@@ -12,17 +12,24 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
     public interface IUmbracoHelperWrapper
     {
         /// <summary>
-        /// Gets typed document.
+        /// Gets the Umbraco document with the specified identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        /// <returns>Typed document.</returns>
+        /// <returns>The Umbraco document with the specified identifier.</returns>
         IPublishedContent TypedDocument(int id);
 
         /// <summary>
-        /// Gets typed media.
+        /// Gets the Umbraco media with the specified identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        /// <returns>Typed media.</returns>
+        /// <returns>The Umbraco media with the specified identifier.</returns>
         IPublishedContent TypedMedia(int id);
+
+        /// <summary>
+        /// Gets the Umbraco member with the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>The Umbraco member with the specified identifier.</returns>
+        IPublishedContent TypedMember(int id);
     }
 }

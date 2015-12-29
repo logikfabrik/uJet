@@ -73,7 +73,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         {
             var contentTypes = _contentTypeService.GetAllContentTypes().ToArray();
 
-            foreach (var type in _typeService.DocumentTypes.Where(t => Attribute.IsDefined(t, typeof(PreviewTemplateAttribute))))
+            foreach (var type in _typeService.DocumentTypes.Where(t => Attribute.IsDefined(t, typeof(PreviewTemplateAttribute), false)))
             {
                 var contentType = contentTypes.FirstOrDefault(t => t.Alias == new DocumentType(type).Alias);
 

@@ -8,15 +8,9 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data.Converters
     using Jet.Web.Data.Converters;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    /// <summary>
-    /// The <see cref="FloatingBinaryPointPropertyValueConverterTest" /> class.
-    /// </summary>
     [TestClass]
     public class FloatingBinaryPointPropertyValueConverterTest
     {
-        /// <summary>
-        /// Test for supported type <see cref="float" />.
-        /// </summary>
         [TestMethod]
         public void CanConvertStringToFloat()
         {
@@ -27,9 +21,6 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data.Converters
             Assert.AreEqual(value, converter.Convert(value.ToString(CultureInfo.InvariantCulture), typeof(float)));
         }
 
-        /// <summary>
-        /// Test for supported type <see cref="float" />.
-        /// </summary>
         [TestMethod]
         public void CanConvertStringToNullableFloat()
         {
@@ -38,9 +29,6 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data.Converters
             Assert.AreEqual(null, converter.Convert(null, typeof(float?)));
         }
 
-        /// <summary>
-        /// Test for supported type <see cref="double" />.
-        /// </summary>
         [TestMethod]
         public void CanConvertStringToDouble()
         {
@@ -51,9 +39,6 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data.Converters
             Assert.AreEqual(value, converter.Convert(value.ToString(CultureInfo.InvariantCulture), typeof(double)));
         }
 
-        /// <summary>
-        /// Test for supported type <see cref="double" />.
-        /// </summary>
         [TestMethod]
         public void CanConvertStringToNullableDouble()
         {
@@ -62,9 +47,6 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data.Converters
             Assert.AreEqual(null, converter.Convert(null, typeof(double?)));
         }
 
-        /// <summary>
-        /// Test for supported type <see cref="float" />.
-        /// </summary>
         [TestMethod]
         public void CanConvertValueReturnsTrueForFloat()
         {
@@ -73,9 +55,6 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data.Converters
             Assert.IsTrue(converter.CanConvertValue(null, typeof(string), typeof(float)));
         }
 
-        /// <summary>
-        /// Test for supported type <see cref="float" />.
-        /// </summary>
         [TestMethod]
         public void CanConvertValueReturnsTrueForNullableFloat()
         {
@@ -84,9 +63,6 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data.Converters
             Assert.IsTrue(converter.CanConvertValue(null, typeof(string), typeof(float?)));
         }
 
-        /// <summary>
-        /// Test for supported type <see cref="double" />.
-        /// </summary>
         [TestMethod]
         public void CanConvertValueReturnsTrueForDouble()
         {
@@ -95,9 +71,6 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data.Converters
             Assert.IsTrue(converter.CanConvertValue(null, typeof(string), typeof(double)));
         }
 
-        /// <summary>
-        /// Test for supported type <see cref="double" />.
-        /// </summary>
         [TestMethod]
         public void CanConvertValueReturnsTrueForNullableDouble()
         {

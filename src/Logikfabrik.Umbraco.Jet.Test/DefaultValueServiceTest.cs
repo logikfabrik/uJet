@@ -12,133 +12,172 @@ namespace Logikfabrik.Umbraco.Jet.Test
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
 
-    /// <summary>
-    /// The <see cref="DefaultValueServiceTest" /> class.
-    /// </summary>
     [TestClass]
     public class DefaultValueServiceTest : TestBase
     {
-        /// <summary>
-        /// Test to set default value for a document type string property.
-        /// </summary>
         [TestMethod]
         public void CanSetDocumentTypeDefaultValueForStringProperty()
         {
-            var documentType = new DocumentType();
+            var documentType = new Models.DocumentType();
             var propertyName = GetPropertyName(() => documentType.StringProperty);
 
             CanSetDefaultValueForDocumentType<string>(documentType, propertyName);
         }
 
-        /// <summary>
-        /// Test to set default value for a document type integer property.
-        /// </summary>
         [TestMethod]
         public void CanSetDocumentTypeDefaultValueForIntegerProperty()
         {
-            var documentType = new DocumentType();
+            var documentType = new Models.DocumentType();
             var propertyName = GetPropertyName(() => documentType.IntegerProperty);
 
             CanSetDefaultValueForDocumentType<int>(documentType, propertyName);
         }
 
-        /// <summary>
-        /// Test to set default value for a document type floating binary point property.
-        /// </summary>
         [TestMethod]
         public void CanSetDocumentTypeDefaultValueForFloatingBinaryPointProperty()
         {
-            var documentType = new DocumentType();
+            var documentType = new Models.DocumentType();
             var propertyName = GetPropertyName(() => documentType.FloatingBinaryPointProperty);
 
             CanSetDefaultValueForDocumentType<float>(documentType, propertyName);
         }
 
-        /// <summary>
-        /// Test to set default value for a document type floating decimal point property.
-        /// </summary>
         [TestMethod]
         public void CanSetDocumentTypeDefaultValueForFloatingDecimalPointProperty()
         {
-            var documentType = new DocumentType();
+            var documentType = new Models.DocumentType();
             var propertyName = GetPropertyName(() => documentType.FloatingDecimalPointProperty);
 
             CanSetDefaultValueForDocumentType<decimal>(documentType, propertyName);
         }
 
-        /// <summary>
-        /// Test to set default value for a document type boolean property.
-        /// </summary>
         [TestMethod]
         public void CanSetDocumentTypeDefaultValueForBooleanProperty()
         {
-            var documentType = new DocumentType();
+            var documentType = new Models.DocumentType();
             var propertyName = GetPropertyName(() => documentType.BooleanProperty);
 
             CanSetDefaultValueForDocumentType<bool>(documentType, propertyName);
         }
 
-        /// <summary>
-        /// Test to set default value for a media type string property.
-        /// </summary>
+        [TestMethod]
+        public void CanSetDocumentTypeDefaultValueForDateTimeProperty()
+        {
+            var documentType = new Models.DocumentType();
+            var propertyName = GetPropertyName(() => documentType.DateTimeProperty);
+
+            CanSetDefaultValueForDocumentType<DateTime>(documentType, propertyName);
+        }
+
         [TestMethod]
         public void CanSetMediaTypeDefaultValueForStringProperty()
         {
-            var mediaType = new MediaType();
+            var mediaType = new Models.MediaType();
             var propertyName = GetPropertyName(() => mediaType.StringProperty);
 
             CanSetDefaultValueForMediaType<string>(mediaType, propertyName);
         }
 
-        /// <summary>
-        /// Test to set default value for a media type integer property.
-        /// </summary>
         [TestMethod]
         public void CanSetMediaTypeDefaultValueForIntegerProperty()
         {
-            var mediaType = new MediaType();
+            var mediaType = new Models.MediaType();
             var propertyName = GetPropertyName(() => mediaType.IntegerProperty);
 
             CanSetDefaultValueForMediaType<int>(mediaType, propertyName);
         }
 
-        /// <summary>
-        /// Test to set default value for a media type floating binary point property.
-        /// </summary>
         [TestMethod]
         public void CanSetMediaTypeDefaultValueForFloatingBinaryPointProperty()
         {
-            var mediaType = new MediaType();
+            var mediaType = new Models.MediaType();
             var propertyName = GetPropertyName(() => mediaType.FloatingBinaryPointProperty);
 
             CanSetDefaultValueForMediaType<float>(mediaType, propertyName);
         }
 
-        /// <summary>
-        /// Test to set default value for a media type floating decimal point property.
-        /// </summary>
         [TestMethod]
         public void CanSetMediaTypeDefaultValueForFloatingDecimalPointProperty()
         {
-            var mediaType = new MediaType();
+            var mediaType = new Models.MediaType();
             var propertyName = GetPropertyName(() => mediaType.FloatingDecimalPointProperty);
 
             CanSetDefaultValueForMediaType<decimal>(mediaType, propertyName);
         }
 
-        /// <summary>
-        /// Test to set default value for a media type boolean property.
-        /// </summary>
+        [TestMethod]
+        public void CanSetMediaTypeDefaultValueForDateTimeProperty()
+        {
+            var mediaType = new Models.MediaType();
+            var propertyName = GetPropertyName(() => mediaType.DateTimeProperty);
+
+            CanSetDefaultValueForMediaType<DateTime>(mediaType, propertyName);
+        }
+
         [TestMethod]
         public void CanSetMediaTypeDefaultValueForBooleanProperty()
         {
-            var mediaType = new MediaType();
+            var mediaType = new Models.MediaType();
             var propertyName = GetPropertyName(() => mediaType.BooleanProperty);
 
             CanSetDefaultValueForMediaType<bool>(mediaType, propertyName);
         }
 
-        private static void CanSetDefaultValueForDocumentType<TPropertyType>(ContentType documentType, string propertyName)
+        [TestMethod]
+        public void CanSetMemberTypeDefaultValueForStringProperty()
+        {
+            var memberType = new Models.MemberType();
+            var propertyName = GetPropertyName(() => memberType.StringProperty);
+
+            CanSetDefaultValueForMemberType<string>(memberType, propertyName);
+        }
+
+        [TestMethod]
+        public void CanSetMemberTypeDefaultValueForIntegerProperty()
+        {
+            var memberType = new Models.MemberType();
+            var propertyName = GetPropertyName(() => memberType.IntegerProperty);
+
+            CanSetDefaultValueForMemberType<int>(memberType, propertyName);
+        }
+
+        [TestMethod]
+        public void CanSetMemberTypeDefaultValueForFloatingBinaryPointProperty()
+        {
+            var memberType = new Models.MemberType();
+            var propertyName = GetPropertyName(() => memberType.FloatingBinaryPointProperty);
+
+            CanSetDefaultValueForMemberType<float>(memberType, propertyName);
+        }
+
+        [TestMethod]
+        public void CanSetMemberTypeDefaultValueForFloatingDecimalPointProperty()
+        {
+            var memberType = new Models.MemberType();
+            var propertyName = GetPropertyName(() => memberType.FloatingDecimalPointProperty);
+
+            CanSetDefaultValueForMemberType<decimal>(memberType, propertyName);
+        }
+
+        [TestMethod]
+        public void CanSetMemberTypeDefaultValueForBooleanProperty()
+        {
+            var memberType = new Models.MemberType();
+            var propertyName = GetPropertyName(() => memberType.BooleanProperty);
+
+            CanSetDefaultValueForMemberType<bool>(memberType, propertyName);
+        }
+
+        [TestMethod]
+        public void CanSetMemberTypeDefaultValueForDateTimeProperty()
+        {
+            var memberType = new Models.MemberType();
+            var propertyName = GetPropertyName(() => memberType.DateTimeProperty);
+
+            CanSetDefaultValueForMemberType<DateTime>(memberType, propertyName);
+        }
+
+        private static void CanSetDefaultValueForDocumentType<TPropertyType>(Models.DocumentType documentType, string propertyName)
         {
             var contentTypeMock = new Mock<IContentType>();
 
@@ -153,7 +192,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             contentMock.Verify(m => m.SetValue(propertyName.Alias(), GetPropertyDefaultValue<TPropertyType>(documentType.GetType(), propertyName)));
         }
 
-        private static void CanSetDefaultValueForMediaType<TPropertyType>(ContentType mediaType, string propertyName)
+        private static void CanSetDefaultValueForMediaType<TPropertyType>(Models.MediaType mediaType, string propertyName)
         {
             var contentTypeMock = new Mock<IMediaType>();
 
@@ -168,6 +207,21 @@ namespace Logikfabrik.Umbraco.Jet.Test
             contentMock.Verify(m => m.SetValue(propertyName.Alias(), GetPropertyDefaultValue<TPropertyType>(mediaType.GetType(), propertyName)));
         }
 
+        private static void CanSetDefaultValueForMemberType<TPropertyType>(Models.MemberType memberType, string propertyName)
+        {
+            var contentTypeMock = new Mock<IMemberType>();
+
+            contentTypeMock.Setup(m => m.Alias).Returns(memberType.GetType().Name.Alias());
+
+            var contentMock = new Mock<IMember>();
+
+            contentMock.Setup(m => m.ContentType).Returns(contentTypeMock.Object);
+
+            new DefaultValueService(GetTypeServiceMock(memberType.GetType()).Object).SetDefaultValues(contentMock.Object);
+
+            contentMock.Verify(m => m.SetValue(propertyName.Alias(), GetPropertyDefaultValue<TPropertyType>(memberType.GetType(), propertyName)));
+        }
+
         private static T GetPropertyDefaultValue<T>(Type type, string propertyName)
         {
             var property = type.GetProperties().Single(p => p.Name == propertyName);
@@ -175,75 +229,6 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var attribute = (DefaultValueAttribute)Attribute.GetCustomAttribute(property, typeof(DefaultValueAttribute));
 
             return (T)attribute.Value;
-        }
-
-        /// <summary>
-        /// The <see cref="ContentType" /> class.
-        /// </summary>
-        protected abstract class ContentType
-        {
-            /// <summary>
-            /// Gets or sets the string property value.
-            /// </summary>
-            /// <value>
-            /// The string property value.
-            /// </value>
-            [DefaultValue("Default")]
-            public string StringProperty { get; set; }
-
-            /// <summary>
-            /// Gets or sets the integer property value.
-            /// </summary>
-            /// <value>
-            /// The integer property value.
-            /// </value>
-            [DefaultValue(1)]
-            public int IntegerProperty { get; set; }
-
-            /// <summary>
-            /// Gets or sets the floating binary point property value.
-            /// </summary>
-            /// <value>
-            /// The floating binary point property value.
-            /// </value>
-            [DefaultValue(1.1f)]
-            public float FloatingBinaryPointProperty { get; set; }
-
-            /// <summary>
-            /// Gets or sets the floating decimal point property value.
-            /// </summary>
-            /// <value>
-            /// The floating decimal point property value.
-            /// </value>
-            [DefaultValue(typeof(decimal), "1.1")]
-            public decimal FloatingDecimalPointProperty { get; set; }
-
-            /// <summary>
-            /// Gets or sets the boolean property value.
-            /// </summary>
-            /// <value>
-            /// The boolean property value.
-            /// </value>
-            [DefaultValue(true)]
-#pragma warning disable SA1623
-            public bool BooleanProperty { get; set; }
-#pragma warning restore SA1623
-        }
-
-        /// <summary>
-        /// The <see cref="DocumentType" /> class.
-        /// </summary>
-        [DocumentType("DocumentType")]
-        protected class DocumentType : ContentType
-        {
-        }
-
-        /// <summary>
-        /// The <see cref="MediaType" /> class.
-        /// </summary>
-        [MediaType("MediaType")]
-        protected class MediaType : ContentType
-        {
         }
     }
 }

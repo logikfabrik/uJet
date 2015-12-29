@@ -9,15 +9,9 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data.Converters
     using Jet.Web.Data.Converters;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    /// <summary>
-    /// The <see cref="HtmlStringPropertyValueConverterTest" /> class.
-    /// </summary>
     [TestClass]
     public class HtmlStringPropertyValueConverterTest
     {
-        /// <summary>
-        /// Test for supported type <see cref="string" />.
-        /// </summary>
         [TestMethod]
         public void CanConvertNullHtmlStringToNullString()
         {
@@ -26,9 +20,6 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data.Converters
             Assert.AreEqual(null, converter.Convert(new HtmlString(null), typeof(string)));
         }
 
-        /// <summary>
-        /// Test for supported type <see cref="string" />.
-        /// </summary>
         [TestMethod]
         public void CanConvertEmptyHtmlStringToEmptyString()
         {
@@ -37,9 +28,6 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data.Converters
             Assert.AreEqual(string.Empty, converter.Convert(new HtmlString(string.Empty), typeof(string)));
         }
 
-        /// <summary>
-        /// Test for supported type <see cref="string" />.
-        /// </summary>
         [TestMethod]
         public void CanConvertHtmlStringToString()
         {
@@ -50,9 +38,6 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data.Converters
             Assert.AreEqual(value, converter.Convert(new HtmlString(value), typeof(string)));
         }
 
-        /// <summary>
-        /// Test for supported type <see cref="string" />.
-        /// </summary>
         [TestMethod]
         public void CanConvertValueReturnsTrueForHtmlString()
         {

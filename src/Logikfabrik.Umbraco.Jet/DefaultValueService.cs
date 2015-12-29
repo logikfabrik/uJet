@@ -151,14 +151,14 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(content));
             }
 
-            var type = _typeService.MediaTypes.FirstOrDefault(t => t.Name.Alias() == content.ContentType.Alias);
+            var type = _typeService.MemberTypes.FirstOrDefault(t => t.Name.Alias() == content.ContentType.Alias);
 
             if (type == null)
             {
                 return;
             }
 
-            SetDefaultValues(content, new MediaType(type));
+            SetDefaultValues(content, new MemberType(type));
         }
 
         /// <summary>

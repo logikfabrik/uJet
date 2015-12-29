@@ -9,15 +9,9 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Mvc
     using Jet.Web.Mvc;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    /// <summary>
-    /// The <see cref="TemplateServiceTest" /> class.
-    /// </summary>
     [TestClass]
     public class TemplateServiceTest
     {
-        /// <summary>
-        /// Test to get template paths.
-        /// </summary>
         [TestMethod]
         public void CanGetTemplatePaths()
         {
@@ -26,20 +20,14 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Mvc
             Assert.AreEqual(2, templates.Count());
         }
 
-        /// <summary>
-        /// Test to get template content.
-        /// </summary>
         [TestMethod]
-        public void CanGetTemplateContent()
+        public void CanGetContent()
         {
             var templatePath = TemplateService.Instance.TemplatePaths.First();
 
             Assert.AreEqual(File.ReadAllText(templatePath), TemplateService.Instance.GetContent(templatePath));
         }
 
-        /// <summary>
-        /// Test to get template.
-        /// </summary>
         [TestMethod]
         public void CanGetTemplate()
         {

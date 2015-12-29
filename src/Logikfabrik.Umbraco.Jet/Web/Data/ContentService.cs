@@ -5,10 +5,7 @@
 namespace Logikfabrik.Umbraco.Jet.Web.Data
 {
     using System;
-    using System.ComponentModel.DataAnnotations;
     using System.Linq.Expressions;
-    using System.Reflection;
-    using Converters;
     using global::Umbraco.Core.Models;
 
     /// <summary>
@@ -16,64 +13,39 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
     /// </summary>
     public abstract class ContentService
     {
+        private readonly ContentMapper _contentMapper = new ContentMapper();
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContentService" /> class.
+        /// Gets the name of the property.
         /// </summary>
-        /// <param name="umbracoHelperWrapper">The Umbraco helper wrapper.</param>
-        /// <param name="typeService">The type service.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="umbracoHelperWrapper" />, or <paramref name="typeService" /> are <c>null</c>.</exception>
-        protected ContentService(IUmbracoHelperWrapper umbracoHelperWrapper, ITypeService typeService)
+        /// <typeparam name="T">The property type.</typeparam>
+        /// <param name="expression">The expression.</param>
+        /// <returns>The property name.</returns>
+        protected static string GetPropertyName<T>(Expression<Func<T>> expression)
         {
-            if (umbracoHelperWrapper == null)
-            {
-                throw new ArgumentNullException(nameof(umbracoHelperWrapper));
-            }
-
-            if (typeService == null)
-            {
-                throw new ArgumentNullException(nameof(typeService));
-            }
-
-            UmbracoHelper = umbracoHelperWrapper;
-            TypeService = typeService;
+            return ((MemberExpression)expression.Body).Member.Name;
         }
-
-        /// <summary>
-        /// Gets the type service.
-        /// </summary>
-        /// <value>
-        /// The type service.
-        /// </value>
-        protected ITypeService TypeService { get; }
-
-        /// <summary>
-        /// Gets the Umbraco helper.
-        /// </summary>
-        /// <value>
-        /// The Umbraco helper.
-        /// </value>
-        protected IUmbracoHelperWrapper UmbracoHelper { get; }
 
         /// <summary>
         /// Gets the mapped content.
         /// </summary>
         /// <param name="content">The content to map.</param>
-        /// <param name="contentType">The content type to map to.</param>
+        /// <param name="modelType">The model type to map to.</param>
         /// <returns>The mapped content.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" />, or <paramref name="contentType" /> are <c>null</c>.</exception>
-        protected object GetMappedContent(IPublishedContent content, Type contentType)
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" />, or <paramref name="modelType" /> are <c>null</c>.</exception>
+        protected object GetMappedContent(IPublishedContent content, Type modelType)
         {
             if (content == null)
             {
                 throw new ArgumentNullException(nameof(content));
             }
 
-            if (contentType == null)
+            if (modelType == null)
             {
-                throw new ArgumentNullException(nameof(contentType));
+                throw new ArgumentNullException(nameof(modelType));
             }
 
-            var model = Activator.CreateInstance(contentType);
+            var model = Activator.CreateInstance(modelType);
 
             MapByConvention(content, model);
 
@@ -86,12 +58,23 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         }
 
         /// <summary>
+        /// Maps the property.
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <param name="propertyName">The name of the property.</param>
+        /// <param name="propertyValue">The property value.</param>
+        protected void MapProperty(object model, string propertyName, object propertyValue)
+        {
+            _contentMapper.MapProperty(model, propertyName, propertyValue);
+        }
+
+        /// <summary>
         /// Maps content by convention.
         /// </summary>
-        /// <param name="content">The content.</param>
-        /// <param name="model">The model.</param>
+        /// <param name="content">The content to map.</param>
+        /// <param name="model">The model to map to.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" />, or <paramref name="model" /> are <c>null</c>.</exception>
-        private static void MapByConvention(IPublishedContent content, object model)
+        protected virtual void MapByConvention(IPublishedContent content, object model)
         {
             if (content == null)
             {
@@ -115,90 +98,6 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
 
             MapProperty(model, GetPropertyName(() => content.WriterId), content.WriterId);
             MapProperty(model, GetPropertyName(() => content.WriterName), content.WriterName);
-
-            MapProperty(model, GetPropertyName(() => content.DocumentTypeId), content.DocumentTypeId);
-            MapProperty(model, GetPropertyName(() => content.DocumentTypeAlias), content.DocumentTypeAlias);
-        }
-
-        /// <summary>
-        /// Gets the name of the property.
-        /// </summary>
-        /// <typeparam name="T">The property type.</typeparam>
-        /// <param name="expression">The expression.</param>
-        /// <returns>The property name.</returns>
-        private static string GetPropertyName<T>(Expression<Func<T>> expression)
-        {
-            return ((MemberExpression)expression.Body).Member.Name;
-        }
-
-        /// <summary>
-        /// Gets the UI hint for the specified property.
-        /// </summary>
-        /// <param name="property">The property to get the UI hint for.</param>
-        /// <returns>The UI hint.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="property" /> is <c>null</c>.</exception>
-        private static string GetPropertyUIHint(PropertyInfo property)
-        {
-            if (property == null)
-            {
-                throw new ArgumentNullException(nameof(property));
-            }
-
-            var attribute = property.GetCustomAttribute<UIHintAttribute>();
-
-            var uiHint = attribute?.UIHint;
-
-            return uiHint;
-        }
-
-        /// <summary>
-        /// Maps the property.
-        /// </summary>
-        /// <param name="model">The model.</param>
-        /// <param name="propertyName">The name of the property to map.</param>
-        /// <param name="propertyValue">The property value to map.</param>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="propertyName" /> is <c>null</c> or white space.</exception>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="model" /> is <c>null</c>.</exception>
-        private static void MapProperty(object model, string propertyName, object propertyValue)
-        {
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
-            if (string.IsNullOrWhiteSpace(propertyName))
-            {
-                throw new ArgumentException("Property name cannot be null or white space.", nameof(propertyName));
-            }
-
-            var property = model.GetType().GetProperty(propertyName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
-
-            if (property == null || !property.CanWrite)
-            {
-                return;
-            }
-
-            if (propertyValue == null && Nullable.GetUnderlyingType(property.PropertyType) != null)
-            {
-                property.SetValue(model, null);
-            }
-            else if (propertyValue != null)
-            {
-                if (property.PropertyType.IsInstanceOfType(propertyValue))
-                {
-                    property.SetValue(model, propertyValue);
-                }
-                else
-                {
-                    var uiHint = GetPropertyUIHint(property);
-                    var converter = PropertyValueConverters.GetConverter(uiHint, propertyValue.GetType(), property.PropertyType);
-
-                    if (converter != null)
-                    {
-                        property.SetValue(model, converter.Convert(propertyValue, property.PropertyType));
-                    }
-                }
-            }
         }
     }
 }

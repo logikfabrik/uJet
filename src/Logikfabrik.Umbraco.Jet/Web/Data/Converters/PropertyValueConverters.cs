@@ -20,18 +20,18 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
         public static PropertyValueConverterDictionary Converters { get; } = GetDefaultConverters();
 
         /// <summary>
-        /// Gets the converter.
+        /// Gets a converter that can convert from and to the specified types.
         /// </summary>
         /// <param name="uiHint">The UI hint.</param>
-        /// <param name="from">From type.</param>
-        /// <param name="to">To type.</param>
-        /// <returns>The converter.</returns>
+        /// <param name="from">The type to convert from.</param>
+        /// <param name="to">The type to convert to.</param>
+        /// <returns>A converter that can convert from and to the specified types.</returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="from" />, or <paramref name="to" /> are <c>null</c>.</exception>
         internal static IPropertyValueConverter GetConverter(string uiHint, Type from, Type to)
         {
             if (from == null)
             {
-                throw new ArgumentNullException(nameof(@from));
+                throw new ArgumentNullException(nameof(from));
             }
 
             if (to == null)
@@ -43,7 +43,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
 
             return !Converters.TryGetValue(to, out converters)
                 ? null
-                : converters.FirstOrDefault(c => c.CanConvertValue(uiHint, @from, to));
+                : converters.FirstOrDefault(c => c.CanConvertValue(uiHint, from, to));
         }
 
         /// <summary>

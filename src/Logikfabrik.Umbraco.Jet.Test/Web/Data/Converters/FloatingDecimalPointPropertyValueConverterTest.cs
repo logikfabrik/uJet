@@ -8,15 +8,9 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data.Converters
     using Jet.Web.Data.Converters;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    /// <summary>
-    /// The <see cref="FloatingDecimalPointPropertyValueConverterTest" /> class.
-    /// </summary>
     [TestClass]
     public class FloatingDecimalPointPropertyValueConverterTest
     {
-        /// <summary>
-        /// Test for supported type <see cref="decimal" />.
-        /// </summary>
         [TestMethod]
         public void CanConvertStringToDecimal()
         {
@@ -27,9 +21,6 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data.Converters
             Assert.AreEqual(value, converter.Convert(value.ToString(CultureInfo.InvariantCulture), typeof(decimal)));
         }
 
-        /// <summary>
-        /// Test for supported type <see cref="decimal" />.
-        /// </summary>
         [TestMethod]
         public void CanConvertStringToNullableDecimal()
         {
@@ -38,9 +29,6 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data.Converters
             Assert.AreEqual(null, converter.Convert(null, typeof(decimal?)));
         }
 
-        /// <summary>
-        /// Test for supported type <see cref="decimal" />.
-        /// </summary>
         [TestMethod]
         public void CanConvertValueReturnsTrueForDecimal()
         {
@@ -49,9 +37,6 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data.Converters
             Assert.IsTrue(converter.CanConvertValue(null, typeof(string), typeof(decimal)));
         }
 
-        /// <summary>
-        /// Test for supported type <see cref="decimal" />.
-        /// </summary>
         [TestMethod]
         public void CanConvertValueReturnsTrueForNullableDecimal()
         {
