@@ -321,8 +321,8 @@
     <Compile Include="Mappings\DataTypeDefinitionMappingsTest.cs" />
     <Compile Include="MediaTypeTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Web\Mvc\TemplateServiceTest.cs" />
-    <Compile Include="Web\Mvc\TemplateSynchronizationServiceTest.cs" />
+    <Compile Include="TemplateServiceTest.cs" />
+    <Compile Include="TemplateSynchronizationServiceTest.cs" />
     <Compile Include="TypeServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -19,6 +19,8 @@ namespace Logikfabrik.Umbraco.Jet
     /// </summary>
     public class DataTypeSynchronizationService : ISynchronizationService
     {
+        // TODO: Rewrite so that it works the same way as the Document, Media, and Member sync services.
+
         private readonly IDataTypeRepository _dataTypeRepository;
         private readonly IDataTypeService _dataTypeService;
         private readonly ITypeService _typeService;

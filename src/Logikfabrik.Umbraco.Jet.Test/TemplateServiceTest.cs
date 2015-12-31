@@ -2,11 +2,10 @@
 //   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
-namespace Logikfabrik.Umbraco.Jet.Test.Web.Mvc
+namespace Logikfabrik.Umbraco.Jet.Test
 {
     using System.IO;
     using System.Linq;
-    using Jet.Web.Mvc;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]

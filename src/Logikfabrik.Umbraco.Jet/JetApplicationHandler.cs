@@ -47,6 +47,7 @@ namespace Logikfabrik.Umbraco.Jet
 
                 if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.DocumentTypes))
                 {
+                    new TemplateSynchronizationService().Synchronize();
                     new DocumentTypeSynchronizationService().Synchronize();
                 }
 

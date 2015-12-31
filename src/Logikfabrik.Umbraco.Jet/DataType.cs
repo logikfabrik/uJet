@@ -9,7 +9,7 @@ namespace Logikfabrik.Umbraco.Jet
     using Extensions;
 
     /// <summary>
-    /// The <see cref="DataType" /> class.
+    /// The <see cref="DataType" /> class. The model type for data model types.
     /// </summary>
     public class DataType
     {
@@ -18,7 +18,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="type">The type.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="type" /> is <c>null</c>.</exception>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is not a data type.</exception>
+        /// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is not a data model type.</exception>
         public DataType(Type type)
         {
             if (type == null)
@@ -28,7 +28,7 @@ namespace Logikfabrik.Umbraco.Jet
 
             if (!type.IsDataType())
             {
-                throw new ArgumentException("Type is not a data type.", nameof(type));
+                throw new ArgumentException("Type is not a data model type.", nameof(type));
             }
 
             Name = GetName(type);

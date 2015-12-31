@@ -9,7 +9,7 @@ namespace Logikfabrik.Umbraco.Jet
     using Extensions;
 
     /// <summary>
-    /// The <see cref="MediaType" /> class.
+    /// The <see cref="MediaType" /> class. The model type for media model types.
     /// </summary>
     public class MediaType : ContentType<MediaTypeAttribute>
     {
@@ -17,12 +17,13 @@ namespace Logikfabrik.Umbraco.Jet
         /// Initializes a new instance of the <see cref="MediaType" /> class.
         /// </summary>
         /// <param name="type">The type.</param>
+        /// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is not a media model type.</exception>
         public MediaType(Type type)
             : base(type)
         {
             if (!type.IsMediaType())
             {
-                throw new ArgumentException($"Type {type} is not a media type.", nameof(type));
+                throw new ArgumentException($"Type {type} is not a media model type.", nameof(type));
             }
         }
 

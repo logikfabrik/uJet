@@ -5,7 +5,6 @@
 namespace Logikfabrik.Umbraco.Jet
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using Data;
     using global::Umbraco.Core;
@@ -15,10 +14,11 @@ namespace Logikfabrik.Umbraco.Jet
     using global::Umbraco.Core.Services;
 
     /// <summary>
-    /// The <see cref="MediaTypeSynchronizationService" /> class. Synchronizes types annotated using the <see cref="MediaTypeAttribute" />.
+    /// The <see cref="MediaTypeSynchronizationService" /> class. Synchronizes model types annotated using the <see cref="MediaTypeAttribute" />.
     /// </summary>
-    public class MediaTypeSynchronizationService : ContentTypeSynchronizationService
+    public class MediaTypeSynchronizationService : ContentTypeSynchronizationService<MediaType, MediaTypeAttribute>
     {
+        private readonly IContentTypeService _contentTypeService;
         private readonly ITypeService _typeService;
 
         /// <summary>
@@ -38,189 +38,94 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="contentTypeService">The content type service.</param>
         /// <param name="contentTypeRepository">The content type repository.</param>
         /// <param name="typeService">The type service.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="typeService" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeService" />, or <paramref name="typeService" /> are <c>null</c>.</exception>
         public MediaTypeSynchronizationService(
             IContentTypeService contentTypeService,
             IContentTypeRepository contentTypeRepository,
             ITypeService typeService)
-            : base(contentTypeService, contentTypeRepository)
+            : base(contentTypeRepository)
         {
+            if (contentTypeService == null)
+            {
+                throw new ArgumentNullException(nameof(contentTypeService));
+            }
+
             if (typeService == null)
             {
                 throw new ArgumentNullException(nameof(typeService));
             }
 
+            _contentTypeService = contentTypeService;
             _typeService = typeService;
         }
 
         /// <summary>
-        /// Synchronizes this instance.
+        /// Gets the content type models.
         /// </summary>
-        public override void Synchronize()
+        /// <value>
+        /// The content type models.
+        /// </value>
+        protected override MediaType[] ContentTypeModels
         {
-            var jetMediaTypes = _typeService.MediaTypes.Select(t => new MediaType(t)).ToArray();
-
-            // No media types; there's nothing to sync.
-            if (!jetMediaTypes.Any())
+            get
             {
-                return;
-            }
-
-            ValidateMediaTypeId(jetMediaTypes);
-            ValidateMediaTypeAlias(jetMediaTypes);
-
-            var mediaTypes = ContentTypeService.GetAllMediaTypes().Cast<IContentTypeBase>().ToArray();
-
-            foreach (var jetMediaType in jetMediaTypes)
-            {
-                Synchronize(mediaTypes, jetMediaType);
-            }
-
-            // We get all media types once more to refresh them after creating/updating them.
-            mediaTypes = ContentTypeService.GetAllMediaTypes().Cast<IContentTypeBase>().ToArray();
-
-            Func<Type, ContentType<MediaTypeAttribute>> constructor = t => new MediaType(t);
-
-            SetAllowedContentTypes(mediaTypes, jetMediaTypes.Cast<ContentType<MediaTypeAttribute>>().ToArray(), constructor);
-            SetComposition(mediaTypes, jetMediaTypes.Cast<ContentType<MediaTypeAttribute>>().ToArray(), constructor);
-        }
-
-        /// <summary>
-        /// Creates a new media type using the uJet media type.
-        /// </summary>
-        /// <param name="jetMediaType">The uJet media type.</param>
-        /// <returns>The created media type.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="jetMediaType" /> is <c>null</c>.</exception>
-        internal virtual IMediaType CreateMediaType(MediaType jetMediaType)
-        {
-            if (jetMediaType == null)
-            {
-                throw new ArgumentNullException(nameof(jetMediaType));
-            }
-
-            var mediaType = (IMediaType)CreateContentType(() => new global::Umbraco.Core.Models.MediaType(-1), jetMediaType);
-
-            ContentTypeService.Save(mediaType);
-
-            // We get the media type once more to refresh it after updating it.
-            mediaType = ContentTypeService.GetMediaType(mediaType.Alias);
-
-            // Update tracking.
-            SetPropertyTypeId(mediaType, jetMediaType);
-
-            return mediaType;
-        }
-
-        /// <summary>
-        /// Updates the media type to match the uJet media type.
-        /// </summary>
-        /// <param name="mediaType">The media type to update.</param>
-        /// <param name="jetMediaType">The uJet media type.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="mediaType" />, or <paramref name="jetMediaType" /> are <c>null</c>.</exception>
-        internal virtual void UpdateMediaType(IMediaType mediaType, MediaType jetMediaType)
-        {
-            if (mediaType == null)
-            {
-                throw new ArgumentNullException(nameof(mediaType));
-            }
-
-            if (jetMediaType == null)
-            {
-                throw new ArgumentNullException(nameof(jetMediaType));
-            }
-
-            UpdateContentType(mediaType, () => new global::Umbraco.Core.Models.MediaType(-1), jetMediaType);
-
-            ContentTypeService.Save(mediaType);
-
-            // Update tracking. We get the media type once more to refresh it after updating it.
-            SetPropertyTypeId(ContentTypeService.GetMediaType(mediaType.Alias), jetMediaType);
-        }
-
-        /// <summary>
-        /// Validates the uJet media type identifiers.
-        /// </summary>
-        /// <param name="jetMediaTypes">The uJet media types.</param>
-        /// <exception cref="ArgumentNullException">>Thrown if <paramref name="jetMediaTypes" /> is <c>null</c>.</exception>
-        /// <exception cref="InvalidOperationException">Thrown if an identifier in <paramref name="jetMediaTypes" /> is conflicting.</exception>
-        private static void ValidateMediaTypeId(MediaType[] jetMediaTypes)
-        {
-            if (jetMediaTypes == null)
-            {
-                throw new ArgumentNullException(nameof(jetMediaTypes));
-            }
-
-            var set = new HashSet<Guid>();
-
-            foreach (var jetMediaType in jetMediaTypes)
-            {
-                if (!jetMediaType.Id.HasValue)
-                {
-                    continue;
-                }
-
-                if (set.Contains(jetMediaType.Id.Value))
-                {
-                    throw new InvalidOperationException($"ID conflict for media type {jetMediaType.Name}. ID {jetMediaType.Id.Value} is already in use.");
-                }
-
-                set.Add(jetMediaType.Id.Value);
+                return _typeService.MediaTypes.Select(t => new MediaType(t)).ToArray();
             }
         }
 
         /// <summary>
-        /// Validates the uJet media type aliases.
+        /// Gets the content types.
         /// </summary>
-        /// <param name="jetMediaTypes">The uJet media types.</param>
-        /// <exception cref="ArgumentNullException">>Thrown if <paramref name="jetMediaTypes" /> is <c>null</c>.</exception>
-        /// <exception cref="InvalidOperationException">Thrown if an alias in <paramref name="jetMediaTypes" /> is conflicting.</exception>
-        private static void ValidateMediaTypeAlias(MediaType[] jetMediaTypes)
+        /// <returns>
+        /// The content types.
+        /// </returns>
+        protected override IContentTypeBase[] GetContentTypes()
         {
-            if (jetMediaTypes == null)
-            {
-                throw new ArgumentNullException(nameof(jetMediaTypes));
-            }
-
-            var set = new HashSet<string>();
-
-            foreach (var jetMediaType in jetMediaTypes)
-            {
-                if (set.Contains(jetMediaType.Alias))
-                {
-                    throw new InvalidOperationException(string.Format("Alias conflict for media type {0}. Alias {0} is already in use.", jetMediaType.Alias));
-                }
-
-                set.Add(jetMediaType.Alias);
-            }
+            return _contentTypeService.GetAllMediaTypes().Cast<IContentTypeBase>().ToArray();
         }
 
-        private void Synchronize(IContentTypeBase[] mediaTypes, MediaType jetMediaType)
+        /// <summary>
+        /// Gets a content type.
+        /// </summary>
+        /// <returns>
+        /// A content type.
+        /// </returns>
+        protected override IContentTypeBase GetContentType()
         {
-            if (mediaTypes == null)
-            {
-                throw new ArgumentNullException(nameof(mediaTypes));
-            }
+            return new global::Umbraco.Core.Models.MediaType(-1);
+        }
 
-            if (jetMediaType == null)
-            {
-                throw new ArgumentNullException(nameof(jetMediaType));
-            }
+        /// <summary>
+        /// Gets the content type with the specified alias.
+        /// </summary>
+        /// <param name="alias">The alias.</param>
+        /// <returns>
+        /// The content type with the specified alias.
+        /// </returns>
+        protected override IContentTypeBase GetContentType(string alias)
+        {
+            return _contentTypeService.GetMediaType(alias);
+        }
 
-            var mediaType = GetBaseContentType(mediaTypes, jetMediaType) as IMediaType;
+        /// <summary>
+        /// Saves the specified content type.
+        /// </summary>
+        /// <param name="contentType">The content type.</param>
+        protected override void SaveContentType(IContentTypeBase contentType)
+        {
+            _contentTypeService.Save((IMediaType)contentType);
+        }
 
-            if (mediaType == null)
-            {
-                mediaType = CreateMediaType(jetMediaType);
-
-                if (jetMediaType.Id.HasValue)
-                {
-                    ContentTypeRepository.SetContentTypeId(jetMediaType.Id.Value, mediaType.Id);
-                }
-            }
-            else
-            {
-                UpdateMediaType(mediaType, jetMediaType);
-            }
+        /// <summary>
+        /// Gets a content type model for the specified model type.
+        /// </summary>
+        /// <param name="modelType">The model type.</param>
+        /// <returns>
+        /// A content type model for the specified model type.
+        /// </returns>
+        protected override MediaType GetContentTypeModel(Type modelType)
+        {
+            return new MediaType(modelType);
         }
     }
 }

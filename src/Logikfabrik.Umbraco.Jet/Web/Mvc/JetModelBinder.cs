@@ -74,7 +74,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// Determines if the model type should be bound.
         /// </summary>
         /// <param name="modelType">The model type.</param>
-        /// <returns><c>true</c> if the model should be bound; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the model type should be bound; otherwise, <c>false</c>.</returns>
         private bool ShouldBind(Type modelType)
         {
             return _typeService.DocumentTypes.Contains(modelType);

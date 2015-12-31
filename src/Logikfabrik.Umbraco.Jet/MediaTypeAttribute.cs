@@ -7,7 +7,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
 
     /// <summary>
-    /// The <see cref="MediaTypeAttribute" /> class. Attribute for media type annotation.
+    /// The <see cref="MediaTypeAttribute" /> class. Attribute for media model type annotation.
     /// </summary>
     [AttributeUsage(
         AttributeTargets.Class,

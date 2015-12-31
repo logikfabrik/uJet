@@ -51,44 +51,44 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Gets an singleton instance of the type service.
+        /// Gets a singleton instance of the type service.
         /// </summary>
         public static ITypeService Instance => instance ?? (instance = new TypeService());
 
         /// <summary>
-        /// Gets the document types within the current application domain.
+        /// Gets the document model types within the current application domain.
         /// </summary>
         /// <value>
-        /// The document types.
+        /// The document model types.
         /// </value>
         public IEnumerable<Type> DocumentTypes => _documentTypes.Value;
 
         /// <summary>
-        /// Gets the data types within the current application domain.
+        /// Gets the data model types within the current application domain.
         /// </summary>
         /// <value>
-        /// The data types.
+        /// The data model types.
         /// </value>
         public IEnumerable<Type> DataTypes => _dataTypes.Value;
 
         /// <summary>
-        /// Gets the media types within the current application domain.
+        /// Gets the media model types within the current application domain.
         /// </summary>
         /// <value>
-        /// The media types.
+        /// The media model types.
         /// </value>
         public IEnumerable<Type> MediaTypes => _mediaTypes.Value;
 
         /// <summary>
-        /// Gets the member types within the current application domain.
+        /// Gets the member model types within the current application domain.
         /// </summary>
         /// <value>
-        /// The member types.
+        /// The member model types.
         /// </value>
         public IEnumerable<Type> MemberTypes => _memberTypes.Value;
 
         /// <summary>
-        /// Gets the assemblies to be scanned for content types, within the current application domain.
+        /// Gets the assemblies to be scanned for model types, within the current application domain.
         /// </summary>
         /// <returns>The assemblies to be scanned.</returns>
         private static IEnumerable<Assembly> GetAssemblies()
@@ -101,36 +101,36 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Gets the document types within the current application domain.
+        /// Gets the document model types within the current application domain.
         /// </summary>
-        /// <returns>The document types.</returns>
+        /// <returns>The document model types.</returns>
         private IEnumerable<Type> GetDocumentTypes()
         {
             return GetTypesByAttribute(TypeExtensions.IsDocumentType);
         }
 
         /// <summary>
-        /// Gets the data types within the current application domain.
+        /// Gets the data model types within the current application domain.
         /// </summary>
-        /// <returns>The data types.</returns>
+        /// <returns>The data model types.</returns>
         private IEnumerable<Type> GetDataTypes()
         {
             return GetTypesByAttribute(TypeExtensions.IsDataType);
         }
 
         /// <summary>
-        /// Gets the media types within the current application domain.
+        /// Gets the media model types within the current application domain.
         /// </summary>
-        /// <returns>The media types.</returns>
+        /// <returns>The media model types.</returns>
         private IEnumerable<Type> GetMediaTypes()
         {
             return GetTypesByAttribute(TypeExtensions.IsMediaType);
         }
 
         /// <summary>
-        /// Gets the member types within the current application domain.
+        /// Gets the member model types within the current application domain.
         /// </summary>
-        /// <returns>The member types.</returns>
+        /// <returns>The member model types.</returns>
         private IEnumerable<Type> GetMemberTypes()
         {
             return GetTypesByAttribute(TypeExtensions.IsMemberType);

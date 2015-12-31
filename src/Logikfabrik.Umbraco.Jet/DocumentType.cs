@@ -10,7 +10,7 @@ namespace Logikfabrik.Umbraco.Jet
     using Extensions;
 
     /// <summary>
-    /// The <see cref="DocumentType" /> class.
+    /// The <see cref="DocumentType" /> class. The model type for document model types.
     /// </summary>
     public class DocumentType : ContentType<DocumentTypeAttribute>
     {
@@ -18,13 +18,13 @@ namespace Logikfabrik.Umbraco.Jet
         /// Initializes a new instance of the <see cref="DocumentType" /> class.
         /// </summary>
         /// <param name="type">The type.</param>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is not a document type.</exception>
+        /// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is not a document model type.</exception>
         public DocumentType(Type type)
             : base(type)
         {
             if (!type.IsDocumentType())
             {
-                throw new ArgumentException($"Type {type} is not a document type.", nameof(type));
+                throw new ArgumentException($"Type {type} is not a document model type.", nameof(type));
             }
 
             var attribute = type.GetCustomAttribute<DocumentTypeAttribute>();

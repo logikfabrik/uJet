@@ -278,7 +278,7 @@
     <Compile Include="ApplicationHandler.cs" />
     <Compile Include="BaseType.cs" />
     <Compile Include="BaseTypeAttribute.cs" />
-    <Compile Include="BaseTypeSynchronizationService.cs" />
+    <Compile Include="BaseTypeSynchronizationService{T1,T2}.cs" />
     <Compile Include="Configuration\JetAssemblyElement.cs" />
     <Compile Include="Configuration\JetAssemblyElementCollection.cs" />
     <Compile Include="Configuration\JetConfigurationManager.cs" />
@@ -287,7 +287,7 @@
     <Compile Include="ContentType.cs" />
     <Compile Include="ContentTypeAttribute.cs" />
     <Compile Include="TypeProperty.cs" />
-    <Compile Include="ContentTypeSynchronizationService.cs" />
+    <Compile Include="ContentTypeSynchronizationService{T1,T2}.cs" />
     <Compile Include="DataType.cs" />
     <Compile Include="DataTypeAttribute.cs" />
     <Compile Include="DataTypeSynchronizationService.cs" />
@@ -345,7 +345,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TypeService.cs" />
     <Compile Include="Web\Mvc\Html\UrlHelperExtensions.cs" />
-    <Compile Include="Web\Mvc\ITemplateService.cs" />
+    <Compile Include="ITemplateService.cs" />
     <Compile Include="Web\Mvc\JetController.cs" />
     <Compile Include="Web\Mvc\JetControllerActionInvoker.cs" />
     <Compile Include="Web\Mvc\JetControllerFactory.cs" />
@@ -354,8 +354,8 @@
     <Compile Include="Web\Mvc\JetViewEngine.cs" />
     <Compile Include="Web\Mvc\PreviewTemplateAttribute.cs" />
     <Compile Include="Web\Mvc\PreviewTemplateSynchronizationService.cs" />
-    <Compile Include="Web\Mvc\TemplateService.cs" />
-    <Compile Include="Web\Mvc\TemplateSynchronizationService.cs" />
+    <Compile Include="TemplateService.cs" />
+    <Compile Include="TemplateSynchronizationService.cs" />
     <Compile Include="Web\Mvc\Utilities\UrlUtility.cs" />
   </ItemGroup>
   <ItemGroup>

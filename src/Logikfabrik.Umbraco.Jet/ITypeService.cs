@@ -13,34 +13,34 @@ namespace Logikfabrik.Umbraco.Jet
     public interface ITypeService
     {
         /// <summary>
-        /// Gets the document types within the current application domain.
+        /// Gets the document model types within the current application domain.
         /// </summary>
         /// <value>
-        /// The document types.
+        /// The document model types.
         /// </value>
         IEnumerable<Type> DocumentTypes { get; }
 
         /// <summary>
-        /// Gets the data types within the current application domain.
+        /// Gets the data model types within the current application domain.
         /// </summary>
         /// <value>
-        /// The data types.
+        /// The data model types.
         /// </value>
         IEnumerable<Type> DataTypes { get; }
 
         /// <summary>
-        /// Gets the media types within the current application domain.
+        /// Gets the media model types within the current application domain.
         /// </summary>
         /// <value>
-        /// The media types.
+        /// The media model types.
         /// </value>
         IEnumerable<Type> MediaTypes { get; }
 
         /// <summary>
-        /// Gets the member types within the current application domain.
+        /// Gets the member model types within the current application domain.
         /// </summary>
         /// <value>
-        /// The member types.
+        /// The member model types.
         /// </value>
         IEnumerable<Type> MemberTypes { get; }
     }

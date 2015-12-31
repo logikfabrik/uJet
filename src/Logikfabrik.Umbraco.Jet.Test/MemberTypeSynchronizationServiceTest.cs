@@ -55,7 +55,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             memberTypeSynchronizationServiceMock.Object.Synchronize();
 
             memberTypeSynchronizationServiceMock
-                .Verify(m => m.CreateMemberType(It.IsAny<Jet.MemberType>()), Times.Exactly(2));
+                .Verify(m => m.CreateContentType(It.IsAny<Jet.MemberType>()), Times.Exactly(2));
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             memberTypeSynchronizationServiceMock.Object.Synchronize();
 
             memberTypeSynchronizationServiceMock
-                .Verify(m => m.CreateMemberType(It.IsAny<Jet.MemberType>()), Times.Once);
+                .Verify(m => m.CreateContentType(It.IsAny<Jet.MemberType>()), Times.Once);
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             memberTypeSynchronizationServiceMock.Object.Synchronize();
 
             memberTypeSynchronizationServiceMock
-                .Verify(m => m.CreateMemberType(It.IsAny<Jet.MemberType>()), Times.Once);
+                .Verify(m => m.CreateContentType(It.IsAny<Jet.MemberType>()), Times.Once);
         }
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             memberTypeSynchronizationServiceMock.Object.Synchronize();
 
-            memberTypeSynchronizationServiceMock.Verify(m => m.UpdateMemberType(memberTypeMock.Object, It.IsAny<Jet.MemberType>()), Times.Once);
+            memberTypeSynchronizationServiceMock.Verify(m => m.UpdateContentType(memberTypeMock.Object, It.IsAny<Jet.MemberType>()), Times.Once);
         }
 
         /// <summary>
@@ -218,7 +218,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             memberTypeSynchronizationServiceMock.Object.Synchronize();
 
-            memberTypeSynchronizationServiceMock.Verify(m => m.UpdateMemberType(memberTypeMock.Object, It.IsAny<Jet.MemberType>()), Times.Once);
+            memberTypeSynchronizationServiceMock.Verify(m => m.UpdateContentType(memberTypeMock.Object, It.IsAny<Jet.MemberType>()), Times.Once);
         }
 
         /// <summary>

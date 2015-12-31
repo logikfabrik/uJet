@@ -13,11 +13,11 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
     public static class TypeExtensions
     {
         /// <summary>
-        /// Determines whether the type is a document type, annotated using the <see cref="DocumentTypeAttribute" /> class.
+        /// Determines whether the type is a document model type, annotated using the <see cref="DocumentTypeAttribute" /> class.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns>
-        ///   <c>true</c> if the type is a document type; otherwise, <c>false</c>.
+        ///   <c>true</c> if the type is a document model type; otherwise, <c>false</c>.
         /// </returns>
         public static bool IsDocumentType(this Type type)
         {
@@ -25,11 +25,11 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
         }
 
         /// <summary>
-        /// Determines whether the type is a data type, annotated using the <see cref="DataTypeAttribute" /> class.
+        /// Determines whether the type is a data model type, annotated using the <see cref="DataTypeAttribute" /> class.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns>
-        ///   <c>true</c> if the type is a data type; otherwise, <c>false</c>.
+        ///   <c>true</c> if the type is a data model type; otherwise, <c>false</c>.
         /// </returns>
         public static bool IsDataType(this Type type)
         {
@@ -37,11 +37,11 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
         }
 
         /// <summary>
-        /// Determines whether the type is a media type, annotated using the <see cref="MediaTypeAttribute" /> class.
+        /// Determines whether the type is a media model type, annotated using the <see cref="MediaTypeAttribute" /> class.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns>
-        ///   <c>true</c> if the type is a media type; otherwise, <c>false</c>.
+        ///   <c>true</c> if the type is a media model type; otherwise, <c>false</c>.
         /// </returns>
         public static bool IsMediaType(this Type type)
         {
@@ -49,11 +49,11 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
         }
 
         /// <summary>
-        /// Determines whether the type is a member type, annotated using the <see cref="MemberTypeAttribute" /> class.
+        /// Determines whether the type is a member model type, annotated using the <see cref="MemberTypeAttribute" /> class.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns>
-        ///   <c>true</c> if the type is a member type; otherwise, <c>false</c>.
+        ///   <c>true</c> if the type is a member model type; otherwise, <c>false</c>.
         /// </returns>
         public static bool IsMemberType(this Type type)
         {
@@ -61,7 +61,7 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
         }
 
         /// <summary>
-        /// Determines whether the type is valid an has an attribute of the specified type.
+        /// Determines whether the type is valid and has an attribute of the specified type.
         /// </summary>
         /// <typeparam name="T">The attribute type.</typeparam>
         /// <param name="type">The type.</param>

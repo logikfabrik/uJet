@@ -40,7 +40,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// <param name="contentTypeService">The content type service.</param>
         /// <param name="fileService">The file service.</param>
         /// <param name="typeService">The type service.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeService" />, <paramref name="fileService" />, or <paramref name="typeService" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeService" />, <paramref name="fileService" />, or <paramref name="typeService" /> are <c>null</c>.</exception>
         public PreviewTemplateSynchronizationService(
             IContentTypeService contentTypeService,
             IFileService fileService,
@@ -71,60 +71,61 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// </summary>
         public void Synchronize()
         {
-            var contentTypes = _contentTypeService.GetAllContentTypes().ToArray();
+            var documentTypes = _contentTypeService.GetAllContentTypes().ToArray();
 
-            foreach (var type in _typeService.DocumentTypes.Where(t => Attribute.IsDefined(t, typeof(PreviewTemplateAttribute), false)))
+            foreach (var documentModelType in _typeService.DocumentTypes.Where(t => Attribute.IsDefined(t, typeof(PreviewTemplateAttribute), false)))
             {
-                var contentType = contentTypes.FirstOrDefault(t => t.Alias == new DocumentType(type).Alias);
+                // TODO: Fix document, media, and member type lookup for when using the ID attribute.
+                var documentType = documentTypes.FirstOrDefault(t => t.Alias == new DocumentType(documentModelType).Alias);
 
-                if (contentType == null)
+                if (documentType == null)
                 {
                     continue;
                 }
 
-                UpdateDocumentType(contentType);
+                UpdateDocumentType(documentType);
             }
         }
 
         /// <summary>
-        /// Updates the content type.
+        /// Updates the specified document type.
         /// </summary>
-        /// <param name="contentType">The content type.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentType" /> is <c>null</c>.</exception>
-        private void UpdateDocumentType(IContentType contentType)
+        /// <param name="documentType">The document type.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="documentType" /> is <c>null</c>.</exception>
+        private void UpdateDocumentType(IContentType documentType)
         {
-            if (contentType == null)
+            if (documentType == null)
             {
-                throw new ArgumentNullException(nameof(contentType));
+                throw new ArgumentNullException(nameof(documentType));
             }
 
-            var allowedTemplates = GetAllowedTemplates(contentType);
-            var template = allowedTemplates.First(t => t.Alias == PreviewTemplateAttribute.TemplateName.Alias());
+            var allowedTemplates = GetAllowedTemplates(documentType);
+            var template = allowedTemplates.Single(t => t.Alias == PreviewTemplateAttribute.TemplateName.Alias());
 
-            contentType.AllowedTemplates = allowedTemplates;
-            contentType.SetDefaultTemplate(template);
+            documentType.AllowedTemplates = allowedTemplates;
+            documentType.SetDefaultTemplate(template);
 
-            _contentTypeService.Save(contentType);
+            _contentTypeService.Save(documentType);
         }
 
         /// <summary>
-        /// Gets the allowed templates for the specified content type.
+        /// Gets the allowed templates for the specified document type.
         /// </summary>
-        /// <param name="contentType">The content type.</param>
+        /// <param name="documentType">The document type.</param>
         /// <returns>The allowed templates.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentType" /> is <c>null</c>.</exception>
-        private List<ITemplate> GetAllowedTemplates(IContentType contentType)
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="documentType" /> is <c>null</c>.</exception>
+        private List<ITemplate> GetAllowedTemplates(IContentType documentType)
         {
-            if (contentType == null)
+            if (documentType == null)
             {
-                throw new ArgumentNullException(nameof(contentType));
+                throw new ArgumentNullException(nameof(documentType));
             }
 
             var templates = new List<ITemplate>();
 
-            if (contentType.AllowedTemplates != null)
+            if (documentType.AllowedTemplates != null)
             {
-                templates.AddRange(contentType.AllowedTemplates);
+                templates.AddRange(documentType.AllowedTemplates);
             }
 
             var previewTemplateAlias = PreviewTemplateAttribute.TemplateName.Alias();

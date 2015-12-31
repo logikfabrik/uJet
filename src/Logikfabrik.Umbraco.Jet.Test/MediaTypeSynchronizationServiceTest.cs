@@ -55,7 +55,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             mediaTypeSynchronizationServiceMock.Object.Synchronize();
 
             mediaTypeSynchronizationServiceMock
-                .Verify(m => m.CreateMediaType(It.IsAny<Jet.MediaType>()), Times.Exactly(2));
+                .Verify(m => m.CreateContentType(It.IsAny<Jet.MediaType>()), Times.Exactly(2));
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             mediaTypeSynchronizationServiceMock.Object.Synchronize();
 
             mediaTypeSynchronizationServiceMock
-                .Verify(m => m.CreateMediaType(It.IsAny<Jet.MediaType>()), Times.Once);
+                .Verify(m => m.CreateContentType(It.IsAny<Jet.MediaType>()), Times.Once);
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             mediaTypeSynchronizationServiceMock.Object.Synchronize();
 
             mediaTypeSynchronizationServiceMock
-                .Verify(m => m.CreateMediaType(It.IsAny<Jet.MediaType>()), Times.Once);
+                .Verify(m => m.CreateContentType(It.IsAny<Jet.MediaType>()), Times.Once);
         }
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             mediaTypeSynchronizationServiceMock.Object.Synchronize();
 
-            mediaTypeSynchronizationServiceMock.Verify(m => m.UpdateMediaType(mediaTypeMock.Object, It.IsAny<Jet.MediaType>()), Times.Once);
+            mediaTypeSynchronizationServiceMock.Verify(m => m.UpdateContentType(mediaTypeMock.Object, It.IsAny<Jet.MediaType>()), Times.Once);
         }
 
         /// <summary>
@@ -218,7 +218,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             mediaTypeSynchronizationServiceMock.Object.Synchronize();
 
-            mediaTypeSynchronizationServiceMock.Verify(m => m.UpdateMediaType(mediaTypeMock.Object, It.IsAny<Jet.MediaType>()), Times.Once);
+            mediaTypeSynchronizationServiceMock.Verify(m => m.UpdateContentType(mediaTypeMock.Object, It.IsAny<Jet.MediaType>()), Times.Once);
         }
 
         /// <summary>

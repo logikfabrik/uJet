@@ -58,7 +58,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             documentTypeSynchronizationServiceMock.Object.Synchronize();
 
             documentTypeSynchronizationServiceMock
-                .Verify(m => m.CreateDocumentType(It.IsAny<DocumentType>()), Times.Exactly(2));
+                .Verify(m => m.CreateContentType(It.IsAny<DocumentType>()), Times.Exactly(2));
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             documentTypeSynchronizationServiceMock.Object.Synchronize();
 
             documentTypeSynchronizationServiceMock
-                .Verify(m => m.CreateDocumentType(It.IsAny<DocumentType>()), Times.Once);
+                .Verify(m => m.CreateContentType(It.IsAny<DocumentType>()), Times.Once);
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             documentTypeSynchronizationServiceMock.Object.Synchronize();
 
             documentTypeSynchronizationServiceMock
-                .Verify(m => m.CreateDocumentType(It.IsAny<DocumentType>()), Times.Once);
+                .Verify(m => m.CreateContentType(It.IsAny<DocumentType>()), Times.Once);
         }
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             documentTypeSynchronizationServiceMock.Object.Synchronize();
 
-            documentTypeSynchronizationServiceMock.Verify(m => m.UpdateDocumentType(contentTypeMock.Object, It.IsAny<DocumentType>()), Times.Once);
+            documentTypeSynchronizationServiceMock.Verify(m => m.UpdateContentType(contentTypeMock.Object, It.IsAny<DocumentType>()), Times.Once);
         }
 
         /// <summary>
@@ -226,7 +226,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             documentTypeSynchronizationServiceMock.Object.Synchronize();
 
-            documentTypeSynchronizationServiceMock.Verify(m => m.UpdateDocumentType(contentTypeMock.Object, It.IsAny<DocumentType>()), Times.Once);
+            documentTypeSynchronizationServiceMock.Verify(m => m.UpdateContentType(contentTypeMock.Object, It.IsAny<DocumentType>()), Times.Once);
         }
 
         /// <summary>

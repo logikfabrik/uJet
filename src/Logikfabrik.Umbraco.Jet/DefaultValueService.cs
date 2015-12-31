@@ -71,6 +71,7 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(content));
             }
 
+            // TODO: Fix document, media, and member type lookup for when using the ID attribute.
             var type = _typeService.DocumentTypes.FirstOrDefault(t => t.Name.Alias() == content.ContentType.Alias);
 
             if (type == null)
@@ -111,6 +112,7 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(content));
             }
 
+            // TODO: Fix document, media, and member type lookup for when using the ID attribute.
             var type = _typeService.MediaTypes.FirstOrDefault(t => t.Name.Alias() == content.ContentType.Alias);
 
             if (type == null)
@@ -151,6 +153,7 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(content));
             }
 
+            // TODO: Fix document, media, and member type lookup for when using the ID attribute.
             var type = _typeService.MemberTypes.FirstOrDefault(t => t.Name.Alias() == content.ContentType.Alias);
 
             if (type == null)
@@ -266,6 +269,51 @@ namespace Logikfabrik.Umbraco.Jet
                           m.Name == "op_Explicit"));
 
             return methods.Any();
+        }
+
+        private Type FindDocumentType(IContentType contentType)
+        {
+            if (contentType == null)
+            {
+                throw new ArgumentNullException(nameof(contentType));
+            }
+
+            return FindType(contentType.Id, contentType.Alias, _typeService.DocumentTypes);
+        }
+
+        private Type FindMediaType(IMediaType mediaType)
+        {
+            if (mediaType == null)
+            {
+                throw new ArgumentNullException(nameof(mediaType));
+            }
+
+            return FindType(mediaType.Id, mediaType.Alias, _typeService.MediaTypes);
+        }
+
+        private Type FindMemberType(IMemberType memberType)
+        {
+            if (memberType == null)
+            {
+                throw new ArgumentNullException(nameof(memberType));
+            }
+
+            return FindType(memberType.Id, memberType.Alias, _typeService.MemberTypes);
+        }
+
+        private Type FindType(int id, string alias, IEnumerable<Type> modelTypes)
+        {
+            if (string.IsNullOrWhiteSpace(alias))
+            {
+                throw new ArgumentException("Alias cannot be null or white space.", nameof(alias));
+            }
+
+            if (modelTypes == null)
+            {
+                throw new ArgumentNullException(nameof(modelTypes));
+            }
+
+            throw new NotImplementedException();
         }
     }
 }
