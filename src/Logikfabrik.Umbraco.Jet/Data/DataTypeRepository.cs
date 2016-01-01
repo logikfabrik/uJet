@@ -5,6 +5,10 @@
 namespace Logikfabrik.Umbraco.Jet.Data
 {
     using System;
+    using global::Umbraco.Core;
+    using global::Umbraco.Core.Logging;
+    using global::Umbraco.Core.ObjectResolution;
+    using global::Umbraco.Core.Persistence;
 
     /// <summary>
     /// The <see cref="DataTypeRepository" /> class.
@@ -12,6 +16,14 @@ namespace Logikfabrik.Umbraco.Jet.Data
     public class DataTypeRepository : IDataTypeRepository
     {
         private readonly IDatabaseWrapper _databaseWrapper;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataTypeRepository" /> class.
+        /// </summary>
+        public DataTypeRepository()
+            : this(new DatabaseWrapper(ApplicationContext.Current.DatabaseContext.Database, ResolverBase<LoggerResolver>.Current.Logger, ApplicationContext.Current.DatabaseContext.SqlSyntax))
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataTypeRepository" /> class.
@@ -26,6 +38,22 @@ namespace Logikfabrik.Umbraco.Jet.Data
             }
 
             _databaseWrapper = databaseWrapper;
+        }
+
+        /// <summary>
+        /// Gets the definition model identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>
+        /// The definition model identifier.
+        /// </returns>
+        public Guid? GetDefinitionModelId(int id)
+        {
+            var sql = new Sql().Where<DataType>(ct => ct.DefinitionId == id);
+
+            var dataType = _databaseWrapper.Get<DataType>(sql);
+
+            return dataType?.Id;
         }
 
         /// <summary>

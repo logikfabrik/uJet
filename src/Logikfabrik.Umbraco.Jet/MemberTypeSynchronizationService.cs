@@ -8,9 +8,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Linq;
     using Data;
     using global::Umbraco.Core;
-    using global::Umbraco.Core.Logging;
     using global::Umbraco.Core.Models;
-    using global::Umbraco.Core.ObjectResolution;
     using global::Umbraco.Core.Services;
 
     /// <summary>
@@ -19,7 +17,6 @@ namespace Logikfabrik.Umbraco.Jet
     public class MemberTypeSynchronizationService : BaseTypeSynchronizationService<MemberType, MemberTypeAttribute>
     {
         private readonly IMemberTypeService _memberTypeService;
-        private readonly ITypeService _typeService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MemberTypeSynchronizationService" /> class.
@@ -27,36 +24,30 @@ namespace Logikfabrik.Umbraco.Jet
         public MemberTypeSynchronizationService()
             : this(
                 ApplicationContext.Current.Services.MemberTypeService,
-                new ContentTypeRepository(new DatabaseWrapper(ApplicationContext.Current.DatabaseContext.Database, ResolverBase<LoggerResolver>.Current.Logger, ApplicationContext.Current.DatabaseContext.SqlSyntax)),
-                TypeService.Instance)
+                TypeResolver.Instance,
+                TypeRepository.Instance)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MemberTypeSynchronizationService"/> class.
+        /// Initializes a new instance of the <see cref="MemberTypeSynchronizationService" /> class.
         /// </summary>
         /// <param name="memberTypeService">The member type service.</param>
-        /// <param name="contentTypeRepository">The content type repository.</param>
-        /// <param name="typeService">The type service.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="memberTypeService" />, or <paramref name="typeService" /> are <c>null</c>.</exception>
+        /// <param name="typeResolver">The type resolver.</param>
+        /// <param name="typeRepository">The type repository.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="memberTypeService" /> is <c>null</c>.</exception>
         public MemberTypeSynchronizationService(
             IMemberTypeService memberTypeService,
-            IContentTypeRepository contentTypeRepository,
-            ITypeService typeService)
-            : base(contentTypeRepository)
+            ITypeResolver typeResolver,
+            ITypeRepository typeRepository)
+            : base(typeResolver, typeRepository)
         {
             if (memberTypeService == null)
             {
                 throw new ArgumentNullException(nameof(memberTypeService));
             }
 
-            if (typeService == null)
-            {
-                throw new ArgumentNullException(nameof(typeService));
-            }
-
             _memberTypeService = memberTypeService;
-            _typeService = typeService;
         }
 
         /// <summary>
@@ -65,10 +56,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The content type models.
         /// </value>
-        protected override MemberType[] ContentTypeModels
-        {
-            get { return _typeService.MemberTypes.Select(t => new MemberType(t)).ToArray(); }
-        }
+        protected override MemberType[] ContentTypeModels => Resolver.MemberTypes.ToArray();
 
         /// <summary>
         /// Gets the content types.

@@ -22,9 +22,10 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentTypeSynchronizationService{T1, T2}" /> class.
         /// </summary>
-        /// <param name="contentTypeRepository">The content type repository.</param>
-        protected ContentTypeSynchronizationService(IContentTypeRepository contentTypeRepository)
-            : base(contentTypeRepository)
+        /// <param name="typeResolver">The type resolver.</param>
+        /// <param name="typeRepository">The type repository.</param>
+        protected ContentTypeSynchronizationService(ITypeResolver typeResolver, ITypeRepository typeRepository)
+            : base(typeResolver, typeRepository)
         {
         }
 
@@ -119,7 +120,7 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(contentTypeModel));
             }
 
-            var contentType = FindContentType(contentTypeModel, contentTypes) as IContentTypeComposition;
+            var contentType = Resolver.ResolveType<T1, T2>(contentTypeModel, contentTypes) as IContentTypeComposition;
 
             if (contentType == null)
             {
@@ -131,7 +132,7 @@ namespace Logikfabrik.Umbraco.Jet
             // We remove the current type from the composition as it's not a composition of itself.
             composition.Remove(contentTypeModel.Type);
 
-            var compositionContentTypes = composition.Select(type => FindContentType(GetContentTypeModel(type), contentTypes) as IContentTypeComposition).Where(ct => ct != null).ToArray();
+            var compositionContentTypes = composition.Select(type => Resolver.ResolveType<T1, T2>(GetContentTypeModel(type), contentTypes) as IContentTypeComposition).Where(ct => ct != null).ToArray();
 
             SetComposition(contentType, compositionContentTypes);
 
@@ -196,7 +197,7 @@ namespace Logikfabrik.Umbraco.Jet
 
             foreach (var contentTypeModel in ContentTypeModels.Where(ctm => ctm.AllowedChildNodeTypes.Any()))
             {
-                var contentType = FindContentType(contentTypeModel, contentTypes);
+                var contentType = Resolver.ResolveType<T1, T2>(contentTypeModel, contentTypes);
 
                 if (contentType == null)
                 {
@@ -234,7 +235,7 @@ namespace Logikfabrik.Umbraco.Jet
 
             foreach (var allowedChildNodeType in allowedChildNodeTypes)
             {
-                var contentType = FindContentType(GetContentTypeModel(allowedChildNodeType), contentTypes);
+                var contentType = Resolver.ResolveType<T1, T2>(GetContentTypeModel(allowedChildNodeType), contentTypes);
 
                 if (contentType == null)
                 {

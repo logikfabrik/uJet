@@ -286,6 +286,10 @@
     <Compile Include="Configuration\SynchronizationMode.cs" />
     <Compile Include="ContentType.cs" />
     <Compile Include="ContentTypeAttribute.cs" />
+    <Compile Include="Data\ITypeRepository.cs" />
+    <Compile Include="Data\TypeRepository.cs" />
+    <Compile Include="ITypeModel.cs" />
+    <Compile Include="ITypeResolver.cs" />
     <Compile Include="TypeProperty.cs" />
     <Compile Include="ContentTypeSynchronizationService{T1,T2}.cs" />
     <Compile Include="DataType.cs" />
@@ -304,6 +308,7 @@
     <Compile Include="MemberType.cs" />
     <Compile Include="MemberTypeAttribute.cs" />
     <Compile Include="MemberTypeSynchronizationService.cs" />
+    <Compile Include="TypeResolver.cs" />
     <Compile Include="Web\Data\ContentMapper.cs" />
     <Compile Include="Web\Data\ContentService.cs" />
     <Compile Include="Web\Data\Converters\FloatingBinaryPointPropertyValueConverter.cs" />

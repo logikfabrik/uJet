@@ -187,7 +187,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             contentMock.Setup(m => m.ContentType).Returns(contentTypeMock.Object);
 
-            new DefaultValueService(GetTypeServiceMock(documentType.GetType()).Object).SetDefaultValues(contentMock.Object);
+            new DefaultValueService(GetTypeResolverMock(documentType.GetType()).Object).SetDefaultValues(contentMock.Object);
 
             contentMock.Verify(m => m.SetValue(propertyName.Alias(), GetPropertyDefaultValue<TPropertyType>(documentType.GetType(), propertyName)));
         }
@@ -202,7 +202,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             contentMock.Setup(m => m.ContentType).Returns(contentTypeMock.Object);
 
-            new DefaultValueService(GetTypeServiceMock(mediaType.GetType()).Object).SetDefaultValues(contentMock.Object);
+            new DefaultValueService(GetTypeResolverMock(mediaType.GetType()).Object).SetDefaultValues(contentMock.Object);
 
             contentMock.Verify(m => m.SetValue(propertyName.Alias(), GetPropertyDefaultValue<TPropertyType>(mediaType.GetType(), propertyName)));
         }
@@ -217,7 +217,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             contentMock.Setup(m => m.ContentType).Returns(contentTypeMock.Object);
 
-            new DefaultValueService(GetTypeServiceMock(memberType.GetType()).Object).SetDefaultValues(contentMock.Object);
+            new DefaultValueService(GetTypeResolverMock(memberType.GetType()).Object).SetDefaultValues(contentMock.Object);
 
             contentMock.Verify(m => m.SetValue(propertyName.Alias(), GetPropertyDefaultValue<TPropertyType>(memberType.GetType(), propertyName)));
         }

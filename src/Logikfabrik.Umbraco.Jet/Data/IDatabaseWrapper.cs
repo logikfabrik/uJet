@@ -5,6 +5,7 @@
 namespace Logikfabrik.Umbraco.Jet.Data
 {
     using System;
+    using global::Umbraco.Core.Persistence;
 
     /// <summary>
     /// The <see cref="IDatabaseWrapper" /> interface.
@@ -40,6 +41,15 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <param name="primaryKey">The primary key.</param>
         /// <returns>The object.</returns>
         T Get<T>(object primaryKey);
+
+        /// <summary>
+        /// Gets the object of the specified object type using the specified query.
+        /// </summary>
+        /// <typeparam name="T">The object type.</typeparam>
+        /// <param name="sql">The query.</param>
+        /// <returns>The object.</returns>
+        T Get<T>(Sql sql)
+            where T : class;
 
         /// <summary>
         /// Gets a value indicating whether a table for the specified object type exists.

@@ -20,22 +20,37 @@ namespace Logikfabrik.Umbraco.Jet
         where T1 : BaseType<T2>
         where T2 : BaseTypeAttribute
     {
-        private readonly IContentTypeRepository _contentTypeRepository;
+        private readonly ITypeRepository _typeRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseTypeSynchronizationService{T1, T2}" /> class.
         /// </summary>
-        /// <param name="contentTypeRepository">The content type repository.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeRepository" /> is <c>null</c>.</exception>
-        protected BaseTypeSynchronizationService(IContentTypeRepository contentTypeRepository)
+        /// <param name="typeResolver">The type resolver.</param>
+        /// <param name="typeRepository">The type repository.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="typeResolver" />, or <paramref name="typeRepository" /> are <c>null</c>.</exception>
+        protected BaseTypeSynchronizationService(ITypeResolver typeResolver, ITypeRepository typeRepository)
         {
-            if (contentTypeRepository == null)
+            if (typeResolver == null)
             {
-                throw new ArgumentNullException(nameof(contentTypeRepository));
+                throw new ArgumentNullException(nameof(typeResolver));
             }
 
-            _contentTypeRepository = contentTypeRepository;
+            if (typeRepository == null)
+            {
+                throw new ArgumentNullException(nameof(typeRepository));
+            }
+
+            Resolver = typeResolver;
+            _typeRepository = typeRepository;
         }
+
+        /// <summary>
+        /// Gets the type resolver.
+        /// </summary>
+        /// <value>
+        /// The type resolver.
+        /// </value>
+        protected ITypeResolver Resolver { get; }
 
         /// <summary>
         /// Gets the content type models.
@@ -146,53 +161,6 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="contentType">The content type.</param>
         protected abstract void SaveContentType(IContentTypeBase contentType);
 
-        /// <summary>
-        /// Finds the content type for the specified content type model.
-        /// </summary>
-        /// <param name="contentTypeModel">The content type model.</param>
-        /// <param name="contentTypes">The content types.</param>
-        /// <returns>A content type.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeModel" />, or <paramref name="contentTypes" /> are <c>null</c>.</exception>
-        protected IContentTypeBase FindContentType(T1 contentTypeModel, IContentTypeBase[] contentTypes)
-        {
-            if (contentTypes == null)
-            {
-                throw new ArgumentNullException(nameof(contentTypes));
-            }
-
-            if (contentTypeModel == null)
-            {
-                throw new ArgumentNullException(nameof(contentTypeModel));
-            }
-
-            IContentTypeBase contentType;
-
-            // Step 1; we try to find a match using the type ID (if any).
-            if (contentTypeModel.Id.HasValue)
-            {
-                // The type has an ID. We try to find the Umbraco ID using that ID.
-                var umbracoId = _contentTypeRepository.GetContentTypeId(contentTypeModel.Id.Value);
-
-                if (umbracoId.HasValue)
-                {
-                    // There was an Umbraco ID matching the type ID in the uJet tables. We try to match that ID with an existing content type.
-                    contentType = contentTypes.SingleOrDefault(ct => ct.Id == umbracoId.Value);
-
-                    if (contentType != null)
-                    {
-                        // We've found a match. The type matches an existing Umbraco content type.
-                        return contentType;
-                    }
-                }
-            }
-
-            // Step 2; we try to find a match using the type alias.
-            contentType = contentTypes.SingleOrDefault(ct => ct.Alias == contentTypeModel.Alias);
-
-            // We might have found a match.
-            return contentType;
-        }
-
         private void Synchronize(IContentTypeBase[] contentTypes, T1 contentTypeModel)
         {
             if (contentTypes == null)
@@ -205,7 +173,7 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(contentTypeModel));
             }
 
-            var contentType = FindContentType(contentTypeModel, contentTypes);
+            var contentType = Resolver.ResolveType<T1, T2>(contentTypeModel, contentTypes);
 
             contentType = contentType == null
                 ? CreateContentType(contentTypeModel)
@@ -291,7 +259,7 @@ namespace Logikfabrik.Umbraco.Jet
                 return;
             }
 
-            _contentTypeRepository.SetContentTypeId(contentTypeModel.Id.Value, contentType.Id);
+            _typeRepository.SetContentTypeId(contentTypeModel.Id.Value, contentType.Id);
         }
 
         /// <summary>
@@ -312,37 +280,20 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(contentTypeModel));
             }
 
-            foreach (var property in contentTypeModel.Properties)
+            var propertyTypes = contentType.PropertyTypes.ToArray();
+
+            foreach (var propertyTypeModel in contentTypeModel.Properties)
             {
-                if (!property.Id.HasValue)
+                if (!propertyTypeModel.Id.HasValue)
                 {
                     continue;
                 }
 
-                var umbracoId = _contentTypeRepository.GetPropertyTypeId(property.Id.Value);
-
-                global::Umbraco.Core.Models.PropertyType propertyType;
-
-                if (umbracoId.HasValue)
-                {
-                    propertyType = contentType.PropertyTypes.SingleOrDefault(type => type.Id == umbracoId.Value);
-
-                    if (propertyType != null)
-                    {
-                        // The Umbraco property type and uJet type property are in sync.
-                        continue;
-                    }
-
-                    // The uJet type property has been synchronized before, but for a property type for another content type.
-                    // This is possible if the uJet type property is tracked, but the content type is not.
-                    // TODO: Bättre förklaring!
-                }
-
-                propertyType = contentType.PropertyTypes.SingleOrDefault(pt => pt.Alias == property.Alias);
+                var propertyType = Resolver.ResolveType(propertyTypeModel, propertyTypes);
 
                 if (propertyType != null)
                 {
-                    _contentTypeRepository.SetPropertyTypeId(property.Id.Value, propertyType.Id);
+                    _typeRepository.SetPropertyTypeId(propertyTypeModel.Id.Value, propertyType.Id);
                 }
             }
         }
@@ -377,7 +328,7 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(propertyTypeModel));
             }
 
-            var propertyType = FindPropertyType(contentType, propertyTypeModel);
+            var propertyType = Resolver.ResolveType(propertyTypeModel, contentType.PropertyTypes.ToArray());
 
             if (propertyType == null)
             {
@@ -502,46 +453,6 @@ namespace Logikfabrik.Umbraco.Jet
             }
 
             return definition;
-        }
-
-        private global::Umbraco.Core.Models.PropertyType FindPropertyType(IContentTypeBase contentType, TypeProperty propertyTypeModel)
-        {
-            if (contentType == null)
-            {
-                throw new ArgumentNullException(nameof(contentType));
-            }
-
-            if (propertyTypeModel == null)
-            {
-                throw new ArgumentNullException(nameof(propertyTypeModel));
-            }
-
-            global::Umbraco.Core.Models.PropertyType propertyType;
-
-            // Step 1; we try to find a match using the type ID (if any).
-            if (propertyTypeModel.Id.HasValue)
-            {
-                // The type property has an ID. We try to find the Umbraco ID using that ID.
-                var umbracoId = _contentTypeRepository.GetPropertyTypeId(propertyTypeModel.Id.Value);
-
-                if (umbracoId.HasValue)
-                {
-                    // There was an Umbraco ID matching the type ID in the uJet tables. We try to match that ID with an existing property type.
-                    propertyType = contentType.PropertyTypes.SingleOrDefault(pt => pt.Id == umbracoId.Value);
-
-                    if (propertyType != null)
-                    {
-                        // We've found a match. The type matches an existing Umbraco property type.
-                        return propertyType;
-                    }
-                }
-            }
-
-            // Step 2; we try to find a match using the type alias.
-            propertyType = contentType.PropertyTypes.SingleOrDefault(pt => pt.Alias == propertyTypeModel.Alias);
-
-            // We might have found a match.
-            return propertyType;
         }
     }
 }

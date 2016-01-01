@@ -9,9 +9,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Linq;
     using Data;
     using global::Umbraco.Core;
-    using global::Umbraco.Core.Logging;
     using global::Umbraco.Core.Models;
-    using global::Umbraco.Core.ObjectResolution;
     using global::Umbraco.Core.Services;
 
     /// <summary>
@@ -20,7 +18,6 @@ namespace Logikfabrik.Umbraco.Jet
     public class DocumentTypeSynchronizationService : ContentTypeSynchronizationService<DocumentType, DocumentTypeAttribute>
     {
         private readonly IContentTypeService _contentTypeService;
-        private readonly ITypeService _typeService;
         private readonly IFileService _fileService;
 
         /// <summary>
@@ -29,8 +26,8 @@ namespace Logikfabrik.Umbraco.Jet
         public DocumentTypeSynchronizationService()
             : this(
                 ApplicationContext.Current.Services.ContentTypeService,
-                new ContentTypeRepository(new DatabaseWrapper(ApplicationContext.Current.DatabaseContext.Database, ResolverBase<LoggerResolver>.Current.Logger, ApplicationContext.Current.DatabaseContext.SqlSyntax)),
-                TypeService.Instance,
+                TypeResolver.Instance,
+                TypeRepository.Instance,
                 ApplicationContext.Current.Services.FileService)
         {
         }
@@ -39,25 +36,20 @@ namespace Logikfabrik.Umbraco.Jet
         /// Initializes a new instance of the <see cref="DocumentTypeSynchronizationService" /> class.
         /// </summary>
         /// <param name="contentTypeService">The content type service.</param>
-        /// <param name="contentTypeRepository">The content type repository.</param>
-        /// <param name="typeService">The type service.</param>
+        /// <param name="typeResolver">The type resolver.</param>
+        /// <param name="typeRepository">The type repository.</param>
         /// <param name="fileService">The file service.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeService" />, <paramref name="typeService" />, or <paramref name="fileService" /> are <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeService" />, or <paramref name="fileService" /> are <c>null</c>.</exception>
         public DocumentTypeSynchronizationService(
             IContentTypeService contentTypeService,
-            IContentTypeRepository contentTypeRepository,
-            ITypeService typeService,
+            ITypeResolver typeResolver,
+            ITypeRepository typeRepository,
             IFileService fileService)
-            : base(contentTypeRepository)
+            : base(typeResolver, typeRepository)
         {
             if (contentTypeService == null)
             {
                 throw new ArgumentNullException(nameof(contentTypeService));
-            }
-
-            if (typeService == null)
-            {
-                throw new ArgumentNullException(nameof(typeService));
             }
 
             if (fileService == null)
@@ -67,7 +59,6 @@ namespace Logikfabrik.Umbraco.Jet
 
             _contentTypeService = contentTypeService;
             _fileService = fileService;
-            _typeService = typeService;
         }
 
         /// <summary>
@@ -76,13 +67,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The content type models.
         /// </value>
-        protected override DocumentType[] ContentTypeModels
-        {
-            get
-            {
-                return _typeService.DocumentTypes.Select(t => new DocumentType(t)).ToArray();
-            }
-        }
+        protected override DocumentType[] ContentTypeModels => Resolver.DocumentTypes.ToArray();
 
         /// <summary>
         /// Creates a content type for the specified content type model.
@@ -194,9 +179,11 @@ namespace Logikfabrik.Umbraco.Jet
 
             IEnumerable<ITemplate> templates = new ITemplate[] { };
 
-            if (!documentTypeModel.Templates.Any())
+            var t = documentTypeModel.Templates.ToArray();
+
+            if (!t.Any())
             {
-                templates = _fileService.GetTemplates(documentTypeModel.Templates.ToArray());
+                templates = _fileService.GetTemplates(t);
             }
 
             documentType.AllowedTemplates = templates;

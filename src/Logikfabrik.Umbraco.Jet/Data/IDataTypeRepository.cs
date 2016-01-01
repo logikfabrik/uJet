@@ -12,6 +12,13 @@ namespace Logikfabrik.Umbraco.Jet.Data
     public interface IDataTypeRepository
     {
         /// <summary>
+        /// Gets the definition model identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>The definition model identifier.</returns>
+        Guid? GetDefinitionModelId(int id);
+
+        /// <summary>
         /// Gets the definition identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>

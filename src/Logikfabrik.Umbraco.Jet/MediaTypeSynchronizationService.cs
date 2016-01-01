@@ -8,9 +8,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Linq;
     using Data;
     using global::Umbraco.Core;
-    using global::Umbraco.Core.Logging;
     using global::Umbraco.Core.Models;
-    using global::Umbraco.Core.ObjectResolution;
     using global::Umbraco.Core.Services;
 
     /// <summary>
@@ -19,7 +17,6 @@ namespace Logikfabrik.Umbraco.Jet
     public class MediaTypeSynchronizationService : ContentTypeSynchronizationService<MediaType, MediaTypeAttribute>
     {
         private readonly IContentTypeService _contentTypeService;
-        private readonly ITypeService _typeService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MediaTypeSynchronizationService" /> class.
@@ -27,8 +24,8 @@ namespace Logikfabrik.Umbraco.Jet
         public MediaTypeSynchronizationService()
             : this(
                 ApplicationContext.Current.Services.ContentTypeService,
-                new ContentTypeRepository(new DatabaseWrapper(ApplicationContext.Current.DatabaseContext.Database, ResolverBase<LoggerResolver>.Current.Logger, ApplicationContext.Current.DatabaseContext.SqlSyntax)),
-                TypeService.Instance)
+                TypeResolver.Instance,
+                TypeRepository.Instance)
         {
         }
 
@@ -36,27 +33,21 @@ namespace Logikfabrik.Umbraco.Jet
         /// Initializes a new instance of the <see cref="MediaTypeSynchronizationService" /> class.
         /// </summary>
         /// <param name="contentTypeService">The content type service.</param>
-        /// <param name="contentTypeRepository">The content type repository.</param>
-        /// <param name="typeService">The type service.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeService" />, or <paramref name="typeService" /> are <c>null</c>.</exception>
+        /// <param name="typeResolver">The type resolver.</param>
+        /// <param name="typeRepository">The type repository.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeService" /> is <c>null</c>.</exception>
         public MediaTypeSynchronizationService(
             IContentTypeService contentTypeService,
-            IContentTypeRepository contentTypeRepository,
-            ITypeService typeService)
-            : base(contentTypeRepository)
+            ITypeResolver typeResolver,
+            ITypeRepository typeRepository)
+            : base(typeResolver, typeRepository)
         {
             if (contentTypeService == null)
             {
                 throw new ArgumentNullException(nameof(contentTypeService));
             }
 
-            if (typeService == null)
-            {
-                throw new ArgumentNullException(nameof(typeService));
-            }
-
             _contentTypeService = contentTypeService;
-            _typeService = typeService;
         }
 
         /// <summary>
@@ -65,13 +56,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The content type models.
         /// </value>
-        protected override MediaType[] ContentTypeModels
-        {
-            get
-            {
-                return _typeService.MediaTypes.Select(t => new MediaType(t)).ToArray();
-            }
-        }
+        protected override MediaType[] ContentTypeModels => Resolver.MediaTypes.ToArray();
 
         /// <summary>
         /// Gets the content types.

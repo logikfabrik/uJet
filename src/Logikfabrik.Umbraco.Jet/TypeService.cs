@@ -17,6 +17,7 @@ namespace Logikfabrik.Umbraco.Jet
     public class TypeService : ITypeService
     {
         private static ITypeService instance;
+
         private readonly Lazy<IEnumerable<Type>> _documentTypes;
         private readonly Lazy<IEnumerable<Type>> _dataTypes;
         private readonly Lazy<IEnumerable<Type>> _mediaTypes;

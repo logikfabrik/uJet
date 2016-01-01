@@ -15,7 +15,7 @@ namespace Logikfabrik.Umbraco.Jet
     /// The <see cref="BaseType{T}" /> class.
     /// </summary>
     /// <typeparam name="T">The <see cref="BaseTypeAttribute" /> type.</typeparam>
-    public abstract class BaseType<T>
+    public abstract class BaseType<T> : ITypeModel
         where T : BaseTypeAttribute
     {
         private readonly Lazy<IEnumerable<TypeProperty>> _properties;

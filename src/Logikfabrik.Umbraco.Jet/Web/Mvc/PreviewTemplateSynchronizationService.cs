@@ -18,8 +18,8 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     public class PreviewTemplateSynchronizationService : ISynchronizationService
     {
         private readonly IContentTypeService _contentTypeService;
-        private readonly ITypeService _typeService;
         private readonly IFileService _fileService;
+        private readonly ITypeResolver _typeResolver;
 
         private ITemplate _previewTemplate;
 
@@ -30,7 +30,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
             : this(
                 ApplicationContext.Current.Services.ContentTypeService,
                 ApplicationContext.Current.Services.FileService,
-                TypeService.Instance)
+                TypeResolver.Instance)
         {
         }
 
@@ -39,12 +39,12 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// </summary>
         /// <param name="contentTypeService">The content type service.</param>
         /// <param name="fileService">The file service.</param>
-        /// <param name="typeService">The type service.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeService" />, <paramref name="fileService" />, or <paramref name="typeService" /> are <c>null</c>.</exception>
+        /// <param name="typeResolver">The type resolver.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeService" />, <paramref name="fileService" />, or <paramref name="typeResolver" /> are <c>null</c>.</exception>
         public PreviewTemplateSynchronizationService(
             IContentTypeService contentTypeService,
             IFileService fileService,
-            ITypeService typeService)
+            ITypeResolver typeResolver)
         {
             if (contentTypeService == null)
             {
@@ -56,14 +56,14 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
                 throw new ArgumentNullException(nameof(fileService));
             }
 
-            if (typeService == null)
+            if (typeResolver == null)
             {
-                throw new ArgumentNullException(nameof(typeService));
+                throw new ArgumentNullException(nameof(typeResolver));
             }
 
             _contentTypeService = contentTypeService;
             _fileService = fileService;
-            _typeService = typeService;
+            _typeResolver = typeResolver;
         }
 
         /// <summary>
@@ -73,10 +73,9 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         {
             var documentTypes = _contentTypeService.GetAllContentTypes().ToArray();
 
-            foreach (var documentModelType in _typeService.DocumentTypes.Where(t => Attribute.IsDefined(t, typeof(PreviewTemplateAttribute), false)))
+            foreach (var documentTypeModel in _typeResolver.DocumentTypes.Where(typeModel => Attribute.IsDefined(typeModel.Type, typeof(PreviewTemplateAttribute), false)))
             {
-                // TODO: Fix document, media, and member type lookup for when using the ID attribute.
-                var documentType = documentTypes.FirstOrDefault(t => t.Alias == new DocumentType(documentModelType).Alias);
+                var documentType = _typeResolver.ResolveType(documentTypeModel, documentTypes);
 
                 if (documentType == null)
                 {

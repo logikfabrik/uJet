@@ -12,10 +12,24 @@ namespace Logikfabrik.Umbraco.Jet.Data
     public interface IContentTypeRepository
     {
         /// <summary>
+        /// Gets the content type model identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>The content type model identifier.</returns>
+        Guid? GetContentTypeModelId(int id);
+
+        /// <summary>
+        /// Gets the property type model identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>The property type model identifier.</returns>
+        Guid? GetPropertyTypeModelId(int id);
+
+        /// <summary>
         /// Gets the content type identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        /// <returns>The content type identifier</returns>
+        /// <returns>The content type identifier.</returns>
         int? GetContentTypeId(Guid id);
 
         /// <summary>

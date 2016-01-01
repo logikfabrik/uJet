@@ -5,6 +5,10 @@
 namespace Logikfabrik.Umbraco.Jet.Data
 {
     using System;
+    using global::Umbraco.Core;
+    using global::Umbraco.Core.Logging;
+    using global::Umbraco.Core.ObjectResolution;
+    using global::Umbraco.Core.Persistence;
 
     /// <summary>
     /// The <see cref="ContentTypeRepository" /> class.
@@ -12,6 +16,14 @@ namespace Logikfabrik.Umbraco.Jet.Data
     public class ContentTypeRepository : IContentTypeRepository
     {
         private readonly IDatabaseWrapper _databaseWrapper;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContentTypeRepository" /> class.
+        /// </summary>
+        public ContentTypeRepository()
+            : this(new DatabaseWrapper(ApplicationContext.Current.DatabaseContext.Database, ResolverBase<LoggerResolver>.Current.Logger, ApplicationContext.Current.DatabaseContext.SqlSyntax))
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentTypeRepository" /> class.
@@ -26,6 +38,38 @@ namespace Logikfabrik.Umbraco.Jet.Data
             }
 
             _databaseWrapper = databaseWrapper;
+        }
+
+        /// <summary>
+        /// Gets the content type model identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>
+        /// The content type model identifier.
+        /// </returns>
+        public Guid? GetContentTypeModelId(int id)
+        {
+            var sql = new Sql().Where<ContentType>(ct => ct.ContentTypeId == id);
+
+            var contentType = _databaseWrapper.Get<ContentType>(sql);
+
+            return contentType?.Id;
+        }
+
+        /// <summary>
+        /// Gets the property type model identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>
+        /// The property type model identifier.
+        /// </returns>
+        public Guid? GetPropertyTypeModelId(int id)
+        {
+            var sql = new Sql().Where<PropertyType>(ct => ct.PropertyTypeId == id);
+
+            var propertyType = _databaseWrapper.Get<PropertyType>(sql);
+
+            return propertyType?.Id;
         }
 
         /// <summary>
