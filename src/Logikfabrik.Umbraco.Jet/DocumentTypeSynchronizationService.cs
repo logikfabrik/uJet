@@ -11,6 +11,7 @@ namespace Logikfabrik.Umbraco.Jet
     using global::Umbraco.Core;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
+    using Extensions;
 
     /// <summary>
     /// The <see cref="DocumentTypeSynchronizationService" /> class. Synchronizes model types annotated using the <see cref="DocumentTypeAttribute" />.
@@ -156,7 +157,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// </returns>
         protected override DocumentType GetContentTypeModel(Type modelType)
         {
-            return new DocumentType(modelType);
+            return ContentTypeModels.SingleOrDefault(ctm => ctm.Type == modelType);
         }
 
         /// <summary>
@@ -177,16 +178,32 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(documentTypeModel));
             }
 
-            IEnumerable<ITemplate> templates = new ITemplate[] { };
+            IEnumerable<ITemplate> allowedTemplates = new ITemplate[] { };
 
-            var t = documentTypeModel.Templates.ToArray();
+            var templates = documentTypeModel.Templates.Select(t => t.Alias()).ToList();
+            var defaultTemplate = documentType.DefaultTemplate?.Alias;
 
-            if (!t.Any())
+            if (!templates.Contains(defaultTemplate))
             {
-                templates = _fileService.GetTemplates(t);
+                templates.Add(documentTypeModel.DefaultTemplate.Alias());
             }
 
-            documentType.AllowedTemplates = templates;
+            if (templates.Any())
+            {
+                allowedTemplates = _fileService.GetTemplates(templates.ToArray());
+            }
+
+            if (allowedTemplates.Any())
+            {
+                documentType.AllowedTemplates = allowedTemplates;
+            }
+            else
+            {
+                foreach (var allowedTemplate in documentType.AllowedTemplates)
+                {
+                    documentType.RemoveTemplate(allowedTemplate);
+                }
+            }
         }
 
         /// <summary>

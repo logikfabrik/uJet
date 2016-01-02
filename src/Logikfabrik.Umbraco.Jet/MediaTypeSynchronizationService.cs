@@ -110,7 +110,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// </returns>
         protected override MediaType GetContentTypeModel(Type modelType)
         {
-            return new MediaType(modelType);
+            return ContentTypeModels.SingleOrDefault(ctm => ctm.Type == modelType);
         }
     }
 }

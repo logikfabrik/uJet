@@ -19,7 +19,7 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
         /// </value>
         [ConfigurationProperty(
             "synchronize",
-            DefaultValue = "DocumentTypes,MediaTypes,DataTypes",
+            DefaultValue = "DocumentTypes,MediaTypes,DataTypes,MemberTypes",
             IsRequired = false)]
         public SynchronizationMode Synchronize
         {
