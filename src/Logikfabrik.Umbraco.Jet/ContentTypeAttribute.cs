@@ -62,5 +62,16 @@ namespace Logikfabrik.Umbraco.Jet
         {
             get; set;
         }
+
+        /// <summary>
+        /// Gets or sets the composition node types.
+        /// </summary>
+        /// <value>
+        /// The composition node types.
+        /// </value>
+        public Type[] CompositionNodeTypes
+        {
+            get; set;
+        }
     }
 }

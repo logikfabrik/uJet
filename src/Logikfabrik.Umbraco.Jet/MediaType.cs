@@ -5,7 +5,6 @@
 namespace Logikfabrik.Umbraco.Jet
 {
     using System;
-    using System.Collections.Generic;
     using Extensions;
 
     /// <summary>
@@ -25,17 +24,6 @@ namespace Logikfabrik.Umbraco.Jet
             {
                 throw new ArgumentException($"Type {type} is not a media model type.", nameof(type));
             }
-        }
-
-        /// <summary>
-        /// Gets the composition.
-        /// </summary>
-        /// <returns>
-        /// The composition.
-        /// </returns>
-        protected override IDictionary<Type, IEnumerable<Type>> GetComposition()
-        {
-            return GetComposition(TypeExtensions.IsMediaType);
         }
     }
 }

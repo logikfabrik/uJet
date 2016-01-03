@@ -12,14 +12,6 @@ namespace Logikfabrik.Umbraco.Jet.Test
     public class MediaTypeTest : TestBase
     {
         [TestMethod]
-        public void CanGetComposition()
-        {
-            var mediaType = new MediaType(typeof(Models.MediaType));
-
-            Assert.AreEqual(3, mediaType.Composition[typeof(Models.MediaType)].Count());
-        }
-
-        [TestMethod]
         public void CanGetTypeFromAttribute()
         {
             var mediaType = new MediaType(typeof(Models.MediaType));

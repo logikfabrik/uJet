@@ -13,6 +13,20 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
     public static class TypeExtensions
     {
         /// <summary>
+        /// Determines whether the type is a content model type.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type">The type.</param>
+        /// <returns>
+        ///   <c>true</c> if the type is a content model type; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsContentType<T>(this Type type)
+            where T : ContentTypeAttribute
+        {
+            return IsValidAndHasAttribute<T>(type);
+        }
+
+        /// <summary>
         /// Determines whether the type is a document model type, annotated using the <see cref="DocumentTypeAttribute" /> class.
         /// </summary>
         /// <param name="type">The type.</param>

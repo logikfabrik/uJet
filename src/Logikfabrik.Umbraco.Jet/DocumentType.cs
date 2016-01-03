@@ -50,17 +50,6 @@ namespace Logikfabrik.Umbraco.Jet
         public IEnumerable<string> Templates { get; }
 
         /// <summary>
-        /// Gets the composition.
-        /// </summary>
-        /// <returns>
-        /// The composition.
-        /// </returns>
-        protected override IDictionary<Type, IEnumerable<Type>> GetComposition()
-        {
-            return GetComposition(TypeExtensions.IsDocumentType);
-        }
-
-        /// <summary>
         /// Gets the default template.
         /// </summary>
         /// <param name="attribute">The attribute.</param>

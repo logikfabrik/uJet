@@ -12,14 +12,6 @@ namespace Logikfabrik.Umbraco.Jet.Test
     public class DocumentTypeTest : TestBase
     {
         [TestMethod]
-        public void CanGetComposition()
-        {
-            var documentType = new DocumentType(typeof(Models.DocumentType));
-
-            Assert.AreEqual(3, documentType.Composition[typeof(Models.DocumentType)].Count());
-        }
-
-        [TestMethod]
         public void CanGetDefaultTemplateFromAttribute()
         {
             var documentType = new DocumentType(typeof(Models.DocumentType));

@@ -8,10 +8,10 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Collections.Generic;
     using System.Linq;
     using Data;
+    using Extensions;
     using global::Umbraco.Core;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
-    using Extensions;
 
     /// <summary>
     /// The <see cref="DocumentTypeSynchronizationService" /> class. Synchronizes model types annotated using the <see cref="DocumentTypeAttribute" />.

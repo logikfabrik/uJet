@@ -38,8 +38,9 @@ namespace Logikfabrik.Umbraco.Jet
 
             var contentTypes = GetContentTypes();
 
+            SetInheritance(contentTypes);
             SetAllowedContentTypes(contentTypes);
-            SetComposition(contentTypes);
+            SetCompositionNodeTypes(contentTypes);
         }
 
         /// <summary>
@@ -90,96 +91,107 @@ namespace Logikfabrik.Umbraco.Jet
         /// <returns>A content type model for the specified model type.</returns>
         protected abstract T1 GetContentTypeModel(Type modelType);
 
-        /// <summary>
-        /// Sets the content type composition.
-        /// </summary>
-        /// <param name="contentTypes">The content types.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypes" /> is <c>null</c>.</exception>
-        private void SetComposition(IContentTypeBase[] contentTypes)
+        private void SetInheritance(IContentTypeBase[] contentTypes)
         {
             if (contentTypes == null)
             {
                 throw new ArgumentNullException(nameof(contentTypes));
             }
 
-            foreach (var contentTypeModel in ContentTypeModels.Where(ctm => ctm.Composition.Count > 1))
+            Func<T1, bool> hasParent = type => type.ParentNodeType != null;
+
+            foreach (var contentTypeModel in ContentTypeModels.Where(hasParent))
             {
-                SetComposition(contentTypes, contentTypeModel);
-            }
-        }
+                var contentType = Resolver.ResolveType<T1, T2>(contentTypeModel, contentTypes) as IContentTypeComposition;
 
-        private void SetComposition(IContentTypeBase[] contentTypes, T1 contentTypeModel)
-        {
-            if (contentTypes == null)
-            {
-                throw new ArgumentNullException(nameof(contentTypes));
-            }
-
-            if (contentTypeModel == null)
-            {
-                throw new ArgumentNullException(nameof(contentTypeModel));
-            }
-
-            var contentType = Resolver.ResolveType<T1, T2>(contentTypeModel, contentTypes) as IContentTypeComposition;
-
-            if (contentType == null)
-            {
-                return;
-            }
-
-            var composition = new List<Type>(contentTypeModel.Composition.Keys);
-
-            // We remove the current type from the composition as it's not a composition of itself.
-            composition.Remove(contentTypeModel.Type);
-
-            var compositionContentTypes = composition.Select(type => Resolver.ResolveType<T1, T2>(GetContentTypeModel(type), contentTypes) as IContentTypeComposition).Where(ct => ct != null).ToArray();
-
-            SetComposition(contentType, compositionContentTypes);
-
-            SaveContentType(contentType);
-        }
-
-        /// <summary>
-        /// Sets the composition for the specified content type.
-        /// </summary>
-        /// <param name="contentType">The content type.</param>
-        /// <param name="compositionContentTypes">The composition content types.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentType" />, <paramref name="compositionContentTypes" /> are <c>null</c>.</exception>
-        private void SetComposition(
-            IContentTypeComposition contentType,
-            IContentTypeComposition[] compositionContentTypes)
-        {
-            if (contentType == null)
-            {
-                throw new ArgumentNullException(nameof(contentType));
-            }
-
-            if (compositionContentTypes == null)
-            {
-                throw new ArgumentNullException(nameof(compositionContentTypes));
-            }
-
-            var types = new List<IContentTypeComposition>(compositionContentTypes);
-
-            foreach (var compositionContentType in contentType.ContentTypeComposition)
-            {
-                var type = compositionContentTypes.SingleOrDefault(cct => cct.Id == compositionContentType.Id);
-
-                if (type != null)
+                if (contentType == null)
                 {
-                    // The content type is already set as a composition content type.
-                    types.Remove(type);
-
                     continue;
                 }
 
-                contentType.RemoveContentType(compositionContentType.Alias);
+                var parentContentTypeModel = GetContentTypeModel(contentTypeModel.ParentNodeType);
+
+                if (parentContentTypeModel == null)
+                {
+                    continue;
+                }
+
+                var parentContentType = Resolver.ResolveType<T1, T2>(parentContentTypeModel, contentTypes) as IContentTypeComposition;
+
+                if (parentContentType == null)
+                {
+                    continue;
+                }
+
+                var aliases = contentType.CompositionAliases().ToArray();
+
+                foreach (var alias in aliases)
+                {
+                    contentType.RemoveContentType(alias);
+                }
+
+                contentType.ParentId = parentContentType.Id;
+                contentType.AddContentType(parentContentType);
+
+                SaveContentType(contentType);
+            }
+        }
+
+        /// <summary>
+        /// Sets the composition node types.
+        /// </summary>
+        /// <param name="contentTypes">The content types.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypes" /> is <c>null</c>.</exception>
+        private void SetCompositionNodeTypes(IContentTypeBase[] contentTypes)
+        {
+            if (contentTypes == null)
+            {
+                throw new ArgumentNullException(nameof(contentTypes));
             }
 
-            foreach (var compositionContentType in types)
+            foreach (var contentTypeModel in ContentTypeModels.Where(ctm => ctm.CompositionNodeTypes.Any()))
             {
-                // Add content types not already set as composition content types.
-                contentType.AddContentType(compositionContentType);
+                if (contentTypeModel.ParentNodeType != null)
+                {
+                    // Composition and inheritance don't mix.
+                    continue;
+                }
+
+                var contentType = Resolver.ResolveType<T1, T2>(contentTypeModel, contentTypes) as IContentTypeComposition;
+
+                if (contentType == null)
+                {
+                    continue;
+                }
+
+                var compositionContentTypes = contentTypeModel.CompositionNodeTypes.Select(type => Resolver.ResolveType<T1, T2>(GetContentTypeModel(type), contentTypes) as IContentTypeComposition).Where(ct => ct != null).ToArray();
+
+                var types = new List<IContentTypeComposition>(compositionContentTypes);
+
+                var aliases = contentType.CompositionAliases().ToArray();
+
+                foreach (var alias in aliases)
+                {
+                    var type = compositionContentTypes.SingleOrDefault(ct => ct.Alias.Equals(alias, StringComparison.InvariantCultureIgnoreCase));
+
+                    if (type != null)
+                    {
+                        // The content type is already set as a composition content type.
+                        types.Remove(type);
+
+                        continue;
+                    }
+
+                    contentType.RemoveContentType(alias);
+                }
+
+                foreach (var compositionContentType in types)
+                {
+                    // Add content types not already set as composition content types.
+                    contentType.AddContentType(compositionContentType);
+                }
+
+                SaveContentType(contentType);
             }
         }
 

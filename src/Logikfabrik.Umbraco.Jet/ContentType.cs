@@ -8,6 +8,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using Extensions;
 
     /// <summary>
     /// The <see cref="ContentType{T}" /> class.
@@ -16,7 +17,7 @@ namespace Logikfabrik.Umbraco.Jet
     public abstract class ContentType<T> : BaseType<T>
         where T : ContentTypeAttribute
     {
-        private readonly Lazy<IDictionary<Type, IEnumerable<Type>>> _composition;
+        private readonly Lazy<Type> _parentNodeType;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentType{T}" /> class.
@@ -25,13 +26,14 @@ namespace Logikfabrik.Umbraco.Jet
         protected ContentType(Type type)
             : base(type)
         {
-            _composition = new Lazy<IDictionary<Type, IEnumerable<Type>>>(GetComposition);
+            _parentNodeType = new Lazy<Type>(GetParentNodeType);
 
             var attribute = type.GetCustomAttribute<T>();
 
             Thumbnail = GetThumbnail(attribute);
             AllowedAsRoot = GetAllowedAsRoot(attribute);
             AllowedChildNodeTypes = GetAllowedChildNodeTypes(attribute);
+            CompositionNodeTypes = GetCompositionNodeTypes(attribute);
         }
 
         /// <summary>
@@ -59,12 +61,20 @@ namespace Logikfabrik.Umbraco.Jet
         public IEnumerable<Type> AllowedChildNodeTypes { get; }
 
         /// <summary>
-        /// Gets the composition.
+        /// Gets the composition node types.
         /// </summary>
         /// <value>
-        /// The composition.
+        /// The composition node types.
         /// </value>
-        public IDictionary<Type, IEnumerable<Type>> Composition => _composition.Value;
+        public IEnumerable<Type> CompositionNodeTypes { get; }
+
+        /// <summary>
+        /// Gets the parent node type.
+        /// </summary>
+        /// <value>
+        /// The parent node type.
+        /// </value>
+        public Type ParentNodeType => _parentNodeType.Value;
 
         /// <summary>
         /// Gets the properties.
@@ -72,46 +82,9 @@ namespace Logikfabrik.Umbraco.Jet
         /// <returns>The properties.</returns>
         protected override IEnumerable<TypeProperty> GetProperties()
         {
-            var properties = Composition[Type].SelectMany(t => t.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly));
+            var properties = GetInheritance()[Type].SelectMany(t => t.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly));
 
             return from property in properties where IsValidProperty(property) select new TypeProperty(property);
-        }
-
-        /// <summary>
-        /// Gets the composition.
-        /// </summary>
-        /// <returns>The composition.</returns>
-        protected abstract IDictionary<Type, IEnumerable<Type>> GetComposition();
-
-        /// <summary>
-        /// Gets the composition for the specified type.
-        /// </summary>
-        /// <param name="predicate">The predicate.</param>
-        /// <returns>The composition for the specified type.</returns>
-        protected IDictionary<Type, IEnumerable<Type>> GetComposition(Func<Type, bool> predicate)
-        {
-            if (predicate == null)
-            {
-                throw new ArgumentNullException(nameof(predicate));
-            }
-
-            var composition = new Dictionary<Type, IEnumerable<Type>>();
-            List<Type> compositionTypes = null;
-
-            foreach (var t in GetInheritance())
-            {
-                if (predicate(t))
-                {
-                    composition.Add(t, new List<Type> { t });
-                    compositionTypes = (List<Type>)composition[t];
-                }
-                else
-                {
-                    compositionTypes?.Add(t);
-                }
-            }
-
-            return composition;
         }
 
         /// <summary>
@@ -161,15 +134,67 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(attribute));
             }
 
-            return attribute.AllowedChildNodeTypes?.Where(t => t.GetCustomAttribute<T>(false) != null) ?? new Type[] { };
+            return attribute.AllowedChildNodeTypes?.Where(t => t.IsContentType<T>()) ?? new Type[] { };
         }
 
-        private IEnumerable<Type> GetInheritance()
+        /// <summary>
+        /// Gets the composition node types.
+        /// </summary>
+        /// <param name="attribute">The attribute.</param>
+        /// <returns>The composition node types.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="attribute" /> is <c>null</c>.</exception>
+        private static IEnumerable<Type> GetCompositionNodeTypes(ContentTypeAttribute attribute)
         {
+            if (attribute == null)
+            {
+                throw new ArgumentNullException(nameof(attribute));
+            }
+
+            return attribute.CompositionNodeTypes?.Where(t => t.IsContentType<T>()) ?? new Type[] { };
+        }
+
+        /// <summary>
+        /// Gets the parent node type.
+        /// </summary>
+        /// <returns>The parent node type.</returns>
+        private Type GetParentNodeType()
+        {
+            var baseType = Type.BaseType;
+
+            for (var t = baseType; t != null; t = t.BaseType)
+            {
+                if (t.IsContentType<T>())
+                {
+                    return t;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the inheritance.
+        /// </summary>
+        /// <returns>The inheritance.</returns>
+        private IDictionary<Type, IEnumerable<Type>> GetInheritance()
+        {
+            var inheritance = new Dictionary<Type, IEnumerable<Type>>();
+            List<Type> types = null;
+
             for (var t = Type; t != null; t = t.BaseType)
             {
-                yield return t;
+                if (t.IsContentType<T>())
+                {
+                    inheritance.Add(t, new List<Type> { t });
+                    types = (List<Type>)inheritance[t];
+                }
+                else
+                {
+                    types?.Add(t);
+                }
             }
+
+            return inheritance;
         }
     }
 }
