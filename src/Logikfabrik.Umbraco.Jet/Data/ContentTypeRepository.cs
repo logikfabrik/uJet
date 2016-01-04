@@ -102,7 +102,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <summary>
         /// Gets the content type identifier.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The content type model identifier.</param>
         /// <returns>The content type identifier.</returns>
         public int? GetContentTypeId(Guid id)
         {
@@ -126,7 +126,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <summary>
         /// Gets the property type identifier.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The property model identifier.</param>
         /// <returns>The property type identifier.</returns>
         public int? GetPropertyTypeId(Guid id)
         {
@@ -150,7 +150,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <summary>
         /// Sets the content type identifier.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The content type model identifier.</param>
         /// <param name="contentTypeId">The content type identifier.</param>
         public void SetContentTypeId(Guid id, int contentTypeId)
         {
@@ -163,7 +163,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <summary>
         /// Sets the property type identifier.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The property type model identifier.</param>
         /// <param name="propertyTypeId">The property type identifier.</param>
         public void SetPropertyTypeId(Guid id, int propertyTypeId)
         {
@@ -176,7 +176,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <summary>
         /// Gets the content type with the specified content type identifier.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The content type identifier.</param>
         /// <returns>The content type with the specified content type identifier.</returns>
         internal virtual ContentType GetContentTypeByContentTypeId(int id)
         {
@@ -193,7 +193,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <summary>
         /// Gets the content type with the specified identifier.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The content type model identifier.</param>
         /// <returns>The content type with the specified identifier.</returns>
         internal virtual ContentType GetContentTypeById(Guid id)
         {
@@ -203,7 +203,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <summary>
         /// Gets the property type with the specified property type identifier.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The property type identifier.</param>
         /// <returns>The property type with the specified property type identifier.</returns>
         internal virtual PropertyType GetPropertyTypeByPropertyTypeId(int id)
         {
@@ -220,7 +220,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <summary>
         /// Gets the property type with the specified identifier.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The property type model identifier.</param>
         /// <returns>The property type with the specified identifier.</returns>
         internal virtual PropertyType GetPropertyTypeById(Guid id)
         {

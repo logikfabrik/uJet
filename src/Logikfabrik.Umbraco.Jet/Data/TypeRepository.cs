@@ -80,7 +80,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <summary>
         /// Gets the content type identifier.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The content type model identifier.</param>
         /// <returns>
         /// The content type identifier.
         /// </returns>
@@ -92,7 +92,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <summary>
         /// Gets the property type identifier.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The property type model identifier.</param>
         /// <returns>
         /// The property type identifier.
         /// </returns>
@@ -104,7 +104,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <summary>
         /// Sets the content type identifier.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The content type model identifier.</param>
         /// <param name="contentTypeId">The content type identifier.</param>
         public void SetContentTypeId(Guid id, int contentTypeId)
         {
@@ -114,7 +114,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <summary>
         /// Sets the property type identifier.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The property type model identifier.</param>
         /// <param name="propertyTypeId">The property type identifier.</param>
         public void SetPropertyTypeId(Guid id, int propertyTypeId)
         {
@@ -124,19 +124,19 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <summary>
         /// Gets the definition model identifier.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="definitionId">The definition identifier.</param>
         /// <returns>
         /// The definition model identifier.
         /// </returns>
-        public Guid? GetDefinitionModelId(int id)
+        public Guid? GetDefinitionModelId(int definitionId)
         {
-            return _dataTypeRepository.GetDefinitionModelId(id);
+            return _dataTypeRepository.GetDefinitionModelId(definitionId);
         }
 
         /// <summary>
         /// Gets the definition identifier.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The definition model identifier.</param>
         /// <returns>
         /// The definition identifier.
         /// </returns>
@@ -148,7 +148,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <summary>
         /// Sets the definition identifier.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The definition model identifier.</param>
         /// <param name="definitionId">The definition identifier.</param>
         public void SetDefinitionId(Guid id, int definitionId)
         {

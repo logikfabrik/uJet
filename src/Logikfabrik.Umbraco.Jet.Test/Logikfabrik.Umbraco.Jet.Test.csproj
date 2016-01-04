@@ -292,6 +292,7 @@
     <Compile Include="Configuration\JetConfigurationManagerTest.cs" />
     <Compile Include="DataTypeTest.cs" />
     <Compile Include="Data\ContentTypeRepositoryTest.cs" />
+    <Compile Include="Data\DataTypeRepositoryTest.cs" />
     <Compile Include="DefaultValueServiceTest.cs" />
     <Compile Include="DocumentTypeTest.cs" />
     <Compile Include="DataTypeSynchronizationServiceTest.cs" />
