@@ -9,21 +9,17 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Linq;
     using Data;
     using global::Umbraco.Core;
-    using global::Umbraco.Core.Logging;
     using global::Umbraco.Core.Models;
-    using global::Umbraco.Core.ObjectResolution;
     using global::Umbraco.Core.Services;
 
     /// <summary>
-    /// The <see cref="DataTypeSynchronizationService" /> class. Synchronizes types annotated using the <see cref="DataTypeAttribute" />.
+    /// The <see cref="DataTypeSynchronizationService" /> class. Synchronizes model types annotated using the <see cref="DataTypeAttribute" />.
     /// </summary>
     public class DataTypeSynchronizationService : ISynchronizationService
     {
-        // TODO: Rewrite so that it works the same way as the Document, Media, and Member sync services.
-
-        private readonly IDataTypeRepository _dataTypeRepository;
         private readonly IDataTypeService _dataTypeService;
-        private readonly ITypeService _typeService;
+        private readonly ITypeResolver _typeResolver;
+        private readonly ITypeRepository _typeRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataTypeSynchronizationService" /> class.
@@ -31,8 +27,8 @@ namespace Logikfabrik.Umbraco.Jet
         public DataTypeSynchronizationService()
             : this(
                 ApplicationContext.Current.Services.DataTypeService,
-                new DataTypeRepository(new DatabaseWrapper(ApplicationContext.Current.DatabaseContext.Database, ResolverBase<LoggerResolver>.Current.Logger, ApplicationContext.Current.DatabaseContext.SqlSyntax)),
-                TypeService.Instance)
+                TypeResolver.Instance,
+                TypeRepository.Instance)
         {
         }
 
@@ -40,32 +36,32 @@ namespace Logikfabrik.Umbraco.Jet
         /// Initializes a new instance of the <see cref="DataTypeSynchronizationService" /> class.
         /// </summary>
         /// <param name="dataTypeService">The data type service.</param>
-        /// <param name="dataTypeRepository">The data type repository.</param>
-        /// <param name="typeService">The type service.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dataTypeService" />, <paramref name="dataTypeRepository" />, or <paramref name="typeService" /> are <c>null</c>.</exception>
+        /// <param name="typeResolver">The type resolver.</param>
+        /// <param name="typeRepository">The type repository.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dataTypeService" />, <paramref name="typeResolver" />, or <paramref name="typeRepository" /> are <c>null</c>.</exception>
         public DataTypeSynchronizationService(
             IDataTypeService dataTypeService,
-            IDataTypeRepository dataTypeRepository,
-            ITypeService typeService)
+            ITypeResolver typeResolver,
+            ITypeRepository typeRepository)
         {
             if (dataTypeService == null)
             {
                 throw new ArgumentNullException(nameof(dataTypeService));
             }
 
-            if (dataTypeRepository == null)
+            if (typeResolver == null)
             {
-                throw new ArgumentNullException(nameof(dataTypeRepository));
+                throw new ArgumentNullException(nameof(typeResolver));
             }
 
-            if (typeService == null)
+            if (typeRepository == null)
             {
-                throw new ArgumentNullException(nameof(typeService));
+                throw new ArgumentNullException(nameof(typeRepository));
             }
 
             _dataTypeService = dataTypeService;
-            _dataTypeRepository = dataTypeRepository;
-            _typeService = typeService;
+            _typeResolver = typeResolver;
+            _typeRepository = typeRepository;
         }
 
         /// <summary>
@@ -73,244 +69,187 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         public void Synchronize()
         {
-            var dataTypes = _typeService.DataTypes.Select(t => new DataType(t)).ToArray();
-
-            // No data types; there's nothing to sync.
-            if (!dataTypes.Any())
+            if (!_typeResolver.DataTypes.Any())
             {
                 return;
             }
 
-            ValidateDataTypeId(dataTypes);
-            ValidateDataTypeName(dataTypes);
+            ValidateDataTypeModelId();
+            ValidateDataTypeModelName();
 
-            // WARNING: This might cause issues; the array of types only contains the initial types, not including ones added/updated during sync.
-            var types = _dataTypeService.GetAllDataTypeDefinitions().ToArray();
+            var dataTypeDefinitions = _dataTypeService.GetAllDataTypeDefinitions().ToArray();
 
-            foreach (var dataType in dataTypes.Where(dt => dt.Id.HasValue))
+            foreach (var dataTypeModel in _typeResolver.DataTypes)
             {
-                SynchronizeById(types, dataType);
-            }
-
-            foreach (var dataType in dataTypes.Where(dt => !dt.Id.HasValue))
-            {
-                SynchronizeByName(types, dataType);
+                Synchronize(dataTypeDefinitions, dataTypeModel);
             }
         }
 
         /// <summary>
-        /// Synchronizes data type by name.
+        /// Creates a data type definition for the specified data type model.
         /// </summary>
-        /// <param name="dataTypeDefinitions">The data type definitions.</param>
-        /// <param name="dataType">The data type.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dataTypeDefinitions" />, or <paramref name="dataType" /> are <c>null</c>.</exception>
-        /// <exception cref="ArgumentException">Thrown if the data type identifier is not <c>null</c>.</exception>
-        internal virtual void SynchronizeByName(IEnumerable<IDataTypeDefinition> dataTypeDefinitions, DataType dataType)
+        /// <param name="dataTypeModel">The data type model.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dataTypeModel" /> is <c>null</c>.</exception>
+        /// <returns>The created data type definition.</returns>
+        internal virtual IDataTypeDefinition CreateDataTypeDefinition(DataType dataTypeModel)
         {
-            if (dataTypeDefinitions == null)
+            if (dataTypeModel == null)
             {
-                throw new ArgumentNullException(nameof(dataTypeDefinitions));
+                throw new ArgumentNullException(nameof(dataTypeModel));
             }
 
-            if (dataType == null)
+            var dataTypeDefinition = new DataTypeDefinition(dataTypeModel.Editor)
             {
-                throw new ArgumentNullException(nameof(dataType));
-            }
+                Name = dataTypeModel.Name,
+                DatabaseType = GetDatabaseType(dataTypeModel)
+            };
 
-            if (dataType.Id.HasValue)
-            {
-                throw new ArgumentException("Data type ID must be null.", nameof(dataType));
-            }
-
-            var dtd = dataTypeDefinitions.FirstOrDefault(type => type.Name == dataType.Name);
-
-            if (dtd == null)
-            {
-                CreateDataType(dataType);
-            }
-            else
-            {
-                UpdateDataType(dtd, dataType);
-            }
+            return dataTypeDefinition;
         }
 
         /// <summary>
-        /// Synchronizes data type by identifier.
-        /// </summary>
-        /// <param name="dataTypeDefinitions">The data type definitions.</param>
-        /// <param name="dataType">The data type.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dataTypeDefinitions" />, or <paramref name="dataType" /> are <c>null</c>.</exception>
-        /// <exception cref="ArgumentException">Thrown if the data type identifier is <c>null</c>.</exception>
-        internal virtual void SynchronizeById(IEnumerable<IDataTypeDefinition> dataTypeDefinitions, DataType dataType)
-        {
-            if (dataTypeDefinitions == null)
-            {
-                throw new ArgumentNullException(nameof(dataTypeDefinitions));
-            }
-
-            if (dataType == null)
-            {
-                throw new ArgumentNullException(nameof(dataType));
-            }
-
-            if (!dataType.Id.HasValue)
-            {
-                throw new ArgumentException("Data type ID cannot be null.", nameof(dataType));
-            }
-
-            IDataTypeDefinition dtd = null;
-
-            var id = _dataTypeRepository.GetDefinitionId(dataType.Id.Value);
-
-            if (id.HasValue)
-            {
-                // The data type has been synchronized before. Get the matching data type definition.
-                // It might have been removed using the back office.
-                dtd = dataTypeDefinitions.FirstOrDefault(type => type.Id == id.Value);
-            }
-
-            if (dtd == null)
-            {
-                CreateDataType(dataType);
-
-                // Get the created data type definition.
-                dtd =
-                    _dataTypeService.GetDataTypeDefinitionByPropertyEditorAlias(dataType.Editor)
-                        .First(type => type.Name == dataType.Name);
-
-                // Connect the data type and the created data type definition.
-                _dataTypeRepository.SetDefinitionId(dataType.Id.Value, dtd.Id);
-            }
-            else
-            {
-                UpdateDataType(dtd, dataType);
-            }
-        }
-
-        /// <summary>
-        /// Updates the data type.
+        /// Updates the data type definition for the specified data type model.
         /// </summary>
         /// <param name="dataTypeDefinition">The data type definition.</param>
-        /// <param name="dataType">The data type to update.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dataTypeDefinition" />, or <paramref name="dataType" /> are <c>null</c>.</exception>
-        internal virtual void UpdateDataType(IDataTypeDefinition dataTypeDefinition, DataType dataType)
+        /// <param name="dataTypeModel">The data type model.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dataTypeDefinition" />, or <paramref name="dataTypeModel" /> are <c>null</c>.</exception>
+        /// <returns>The updated data type definition.</returns>
+        internal virtual IDataTypeDefinition UpdateDataTypeDefinition(IDataTypeDefinition dataTypeDefinition, DataType dataTypeModel)
         {
             if (dataTypeDefinition == null)
             {
                 throw new ArgumentNullException(nameof(dataTypeDefinition));
             }
 
-            if (dataType == null)
+            if (dataTypeModel == null)
             {
-                throw new ArgumentNullException(nameof(dataType));
+                throw new ArgumentNullException(nameof(dataTypeModel));
             }
 
-            dataTypeDefinition.Name = dataType.Name;
-            dataTypeDefinition.PropertyEditorAlias = dataType.Editor;
-            dataTypeDefinition.DatabaseType = GetDatabaseType(dataType);
+            dataTypeDefinition.Name = dataTypeModel.Name;
+            dataTypeDefinition.PropertyEditorAlias = dataTypeModel.Editor;
+            dataTypeDefinition.DatabaseType = GetDatabaseType(dataTypeModel);
 
-            _dataTypeService.Save(dataTypeDefinition);
+            return dataTypeDefinition;
         }
 
         /// <summary>
-        /// Validates the data type identifier.
+        /// Gets the database type for the specified data type model.
         /// </summary>
-        /// <param name="dataTypes">The data types.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dataTypes" /> is <c>null</c>.</exception>
-        /// <exception cref="InvalidOperationException">Thrown if an identifier in <paramref name="dataTypes" /> is conflicting.</exception>
-        private static void ValidateDataTypeId(IEnumerable<DataType> dataTypes)
-        {
-            if (dataTypes == null)
-            {
-                throw new ArgumentNullException(nameof(dataTypes));
-            }
-
-            var set = new HashSet<Guid>();
-
-            foreach (var dataType in dataTypes)
-            {
-                if (!dataType.Id.HasValue)
-                {
-                    continue;
-                }
-
-                if (set.Contains(dataType.Id.Value))
-                {
-                    throw new InvalidOperationException(
-                        $"ID conflict for data type {dataType.Name}. ID {dataType.Id.Value} is already in use.");
-                }
-
-                set.Add(dataType.Id.Value);
-            }
-        }
-
-        /// <summary>
-        /// Validates the data type name.
-        /// </summary>
-        /// <param name="dataTypes">The data types.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dataTypes" /> is <c>null</c>.</exception>
-        /// <exception cref="InvalidOperationException">Thrown if a name in <paramref name="dataTypes" /> is conflicting.</exception>
-        private static void ValidateDataTypeName(IEnumerable<DataType> dataTypes)
-        {
-            if (dataTypes == null)
-            {
-                throw new ArgumentNullException(nameof(dataTypes));
-            }
-
-            var set = new HashSet<string>();
-
-            foreach (var dataType in dataTypes)
-            {
-                if (set.Contains(dataType.Name))
-                {
-                    throw new InvalidOperationException(
-                        string.Format("Name conflict for data type {0}. Name {0} is already in use.", dataType.Name));
-                }
-
-                set.Add(dataType.Name);
-            }
-        }
-
-        /// <summary>
-        /// Gets the database type.
-        /// </summary>
-        /// <param name="dataType">The data type.</param>
+        /// <param name="dataTypeModel">The data type model.</param>
         /// <returns>The database type.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dataType" /> is <c>null</c>.</exception>
-        private static DataTypeDatabaseType GetDatabaseType(DataType dataType)
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dataTypeModel" /> is <c>null</c>.</exception>
+        private static DataTypeDatabaseType GetDatabaseType(DataType dataTypeModel)
         {
-            if (dataType == null)
+            if (dataTypeModel == null)
             {
-                throw new ArgumentNullException(nameof(dataType));
+                throw new ArgumentNullException(nameof(dataTypeModel));
             }
 
-            if (dataType.Type == typeof(int))
+            if (dataTypeModel.Type == typeof(int))
             {
                 return DataTypeDatabaseType.Integer;
             }
 
-            return dataType.Type == typeof(DateTime) ? DataTypeDatabaseType.Date : DataTypeDatabaseType.Ntext;
+            return dataTypeModel.Type == typeof(DateTime) ? DataTypeDatabaseType.Date : DataTypeDatabaseType.Ntext;
+        }
+
+        private void Synchronize(IDataTypeDefinition[] dataTypeDefinitions, DataType dataTypeModel)
+        {
+            if (dataTypeDefinitions == null)
+            {
+                throw new ArgumentNullException(nameof(dataTypeDefinitions));
+            }
+
+            if (dataTypeModel == null)
+            {
+                throw new ArgumentNullException(nameof(dataTypeModel));
+            }
+
+            var dataTypeDefinition = _typeResolver.ResolveType(dataTypeModel, dataTypeDefinitions);
+
+            dataTypeDefinition = dataTypeDefinition == null
+                ? CreateDataTypeDefinition(dataTypeModel)
+                : UpdateDataTypeDefinition(dataTypeDefinition, dataTypeModel);
+
+            _dataTypeService.Save(dataTypeDefinition);
+
+            // We get the data type definition once more to refresh it after saving it.
+            dataTypeDefinition = _dataTypeService.GetDataTypeDefinitionByName(dataTypeDefinition.Name);
+
+            // Set/update tracking.
+            SetDataTypeId(dataTypeDefinition, dataTypeModel);
         }
 
         /// <summary>
-        /// Creates the data type.
+        /// Sets the data type definition identifier of the specified data type model.
         /// </summary>
-        /// <param name="dataType">The data type to create.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dataType" /> is <c>null</c>.</exception>
-        private void CreateDataType(DataType dataType)
+        /// <param name="dataTypeDefinition">The data type definition.</param>
+        /// <param name="dataTypeModel">The data type model.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dataTypeDefinition" />, or <paramref name="dataTypeModel" /> are <c>null</c>.</exception>
+        private void SetDataTypeId(IDataTypeDefinition dataTypeDefinition, DataType dataTypeModel)
         {
-            if (dataType == null)
+            if (dataTypeDefinition == null)
             {
-                throw new ArgumentNullException(nameof(dataType));
+                throw new ArgumentNullException(nameof(dataTypeDefinition));
             }
 
-            var dataTypeDefinition = new DataTypeDefinition(dataType.Editor)
+            if (dataTypeModel == null)
             {
-                Name = dataType.Name,
-                DatabaseType = GetDatabaseType(dataType)
-            };
+                throw new ArgumentNullException(nameof(dataTypeModel));
+            }
 
-            _dataTypeService.Save(dataTypeDefinition);
+            if (!dataTypeModel.Id.HasValue)
+            {
+                return;
+            }
+
+            _typeRepository.SetDefinitionId(dataTypeModel.Id.Value, dataTypeDefinition.Id);
+        }
+
+        /// <summary>
+        /// Validates the data type model identifiers.
+        /// </summary>
+        private void ValidateDataTypeModelId()
+        {
+            var set = new HashSet<Guid>();
+
+            foreach (var dataTypeModel in _typeResolver.DataTypes)
+            {
+                if (!dataTypeModel.Id.HasValue)
+                {
+                    continue;
+                }
+
+                if (set.Contains(dataTypeModel.Id.Value))
+                {
+                    var conflictingTypes = _typeResolver.DataTypes.Where(dtm => dtm.Id == dataTypeModel.Id.Value).Select(dtm => dtm.Type.Name);
+
+                    throw new InvalidOperationException($"ID conflict for model types {string.Join(", ", conflictingTypes)}. ID {dataTypeModel.Id.Value} is already in use.");
+                }
+
+                set.Add(dataTypeModel.Id.Value);
+            }
+        }
+
+        /// <summary>
+        /// Validates the data type model names.
+        /// </summary>
+        private void ValidateDataTypeModelName()
+        {
+            var set = new HashSet<string>();
+
+            foreach (var dataTypeModel in _typeResolver.DataTypes)
+            {
+                if (set.Contains(dataTypeModel.Name))
+                {
+                    var conflictingTypes = _typeResolver.DataTypes.Where(dtm => dtm.Name == dataTypeModel.Name).Select(dtm => dtm.Type.Name);
+
+                    throw new InvalidOperationException($"Name conflict for model types {string.Join(", ", conflictingTypes)}. Name {dataTypeModel.Name} is already in use.");
+                }
+
+                set.Add(dataTypeModel.Name);
+            }
         }
     }
 }

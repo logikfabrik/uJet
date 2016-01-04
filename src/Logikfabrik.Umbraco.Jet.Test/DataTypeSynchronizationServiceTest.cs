@@ -4,293 +4,271 @@
 
 namespace Logikfabrik.Umbraco.Jet.Test
 {
-    using System;
-    using System.Collections.Generic;
     using Data;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
 
-    /// <summary>
-    /// The <see cref="DataTypeSynchronizationServiceTest" /> class.
-    /// </summary>
     [TestClass]
     public class DataTypeSynchronizationServiceTest : TestBase
     {
-        private const string IdForDataTypeWithId = "d7b9b7f5-b2ed-4c2f-8239-9a2f50d14054";
-        private const string NameForDataTypeWithId = "DataTypeWithId";
-        private const string NameForDataTypeWithoutId = "DataTypeWithoutId";
-        private const string EditorForDataTypeWithId = "EditorForDataTypeWithId";
-        private const string EditorForDataTypeWithoutId = "EditorForDataTypeWithoutId";
-
-        /// <summary>
-        /// Test to create data type with and without ID.
-        /// </summary>
         [TestMethod]
         public void CanCreateDataTypeWithAndWithoutId()
         {
-            var typeServiceMock = new Mock<ITypeService>();
-
-            typeServiceMock.Setup(m => m.DataTypes).Returns(new[] { typeof(DataTypeWithId), typeof(DataTypeWithoutId) });
+            var dataTypeWithId = new Jet.DataType(typeof(DataTypeWithId));
+            var dataTypeWithoutId = new Jet.DataType(typeof(DataTypeWithoutId));
 
             var dataTypeDefinitionWithIdMock = new Mock<IDataTypeDefinition>();
-
             var dataTypeDefinitionWithoutIdMock = new Mock<IDataTypeDefinition>();
+
+            var typeResolverMock = new Mock<ITypeResolver>();
+
+            typeResolverMock.Setup(m => m.DataTypes).Returns(new[] { dataTypeWithId, dataTypeWithoutId });
 
             var dataTypeServiceMock = new Mock<IDataTypeService>();
 
             dataTypeServiceMock.Setup(m => m.GetAllDataTypeDefinitions()).Returns(new IDataTypeDefinition[] { });
 
-            dataTypeServiceMock.Setup(m => m.GetDataTypeDefinitionByPropertyEditorAlias(EditorForDataTypeWithId))
-                .Returns(new[] { dataTypeDefinitionWithIdMock.Object });
-            dataTypeServiceMock.Setup(m => m.GetDataTypeDefinitionByPropertyEditorAlias(EditorForDataTypeWithoutId))
-                .Returns(new[] { dataTypeDefinitionWithoutIdMock.Object });
+            dataTypeServiceMock.Setup(m => m.GetDataTypeDefinitionByName(dataTypeWithId.Name)).Returns(dataTypeDefinitionWithIdMock.Object);
+            dataTypeServiceMock.Setup(m => m.GetDataTypeDefinitionByName(dataTypeWithoutId.Name)).Returns(dataTypeDefinitionWithoutIdMock.Object);
 
             var dataTypeSynchronizationServiceMock = new Mock<DataTypeSynchronizationService>(
                 dataTypeServiceMock.Object,
-                new Mock<IDataTypeRepository>().Object,
-                typeServiceMock.Object);
+                typeResolverMock.Object,
+                new Mock<ITypeRepository>().Object)
+            { CallBase = true };
 
             dataTypeSynchronizationServiceMock.Object.Synchronize();
 
-            dataTypeSynchronizationServiceMock
-                .Verify(m => m.SynchronizeById(It.IsAny<IEnumerable<IDataTypeDefinition>>(), It.IsAny<Jet.DataType>()), Times.Once);
-
-            dataTypeSynchronizationServiceMock
-                .Verify(m => m.SynchronizeByName(It.IsAny<IEnumerable<IDataTypeDefinition>>(), It.IsAny<Jet.DataType>()), Times.Once);
+            dataTypeSynchronizationServiceMock.Verify(m => m.CreateDataTypeDefinition(It.IsAny<Jet.DataType>()), Times.Exactly(2));
         }
 
-        /// <summary>
-        /// Test to create data type with ID.
-        /// </summary>
         [TestMethod]
         public void CanCreateDataTypeWithId()
         {
-            var typeServiceMock = new Mock<ITypeService>();
+            var dataTypeWithId = new Jet.DataType(typeof(DataTypeWithId));
 
-            typeServiceMock.Setup(m => m.DataTypes).Returns(new[] { typeof(DataTypeWithId) });
+            var dataTypeDefinitionWithIdMock = new Mock<IDataTypeDefinition>();
 
-            var dataTypeDefinitionMock = new Mock<IDataTypeDefinition>();
+            var typeResolverMock = new Mock<ITypeResolver>();
+
+            typeResolverMock.Setup(m => m.DataTypes).Returns(new[] { dataTypeWithId });
 
             var dataTypeServiceMock = new Mock<IDataTypeService>();
 
             dataTypeServiceMock.Setup(m => m.GetAllDataTypeDefinitions()).Returns(new IDataTypeDefinition[] { });
-            dataTypeServiceMock.Setup(m => m.GetDataTypeDefinitionByPropertyEditorAlias(EditorForDataTypeWithId))
-                .Returns(new[] { dataTypeDefinitionMock.Object });
+
+            dataTypeServiceMock.Setup(m => m.GetDataTypeDefinitionByName(dataTypeWithId.Name)).Returns(dataTypeDefinitionWithIdMock.Object);
 
             var dataTypeSynchronizationServiceMock = new Mock<DataTypeSynchronizationService>(
                 dataTypeServiceMock.Object,
-                new Mock<IDataTypeRepository>().Object,
-                typeServiceMock.Object);
+                typeResolverMock.Object,
+                new Mock<ITypeRepository>().Object)
+            { CallBase = true };
 
             dataTypeSynchronizationServiceMock.Object.Synchronize();
 
-            dataTypeSynchronizationServiceMock
-                .Verify(m => m.SynchronizeById(It.IsAny<IEnumerable<IDataTypeDefinition>>(), It.IsAny<Jet.DataType>()), Times.Once);
+            dataTypeSynchronizationServiceMock.Verify(m => m.CreateDataTypeDefinition(dataTypeWithId), Times.Once);
         }
 
-        /// <summary>
-        /// Test to create data type without ID.
-        /// </summary>
         [TestMethod]
         public void CanCreateDataTypeWithoutId()
         {
-            var typeServiceMock = new Mock<ITypeService>();
+            var dataTypeWithoutId = new Jet.DataType(typeof(DataTypeWithoutId));
 
-            typeServiceMock.Setup(m => m.DataTypes).Returns(new[] { typeof(DataTypeWithoutId) });
+            var dataTypeDefinitionWithoutIdMock = new Mock<IDataTypeDefinition>();
 
-            var dataTypeDefinitionMock = new Mock<IDataTypeDefinition>();
+            var typeResolverMock = new Mock<ITypeResolver>();
+
+            typeResolverMock.Setup(m => m.DataTypes).Returns(new[] { dataTypeWithoutId });
 
             var dataTypeServiceMock = new Mock<IDataTypeService>();
 
             dataTypeServiceMock.Setup(m => m.GetAllDataTypeDefinitions()).Returns(new IDataTypeDefinition[] { });
-            dataTypeServiceMock.Setup(m => m.GetDataTypeDefinitionByPropertyEditorAlias(EditorForDataTypeWithoutId))
-                .Returns(new[] { dataTypeDefinitionMock.Object });
+            dataTypeServiceMock.Setup(m => m.GetDataTypeDefinitionByName(dataTypeWithoutId.Name)).Returns(dataTypeDefinitionWithoutIdMock.Object);
 
             var dataTypeSynchronizationServiceMock = new Mock<DataTypeSynchronizationService>(
                 dataTypeServiceMock.Object,
-                new Mock<IDataTypeRepository>().Object,
-                typeServiceMock.Object);
+                typeResolverMock.Object,
+                new Mock<ITypeRepository>().Object)
+            { CallBase = true };
 
             dataTypeSynchronizationServiceMock.Object.Synchronize();
 
-            dataTypeSynchronizationServiceMock
-                .Verify(m => m.SynchronizeByName(It.IsAny<IEnumerable<IDataTypeDefinition>>(), It.IsAny<Jet.DataType>()), Times.Once);
+            dataTypeSynchronizationServiceMock.Verify(m => m.CreateDataTypeDefinition(dataTypeWithoutId), Times.Once);
         }
 
-        /// <summary>
-        /// Test to update data type with ID.
-        /// </summary>
         [TestMethod]
         public void CanUpdateDataTypeWithId()
         {
-            var typeServiceMock = new Mock<ITypeService>();
+            var dataTypeWithId = new Jet.DataType(typeof(DataTypeWithId));
 
-            typeServiceMock.Setup(m => m.DataTypes).Returns(new[] { typeof(DataTypeWithId) });
+            var dataTypeDefinitionWithIdMock = new Mock<IDataTypeDefinition>();
 
-            var dataTypeDefinitionMock = new Mock<IDataTypeDefinition>();
+            dataTypeDefinitionWithIdMock.SetupAllProperties();
+
+            var typeResolverMock = new Mock<ITypeResolver>();
+
+            typeResolverMock.Setup(m => m.DataTypes).Returns(new[] { dataTypeWithId });
+            typeResolverMock.Setup(m => m.ResolveType(dataTypeWithId, It.IsAny<IDataTypeDefinition[]>())).Returns(dataTypeDefinitionWithIdMock.Object);
 
             var dataTypeServiceMock = new Mock<IDataTypeService>();
 
-            dataTypeServiceMock.Setup(m => m.GetAllDataTypeDefinitions()).Returns(new[] { dataTypeDefinitionMock.Object });
+            dataTypeServiceMock.Setup(m => m.GetAllDataTypeDefinitions()).Returns(new[] { dataTypeDefinitionWithIdMock.Object });
+            dataTypeServiceMock.Setup(m => m.GetDataTypeDefinitionByName(dataTypeWithId.Name)).Returns(dataTypeDefinitionWithIdMock.Object);
 
-            var dataTypeRepositoryMock = new Mock<IDataTypeRepository>();
+            var typeRepositoryMock = new Mock<ITypeRepository>();
 
-            dataTypeRepositoryMock.Setup(m => m.GetDefinitionId(Guid.Parse(IdForDataTypeWithId)))
-                .Returns(dataTypeDefinitionMock.Object.Id);
+            typeRepositoryMock.Setup(m => m.GetDefinitionId(dataTypeWithId.Id.Value)).Returns(dataTypeDefinitionWithIdMock.Object.Id);
 
             var dataTypeSynchronizationServiceMock = new Mock<DataTypeSynchronizationService>(
                 dataTypeServiceMock.Object,
-                dataTypeRepositoryMock.Object,
-                typeServiceMock.Object)
+                typeResolverMock.Object,
+                typeRepositoryMock.Object)
             { CallBase = true };
 
             dataTypeSynchronizationServiceMock.Object.Synchronize();
 
-            dataTypeSynchronizationServiceMock.Verify(m => m.UpdateDataType(dataTypeDefinitionMock.Object, It.IsAny<Jet.DataType>()), Times.Once);
+            dataTypeSynchronizationServiceMock.Verify(m => m.UpdateDataTypeDefinition(dataTypeDefinitionWithIdMock.Object, dataTypeWithId), Times.Once);
         }
 
-        /// <summary>
-        /// Test to update name for data type with ID.
-        /// </summary>
         [TestMethod]
         public void CanUpdateNameForDataTypeWithId()
         {
-            var typeServiceMock = new Mock<ITypeService>();
+            var dataTypeWithId = new Jet.DataType(typeof(DataTypeWithId));
 
-            typeServiceMock.Setup(m => m.DataTypes).Returns(new[] { typeof(DataTypeWithId) });
+            var dataTypeDefinitionWithIdMock = new Mock<IDataTypeDefinition>();
 
-            var dataTypeDefinitionMock = new Mock<IDataTypeDefinition>();
+            dataTypeDefinitionWithIdMock.SetupAllProperties();
+
+            var typeResolverMock = new Mock<ITypeResolver>();
+
+            typeResolverMock.Setup(m => m.DataTypes).Returns(new[] { dataTypeWithId });
+            typeResolverMock.Setup(m => m.ResolveType(dataTypeWithId, It.IsAny<IDataTypeDefinition[]>())).Returns(dataTypeDefinitionWithIdMock.Object);
 
             var dataTypeServiceMock = new Mock<IDataTypeService>();
 
-            dataTypeServiceMock.Setup(m => m.GetAllDataTypeDefinitions()).Returns(new[] { dataTypeDefinitionMock.Object });
+            dataTypeServiceMock.Setup(m => m.GetAllDataTypeDefinitions()).Returns(new[] { dataTypeDefinitionWithIdMock.Object });
+            dataTypeServiceMock.Setup(m => m.GetDataTypeDefinitionByName(dataTypeWithId.Name)).Returns(dataTypeDefinitionWithIdMock.Object);
 
-            var dataTypeRepositoryMock = new Mock<IDataTypeRepository>();
+            var typeRepositoryMock = new Mock<ITypeRepository>();
 
-            dataTypeRepositoryMock.Setup(m => m.GetDefinitionId(Guid.Parse(IdForDataTypeWithId)))
-                .Returns(dataTypeDefinitionMock.Object.Id);
+            typeRepositoryMock.Setup(m => m.GetDefinitionId(dataTypeWithId.Id.Value)).Returns(dataTypeDefinitionWithIdMock.Object.Id);
 
             var dataTypeSynchronizationService = new DataTypeSynchronizationService(
                 dataTypeServiceMock.Object,
-                dataTypeRepositoryMock.Object,
-                typeServiceMock.Object);
+                typeResolverMock.Object,
+                typeRepositoryMock.Object);
 
             dataTypeSynchronizationService.Synchronize();
 
-            dataTypeDefinitionMock.VerifySet(m => m.Name = NameForDataTypeWithId, Times.Once);
+            dataTypeDefinitionWithIdMock.VerifySet(m => m.Name = dataTypeWithId.Name, Times.Once);
         }
 
-        /// <summary>
-        /// Test to update editor for data type with ID.
-        /// </summary>
         [TestMethod]
         public void CanUpdateEditorForDataTypeWithId()
         {
-            var typeServiceMock = new Mock<ITypeService>();
+            var dataTypeWithId = new Jet.DataType(typeof(DataTypeWithId));
 
-            typeServiceMock.Setup(m => m.DataTypes).Returns(new[] { typeof(DataTypeWithId) });
+            var dataTypeDefinitionWithIdMock = new Mock<IDataTypeDefinition>();
 
-            var dataTypeDefinitionMock = new Mock<IDataTypeDefinition>();
+            dataTypeDefinitionWithIdMock.SetupAllProperties();
+
+            var typeResolverMock = new Mock<ITypeResolver>();
+
+            typeResolverMock.Setup(m => m.DataTypes).Returns(new[] { dataTypeWithId });
+            typeResolverMock.Setup(m => m.ResolveType(dataTypeWithId, It.IsAny<IDataTypeDefinition[]>())).Returns(dataTypeDefinitionWithIdMock.Object);
 
             var dataTypeServiceMock = new Mock<IDataTypeService>();
 
-            dataTypeServiceMock.Setup(m => m.GetAllDataTypeDefinitions()).Returns(new[] { dataTypeDefinitionMock.Object });
+            dataTypeServiceMock.Setup(m => m.GetAllDataTypeDefinitions()).Returns(new[] { dataTypeDefinitionWithIdMock.Object });
+            dataTypeServiceMock.Setup(m => m.GetDataTypeDefinitionByName(dataTypeWithId.Name)).Returns(dataTypeDefinitionWithIdMock.Object);
 
-            var dataTypeRepositoryMock = new Mock<IDataTypeRepository>();
+            var typeRepositoryMock = new Mock<ITypeRepository>();
 
-            dataTypeRepositoryMock.Setup(m => m.GetDefinitionId(Guid.Parse(IdForDataTypeWithId)))
-                .Returns(dataTypeDefinitionMock.Object.Id);
+            typeRepositoryMock.Setup(m => m.GetDefinitionId(dataTypeWithId.Id.Value)).Returns(dataTypeDefinitionWithIdMock.Object.Id);
 
             var dataTypeSynchronizationService = new DataTypeSynchronizationService(
                 dataTypeServiceMock.Object,
-                dataTypeRepositoryMock.Object,
-                typeServiceMock.Object);
+                typeResolverMock.Object,
+                typeRepositoryMock.Object);
 
             dataTypeSynchronizationService.Synchronize();
 
-            dataTypeDefinitionMock.VerifySet(m => m.PropertyEditorAlias = EditorForDataTypeWithId, Times.Once);
+            dataTypeDefinitionWithIdMock.VerifySet(m => m.PropertyEditorAlias = dataTypeWithId.Editor, Times.Once);
         }
 
-        /// <summary>
-        /// Test to update data type without ID.
-        /// </summary>
         [TestMethod]
         public void CanUpdateDataTypeWithoutId()
         {
-            var typeServiceMock = new Mock<ITypeService>();
+            var dataTypeWithoutId = new Jet.DataType(typeof(DataTypeWithoutId));
 
-            typeServiceMock.Setup(m => m.DataTypes).Returns(new[] { typeof(DataTypeWithoutId) });
+            var dataTypeDefinitionWithoutIdMock = new Mock<IDataTypeDefinition>();
 
-            var dataTypeDefinitionMock = new Mock<IDataTypeDefinition>();
+            dataTypeDefinitionWithoutIdMock.SetupAllProperties();
 
-            dataTypeDefinitionMock.Setup(m => m.Name).Returns(NameForDataTypeWithoutId);
+            var typeResolverMock = new Mock<ITypeResolver>();
+
+            typeResolverMock.Setup(m => m.DataTypes).Returns(new[] { dataTypeWithoutId });
+            typeResolverMock.Setup(m => m.ResolveType(dataTypeWithoutId, It.IsAny<IDataTypeDefinition[]>())).Returns(dataTypeDefinitionWithoutIdMock.Object);
 
             var dataTypeServiceMock = new Mock<IDataTypeService>();
 
-            dataTypeServiceMock.Setup(m => m.GetAllDataTypeDefinitions()).Returns(new[] { dataTypeDefinitionMock.Object });
-            dataTypeServiceMock.Setup(m => m.GetDataTypeDefinitionByPropertyEditorAlias(dataTypeDefinitionMock.Object.PropertyEditorAlias))
-                .Returns(new[] { dataTypeDefinitionMock.Object });
+            dataTypeServiceMock.Setup(m => m.GetAllDataTypeDefinitions()).Returns(new[] { dataTypeDefinitionWithoutIdMock.Object });
+            dataTypeServiceMock.Setup(m => m.GetDataTypeDefinitionByName(dataTypeWithoutId.Name)).Returns(dataTypeDefinitionWithoutIdMock.Object);
 
             var dataTypeSynchronizationServiceMock = new Mock<DataTypeSynchronizationService>(
                 dataTypeServiceMock.Object,
-                new Mock<IDataTypeRepository>().Object,
-                typeServiceMock.Object)
+                typeResolverMock.Object,
+                new Mock<ITypeRepository>().Object)
             { CallBase = true };
 
             dataTypeSynchronizationServiceMock.Object.Synchronize();
 
-            dataTypeSynchronizationServiceMock.Verify(m => m.UpdateDataType(dataTypeDefinitionMock.Object, It.IsAny<Jet.DataType>()), Times.Once);
+            dataTypeSynchronizationServiceMock.Verify(m => m.UpdateDataTypeDefinition(dataTypeDefinitionWithoutIdMock.Object, dataTypeWithoutId), Times.Once);
         }
 
-        /// <summary>
-        /// Test to update editor for data type without ID.
-        /// </summary>
         [TestMethod]
         public void CanUpdateEditorForDataTypeWithoutId()
         {
-            var typeServiceMock = new Mock<ITypeService>();
+            var dataTypeWithoutId = new Jet.DataType(typeof(DataTypeWithoutId));
 
-            typeServiceMock.Setup(m => m.DataTypes).Returns(new[] { typeof(DataTypeWithoutId) });
+            var dataTypeDefinitionWithoutIdMock = new Mock<IDataTypeDefinition>();
 
-            var dataTypeDefinitionMock = new Mock<IDataTypeDefinition>();
+            dataTypeDefinitionWithoutIdMock.SetupAllProperties();
 
-            dataTypeDefinitionMock.Setup(m => m.Name).Returns(NameForDataTypeWithoutId);
+            var typeResolverMock = new Mock<ITypeResolver>();
+
+            typeResolverMock.Setup(m => m.DataTypes).Returns(new[] { dataTypeWithoutId });
+            typeResolverMock.Setup(m => m.ResolveType(dataTypeWithoutId, It.IsAny<IDataTypeDefinition[]>())).Returns(dataTypeDefinitionWithoutIdMock.Object);
 
             var dataTypeServiceMock = new Mock<IDataTypeService>();
 
-            dataTypeServiceMock.Setup(m => m.GetAllDataTypeDefinitions()).Returns(new[] { dataTypeDefinitionMock.Object });
-            dataTypeServiceMock.Setup(m => m.GetDataTypeDefinitionByPropertyEditorAlias(dataTypeDefinitionMock.Object.PropertyEditorAlias))
-                .Returns(new[] { dataTypeDefinitionMock.Object });
+            dataTypeServiceMock.Setup(m => m.GetAllDataTypeDefinitions()).Returns(new[] { dataTypeDefinitionWithoutIdMock.Object });
+            dataTypeServiceMock.Setup(m => m.GetDataTypeDefinitionByName(dataTypeWithoutId.Name)).Returns(dataTypeDefinitionWithoutIdMock.Object);
 
             var dataTypeSynchronizationService = new DataTypeSynchronizationService(
                 dataTypeServiceMock.Object,
-                new Mock<IDataTypeRepository>().Object,
-                typeServiceMock.Object);
+                typeResolverMock.Object,
+                new Mock<ITypeRepository>().Object);
 
             dataTypeSynchronizationService.Synchronize();
 
-            dataTypeDefinitionMock.VerifySet(m => m.PropertyEditorAlias = EditorForDataTypeWithoutId, Times.Once);
+            dataTypeDefinitionWithoutIdMock.VerifySet(m => m.PropertyEditorAlias = dataTypeWithoutId.Editor, Times.Once);
         }
 
-        /// <summary>
-        /// The <see cref="DataTypeWithId" /> class.
-        /// </summary>
         [DataType(
-            IdForDataTypeWithId,
+            "d7b9b7f5-b2ed-4c2f-8239-9a2f50d14054",
             typeof(int),
-            EditorForDataTypeWithId)]
+            "EditorForDataTypeWithId")]
         protected class DataTypeWithId
         {
         }
 
-        /// <summary>
-        /// The <see cref="DataTypeWithoutId" /> class.
-        /// </summary>
         [DataType(
             typeof(int),
-            EditorForDataTypeWithoutId)]
+            "EditorForDataTypeWithoutId")]
         protected class DataTypeWithoutId
         {
         }
