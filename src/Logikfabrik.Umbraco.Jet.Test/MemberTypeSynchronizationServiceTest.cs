@@ -4,7 +4,6 @@
 
 namespace Logikfabrik.Umbraco.Jet.Test
 {
-    using Data;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -35,7 +34,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var memberTypeSynchronizationServiceMock = new Mock<MemberTypeSynchronizationService>(
                 memberTypeServiceMock.Object,
                 typeResolverMock.Object,
-                new Mock<ITypeRepository>().Object)
+                new Mock<Jet.Data.ITypeRepository>().Object)
             { CallBase = true };
 
             memberTypeSynchronizationServiceMock.Object.Synchronize();
@@ -62,7 +61,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var memberTypeSynchronizationServiceMock = new Mock<MemberTypeSynchronizationService>(
                 memberTypeServiceMock.Object,
                 typeResolverMock.Object,
-                new Mock<ITypeRepository>().Object)
+                new Mock<Jet.Data.ITypeRepository>().Object)
             { CallBase = true };
 
             memberTypeSynchronizationServiceMock.Object.Synchronize();
@@ -89,7 +88,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var memberTypeSynchronizationServiceMock = new Mock<MemberTypeSynchronizationService>(
                 memberTypeServiceMock.Object,
                 typeResolverMock.Object,
-                new Mock<ITypeRepository>().Object)
+                new Mock<Jet.Data.ITypeRepository>().Object)
             { CallBase = true };
 
             memberTypeSynchronizationServiceMock.Object.Synchronize();
@@ -116,7 +115,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             memberTypeServiceMock.Setup(m => m.GetAll()).Returns(new[] { memberTypeMock.Object });
             memberTypeServiceMock.Setup(m => m.Get(memberTypeWithId.Alias)).Returns(memberTypeMock.Object);
 
-            var typeRepositoryMock = new Mock<ITypeRepository>();
+            var typeRepositoryMock = new Mock<Jet.Data.ITypeRepository>();
 
             typeRepositoryMock.Setup(m => m.GetContentTypeId(memberTypeWithId.Id.Value)).Returns(memberTypeMock.Object.Id);
 
@@ -150,7 +149,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             memberTypeServiceMock.Setup(m => m.GetAll()).Returns(new[] { memberTypeMock.Object });
             memberTypeServiceMock.Setup(m => m.Get(memberTypeWithId.Alias)).Returns(memberTypeMock.Object);
 
-            var typeRepositoryMock = new Mock<ITypeRepository>();
+            var typeRepositoryMock = new Mock<Jet.Data.ITypeRepository>();
 
             typeRepositoryMock.Setup(m => m.GetContentTypeId(memberTypeWithId.Id.Value)).Returns(memberTypeMock.Object.Id);
 
@@ -187,7 +186,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var memberTypeSynchronizationServiceMock = new Mock<MemberTypeSynchronizationService>(
                 memberTypeServiceMock.Object,
                 typeResolverMock.Object,
-                new Mock<ITypeRepository>().Object)
+                new Mock<Jet.Data.ITypeRepository>().Object)
             { CallBase = true };
 
             memberTypeSynchronizationServiceMock.Object.Synchronize();

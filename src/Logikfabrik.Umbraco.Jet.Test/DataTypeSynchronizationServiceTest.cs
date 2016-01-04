@@ -4,7 +4,6 @@
 
 namespace Logikfabrik.Umbraco.Jet.Test
 {
-    using Data;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -16,8 +15,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanCreateDataTypeWithAndWithoutId()
         {
-            var dataTypeWithId = new Jet.DataType(typeof(DataTypeWithId));
-            var dataTypeWithoutId = new Jet.DataType(typeof(DataTypeWithoutId));
+            var dataTypeWithId = new DataType(typeof(DataTypeWithId));
+            var dataTypeWithoutId = new DataType(typeof(DataTypeWithoutId));
 
             var dataTypeDefinitionWithIdMock = new Mock<IDataTypeDefinition>();
             var dataTypeDefinitionWithoutIdMock = new Mock<IDataTypeDefinition>();
@@ -36,18 +35,18 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var dataTypeSynchronizationServiceMock = new Mock<DataTypeSynchronizationService>(
                 dataTypeServiceMock.Object,
                 typeResolverMock.Object,
-                new Mock<ITypeRepository>().Object)
+                new Mock<Jet.Data.ITypeRepository>().Object)
             { CallBase = true };
 
             dataTypeSynchronizationServiceMock.Object.Synchronize();
 
-            dataTypeSynchronizationServiceMock.Verify(m => m.CreateDataTypeDefinition(It.IsAny<Jet.DataType>()), Times.Exactly(2));
+            dataTypeSynchronizationServiceMock.Verify(m => m.CreateDataTypeDefinition(It.IsAny<DataType>()), Times.Exactly(2));
         }
 
         [TestMethod]
         public void CanCreateDataTypeWithId()
         {
-            var dataTypeWithId = new Jet.DataType(typeof(DataTypeWithId));
+            var dataTypeWithId = new DataType(typeof(DataTypeWithId));
 
             var dataTypeDefinitionWithIdMock = new Mock<IDataTypeDefinition>();
 
@@ -64,7 +63,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var dataTypeSynchronizationServiceMock = new Mock<DataTypeSynchronizationService>(
                 dataTypeServiceMock.Object,
                 typeResolverMock.Object,
-                new Mock<ITypeRepository>().Object)
+                new Mock<Jet.Data.ITypeRepository>().Object)
             { CallBase = true };
 
             dataTypeSynchronizationServiceMock.Object.Synchronize();
@@ -75,7 +74,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanCreateDataTypeWithoutId()
         {
-            var dataTypeWithoutId = new Jet.DataType(typeof(DataTypeWithoutId));
+            var dataTypeWithoutId = new DataType(typeof(DataTypeWithoutId));
 
             var dataTypeDefinitionWithoutIdMock = new Mock<IDataTypeDefinition>();
 
@@ -91,7 +90,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var dataTypeSynchronizationServiceMock = new Mock<DataTypeSynchronizationService>(
                 dataTypeServiceMock.Object,
                 typeResolverMock.Object,
-                new Mock<ITypeRepository>().Object)
+                new Mock<Jet.Data.ITypeRepository>().Object)
             { CallBase = true };
 
             dataTypeSynchronizationServiceMock.Object.Synchronize();
@@ -102,7 +101,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanUpdateDataTypeWithId()
         {
-            var dataTypeWithId = new Jet.DataType(typeof(DataTypeWithId));
+            var dataTypeWithId = new DataType(typeof(DataTypeWithId));
 
             var dataTypeDefinitionWithIdMock = new Mock<IDataTypeDefinition>();
 
@@ -118,7 +117,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             dataTypeServiceMock.Setup(m => m.GetAllDataTypeDefinitions()).Returns(new[] { dataTypeDefinitionWithIdMock.Object });
             dataTypeServiceMock.Setup(m => m.GetDataTypeDefinitionByName(dataTypeWithId.Name)).Returns(dataTypeDefinitionWithIdMock.Object);
 
-            var typeRepositoryMock = new Mock<ITypeRepository>();
+            var typeRepositoryMock = new Mock<Jet.Data.ITypeRepository>();
 
             typeRepositoryMock.Setup(m => m.GetDefinitionId(dataTypeWithId.Id.Value)).Returns(dataTypeDefinitionWithIdMock.Object.Id);
 
@@ -136,7 +135,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanUpdateNameForDataTypeWithId()
         {
-            var dataTypeWithId = new Jet.DataType(typeof(DataTypeWithId));
+            var dataTypeWithId = new DataType(typeof(DataTypeWithId));
 
             var dataTypeDefinitionWithIdMock = new Mock<IDataTypeDefinition>();
 
@@ -152,7 +151,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             dataTypeServiceMock.Setup(m => m.GetAllDataTypeDefinitions()).Returns(new[] { dataTypeDefinitionWithIdMock.Object });
             dataTypeServiceMock.Setup(m => m.GetDataTypeDefinitionByName(dataTypeWithId.Name)).Returns(dataTypeDefinitionWithIdMock.Object);
 
-            var typeRepositoryMock = new Mock<ITypeRepository>();
+            var typeRepositoryMock = new Mock<Jet.Data.ITypeRepository>();
 
             typeRepositoryMock.Setup(m => m.GetDefinitionId(dataTypeWithId.Id.Value)).Returns(dataTypeDefinitionWithIdMock.Object.Id);
 
@@ -169,7 +168,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanUpdateEditorForDataTypeWithId()
         {
-            var dataTypeWithId = new Jet.DataType(typeof(DataTypeWithId));
+            var dataTypeWithId = new DataType(typeof(DataTypeWithId));
 
             var dataTypeDefinitionWithIdMock = new Mock<IDataTypeDefinition>();
 
@@ -185,7 +184,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             dataTypeServiceMock.Setup(m => m.GetAllDataTypeDefinitions()).Returns(new[] { dataTypeDefinitionWithIdMock.Object });
             dataTypeServiceMock.Setup(m => m.GetDataTypeDefinitionByName(dataTypeWithId.Name)).Returns(dataTypeDefinitionWithIdMock.Object);
 
-            var typeRepositoryMock = new Mock<ITypeRepository>();
+            var typeRepositoryMock = new Mock<Jet.Data.ITypeRepository>();
 
             typeRepositoryMock.Setup(m => m.GetDefinitionId(dataTypeWithId.Id.Value)).Returns(dataTypeDefinitionWithIdMock.Object.Id);
 
@@ -202,7 +201,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanUpdateDataTypeWithoutId()
         {
-            var dataTypeWithoutId = new Jet.DataType(typeof(DataTypeWithoutId));
+            var dataTypeWithoutId = new DataType(typeof(DataTypeWithoutId));
 
             var dataTypeDefinitionWithoutIdMock = new Mock<IDataTypeDefinition>();
 
@@ -221,7 +220,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var dataTypeSynchronizationServiceMock = new Mock<DataTypeSynchronizationService>(
                 dataTypeServiceMock.Object,
                 typeResolverMock.Object,
-                new Mock<ITypeRepository>().Object)
+                new Mock<Jet.Data.ITypeRepository>().Object)
             { CallBase = true };
 
             dataTypeSynchronizationServiceMock.Object.Synchronize();
@@ -232,7 +231,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanUpdateEditorForDataTypeWithoutId()
         {
-            var dataTypeWithoutId = new Jet.DataType(typeof(DataTypeWithoutId));
+            var dataTypeWithoutId = new DataType(typeof(DataTypeWithoutId));
 
             var dataTypeDefinitionWithoutIdMock = new Mock<IDataTypeDefinition>();
 
@@ -251,7 +250,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var dataTypeSynchronizationService = new DataTypeSynchronizationService(
                 dataTypeServiceMock.Object,
                 typeResolverMock.Object,
-                new Mock<ITypeRepository>().Object);
+                new Mock<Jet.Data.ITypeRepository>().Object);
 
             dataTypeSynchronizationService.Synchronize();
 

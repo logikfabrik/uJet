@@ -4,7 +4,6 @@
 
 namespace Logikfabrik.Umbraco.Jet.Test
 {
-    using Data;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -35,7 +34,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var mediaTypeSynchronizationServiceMock = new Mock<MediaTypeSynchronizationService>(
                 contentTypeServiceMock.Object,
                 typeResolverMock.Object,
-                new Mock<ITypeRepository>().Object)
+                new Mock<Jet.Data.ITypeRepository>().Object)
             { CallBase = true };
 
             mediaTypeSynchronizationServiceMock.Object.Synchronize();
@@ -62,7 +61,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var mediaTypeSynchronizationServiceMock = new Mock<MediaTypeSynchronizationService>(
                 contentTypeServiceMock.Object,
                 typeResolverMock.Object,
-                new Mock<ITypeRepository>().Object)
+                new Mock<Jet.Data.ITypeRepository>().Object)
             { CallBase = true };
 
             mediaTypeSynchronizationServiceMock.Object.Synchronize();
@@ -89,7 +88,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var mediaTypeSynchronizationServiceMock = new Mock<MediaTypeSynchronizationService>(
                 contentTypeServiceMock.Object,
                 typeResolverMock.Object,
-                new Mock<ITypeRepository>().Object)
+                new Mock<Jet.Data.ITypeRepository>().Object)
             { CallBase = true };
 
             mediaTypeSynchronizationServiceMock.Object.Synchronize();
@@ -116,7 +115,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             contentTypeServiceMock.Setup(m => m.GetAllMediaTypes()).Returns(new[] { mediaTypeMock.Object });
             contentTypeServiceMock.Setup(m => m.GetMediaType(mediaTypeWithId.Alias)).Returns(mediaTypeMock.Object);
 
-            var typeRepositoryMock = new Mock<ITypeRepository>();
+            var typeRepositoryMock = new Mock<Jet.Data.ITypeRepository>();
 
             typeRepositoryMock.Setup(m => m.GetContentTypeId(mediaTypeWithId.Id.Value)).Returns(mediaTypeMock.Object.Id);
 
@@ -150,7 +149,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             contentTypeServiceMock.Setup(m => m.GetAllMediaTypes()).Returns(new[] { mediaTypeMock.Object });
             contentTypeServiceMock.Setup(m => m.GetMediaType(mediaTypeWithId.Alias)).Returns(mediaTypeMock.Object);
 
-            var typeRepositoryMock = new Mock<ITypeRepository>();
+            var typeRepositoryMock = new Mock<Jet.Data.ITypeRepository>();
 
             typeRepositoryMock.Setup(m => m.GetContentTypeId(mediaTypeWithId.Id.Value)).Returns(mediaTypeMock.Object.Id);
 
@@ -186,7 +185,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var mediaTypeSynchronizationServiceMock = new Mock<MediaTypeSynchronizationService>(
                 contentTypeServiceMock.Object,
                 typeResolverMock.Object,
-                new Mock<ITypeRepository>().Object)
+                new Mock<Jet.Data.ITypeRepository>().Object)
             { CallBase = true };
 
             mediaTypeSynchronizationServiceMock.Object.Synchronize();

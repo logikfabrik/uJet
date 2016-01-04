@@ -14,16 +14,20 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <summary>
         /// Gets the content type model identifier.
         /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns>The content type model identifier.</returns>
-        Guid? GetContentTypeModelId(int id);
+        /// <param name="contentTypeId">The content type identifier.</param>
+        /// <returns>
+        /// The content type model identifier.
+        /// </returns>
+        Guid? GetContentTypeModelId(int contentTypeId);
 
         /// <summary>
         /// Gets the property type model identifier.
         /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns>The property type model identifier.</returns>
-        Guid? GetPropertyTypeModelId(int id);
+        /// <param name="propertyTypeId">The property type identifier.</param>
+        /// <returns>
+        /// The property type model identifier.
+        /// </returns>
+        Guid? GetPropertyTypeModelId(int propertyTypeId);
 
         /// <summary>
         /// Gets the content type identifier.

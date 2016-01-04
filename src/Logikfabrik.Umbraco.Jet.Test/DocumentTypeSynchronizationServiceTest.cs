@@ -4,7 +4,6 @@
 
 namespace Logikfabrik.Umbraco.Jet.Test
 {
-    using Data;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -35,7 +34,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var documentTypeSynchronizationServiceMock = new Mock<DocumentTypeSynchronizationService>(
                 contentTypeServiceMock.Object,
                 typeResolverMock.Object,
-                new Mock<ITypeRepository>().Object,
+                new Mock<Jet.Data.ITypeRepository>().Object,
                 new Mock<IFileService>().Object)
             { CallBase = true };
 
@@ -63,7 +62,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var documentTypeSynchronizationServiceMock = new Mock<DocumentTypeSynchronizationService>(
                 contentTypeServiceMock.Object,
                 typeResolverMock.Object,
-                new Mock<ITypeRepository>().Object,
+                new Mock<Jet.Data.ITypeRepository>().Object,
                 new Mock<IFileService>().Object)
             { CallBase = true };
 
@@ -91,7 +90,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var documentTypeSynchronizationServiceMock = new Mock<DocumentTypeSynchronizationService>(
                 contentTypeServiceMock.Object,
                 typeResolverMock.Object,
-                new Mock<ITypeRepository>().Object,
+                new Mock<Jet.Data.ITypeRepository>().Object,
                 new Mock<IFileService>().Object)
             { CallBase = true };
 
@@ -119,7 +118,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             contentTypeServiceMock.Setup(m => m.GetAllContentTypes()).Returns(new[] { contentTypeMock.Object });
             contentTypeServiceMock.Setup(m => m.GetContentType(documentTypeWithId.Alias)).Returns(contentTypeMock.Object);
 
-            var typeRepositoryMock = new Mock<ITypeRepository>();
+            var typeRepositoryMock = new Mock<Jet.Data.ITypeRepository>();
 
             typeRepositoryMock.Setup(m => m.GetContentTypeId(documentTypeWithId.Id.Value)).Returns(contentTypeMock.Object.Id);
 
@@ -154,7 +153,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             contentTypeServiceMock.Setup(m => m.GetAllContentTypes()).Returns(new[] { contentTypeMock.Object });
             contentTypeServiceMock.Setup(m => m.GetContentType(documentTypeWithId.Alias)).Returns(contentTypeMock.Object);
 
-            var typeRepositoryMock = new Mock<ITypeRepository>();
+            var typeRepositoryMock = new Mock<Jet.Data.ITypeRepository>();
 
             typeRepositoryMock.Setup(m => m.GetContentTypeId(documentTypeWithId.Id.Value)).Returns(contentTypeMock.Object.Id);
 
@@ -191,7 +190,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var documentTypeSynchronizationServiceMock = new Mock<DocumentTypeSynchronizationService>(
                 contentTypeServiceMock.Object,
                 typeResolverMock.Object,
-                new Mock<ITypeRepository>().Object,
+                new Mock<Jet.Data.ITypeRepository>().Object,
                 new Mock<IFileService>().Object)
             { CallBase = true };
 

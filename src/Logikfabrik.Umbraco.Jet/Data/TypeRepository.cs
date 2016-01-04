@@ -56,25 +56,25 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <summary>
         /// Gets the content type model identifier.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="contentTypeId">The content type identifier.</param>
         /// <returns>
         /// The content type model identifier.
         /// </returns>
-        public Guid? GetContentTypeModelId(int id)
+        public Guid? GetContentTypeModelId(int contentTypeId)
         {
-            return _contentTypeRepository.GetContentTypeModelId(id);
+            return _contentTypeRepository.GetContentTypeModelId(contentTypeId);
         }
 
         /// <summary>
         /// Gets the property type model identifier.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="propertyTypeId">The property type identifier.</param>
         /// <returns>
         /// The property type model identifier.
         /// </returns>
-        public Guid? GetPropertyTypeModelId(int id)
+        public Guid? GetPropertyTypeModelId(int propertyTypeId)
         {
-            return _contentTypeRepository.GetPropertyTypeModelId(id);
+            return _contentTypeRepository.GetPropertyTypeModelId(propertyTypeId);
         }
 
         /// <summary>

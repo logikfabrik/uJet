@@ -5,10 +5,9 @@
 namespace Logikfabrik.Umbraco.Jet.Test
 {
     using System.Linq;
-    using Data;
-    using Utilities;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
+    using Utilities;
 
     [TestClass]
     public class TypeResolverTest : TestBase
@@ -20,7 +19,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var typeServiceMock = GetTypeServiceMock(type);
 
-            var typeResolver = new TypeResolver(typeServiceMock.Object, new Mock<ITypeRepository>().Object);
+            var typeResolver = new TypeResolver(typeServiceMock.Object, new Mock<Jet.Data.ITypeRepository>().Object);
 
             var documentTypes = typeResolver.DocumentTypes;
 
@@ -34,7 +33,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var typeServiceMock = GetTypeServiceMock(type);
 
-            var typeResolver = new TypeResolver(typeServiceMock.Object, new Mock<ITypeRepository>().Object);
+            var typeResolver = new TypeResolver(typeServiceMock.Object, new Mock<Jet.Data.ITypeRepository>().Object);
 
             var mediaTypes = typeResolver.MediaTypes;
 
@@ -48,7 +47,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var typeServiceMock = GetTypeServiceMock(type);
 
-            var typeResolver = new TypeResolver(typeServiceMock.Object, new Mock<ITypeRepository>().Object);
+            var typeResolver = new TypeResolver(typeServiceMock.Object, new Mock<Jet.Data.ITypeRepository>().Object);
 
             var memberTypes = typeResolver.MemberTypes;
 
@@ -62,7 +61,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var typeServiceMock = GetTypeServiceMock(type);
 
-            var typeResolver = new TypeResolver(typeServiceMock.Object, new Mock<ITypeRepository>().Object);
+            var typeResolver = new TypeResolver(typeServiceMock.Object, new Mock<Jet.Data.ITypeRepository>().Object);
 
             var dataTypes = typeResolver.DataTypes;
 
