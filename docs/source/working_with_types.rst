@@ -1,7 +1,7 @@
 ******************
 Working with Types
 ******************
-uJet supports document types, media types, member types and data types.
+uJet supports document types and media types (including inheritance and composition), member types and data types.
 
 **Type Tracking**
 As of version 3.0.0.0 uJet supports type tracking.
@@ -40,7 +40,7 @@ The following document type properties can be set using the `DocumentTypeAttribu
 
 Id
 ^^
-Inherited from the `IdAttribute` attribute. The document type identifier. Specifying a document type identifier will enable document type tracking. Tracked document types can be renamed; uJet will keep your Umbraco database synchronized.
+The document type identifier. Specifying a document type identifier will enable document type tracking. Tracked document types can be renamed; uJet will keep your Umbraco database synchronized.
 
 .. code-block:: csharp
 
@@ -57,27 +57,27 @@ Inherited from the `IdAttribute` attribute. The document type identifier. Specif
 Name
 ^^^^
 **Required**
-Inherited from the `ContentTypeAttribute` attribute. The name of the document type. The document type name is displayed in the Umbraco back office.
+The name of the document type. The document type name is displayed in the Umbraco back office.
 
 Description
 ^^^^^^^^^^^
-Inherited from the `ContentTypeAttribute` attribute. A description of the document type. The document type description is displayed in the Umbraco back office.
+A description of the document type. The document type description is displayed in the Umbraco back office.
 
 Icon
 ^^^^
-Inherited from the `ContentTypeAttribute` attribute. The icon for the document type. The document type icon is displayed in the Umbraco back office.
+The icon for the document type. The document type icon is displayed in the Umbraco back office.
 
 Thumbnail
 ^^^^^^^^^
-Inherited from the `ContentTypeAttribute` attribute. The thumbnail for the document type. The document type thumbnail is displayed in the Umbraco back office.
+The thumbnail for the document type. The document type thumbnail is displayed in the Umbraco back office.
 
 AllowedAsRoot
 ^^^^^^^^^^^^^
-Inherited from the `ContentTypeAttribute` attribute. Whether or not documents of this type can be created at the root of the content tree.
+Whether or not documents of this type can be created at the root of the content tree.
 
 AllowedChildNodeTypes
 ^^^^^^^^^^^^^^^^^^^^^
-Inherited from the `ContentTypeAttribute` attribute. The allowed child document types of the document type.
+Which other types are allowed as child nodes to documents of this type in the content tree.
 
 .. code-block:: csharp
 
@@ -86,6 +86,22 @@ Inherited from the `ContentTypeAttribute` attribute. The allowed child document 
    namespace Example.Models.DocumentTypes
    {
        [DocumentType("My Page", AllowedChildNodeTypes = new[] {typeof(OurPage), typeof(TheirPage)})]
+       public class MyPage
+       {
+       }
+   }
+
+CompositionNodeTypes
+^^^^^^^^^^^^^^^^^^^^
+The composition document types of the document type.
+
+.. code-block:: csharp
+
+   using Logikfabrik.Umbraco.Jet;
+
+   namespace Example.Models.DocumentTypes
+   {
+       [DocumentType("My Page", CompositionNodeTypes = new[] {typeof(OurPage), typeof(TheirPage)})]
        public class MyPage
        {
        }
@@ -157,7 +173,7 @@ The following media type properties can be set using the `MediaTypeAttribute` at
 
 Id
 ^^
-Inherited from the `IdAttribute` attribute. The media type identifier. Specifying a media type identifier will enable media type tracking. Tracked media types can be renamed; uJet will keep your Umbraco database synchronized.
+The media type identifier. Specifying a media type identifier will enable media type tracking. Tracked media types can be renamed; uJet will keep your Umbraco database synchronized.
 
 .. code-block:: csharp
 
@@ -174,27 +190,27 @@ Inherited from the `IdAttribute` attribute. The media type identifier. Specifyin
 Name
 ^^^^
 **Required**
-Inherited from the `ContentTypeAttribute` attribute. The name of the media type. The media type name is displayed in the Umbraco back office.
+The name of the media type. The media type name is displayed in the Umbraco back office.
 
 Description
 ^^^^^^^^^^^
-Inherited from the `ContentTypeAttribute` attribute. A description of the media type. The media type description is displayed in the Umbraco back office.
+A description of the media type. The media type description is displayed in the Umbraco back office.
 
 Icon
 ^^^^
-Inherited from the `ContentTypeAttribute` attribute. The icon for the media type. The media type icon is displayed in the Umbraco back office.
+The icon for the media type. The media type icon is displayed in the Umbraco back office.
 
 Thumbnail
 ^^^^^^^^^
-Inherited from the `ContentTypeAttribute` attribute. The thumbnail for the media type. The media type thumbnail is displayed in the Umbraco back office.
+The thumbnail for the media type. The media type thumbnail is displayed in the Umbraco back office.
 
 AllowedAsRoot
 ^^^^^^^^^^^^^
-Inherited from the `ContentTypeAttribute` attribute. Whether or not media of this type can be created at the root of the content tree.
+Whether or not media of this type can be created at the root of the content tree.
 
 AllowedChildNodeTypes
 ^^^^^^^^^^^^^^^^^^^^^
-Inherited from the `ContentTypeAttribute` attribute. The allowed child media types of the media type.
+Which other types are allowed as child nodes to media of this type in the content tree.
 
 .. code-block:: csharp
 
@@ -203,6 +219,22 @@ Inherited from the `ContentTypeAttribute` attribute. The allowed child media typ
    namespace Example.Models.MediaTypes
    {
        [MediaType("My Media", AllowedChildNodeTypes = new[] {typeof(OurMedia), typeof(TheirMedia)})]
+       public class MyMedia
+       {
+       }
+   }
+
+CompositionNodeTypes
+^^^^^^^^^^^^^^^^^^^^
+The composition media types of the media type.
+
+.. code-block:: csharp
+
+   using Logikfabrik.Umbraco.Jet;
+
+   namespace Example.Models.MediaTypes
+   {
+       [MediaType("My Media", CompositionNodeTypes = new[] {typeof(OurMedia), typeof(TheirMedia)})]
        public class MyMedia
        {
        }
@@ -238,7 +270,7 @@ The following member type properties can be set using the `MemberTypeAttribute` 
 
 Id
 ^^
-Inherited from the `IdAttribute` attribute. The member type identifier. Specifying a member type identifier will enable member type tracking. Tracked member types can be renamed; uJet will keep your Umbraco database synchronized.
+The member type identifier. Specifying a member type identifier will enable member type tracking. Tracked member types can be renamed; uJet will keep your Umbraco database synchronized.
 
 .. code-block:: csharp
    
@@ -255,15 +287,15 @@ Inherited from the `IdAttribute` attribute. The member type identifier. Specifyi
 Name
 ^^^^
 **Required**
-Inherited from the `ContentTypeAttribute` attribute. The name of the member type. The member type name is displayed in the Umbraco back office.
+The name of the member type. The member type name is displayed in the Umbraco back office.
 
 Description
 ^^^^^^^^^^^
-Inherited from the `ContentTypeAttribute` attribute. A description of the member type. The member type description is displayed in the Umbraco back office.
+A description of the member type. The member type description is displayed in the Umbraco back office.
 
 Icon
 ^^^^
-Inherited from the `ContentTypeAttribute` attribute. The icon for the member type. The member type icon is displayed in the Umbraco back office.
+The icon for the member type. The member type icon is displayed in the Umbraco back office.
 
 Data Types
 ==========
