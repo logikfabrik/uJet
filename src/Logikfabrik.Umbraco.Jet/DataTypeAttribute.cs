@@ -7,12 +7,12 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
 
     /// <summary>
-    /// The <see cref="DataTypeAttribute" /> class. Attribute for data model type annotation.
+    /// The <see cref="DataTypeAttribute" /> class. Attribute for model type annotation.
     /// </summary>
     [AttributeUsage(
         AttributeTargets.Class,
         Inherited = false)]
-    public class DataTypeAttribute : IdAttribute
+    public class DataTypeAttribute : TypeModelAttribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DataTypeAttribute" /> class.
@@ -63,19 +63,19 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Gets the editor.
-        /// </summary>
-        /// <value>
-        /// The editor.
-        /// </value>
-        public string Editor { get; }
-
-        /// <summary>
         /// Gets the type.
         /// </summary>
         /// <value>
         /// The type.
         /// </value>
         public Type Type { get; }
+
+        /// <summary>
+        /// Gets the editor.
+        /// </summary>
+        /// <value>
+        /// The editor.
+        /// </value>
+        public string Editor { get; }
     }
 }

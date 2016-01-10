@@ -32,7 +32,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             var documentType = new DocumentType(typeof(Models.DocumentType));
 
-            Assert.AreSame(typeof(Models.DocumentType), documentType.Type);
+            Assert.AreSame(typeof(Models.DocumentType), documentType.ModelType);
         }
 
         [TestMethod]
@@ -80,7 +80,15 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             var documentType = new DocumentType(typeof(Models.DocumentType));
 
-            Assert.IsFalse(documentType.AllowedChildNodeTypes.Any());
+            Assert.AreEqual(2, documentType.AllowedChildNodeTypes.Count());
+        }
+
+        [TestMethod]
+        public void CanGetCompositionNodeTypesFromAttribute()
+        {
+            var documentType = new DocumentType(typeof(Models.DocumentType));
+
+            Assert.AreEqual(2, documentType.CompositionNodeTypes.Count());
         }
 
         [TestMethod]

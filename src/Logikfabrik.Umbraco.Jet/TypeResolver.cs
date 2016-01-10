@@ -63,47 +63,47 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Gets a singleton instance of the type resolver.
+        /// Gets a singleton instance of the <see cref="TypeResolver" />.
         /// </summary>
         public static ITypeResolver Instance => instance ?? (instance = new TypeResolver());
 
         /// <summary>
-        /// Gets the document type models.
+        /// Gets the document type type models.
         /// </summary>
         /// <value>
-        /// The document type models.
+        /// The document type type models.
         /// </value>
         public IEnumerable<DocumentType> DocumentTypes => _documentTypes.Value;
 
         /// <summary>
-        /// Gets the media type models.
+        /// Gets the media type type models.
         /// </summary>
         /// <value>
-        /// The media type models.
+        /// The media type type models.
         /// </value>
         public IEnumerable<MediaType> MediaTypes => _mediaTypes.Value;
 
         /// <summary>
-        /// Gets the member type models.
+        /// Gets the member type type models.
         /// </summary>
         /// <value>
-        /// The member type models.
+        /// The member type type models.
         /// </value>
         public IEnumerable<MemberType> MemberTypes => _memberTypes.Value;
 
         /// <summary>
-        /// Gets the data type models.
+        /// Gets the data type type models.
         /// </summary>
         /// <value>
-        /// The data type models.
+        /// The data type type models.
         /// </value>
         public IEnumerable<DataType> DataTypes => _dataTypes.Value;
 
         /// <summary>
-        /// Resolves the document type model for the specified document type.
+        /// Resolves the type model for the specified document type.
         /// </summary>
         /// <param name="documentType">The document type.</param>
-        /// <returns>The document type model for the specified document type.</returns>
+        /// <returns>The type model.</returns>
         public DocumentType ResolveTypeModel(IContentType documentType)
         {
             if (documentType == null)
@@ -111,14 +111,14 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(documentType));
             }
 
-            return ResolveContentTypeModel(documentType, DocumentTypes.ToArray());
+            return ResolveContentTypeModel<DocumentType, DocumentTypeAttribute>(documentType, DocumentTypes.ToArray());
         }
 
         /// <summary>
-        /// Resolves the media type model for the specified media type.
+        /// Resolves type model for the specified media type.
         /// </summary>
         /// <param name="mediaType">The media type.</param>
-        /// <returns>The media type model for the specified media type.</returns>
+        /// <returns>The type model.</returns>
         public MediaType ResolveTypeModel(IMediaType mediaType)
         {
             if (mediaType == null)
@@ -126,14 +126,14 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(mediaType));
             }
 
-            return ResolveContentTypeModel(mediaType, MediaTypes.ToArray());
+            return ResolveContentTypeModel<MediaType, MediaTypeAttribute>(mediaType, MediaTypes.ToArray());
         }
 
         /// <summary>
-        /// Resolves the member type model for the specified member type.
+        /// Resolves the type model for the specified member type.
         /// </summary>
         /// <param name="memberType">The member type.</param>
-        /// <returns>The member type model for the specified member type.</returns>
+        /// <returns>The type model.</returns>
         public MemberType ResolveTypeModel(IMemberType memberType)
         {
             if (memberType == null)
@@ -141,14 +141,14 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(memberType));
             }
 
-            return ResolveContentTypeModel(memberType, MemberTypes.ToArray());
+            return ResolveContentTypeModel<MemberType, MemberTypeAttribute>(memberType, MemberTypes.ToArray());
         }
 
         /// <summary>
-        /// Resolves the data type model for the specified data type.
+        /// Resolves the type model for the specified data type.
         /// </summary>
         /// <param name="dataType">The data type.</param>
-        /// <returns>The data type model for the specified data type.</returns>
+        /// <returns>The type model.</returns>
         public DataType ResolveTypeModel(IDataTypeDefinition dataType)
         {
             if (dataType == null)
@@ -176,16 +176,16 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Resolves the document type for the specified document type model.
+        /// Resolves the document type for the specified type model.
         /// </summary>
-        /// <param name="documentTypeModel">The document type model.</param>
+        /// <param name="model">The model.</param>
         /// <param name="documentTypes">The document types.</param>
-        /// <returns>The document type for the specified document type model.</returns>
-        public IContentType ResolveType(DocumentType documentTypeModel, IContentType[] documentTypes)
+        /// <returns>The document type.</returns>
+        public IContentType ResolveType(DocumentType model, IContentType[] documentTypes)
         {
-            if (documentTypeModel == null)
+            if (model == null)
             {
-                throw new ArgumentNullException(nameof(documentTypeModel));
+                throw new ArgumentNullException(nameof(model));
             }
 
             if (documentTypes == null)
@@ -193,20 +193,20 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(documentTypes));
             }
 
-            return ResolveContentType(documentTypeModel, documentTypes);
+            return ResolveType<DocumentType, DocumentTypeAttribute, IContentType>(model, documentTypes);
         }
 
         /// <summary>
-        /// Resolves the media type for the specified media type model.
+        /// Resolves the media type for the specified type model.
         /// </summary>
-        /// <param name="mediaTypeModel">The media type model.</param>
+        /// <param name="model">The model.</param>
         /// <param name="mediaTypes">The media types.</param>
-        /// <returns>The media type for the specified media type model.</returns>
-        public IMediaType ResolveType(MediaType mediaTypeModel, IMediaType[] mediaTypes)
+        /// <returns>The media type.</returns>
+        public IMediaType ResolveType(MediaType model, IMediaType[] mediaTypes)
         {
-            if (mediaTypeModel == null)
+            if (model == null)
             {
-                throw new ArgumentNullException(nameof(mediaTypeModel));
+                throw new ArgumentNullException(nameof(model));
             }
 
             if (mediaTypes == null)
@@ -214,20 +214,20 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(mediaTypes));
             }
 
-            return ResolveContentType(mediaTypeModel, mediaTypes);
+            return ResolveType<MediaType, MediaTypeAttribute, IMediaType>(model, mediaTypes);
         }
 
         /// <summary>
-        /// Resolves the member type for the specified member type model.
+        /// Resolves the member type for the specified type model.
         /// </summary>
-        /// <param name="memberTypeModel">The member type model.</param>
+        /// <param name="model">The model.</param>
         /// <param name="memberTypes">The member types.</param>
-        /// <returns>The member type for the specified member type model.</returns>
-        public IMemberType ResolveType(MemberType memberTypeModel, IMemberType[] memberTypes)
+        /// <returns>The member type.</returns>
+        public IMemberType ResolveType(MemberType model, IMemberType[] memberTypes)
         {
-            if (memberTypeModel == null)
+            if (model == null)
             {
-                throw new ArgumentNullException(nameof(memberTypeModel));
+                throw new ArgumentNullException(nameof(model));
             }
 
             if (memberTypes == null)
@@ -235,20 +235,20 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(memberTypes));
             }
 
-            return ResolveContentType(memberTypeModel, memberTypes);
+            return ResolveType<MemberType, MemberTypeAttribute, IMemberType>(model, memberTypes);
         }
 
         /// <summary>
-        /// Resolves the data type for the specified data type model.
+        /// Resolves the data type for the specified type model.
         /// </summary>
-        /// <param name="dataTypeModel">The data type model.</param>
+        /// <param name="model">The model.</param>
         /// <param name="dataTypes">The data types.</param>
-        /// <returns>The data type for the specified data type model.</returns>
-        public IDataTypeDefinition ResolveType(DataType dataTypeModel, IDataTypeDefinition[] dataTypes)
+        /// <returns>The data type.</returns>
+        public IDataTypeDefinition ResolveType(DataType model, IDataTypeDefinition[] dataTypes)
         {
-            if (dataTypeModel == null)
+            if (model == null)
             {
-                throw new ArgumentNullException(nameof(dataTypeModel));
+                throw new ArgumentNullException(nameof(model));
             }
 
             if (dataTypes == null)
@@ -259,10 +259,10 @@ namespace Logikfabrik.Umbraco.Jet
             IDataTypeDefinition dataType;
 
             // Step 1; we try to find a match using the type ID (if any).
-            if (dataTypeModel.Id.HasValue)
+            if (model.Id.HasValue)
             {
                 // The type has an ID. We try to find the Umbraco ID using that ID.
-                var umbracoId = _typeRepository.GetDefinitionId(dataTypeModel.Id.Value);
+                var umbracoId = _typeRepository.GetDefinitionId(model.Id.Value);
 
                 if (umbracoId.HasValue)
                 {
@@ -278,23 +278,23 @@ namespace Logikfabrik.Umbraco.Jet
             }
 
             // Step 2; we try to find a match using the type name.
-            dataType = dataTypes.SingleOrDefault(ct => ct.Name == dataTypeModel.Name);
+            dataType = dataTypes.SingleOrDefault(ct => ct.Name == model.Name);
 
             // We might have found a match.
             return dataType;
         }
 
         /// <summary>
-        /// Resolves the property type for the specified property type model.
+        /// Resolves the property type for the specified type model.
         /// </summary>
-        /// <param name="propertyTypeModel">The property type model.</param>
+        /// <param name="model">The model.</param>
         /// <param name="propertyTypes">The property types.</param>
-        /// <returns>The property type for the specified property type model.</returns>
-        public global::Umbraco.Core.Models.PropertyType ResolveType(TypeProperty propertyTypeModel, global::Umbraco.Core.Models.PropertyType[] propertyTypes)
+        /// <returns>The property type.</returns>
+        public global::Umbraco.Core.Models.PropertyType ResolveType(TypeProperty model, global::Umbraco.Core.Models.PropertyType[] propertyTypes)
         {
-            if (propertyTypeModel == null)
+            if (model == null)
             {
-                throw new ArgumentNullException(nameof(propertyTypeModel));
+                throw new ArgumentNullException(nameof(model));
             }
 
             if (propertyTypes == null)
@@ -305,10 +305,10 @@ namespace Logikfabrik.Umbraco.Jet
             global::Umbraco.Core.Models.PropertyType propertyType;
 
             // Step 1; we try to find a match using the type ID (if any).
-            if (propertyTypeModel.Id.HasValue)
+            if (model.Id.HasValue)
             {
                 // The type has an ID. We try to find the Umbraco ID using that ID.
-                var umbracoId = _typeRepository.GetPropertyTypeId(propertyTypeModel.Id.Value);
+                var umbracoId = _typeRepository.GetPropertyTypeId(model.Id.Value);
 
                 if (umbracoId.HasValue)
                 {
@@ -324,27 +324,29 @@ namespace Logikfabrik.Umbraco.Jet
             }
 
             // Step 2; we try to find a match using the type alias.
-            propertyType = propertyTypes.SingleOrDefault(pt => pt.Alias == propertyTypeModel.Alias);
+            propertyType = propertyTypes.SingleOrDefault(pt => pt.Alias == model.Alias);
 
             // We might have found a match.
             return propertyType;
         }
 
         /// <summary>
-        /// Resolves the content type for the specified content type model.
+        /// Resolves the content type for the specified type model.
         /// </summary>
-        /// <typeparam name="T1">The type type.</typeparam>
-        /// <typeparam name="T2">The attribute type.</typeparam>
-        /// <param name="contentTypeModel">The content type model.</param>
+        /// <typeparam name="T1">The <see cref="ContentTypeModel{T}" /> type.</typeparam>
+        /// <typeparam name="T2">The <see cref="ContentTypeModelAttribute" /> type.</typeparam>
+        /// <typeparam name="T3">The <see cref="IContentTypeBase" /> type.</typeparam>
+        /// <param name="model">The model.</param>
         /// <param name="contentTypes">The content types.</param>
-        /// <returns>The content type for the specified content type model.</returns>
-        public IContentTypeBase ResolveType<T1, T2>(T1 contentTypeModel, IContentTypeBase[] contentTypes)
-            where T1 : BaseType<T2>
-            where T2 : BaseTypeAttribute
+        /// <returns>The content type.</returns>
+        public T3 ResolveType<T1, T2, T3>(T1 model, T3[] contentTypes)
+            where T1 : ContentTypeModel<T2>
+            where T2 : ContentTypeModelAttribute
+            where T3 : IContentTypeBase
         {
-            if (contentTypeModel == null)
+            if (model == null)
             {
-                throw new ArgumentNullException(nameof(contentTypeModel));
+                throw new ArgumentNullException(nameof(model));
             }
 
             if (contentTypes == null)
@@ -352,61 +354,13 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(contentTypes));
             }
 
-            return ResolveContentType(contentTypeModel, contentTypes);
-        }
-
-        private T ResolveContentTypeModel<T>(IContentTypeBase contentType, T[] contentTypeModels)
-            where T : ITypeModel
-        {
-            if (contentType == null)
-            {
-                throw new ArgumentNullException(nameof(contentType));
-            }
-
-            if (contentTypeModels == null)
-            {
-                throw new ArgumentNullException(nameof(contentTypeModels));
-            }
-
-            var id = _typeRepository.GetContentTypeModelId(contentType.Id);
-
-            T typeModel;
-
-            if (id.HasValue)
-            {
-                typeModel = contentTypeModels.SingleOrDefault(dt => dt.Id == id.Value);
-
-                if (typeModel != null)
-                {
-                    return typeModel;
-                }
-            }
-
-            typeModel = contentTypeModels.SingleOrDefault(dt => dt.Alias == contentType.Alias);
-
-            return typeModel;
-        }
-
-        private T ResolveContentType<T>(ITypeModel contentTypeModel, T[] contentTypes)
-            where T : IContentTypeBase
-        {
-            if (contentTypeModel == null)
-            {
-                throw new ArgumentNullException(nameof(contentTypeModel));
-            }
-
-            if (contentTypes == null)
-            {
-                throw new ArgumentNullException(nameof(contentTypes));
-            }
-
-            T contentType;
+            T3 contentType;
 
             // Step 1; we try to find a match using the type ID (if any).
-            if (contentTypeModel.Id.HasValue)
+            if (model.Id.HasValue)
             {
                 // The type has an ID. We try to find the Umbraco ID using that ID.
-                var umbracoId = _typeRepository.GetContentTypeId(contentTypeModel.Id.Value);
+                var umbracoId = _typeRepository.GetContentTypeId(model.Id.Value);
 
                 if (umbracoId.HasValue)
                 {
@@ -422,10 +376,33 @@ namespace Logikfabrik.Umbraco.Jet
             }
 
             // Step 2; we try to find a match using the type alias.
-            contentType = contentTypes.SingleOrDefault(ct => ct.Alias == contentTypeModel.Alias);
+            contentType = contentTypes.SingleOrDefault(ct => ct.Alias == model.Alias);
 
             // We might have found a match.
             return contentType;
+        }
+
+        private T1 ResolveContentTypeModel<T1, T2>(IContentTypeBase contentType, T1[] models)
+            where T1 : ContentTypeModel<T2>
+            where T2 : ContentTypeModelAttribute
+        {
+            var id = _typeRepository.GetContentTypeModelId(contentType.Id);
+
+            T1 typeModel;
+
+            if (id.HasValue)
+            {
+                typeModel = models.SingleOrDefault(m => m.Id == id.Value);
+
+                if (typeModel != null)
+                {
+                    return typeModel;
+                }
+            }
+
+            typeModel = models.SingleOrDefault(m => m.Alias.Equals(contentType.Alias, StringComparison.InvariantCultureIgnoreCase));
+
+            return typeModel;
         }
     }
 }

@@ -13,86 +13,24 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
     public static class TypeExtensions
     {
         /// <summary>
-        /// Determines whether the type is a content model type.
+        /// Determines whether the type is a model type.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="type">The type.</param>
+        /// <typeparam name="T">The <see cref="TypeModelAttribute" /> type.</typeparam>
+        /// <param name="modelType">The model type.</param>
         /// <returns>
-        ///   <c>true</c> if the type is a content model type; otherwise, <c>false</c>.
+        ///   <c>true</c> if the type is a model type; otherwise, <c>false</c>.
         /// </returns>
-        public static bool IsContentType<T>(this Type type)
-            where T : ContentTypeAttribute
+        public static bool IsModelType<T>(this Type modelType)
+            where T : TypeModelAttribute
         {
-            return IsValidAndHasAttribute<T>(type);
-        }
-
-        /// <summary>
-        /// Determines whether the type is a document model type, annotated using the <see cref="DocumentTypeAttribute" /> class.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns>
-        ///   <c>true</c> if the type is a document model type; otherwise, <c>false</c>.
-        /// </returns>
-        public static bool IsDocumentType(this Type type)
-        {
-            return IsValidAndHasAttribute<DocumentTypeAttribute>(type);
-        }
-
-        /// <summary>
-        /// Determines whether the type is a data model type, annotated using the <see cref="DataTypeAttribute" /> class.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns>
-        ///   <c>true</c> if the type is a data model type; otherwise, <c>false</c>.
-        /// </returns>
-        public static bool IsDataType(this Type type)
-        {
-            return IsValidAndHasAttribute<DataTypeAttribute>(type);
-        }
-
-        /// <summary>
-        /// Determines whether the type is a media model type, annotated using the <see cref="MediaTypeAttribute" /> class.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns>
-        ///   <c>true</c> if the type is a media model type; otherwise, <c>false</c>.
-        /// </returns>
-        public static bool IsMediaType(this Type type)
-        {
-            return IsValidAndHasAttribute<MediaTypeAttribute>(type);
-        }
-
-        /// <summary>
-        /// Determines whether the type is a member model type, annotated using the <see cref="MemberTypeAttribute" /> class.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns>
-        ///   <c>true</c> if the type is a member model type; otherwise, <c>false</c>.
-        /// </returns>
-        public static bool IsMemberType(this Type type)
-        {
-            return IsValidAndHasAttribute<MemberTypeAttribute>(type);
-        }
-
-        /// <summary>
-        /// Determines whether the type is valid and has an attribute of the specified type.
-        /// </summary>
-        /// <typeparam name="T">The attribute type.</typeparam>
-        /// <param name="type">The type.</param>
-        /// <returns>
-        ///   <c>true</c> if the type is valid and has an attribute of the specified type; otherwise, <c>false</c>.
-        /// </returns>
-        private static bool IsValidAndHasAttribute<T>(Type type)
-            where T : Attribute
-        {
-            if (type == null)
+            if (modelType == null)
             {
                 return false;
             }
 
             try
             {
-                return type.GetCustomAttribute<T>(false) != null && IsValidType(type);
+                return modelType.GetCustomAttribute<T>(false) != null && IsValid(modelType);
             }
             catch (TypeLoadException)
             {
@@ -101,25 +39,73 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
         }
 
         /// <summary>
-        /// Determines whether the type is a valid.
+        /// Determines whether the type is a document type model type, annotated using the <see cref="DocumentTypeAttribute" /> class.
         /// </summary>
-        /// <param name="type">The type.</param>
+        /// <param name="modelType">The model type.</param>
+        /// <returns>
+        ///   <c>true</c> if the type is a document type model type; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsDocumentType(this Type modelType)
+        {
+            return IsModelType<DocumentTypeAttribute>(modelType);
+        }
+
+        /// <summary>
+        /// Determines whether the type is a data type model type, annotated using the <see cref="DataTypeAttribute" /> class.
+        /// </summary>
+        /// <param name="modelType">The model type.</param>
+        /// <returns>
+        ///   <c>true</c> if the type is a data type model type; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsDataType(this Type modelType)
+        {
+            return IsModelType<DataTypeAttribute>(modelType);
+        }
+
+        /// <summary>
+        /// Determines whether the type is a media type model type, annotated using the <see cref="MediaTypeAttribute" /> class.
+        /// </summary>
+        /// <param name="modelType">The model type.</param>
+        /// <returns>
+        ///   <c>true</c> if the type is a media type model type; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsMediaType(this Type modelType)
+        {
+            return IsModelType<MediaTypeAttribute>(modelType);
+        }
+
+        /// <summary>
+        /// Determines whether the type is a member type model type, annotated using the <see cref="MemberTypeAttribute" /> class.
+        /// </summary>
+        /// <param name="modelType">The model type.</param>
+        /// <returns>
+        ///   <c>true</c> if the type is a member type model type; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsMemberType(this Type modelType)
+        {
+            return IsModelType<MemberTypeAttribute>(modelType);
+        }
+
+        /// <summary>
+        /// Determines whether the type is valid.
+        /// </summary>
+        /// <param name="modelType">The model type.</param>
         /// <returns>
         ///   <c>true</c> if the type is valid; otherwise, <c>false</c>.
         /// </returns>
-        private static bool IsValidType(Type type)
+        private static bool IsValid(Type modelType)
         {
-            if (type == null)
+            if (modelType == null)
             {
                 return false;
             }
 
-            if (type.IsAbstract)
+            if (modelType.IsAbstract)
             {
                 return false;
             }
 
-            return type.GetConstructor(Type.EmptyTypes) != null;
+            return modelType.GetConstructor(Type.EmptyTypes) != null;
         }
     }
 }

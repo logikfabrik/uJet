@@ -302,9 +302,14 @@
     <Compile Include="MediaTypeSynchronizationServiceTest.cs" />
     <Compile Include="MemberTypeSynchronizationServiceTest.cs" />
     <Compile Include="MemberTypeTest.cs" />
+    <Compile Include="Models\CompositionDocumentTypeA.cs" />
+    <Compile Include="Models\CompositionDocumentTypeB.cs" />
+    <Compile Include="Models\DocumentTypeA.cs" />
+    <Compile Include="Models\DocumentTypeB.cs" />
     <Compile Include="Models\ContentType.cs" />
     <Compile Include="Models\DataType.cs" />
     <Compile Include="Models\DocumentType.cs" />
+    <Compile Include="Models\IDocumentTypeB.cs" />
     <Compile Include="Models\MediaType.cs" />
     <Compile Include="Models\MemberType.cs" />
     <Compile Include="TestBase.cs" />

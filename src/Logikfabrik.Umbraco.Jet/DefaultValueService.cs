@@ -167,8 +167,8 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="content">The content to set default values for.</param>
         /// <param name="typeModel">The type model.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" />, or <paramref name="typeModel" /> are <c>null</c>.</exception>
-        private static void SetDefaultValues<T>(IContentBase content, BaseType<T> typeModel)
-            where T : BaseTypeAttribute
+        private static void SetDefaultValues<T>(IContentBase content, ContentTypeModel<T> typeModel)
+            where T : ContentTypeModelAttribute
         {
             if (content == null)
             {

@@ -16,7 +16,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             var memberType = new MemberType(typeof(Models.MemberType));
 
-            Assert.AreSame(typeof(Models.MemberType), memberType.Type);
+            Assert.AreSame(typeof(Models.MemberType), memberType.ModelType);
         }
 
         [TestMethod]

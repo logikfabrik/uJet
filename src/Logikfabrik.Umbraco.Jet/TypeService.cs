@@ -12,7 +12,7 @@ namespace Logikfabrik.Umbraco.Jet
     using Extensions;
 
     /// <summary>
-    /// The <see cref="TypeService" /> class. Scans assemblies for types annotated using the <see cref="DocumentTypeAttribute" />, <see cref="MediaTypeAttribute" />, <see cref="DataTypeAttribute" />, and <see cref="MemberTypeAttribute" />.
+    /// The <see cref="TypeService" /> class. Scans assemblies for types annotated using the <see cref="DocumentTypeAttribute" />, <see cref="MediaTypeAttribute" />, <see cref="MemberTypeAttribute" />, and <see cref="DataTypeAttribute" />.
     /// </summary>
     public class TypeService : ITypeService
     {
@@ -57,34 +57,34 @@ namespace Logikfabrik.Umbraco.Jet
         public static ITypeService Instance => instance ?? (instance = new TypeService());
 
         /// <summary>
-        /// Gets the document model types within the current application domain.
+        /// Gets the document type model types within the current application domain.
         /// </summary>
         /// <value>
-        /// The document model types.
+        /// The document type model types.
         /// </value>
         public IEnumerable<Type> DocumentTypes => _documentTypes.Value;
 
         /// <summary>
-        /// Gets the data model types within the current application domain.
+        /// Gets the data type model types within the current application domain.
         /// </summary>
         /// <value>
-        /// The data model types.
+        /// The data type model types.
         /// </value>
         public IEnumerable<Type> DataTypes => _dataTypes.Value;
 
         /// <summary>
-        /// Gets the media model types within the current application domain.
+        /// Gets the media type model types within the current application domain.
         /// </summary>
         /// <value>
-        /// The media model types.
+        /// The media type model types.
         /// </value>
         public IEnumerable<Type> MediaTypes => _mediaTypes.Value;
 
         /// <summary>
-        /// Gets the member model types within the current application domain.
+        /// Gets the member type model types within the current application domain.
         /// </summary>
         /// <value>
-        /// The member model types.
+        /// The member type model types.
         /// </value>
         public IEnumerable<Type> MemberTypes => _memberTypes.Value;
 
@@ -102,36 +102,36 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Gets the document model types within the current application domain.
+        /// Gets the document type model types, within the current application domain.
         /// </summary>
-        /// <returns>The document model types.</returns>
+        /// <returns>The document type model types.</returns>
         private IEnumerable<Type> GetDocumentTypes()
         {
             return GetTypesByAttribute(TypeExtensions.IsDocumentType);
         }
 
         /// <summary>
-        /// Gets the data model types within the current application domain.
+        /// Gets the data type model types, within the current application domain.
         /// </summary>
-        /// <returns>The data model types.</returns>
+        /// <returns>The data type model types.</returns>
         private IEnumerable<Type> GetDataTypes()
         {
             return GetTypesByAttribute(TypeExtensions.IsDataType);
         }
 
         /// <summary>
-        /// Gets the media model types within the current application domain.
+        /// Gets the media type model types, within the current application domain.
         /// </summary>
-        /// <returns>The media model types.</returns>
+        /// <returns>The media type model types.</returns>
         private IEnumerable<Type> GetMediaTypes()
         {
             return GetTypesByAttribute(TypeExtensions.IsMediaType);
         }
 
         /// <summary>
-        /// Gets the member model types within the current application domain.
+        /// Gets the member type model types, within the current application domain.
         /// </summary>
-        /// <returns>The member model types.</returns>
+        /// <returns>The member type model types.</returns>
         private IEnumerable<Type> GetMemberTypes()
         {
             return GetTypesByAttribute(TypeExtensions.IsMemberType);

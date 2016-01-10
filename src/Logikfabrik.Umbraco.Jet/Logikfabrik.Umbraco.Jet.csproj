@@ -276,22 +276,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationHandler.cs" />
-    <Compile Include="BaseType.cs" />
-    <Compile Include="BaseTypeAttribute.cs" />
-    <Compile Include="BaseTypeSynchronizationService{T1,T2}.cs" />
+    <Compile Include="ComposableContentTypeAttribute.cs" />
+    <Compile Include="ComposableContentTypeModelSynchronizationService{TComposableContentTypeModel,TComposableContentTypeAttribute,TContentType}.cs" />
+    <Compile Include="ComposableContentTypeModel{T}.cs" />
     <Compile Include="Configuration\JetAssemblyElement.cs" />
     <Compile Include="Configuration\JetAssemblyElementCollection.cs" />
     <Compile Include="Configuration\JetConfigurationManager.cs" />
     <Compile Include="Configuration\JetSection.cs" />
     <Compile Include="Configuration\SynchronizationMode.cs" />
-    <Compile Include="ContentType.cs" />
-    <Compile Include="ContentTypeAttribute.cs" />
+    <Compile Include="ContentTypeModelAttribute.cs" />
+    <Compile Include="ContentTypeModelSynchronizationService{TContentTypeModel,TContentTypeModelAttribute,TContentType}.cs" />
+    <Compile Include="ContentTypeModel{T}.cs" />
+    <Compile Include="DataTypeValidator.cs" />
     <Compile Include="Data\ITypeRepository.cs" />
     <Compile Include="Data\TypeRepository.cs" />
-    <Compile Include="ITypeModel.cs" />
     <Compile Include="ITypeResolver.cs" />
+    <Compile Include="TypeModelResolver{TTypeModel,TTypeModelAttribute}.cs" />
+    <Compile Include="ContentTypeModelValidator{T1,T2}.cs" />
+    <Compile Include="TypeModelValidator{TTypeModel,TTypeModelAttribute}.cs" />
+    <Compile Include="TypeModel{T}.cs" />
+    <Compile Include="TypeModelAttribute.cs" />
     <Compile Include="TypeProperty.cs" />
-    <Compile Include="ContentTypeSynchronizationService{T1,T2}.cs" />
     <Compile Include="DataType.cs" />
     <Compile Include="DataTypeAttribute.cs" />
     <Compile Include="DataTypeSynchronizationService.cs" />

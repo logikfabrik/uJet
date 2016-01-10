@@ -16,7 +16,7 @@ namespace Logikfabrik.Umbraco.Jet
     /// <summary>
     /// The <see cref="DocumentTypeSynchronizationService" /> class. Synchronizes model types annotated using the <see cref="DocumentTypeAttribute" />.
     /// </summary>
-    public class DocumentTypeSynchronizationService : ContentTypeSynchronizationService<DocumentType, DocumentTypeAttribute>
+    public class DocumentTypeSynchronizationService : ComposableContentTypeModelSynchronizationService<DocumentType, DocumentTypeAttribute, IContentType>
     {
         private readonly IContentTypeService _contentTypeService;
         private readonly IFileService _fileService;
@@ -68,21 +68,21 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The content type models.
         /// </value>
-        protected override DocumentType[] ContentTypeModels => Resolver.DocumentTypes.ToArray();
+        protected override DocumentType[] Models => Resolver.DocumentTypes.ToArray();
 
         /// <summary>
         /// Creates a content type for the specified content type model.
         /// </summary>
-        /// <param name="contentTypeModel">The content type model.</param>
+        /// <param name="model">The content type model.</param>
         /// <returns>
         /// The created content type.
         /// </returns>
-        internal override IContentTypeBase CreateContentType(DocumentType contentTypeModel)
+        internal override IContentType CreateContentType(DocumentType model)
         {
-            var contentType = base.CreateContentType(contentTypeModel);
+            var contentType = base.CreateContentType(model);
 
-            SetAllowedTemplates((IContentType)contentType, contentTypeModel);
-            SetDefaultTemplate((IContentType)contentType, contentTypeModel);
+            SetAllowedTemplates(contentType, model);
+            SetDefaultTemplate(contentType, model);
 
             return contentType;
         }
@@ -91,16 +91,16 @@ namespace Logikfabrik.Umbraco.Jet
         /// Updates the content type for the specified content type model.
         /// </summary>
         /// <param name="contentType">The content type.</param>
-        /// <param name="contentTypeModel">The content type model.</param>
+        /// <param name="model">The content type model.</param>
         /// <returns>
         /// The updated content type.
         /// </returns>
-        internal override IContentTypeBase UpdateContentType(IContentTypeBase contentType, DocumentType contentTypeModel)
+        internal override IContentType UpdateContentType(IContentType contentType, DocumentType model)
         {
-            contentType = base.UpdateContentType(contentType, contentTypeModel);
+            contentType = base.UpdateContentType(contentType, model);
 
-            SetAllowedTemplates((IContentType)contentType, contentTypeModel);
-            SetDefaultTemplate((IContentType)contentType, contentTypeModel);
+            SetAllowedTemplates((IContentType)contentType, model);
+            SetDefaultTemplate((IContentType)contentType, model);
 
             return contentType;
         }
@@ -111,9 +111,9 @@ namespace Logikfabrik.Umbraco.Jet
         /// <returns>
         /// The content types.
         /// </returns>
-        protected override IContentTypeBase[] GetContentTypes()
+        protected override IContentType[] GetContentTypes()
         {
-            return _contentTypeService.GetAllContentTypes().Cast<IContentTypeBase>().ToArray();
+            return _contentTypeService.GetAllContentTypes().ToArray();
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <returns>
         /// A content type.
         /// </returns>
-        protected override IContentTypeBase GetContentType()
+        protected override IContentType GetContentType()
         {
             return new global::Umbraco.Core.Models.ContentType(-1);
         }
@@ -134,7 +134,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <returns>
         /// The content type with the specified alias.
         /// </returns>
-        protected override IContentTypeBase GetContentType(string alias)
+        protected override IContentType GetContentType(string alias)
         {
             return _contentTypeService.GetContentType(alias);
         }
@@ -143,9 +143,9 @@ namespace Logikfabrik.Umbraco.Jet
         /// Saves the specified content type.
         /// </summary>
         /// <param name="contentType">The content type.</param>
-        protected override void SaveContentType(IContentTypeBase contentType)
+        protected override void SaveContentType(IContentType contentType)
         {
-            _contentTypeService.Save((IContentType)contentType);
+            _contentTypeService.Save(contentType);
         }
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// </returns>
         protected override DocumentType GetContentTypeModel(Type modelType)
         {
-            return ContentTypeModels.SingleOrDefault(ctm => ctm.Type == modelType);
+            return Models.SingleOrDefault(ctm => ctm.ModelType == modelType);
         }
 
         /// <summary>

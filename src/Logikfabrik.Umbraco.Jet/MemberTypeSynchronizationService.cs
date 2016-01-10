@@ -14,7 +14,7 @@ namespace Logikfabrik.Umbraco.Jet
     /// <summary>
     /// The <see cref="MemberTypeSynchronizationService" /> class. Synchronizes model types annotated using the <see cref="MemberTypeAttribute" />.
     /// </summary>
-    public class MemberTypeSynchronizationService : BaseTypeSynchronizationService<MemberType, MemberTypeAttribute>
+    public class MemberTypeSynchronizationService : ContentTypeModelSynchronizationService<MemberType, MemberTypeAttribute, IMemberType>
     {
         private readonly IMemberTypeService _memberTypeService;
 
@@ -56,7 +56,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The content type models.
         /// </value>
-        protected override MemberType[] ContentTypeModels => Resolver.MemberTypes.ToArray();
+        protected override MemberType[] Models => Resolver.MemberTypes.ToArray();
 
         /// <summary>
         /// Gets the content types.
@@ -64,9 +64,9 @@ namespace Logikfabrik.Umbraco.Jet
         /// <returns>
         /// The content types.
         /// </returns>
-        protected override IContentTypeBase[] GetContentTypes()
+        protected override IMemberType[] GetContentTypes()
         {
-            return _memberTypeService.GetAll().Cast<IContentTypeBase>().ToArray();
+            return _memberTypeService.GetAll().ToArray();
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <returns>
         /// A content type.
         /// </returns>
-        protected override IContentTypeBase GetContentType()
+        protected override IMemberType GetContentType()
         {
             return new global::Umbraco.Core.Models.MemberType(-1);
         }
@@ -87,7 +87,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <returns>
         /// The content type with the specified alias.
         /// </returns>
-        protected override IContentTypeBase GetContentType(string alias)
+        protected override IMemberType GetContentType(string alias)
         {
             return _memberTypeService.Get(alias);
         }
@@ -96,9 +96,9 @@ namespace Logikfabrik.Umbraco.Jet
         /// Saves the specified content type.
         /// </summary>
         /// <param name="contentType">The content type.</param>
-        protected override void SaveContentType(IContentTypeBase contentType)
+        protected override void SaveContentType(IMemberType contentType)
         {
-            _memberTypeService.Save((IMemberType)contentType);
+            _memberTypeService.Save(contentType);
         }
     }
 }

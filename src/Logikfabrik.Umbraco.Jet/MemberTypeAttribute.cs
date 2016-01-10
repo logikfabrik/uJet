@@ -7,12 +7,12 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
 
     /// <summary>
-    /// The <see cref="MemberTypeAttribute" /> class. Attribute for member model type annotation.
+    /// The <see cref="MemberTypeAttribute" /> class. Attribute for model type annotation.
     /// </summary>
     [AttributeUsage(
         AttributeTargets.Class,
         Inherited = false)]
-    public class MemberTypeAttribute : BaseTypeAttribute
+    public class MemberTypeAttribute : ContentTypeModelAttribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MemberTypeAttribute" /> class.

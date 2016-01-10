@@ -1,4 +1,4 @@
-﻿// <copyright file="ContentTypeAttribute.cs" company="Logikfabrik">
+﻿// <copyright file="ComposableContentTypeAttribute.cs" company="Logikfabrik">
 //   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -7,25 +7,25 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
 
     /// <summary>
-    /// The <see cref="ContentTypeAttribute" /> class.
+    /// The <see cref="ComposableContentTypeAttribute" /> class.
     /// </summary>
-    public abstract class ContentTypeAttribute : BaseTypeAttribute
+    public abstract class ComposableContentTypeAttribute : ContentTypeModelAttribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContentTypeAttribute" /> class.
+        /// Initializes a new instance of the <see cref="ComposableContentTypeAttribute" /> class.
         /// </summary>
         /// <param name="name">The name.</param>
-        protected ContentTypeAttribute(string name)
+        protected ComposableContentTypeAttribute(string name)
             : base(name)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContentTypeAttribute" /> class.
+        /// Initializes a new instance of the <see cref="ComposableContentTypeAttribute" /> class.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="name">The name.</param>
-        protected ContentTypeAttribute(string id, string name)
+        protected ComposableContentTypeAttribute(string id, string name)
             : base(id, name)
         {
         }

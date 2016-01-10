@@ -16,7 +16,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             var mediaType = new MediaType(typeof(Models.MediaType));
 
-            Assert.AreSame(typeof(Models.MediaType), mediaType.Type);
+            Assert.AreSame(typeof(Models.MediaType), mediaType.ModelType);
         }
 
         [TestMethod]

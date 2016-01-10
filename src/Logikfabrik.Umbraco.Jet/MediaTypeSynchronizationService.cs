@@ -14,7 +14,7 @@ namespace Logikfabrik.Umbraco.Jet
     /// <summary>
     /// The <see cref="MediaTypeSynchronizationService" /> class. Synchronizes model types annotated using the <see cref="MediaTypeAttribute" />.
     /// </summary>
-    public class MediaTypeSynchronizationService : ContentTypeSynchronizationService<MediaType, MediaTypeAttribute>
+    public class MediaTypeSynchronizationService : ComposableContentTypeModelSynchronizationService<MediaType, MediaTypeAttribute, IMediaType>
     {
         private readonly IContentTypeService _contentTypeService;
 
@@ -56,7 +56,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The content type models.
         /// </value>
-        protected override MediaType[] ContentTypeModels => Resolver.MediaTypes.ToArray();
+        protected override MediaType[] Models => Resolver.MediaTypes.ToArray();
 
         /// <summary>
         /// Gets the content types.
@@ -64,9 +64,9 @@ namespace Logikfabrik.Umbraco.Jet
         /// <returns>
         /// The content types.
         /// </returns>
-        protected override IContentTypeBase[] GetContentTypes()
+        protected override IMediaType[] GetContentTypes()
         {
-            return _contentTypeService.GetAllMediaTypes().Cast<IContentTypeBase>().ToArray();
+            return _contentTypeService.GetAllMediaTypes().ToArray();
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <returns>
         /// A content type.
         /// </returns>
-        protected override IContentTypeBase GetContentType()
+        protected override IMediaType GetContentType()
         {
             return new global::Umbraco.Core.Models.MediaType(-1);
         }
@@ -87,7 +87,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <returns>
         /// The content type with the specified alias.
         /// </returns>
-        protected override IContentTypeBase GetContentType(string alias)
+        protected override IMediaType GetContentType(string alias)
         {
             return _contentTypeService.GetMediaType(alias);
         }
@@ -96,9 +96,9 @@ namespace Logikfabrik.Umbraco.Jet
         /// Saves the specified content type.
         /// </summary>
         /// <param name="contentType">The content type.</param>
-        protected override void SaveContentType(IContentTypeBase contentType)
+        protected override void SaveContentType(IMediaType contentType)
         {
-            _contentTypeService.Save((IMediaType)contentType);
+            _contentTypeService.Save(contentType);
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// </returns>
         protected override MediaType GetContentTypeModel(Type modelType)
         {
-            return ContentTypeModels.SingleOrDefault(ctm => ctm.Type == modelType);
+            return Models.SingleOrDefault(ctm => ctm.ModelType == modelType);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿// <copyright file="BaseTypeAttribute.cs" company="Logikfabrik">
+﻿// <copyright file="ContentTypeModelAttribute.cs" company="Logikfabrik">
 //   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -7,16 +7,16 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
 
     /// <summary>
-    /// The <see cref="BaseTypeAttribute" /> class.
+    /// The <see cref="ContentTypeModelAttribute" /> class.
     /// </summary>
-    public abstract class BaseTypeAttribute : IdAttribute
+    public abstract class ContentTypeModelAttribute : TypeModelAttribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseTypeAttribute" /> class.
+        /// Initializes a new instance of the <see cref="ContentTypeModelAttribute" /> class.
         /// </summary>
         /// <param name="name">The name.</param>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="name" /> is <c>null</c>, or white space.</exception>
-        protected BaseTypeAttribute(string name)
+        /// <exception cref="ArgumentException">Thrown if <paramref name="name" /> is <c>null</c> or white space.</exception>
+        protected ContentTypeModelAttribute(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -27,12 +27,12 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseTypeAttribute" /> class.
+        /// Initializes a new instance of the <see cref="ContentTypeModelAttribute" /> class.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="name">The name.</param>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="name" /> is <c>null</c>, or white space.</exception>
-        protected BaseTypeAttribute(string id, string name)
+        /// <exception cref="ArgumentException">Thrown if <paramref name="name" /> is <c>null</c> or white space.</exception>
+        protected ContentTypeModelAttribute(string id, string name)
             : base(id)
         {
             if (string.IsNullOrWhiteSpace(name))

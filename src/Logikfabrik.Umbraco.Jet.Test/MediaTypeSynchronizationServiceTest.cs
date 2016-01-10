@@ -108,7 +108,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var typeResolverMock = new Mock<ITypeResolver>();
 
             typeResolverMock.Setup(m => m.MediaTypes).Returns(new[] { mediaTypeWithId });
-            typeResolverMock.Setup(m => m.ResolveType<Jet.MediaType, MediaTypeAttribute>(mediaTypeWithId, It.IsAny<IContentTypeBase[]>())).Returns(mediaTypeMock.Object);
+            typeResolverMock.Setup(m => m.ResolveType<Jet.MediaType, MediaTypeAttribute, IMediaType>(mediaTypeWithId, It.IsAny<IMediaType[]>())).Returns(mediaTypeMock.Object);
 
             var contentTypeServiceMock = new Mock<IContentTypeService>();
 
@@ -142,7 +142,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var typeResolverMock = new Mock<ITypeResolver>();
 
             typeResolverMock.Setup(m => m.MediaTypes).Returns(new[] { mediaTypeWithId });
-            typeResolverMock.Setup(m => m.ResolveType<Jet.MediaType, MediaTypeAttribute>(mediaTypeWithId, It.IsAny<IContentTypeBase[]>())).Returns(mediaTypeMock.Object);
+            typeResolverMock.Setup(m => m.ResolveType<Jet.MediaType, MediaTypeAttribute, IMediaType>(mediaTypeWithId, It.IsAny<IMediaType[]>())).Returns(mediaTypeMock.Object);
 
             var contentTypeServiceMock = new Mock<IContentTypeService>();
 
@@ -175,7 +175,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var typeResolverMock = new Mock<ITypeResolver>();
 
             typeResolverMock.Setup(m => m.MediaTypes).Returns(new[] { mediaTypeWithoutId });
-            typeResolverMock.Setup(m => m.ResolveType<Jet.MediaType, MediaTypeAttribute>(mediaTypeWithoutId, It.IsAny<IContentTypeBase[]>())).Returns(mediaTypeMock.Object);
+            typeResolverMock.Setup(m => m.ResolveType<Jet.MediaType, MediaTypeAttribute, IMediaType>(mediaTypeWithoutId, It.IsAny<IMediaType[]>())).Returns(mediaTypeMock.Object);
 
             var contentTypeServiceMock = new Mock<IContentTypeService>();
 

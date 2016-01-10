@@ -13,115 +13,117 @@ namespace Logikfabrik.Umbraco.Jet
     public interface ITypeResolver
     {
         /// <summary>
-        /// Gets the document type models.
+        /// Gets the document type type models.
         /// </summary>
         /// <value>
-        /// The document type models.
+        /// The document type type models.
         /// </value>
         IEnumerable<DocumentType> DocumentTypes { get; }
 
         /// <summary>
-        /// Gets the media type models.
+        /// Gets the media type type models.
         /// </summary>
         /// <value>
-        /// The media type models.
+        /// The media type type models.
         /// </value>
         IEnumerable<MediaType> MediaTypes { get; }
 
         /// <summary>
-        /// Gets the member type models.
+        /// Gets the member type type models.
         /// </summary>
         /// <value>
-        /// The member type models.
+        /// The member type type models.
         /// </value>
         IEnumerable<MemberType> MemberTypes { get; }
 
         /// <summary>
-        /// Gets the data type models.
+        /// Gets the data type type models.
         /// </summary>
         /// <value>
-        /// The data type models.
+        /// The data type type models.
         /// </value>
         IEnumerable<DataType> DataTypes { get; }
 
         /// <summary>
-        /// Resolves the document type model for the specified document type.
+        /// Resolves the type model for the specified document type.
         /// </summary>
         /// <param name="documentType">The document type.</param>
-        /// <returns>The document type model for the specified document type.</returns>
+        /// <returns>The type model.</returns>
         DocumentType ResolveTypeModel(IContentType documentType);
 
         /// <summary>
-        /// Resolves the media type model for the specified media type.
+        /// Resolves type model for the specified media type.
         /// </summary>
         /// <param name="mediaType">The media type.</param>
-        /// <returns>The media type model for the specified media type.</returns>
+        /// <returns>The type model.</returns>
         MediaType ResolveTypeModel(IMediaType mediaType);
 
         /// <summary>
-        /// Resolves the member type model for the specified member type.
+        /// Resolves the type model for the specified member type.
         /// </summary>
         /// <param name="memberType">The member type.</param>
-        /// <returns>The member type model for the specified member type.</returns>
+        /// <returns>The type model.</returns>
         MemberType ResolveTypeModel(IMemberType memberType);
 
         /// <summary>
-        /// Resolves the data type model for the specified data type.
+        /// Resolves the type model for the specified data type.
         /// </summary>
         /// <param name="dataType">The data type.</param>
-        /// <returns>The data type model for the specified data type.</returns>
+        /// <returns>The type model.</returns>
         DataType ResolveTypeModel(IDataTypeDefinition dataType);
 
         /// <summary>
-        /// Resolves the document type for the specified document type model.
+        /// Resolves the document type for the specified type model.
         /// </summary>
-        /// <param name="documentTypeModel">The document type model.</param>
+        /// <param name="model">The model.</param>
         /// <param name="documentTypes">The document types.</param>
-        /// <returns>The document type for the specified document type model.</returns>
-        IContentType ResolveType(DocumentType documentTypeModel, IContentType[] documentTypes);
+        /// <returns>The document type.</returns>
+        IContentType ResolveType(DocumentType model, IContentType[] documentTypes);
 
         /// <summary>
-        /// Resolves the media type for the specified media type model.
+        /// Resolves the media type for the specified type model.
         /// </summary>
-        /// <param name="mediaTypeModel">The media type model.</param>
+        /// <param name="model">The model.</param>
         /// <param name="mediaTypes">The media types.</param>
-        /// <returns>The media type for the specified media type model.</returns>
-        IMediaType ResolveType(MediaType mediaTypeModel, IMediaType[] mediaTypes);
+        /// <returns>The media type.</returns>
+        IMediaType ResolveType(MediaType model, IMediaType[] mediaTypes);
 
         /// <summary>
-        /// Resolves the member type for the specified member type model.
+        /// Resolves the member type for the specified type model.
         /// </summary>
-        /// <param name="memberTypeModel">The member type model.</param>
+        /// <param name="model">The model.</param>
         /// <param name="memberTypes">The member types.</param>
-        /// <returns>The member type for the specified member type model.</returns>
-        IMemberType ResolveType(MemberType memberTypeModel, IMemberType[] memberTypes);
+        /// <returns>The member type.</returns>
+        IMemberType ResolveType(MemberType model, IMemberType[] memberTypes);
 
         /// <summary>
-        /// Resolves the data type for the specified data type model.
+        /// Resolves the data type for the specified type model.
         /// </summary>
-        /// <param name="dataTypeModel">The data type model.</param>
+        /// <param name="model">The model.</param>
         /// <param name="dataTypes">The data types.</param>
-        /// <returns>The data type for the specified data type model.</returns>
-        IDataTypeDefinition ResolveType(DataType dataTypeModel, IDataTypeDefinition[] dataTypes);
+        /// <returns>The data type.</returns>
+        IDataTypeDefinition ResolveType(DataType model, IDataTypeDefinition[] dataTypes);
 
         /// <summary>
-        /// Resolves the property type for the specified property type model.
+        /// Resolves the property type for the specified type model.
         /// </summary>
-        /// <param name="propertyTypeModel">The property type model.</param>
+        /// <param name="model">The model.</param>
         /// <param name="propertyTypes">The property types.</param>
-        /// <returns>The property type for the specified property type model.</returns>
-        PropertyType ResolveType(TypeProperty propertyTypeModel, PropertyType[] propertyTypes);
+        /// <returns>The property type.</returns>
+        PropertyType ResolveType(TypeProperty model, PropertyType[] propertyTypes);
 
         /// <summary>
-        /// Resolves the content type for the specified content type model.
+        /// Resolves the content type for the specified type model.
         /// </summary>
-        /// <typeparam name="T1">The type type.</typeparam>
-        /// <typeparam name="T2">The attribute type.</typeparam>
-        /// <param name="contentTypeModel">The content type model.</param>
+        /// <typeparam name="T1">The <see cref="ContentTypeModel{T}" /> type.</typeparam>
+        /// <typeparam name="T2">The <see cref="ContentTypeModelAttribute" /> type.</typeparam>
+        /// <typeparam name="T3">The content type.</typeparam>
+        /// <param name="model">The model.</param>
         /// <param name="contentTypes">The content types.</param>
-        /// <returns>The content type for the specified content type model.</returns>
-        IContentTypeBase ResolveType<T1, T2>(T1 contentTypeModel, IContentTypeBase[] contentTypes)
-            where T1 : BaseType<T2>
-            where T2 : BaseTypeAttribute;
+        /// <returns>The content type.</returns>
+        T3 ResolveType<T1, T2, T3>(T1 model, T3[] contentTypes)
+            where T1 : ContentTypeModel<T2>
+            where T2 : ContentTypeModelAttribute
+            where T3 : IContentTypeBase;
     }
 }

@@ -5,7 +5,6 @@
 namespace Logikfabrik.Umbraco.Jet
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using Data;
     using global::Umbraco.Core;
@@ -74,8 +73,7 @@ namespace Logikfabrik.Umbraco.Jet
                 return;
             }
 
-            ValidateDataTypeModelId();
-            ValidateDataTypeModelName();
+            new DataTypeValidator().Validate(_typeResolver.DataTypes.ToArray());
 
             var dataTypeDefinitions = _dataTypeService.GetAllDataTypeDefinitions().ToArray();
 
@@ -205,51 +203,6 @@ namespace Logikfabrik.Umbraco.Jet
             }
 
             _typeRepository.SetDefinitionId(dataTypeModel.Id.Value, dataTypeDefinition.Id);
-        }
-
-        /// <summary>
-        /// Validates the data type model identifiers.
-        /// </summary>
-        private void ValidateDataTypeModelId()
-        {
-            var set = new HashSet<Guid>();
-
-            foreach (var dataTypeModel in _typeResolver.DataTypes)
-            {
-                if (!dataTypeModel.Id.HasValue)
-                {
-                    continue;
-                }
-
-                if (set.Contains(dataTypeModel.Id.Value))
-                {
-                    var conflictingTypes = _typeResolver.DataTypes.Where(dtm => dtm.Id == dataTypeModel.Id.Value).Select(dtm => dtm.Type.Name);
-
-                    throw new InvalidOperationException($"ID conflict for model types {string.Join(", ", conflictingTypes)}. ID {dataTypeModel.Id.Value} is already in use.");
-                }
-
-                set.Add(dataTypeModel.Id.Value);
-            }
-        }
-
-        /// <summary>
-        /// Validates the data type model names.
-        /// </summary>
-        private void ValidateDataTypeModelName()
-        {
-            var set = new HashSet<string>();
-
-            foreach (var dataTypeModel in _typeResolver.DataTypes)
-            {
-                if (set.Contains(dataTypeModel.Name))
-                {
-                    var conflictingTypes = _typeResolver.DataTypes.Where(dtm => dtm.Name == dataTypeModel.Name).Select(dtm => dtm.Type.Name);
-
-                    throw new InvalidOperationException($"Name conflict for model types {string.Join(", ", conflictingTypes)}. Name {dataTypeModel.Name} is already in use.");
-                }
-
-                set.Add(dataTypeModel.Name);
-            }
         }
     }
 }

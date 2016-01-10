@@ -7,12 +7,12 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
 
     /// <summary>
-    /// The <see cref="MediaTypeAttribute" /> class. Attribute for media model type annotation.
+    /// The <see cref="MediaTypeAttribute" /> class. Attribute for model type annotation.
     /// </summary>
     [AttributeUsage(
         AttributeTargets.Class,
         Inherited = false)]
-    public class MediaTypeAttribute : ContentTypeAttribute
+    public class MediaTypeAttribute : ComposableContentTypeAttribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MediaTypeAttribute" /> class.

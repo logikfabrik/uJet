@@ -111,7 +111,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var typeResolverMock = new Mock<ITypeResolver>();
 
             typeResolverMock.Setup(m => m.DocumentTypes).Returns(new[] { documentTypeWithId });
-            typeResolverMock.Setup(m => m.ResolveType<DocumentType, DocumentTypeAttribute>(documentTypeWithId, It.IsAny<IContentTypeBase[]>())).Returns(contentTypeMock.Object);
+            typeResolverMock.Setup(m => m.ResolveType<DocumentType, DocumentTypeAttribute, IContentType>(documentTypeWithId, It.IsAny<IContentType[]>())).Returns(contentTypeMock.Object);
 
             var contentTypeServiceMock = new Mock<IContentTypeService>();
 
@@ -146,7 +146,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var typeResolverMock = new Mock<ITypeResolver>();
 
             typeResolverMock.Setup(m => m.DocumentTypes).Returns(new[] { documentTypeWithId });
-            typeResolverMock.Setup(m => m.ResolveType<DocumentType, DocumentTypeAttribute>(documentTypeWithId, It.IsAny<IContentTypeBase[]>())).Returns(contentTypeMock.Object);
+            typeResolverMock.Setup(m => m.ResolveType<DocumentType, DocumentTypeAttribute, IContentType>(documentTypeWithId, It.IsAny<IContentType[]>())).Returns(contentTypeMock.Object);
 
             var contentTypeServiceMock = new Mock<IContentTypeService>();
 
@@ -180,7 +180,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var typeResolverMock = new Mock<ITypeResolver>();
 
             typeResolverMock.Setup(m => m.DocumentTypes).Returns(new[] { documentTypeWithoutId });
-            typeResolverMock.Setup(m => m.ResolveType<DocumentType, DocumentTypeAttribute>(documentTypeWithoutId, It.IsAny<IContentTypeBase[]>())).Returns(contentTypeMock.Object);
+            typeResolverMock.Setup(m => m.ResolveType<DocumentType, DocumentTypeAttribute, IContentType>(documentTypeWithoutId, It.IsAny<IContentType[]>())).Returns(contentTypeMock.Object);
 
             var contentTypeServiceMock = new Mock<IContentTypeService>();
 

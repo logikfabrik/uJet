@@ -108,7 +108,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var typeResolverMock = new Mock<ITypeResolver>();
 
             typeResolverMock.Setup(m => m.MemberTypes).Returns(new[] { memberTypeWithId });
-            typeResolverMock.Setup(m => m.ResolveType<Jet.MemberType, MemberTypeAttribute>(memberTypeWithId, It.IsAny<IContentTypeBase[]>())).Returns(memberTypeMock.Object);
+            typeResolverMock.Setup(m => m.ResolveType<Jet.MemberType, MemberTypeAttribute, IMemberType>(memberTypeWithId, It.IsAny<IMemberType[]>())).Returns(memberTypeMock.Object);
 
             var memberTypeServiceMock = new Mock<IMemberTypeService>();
 
@@ -142,7 +142,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var typeResolverMock = new Mock<ITypeResolver>();
 
             typeResolverMock.Setup(m => m.MemberTypes).Returns(new[] { memberTypeWithId });
-            typeResolverMock.Setup(m => m.ResolveType<Jet.MemberType, MemberTypeAttribute>(memberTypeWithId, It.IsAny<IContentTypeBase[]>())).Returns(memberTypeMock.Object);
+            typeResolverMock.Setup(m => m.ResolveType<Jet.MemberType, MemberTypeAttribute, IMemberType>(memberTypeWithId, It.IsAny<IMemberType[]>())).Returns(memberTypeMock.Object);
 
             var memberTypeServiceMock = new Mock<IMemberTypeService>();
 
@@ -176,7 +176,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var typeResolverMock = new Mock<ITypeResolver>();
 
             typeResolverMock.Setup(m => m.MemberTypes).Returns(new[] { memberTypeWithoutId });
-            typeResolverMock.Setup(m => m.ResolveType<Jet.MemberType, MemberTypeAttribute>(memberTypeWithoutId, It.IsAny<IContentTypeBase[]>())).Returns(memberTypeMock.Object);
+            typeResolverMock.Setup(m => m.ResolveType<Jet.MemberType, MemberTypeAttribute, IMemberType>(memberTypeWithoutId, It.IsAny<IMemberType[]>())).Returns(memberTypeMock.Object);
 
             var memberTypeServiceMock = new Mock<IMemberTypeService>();
 

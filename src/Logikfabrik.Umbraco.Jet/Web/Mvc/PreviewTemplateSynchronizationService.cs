@@ -73,7 +73,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         {
             var documentTypes = _contentTypeService.GetAllContentTypes().ToArray();
 
-            foreach (var documentTypeModel in _typeResolver.DocumentTypes.Where(typeModel => Attribute.IsDefined(typeModel.Type, typeof(PreviewTemplateAttribute), false)))
+            foreach (var documentTypeModel in _typeResolver.DocumentTypes.Where(typeModel => Attribute.IsDefined(typeModel.ModelType, typeof(PreviewTemplateAttribute), false)))
             {
                 var documentType = _typeResolver.ResolveType(documentTypeModel, documentTypes);
 

@@ -7,12 +7,12 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
 
     /// <summary>
-    /// The <see cref="DocumentTypeAttribute" /> class. Attribute for document model type annotation.
+    /// The <see cref="DocumentTypeAttribute" /> class. Attribute for model type annotation.
     /// </summary>
     [AttributeUsage(
         AttributeTargets.Class,
         Inherited = false)]
-    public class DocumentTypeAttribute : ContentTypeAttribute
+    public class DocumentTypeAttribute : ComposableContentTypeAttribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DocumentTypeAttribute" /> class.
