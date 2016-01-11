@@ -23,7 +23,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         private TemplateService()
         {
-            TemplatePaths = GetTemplates();
+            TemplatePaths = GetTemplatePaths();
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace Logikfabrik.Umbraco.Jet
         public static ITemplateService Instance => instance ?? (instance = new TemplateService());
 
         /// <summary>
-        /// Gets the template paths for templates in the view folder.
+        /// Gets the template paths for templates in the views folder.
         /// </summary>
         /// <value>
         /// The template paths.
@@ -43,7 +43,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// Gets the template content.
         /// </summary>
         /// <param name="templatePath">The template path.</param>
-        /// <returns>The content of the template.</returns>
+        /// <returns>The template content.</returns>
         /// <exception cref="ArgumentException">Thrown if <paramref name="templatePath" /> is <c>null</c> or white space.</exception>
         public string GetContent(string templatePath)
         {
@@ -77,10 +77,10 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Gets the templates.
+        /// Gets the template paths for templates in the views folder.
         /// </summary>
-        /// <returns>The templates.</returns>
-        private static IEnumerable<string> GetTemplates()
+        /// <returns>The template paths.</returns>
+        private static IEnumerable<string> GetTemplatePaths()
         {
             /*
              * When developing exclusively using conventional ASP.NET MVC view mapping, registering all views as

@@ -15,7 +15,6 @@ namespace Logikfabrik.Umbraco.Jet
         /// Initializes a new instance of the <see cref="DataType" /> class.
         /// </summary>
         /// <param name="modelType">The model type.</param>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="modelType" /> is not a data type model type.</exception>
         public DataType(Type modelType)
             : base(modelType)
         {

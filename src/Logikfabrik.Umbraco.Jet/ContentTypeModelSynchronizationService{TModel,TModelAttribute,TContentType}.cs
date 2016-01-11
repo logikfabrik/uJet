@@ -1,4 +1,4 @@
-﻿// <copyright file="ContentTypeModelSynchronizationService{TContentTypeModel,TContentTypeModelAttribute,TContentType}.cs" company="Logikfabrik">
+﻿// <copyright file="ContentTypeModelSynchronizationService{TModel,TModelAttribute,TContentType}.cs" company="Logikfabrik">
 //   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -11,20 +11,20 @@ namespace Logikfabrik.Umbraco.Jet
     using Mappings;
 
     /// <summary>
-    /// The <see cref="ContentTypeModelSynchronizationService{TContentTypeModel, TContentTypeModelAttribute, TContentType}" /> class.
+    /// The <see cref="ContentTypeModelSynchronizationService{TModel,TModelAttribute,TContentType}" /> class.
     /// </summary>
-    /// <typeparam name="TContentTypeModel">The content type model type.</typeparam>
-    /// <typeparam name="TContentTypeModelAttribute">The content type model attribute type.</typeparam>
-    /// <typeparam name="TContentType">The content type.</typeparam>
-    public abstract class ContentTypeModelSynchronizationService<TContentTypeModel, TContentTypeModelAttribute, TContentType> : ISynchronizationService
-        where TContentTypeModel : ContentTypeModel<TContentTypeModelAttribute>
-        where TContentTypeModelAttribute : ContentTypeModelAttribute
+    /// <typeparam name="TModel">The <see cref="ContentTypeModel{T}" /> type.</typeparam>
+    /// <typeparam name="TModelAttribute">The <see cref="ContentTypeModelAttribute" /> type.</typeparam>
+    /// <typeparam name="TContentType">The The <see cref="IContentTypeBase" /> type.</typeparam>
+    public abstract class ContentTypeModelSynchronizationService<TModel, TModelAttribute, TContentType> : ISynchronizationService
+        where TModel : ContentTypeModel<TModelAttribute>
+        where TModelAttribute : ContentTypeModelAttribute
         where TContentType : IContentTypeBase
     {
         private readonly ITypeRepository _typeRepository;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContentTypeModelSynchronizationService{TContentTypeModel, TContentTypeModelAttribute, TContentType}" /> class.
+        /// Initializes a new instance of the <see cref="ContentTypeModelSynchronizationService{TModel,TModelAttribute,TContentType}" /> class.
         /// </summary>
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="typeRepository">The type repository.</param>
@@ -54,10 +54,10 @@ namespace Logikfabrik.Umbraco.Jet
         protected ITypeResolver Resolver { get; }
 
         /// <summary>
-        /// Gets the content type models.
+        /// Gets the models.
         /// </summary>
-        /// <value>The content type models.</value>
-        protected abstract TContentTypeModel[] Models { get; }
+        /// <value>The models.</value>
+        protected abstract TModel[] Models { get; }
 
         /// <summary>
         /// Synchronizes this instance.
@@ -69,7 +69,7 @@ namespace Logikfabrik.Umbraco.Jet
                 return;
             }
 
-            new ContentTypeModelValidator<TContentTypeModel, TContentTypeModelAttribute>().Validate(Models);
+            new ContentTypeModelValidator<TModel, TModelAttribute>().Validate(Models);
 
             var contentTypes = GetContentTypes();
 
@@ -85,14 +85,14 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="model">The model.</param>
         /// <returns>The created content type.</returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="model" /> is <c>null</c>.</exception>
-        internal virtual TContentType CreateContentType(TContentTypeModel model)
+        internal virtual TContentType CreateContentType(TModel model)
         {
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var contentType = GetContentType();
+            var contentType = CreateContentType();
 
             contentType.Name = model.Name;
             contentType.Alias = model.Alias;
@@ -113,7 +113,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="model">The model.</param>
         /// <returns>The updated content type.</returns>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentType" />, or <paramref name="model" /> are <c>null</c>.</exception>
-        internal virtual TContentType UpdateContentType(TContentType contentType, TContentTypeModel model)
+        internal virtual TContentType UpdateContentType(TContentType contentType, TModel model)
         {
             if (contentType == null)
             {
@@ -128,7 +128,7 @@ namespace Logikfabrik.Umbraco.Jet
             contentType.Name = model.Name;
             contentType.Alias = model.Alias;
             contentType.Description = model.Description;
-            contentType.Icon = model.Icon ?? GetContentType().Icon;
+            contentType.Icon = model.Icon ?? CreateContentType().Icon;
 
             return contentType;
         }
@@ -136,14 +136,18 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// Gets the content types.
         /// </summary>
-        /// <returns>The content types.</returns>
+        /// <returns>
+        /// The content types.
+        /// </returns>
         protected abstract TContentType[] GetContentTypes();
 
         /// <summary>
-        /// Gets a content type.
+        /// Creates a content type.
         /// </summary>
-        /// <returns>A content type.</returns>
-        protected abstract TContentType GetContentType();
+        /// <returns>
+        /// The created content type.
+        /// </returns>
+        protected abstract TContentType CreateContentType();
 
         /// <summary>
         /// Gets the content type with the specified alias.
@@ -158,7 +162,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="contentType">The content type.</param>
         protected abstract void SaveContentType(TContentType contentType);
 
-        private void Synchronize(TContentTypeModel model, TContentType[] contentTypes)
+        private void Synchronize(TModel model, TContentType[] contentTypes)
         {
             if (model == null)
             {
@@ -170,7 +174,7 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(contentTypes));
             }
 
-            var contentType = Resolver.ResolveType<TContentTypeModel, TContentTypeModelAttribute, TContentType>(model, contentTypes);
+            var contentType = Resolver.ResolveType<TModel, TModelAttribute, TContentType>(model, contentTypes);
 
             contentType = contentType == null
                 ? CreateContentType(model)
@@ -193,7 +197,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="contentType">The content type.</param>
-        private void SetContentTypeId(TContentTypeModel model, TContentType contentType)
+        private void SetContentTypeId(TModel model, TContentType contentType)
         {
             if (model == null)
             {
@@ -218,7 +222,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="contentType">The content type.</param>
-        private void SetPropertyTypeId(TContentTypeModel model, TContentType contentType)
+        private void SetPropertyTypeId(TModel model, TContentType contentType)
         {
             if (contentType == null)
             {
@@ -248,7 +252,7 @@ namespace Logikfabrik.Umbraco.Jet
             }
         }
 
-        private void SynchronizePropertyTypes(TContentTypeModel model, TContentType contentType)
+        private void SynchronizePropertyTypes(TModel model, TContentType contentType)
         {
             if (model == null)
             {

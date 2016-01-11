@@ -14,7 +14,7 @@ namespace Logikfabrik.Umbraco.Jet
     using global::Umbraco.Core.Services;
 
     /// <summary>
-    /// The <see cref="TemplateSynchronizationService" /> class.
+    /// The <see cref="TemplateSynchronizationService" /> class. Adds and updates templates (Razor views).
     /// </summary>
     public class TemplateSynchronizationService : ISynchronizationService
     {
@@ -66,7 +66,7 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Gets the template layout (master).
+        /// Gets the template layout (master) for the specified template.
         /// </summary>
         /// <param name="template">The template.</param>
         /// <returns>The template layout, without extension (.cshtml).</returns>
@@ -197,9 +197,6 @@ namespace Logikfabrik.Umbraco.Jet
             }
         }
 
-        /// <summary>
-        /// Updates the templates.
-        /// </summary>
         private void UpdateTemplates()
         {
             var templates = _fileService.GetTemplates();

@@ -1,4 +1,4 @@
-﻿// <copyright file="TypeModelResolver{TTypeModel,TTypeModelAttribute}.cs" company="Logikfabrik">
+﻿// <copyright file="TypeModelResolver{TModel,TModelAttribute}.cs" company="Logikfabrik">
 //   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -9,21 +9,22 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Linq;
 
     /// <summary>
-    /// The <see cref="TypeModelResolver{TTypeModel,TTypeModelAttribute}"/> class.
+    /// The <see cref="TypeModelResolver{TModel,TModelAttribute}" /> class.
     /// </summary>
-    /// <typeparam name="TTypeModel">The <see cref="TypeModel{T}"/> type.</typeparam>
-    /// <typeparam name="TTypeModelAttribute">The <see cref="TypeModelAttribute"/> type.</typeparam>
-    public class TypeModelResolver<TTypeModel, TTypeModelAttribute>
-        where TTypeModel : TypeModel<TTypeModelAttribute>
-        where TTypeModelAttribute : TypeModelAttribute
+    /// <typeparam name="TModel">The <see cref="TypeModel{T}" /> type.</typeparam>
+    /// <typeparam name="TModelAttribute">The <see cref="TypeModelAttribute" /> type.</typeparam>
+    public class TypeModelResolver<TModel, TModelAttribute>
+        where TModel : TypeModel<TModelAttribute>
+        where TModelAttribute : TypeModelAttribute
     {
         /// <summary>
-        /// Resolves the type models by the specified model types.
+        /// Resolves models using the specified model types.
         /// </summary>
         /// <param name="modelTypes">The model types.</param>
         /// <param name="models">The type models.</param>
-        /// <returns>The resolved type models.</returns>
-        public IEnumerable<TTypeModel> ResolveByModelTypes(Type[] modelTypes, TTypeModel[] models)
+        /// <returns>The resolved models.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="modelTypes" />, or <paramref name="models" /> are <c>null</c>.</exception>
+        public IEnumerable<TModel> ResolveByModelTypes(Type[] modelTypes, TModel[] models)
         {
             if (modelTypes == null)
             {
@@ -38,13 +39,7 @@ namespace Logikfabrik.Umbraco.Jet
             return modelTypes.SelectMany(modelType => ResolveByModelType(modelType, models)).Distinct();
         }
 
-        /// <summary>
-        /// Resolves the type models by the specified model type.
-        /// </summary>
-        /// <param name="modelType">The model type.</param>
-        /// <param name="models">The type models.</param>
-        /// <returns>The resolved type models.</returns>
-        public IEnumerable<TTypeModel> ResolveByModelType(Type modelType, TTypeModel[] models)
+        private IEnumerable<TModel> ResolveByModelType(Type modelType, TModel[] models)
         {
             if (modelType == null)
             {

@@ -1,4 +1,4 @@
-﻿// <copyright file="ComposableContentTypeModelSynchronizationService{TComposableContentTypeModel,TComposableContentTypeAttribute,TContentType}.cs" company="Logikfabrik">
+﻿// <copyright file="ComposableContentTypeModelSynchronizationService{TModel,TModelAttribute,TContentType}.cs" company="Logikfabrik">
 //   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -11,18 +11,18 @@ namespace Logikfabrik.Umbraco.Jet
     using global::Umbraco.Core.Models;
 
     /// <summary>
-    /// The <see cref="ComposableContentTypeModelSynchronizationService{TComposableContentTypeModel,TComposableContentTypeAttribute,TContentType}" /> class.
+    /// The <see cref="ComposableContentTypeModelSynchronizationService{TModel,TModelAttribute,TContentType}" /> class.
     /// </summary>
-    /// <typeparam name="TComposableContentTypeModel">The <see cref="ComposableContentTypeModel{T}" /> type.</typeparam>
-    /// <typeparam name="TComposableContentTypeAttribute">The <see cref="ComposableContentTypeAttribute" /> type.</typeparam>
+    /// <typeparam name="TModel">The <see cref="ComposableContentTypeModel{T}" /> type.</typeparam>
+    /// <typeparam name="TModelAttribute">The <see cref="ComposableContentTypeAttribute" /> type.</typeparam>
     /// <typeparam name="TContentType">The <see cref="IContentTypeBase" /> type.</typeparam>
-    public abstract class ComposableContentTypeModelSynchronizationService<TComposableContentTypeModel, TComposableContentTypeAttribute, TContentType> : ContentTypeModelSynchronizationService<TComposableContentTypeModel, TComposableContentTypeAttribute, TContentType>
-        where TComposableContentTypeModel : ComposableContentTypeModel<TComposableContentTypeAttribute>
-        where TComposableContentTypeAttribute : ComposableContentTypeAttribute
+    public abstract class ComposableContentTypeModelSynchronizationService<TModel, TModelAttribute, TContentType> : ContentTypeModelSynchronizationService<TModel, TModelAttribute, TContentType>
+        where TModel : ComposableContentTypeModel<TModelAttribute>
+        where TModelAttribute : ComposableContentTypeAttribute
         where TContentType : IContentTypeBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ComposableContentTypeModelSynchronizationService{TComposableContentTypeModel,TComposableContentTypeAttribute,TContentType}" /> class.
+        /// Initializes a new instance of the <see cref="ComposableContentTypeModelSynchronizationService{TModel,TModelAttribute,TContentType}" /> class.
         /// </summary>
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="typeRepository">The type repository.</param>
@@ -52,7 +52,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <returns>
         /// The created content type.
         /// </returns>
-        internal override TContentType CreateContentType(TComposableContentTypeModel model)
+        internal override TContentType CreateContentType(TModel model)
         {
             var contentType = base.CreateContentType(model);
 
@@ -74,11 +74,11 @@ namespace Logikfabrik.Umbraco.Jet
         /// <returns>
         /// The updated content type.
         /// </returns>
-        internal override TContentType UpdateContentType(TContentType contentType, TComposableContentTypeModel model)
+        internal override TContentType UpdateContentType(TContentType contentType, TModel model)
         {
             contentType = base.UpdateContentType(contentType, model);
 
-            var defaultContentType = GetContentType();
+            var defaultContentType = CreateContentType();
 
             contentType.AllowedAsRoot = model.AllowedAsRoot;
             contentType.Thumbnail = !string.IsNullOrWhiteSpace(model.Thumbnail) ? model.Thumbnail : defaultContentType.Thumbnail;
@@ -87,11 +87,11 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Gets a content type model for the specified model type.
+        /// Gets a model for the specified model type.
         /// </summary>
         /// <param name="modelType">The model type.</param>
-        /// <returns>A content type model for the specified model type.</returns>
-        protected abstract TComposableContentTypeModel GetContentTypeModel(Type modelType);
+        /// <returns>A model.</returns>
+        protected abstract TModel GetModel(Type modelType);
 
         private void SetInheritance(TContentType[] contentTypes)
         {
@@ -100,25 +100,25 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(contentTypes));
             }
 
-            Func<TComposableContentTypeModel, bool> hasParent = type => type.ParentNodeType != null;
+            Func<TModel, bool> hasParent = type => type.ParentNodeType != null;
 
             foreach (var model in Models.Where(hasParent))
             {
-                var contentType = Resolver.ResolveType<TComposableContentTypeModel, TComposableContentTypeAttribute, TContentType>(model, contentTypes) as IContentTypeComposition;
+                var contentType = Resolver.ResolveType<TModel, TModelAttribute, TContentType>(model, contentTypes) as IContentTypeComposition;
 
                 if (contentType == null)
                 {
                     continue;
                 }
 
-                var parentContentTypeModel = GetContentTypeModel(model.ParentNodeType);
+                var parentContentTypeModel = GetModel(model.ParentNodeType);
 
                 if (parentContentTypeModel == null)
                 {
                     continue;
                 }
 
-                var parentContentType = Resolver.ResolveType<TComposableContentTypeModel, TComposableContentTypeAttribute, TContentType>(parentContentTypeModel, contentTypes) as IContentTypeComposition;
+                var parentContentType = Resolver.ResolveType<TModel, TModelAttribute, TContentType>(parentContentTypeModel, contentTypes) as IContentTypeComposition;
 
                 if (parentContentType == null)
                 {
@@ -143,7 +143,6 @@ namespace Logikfabrik.Umbraco.Jet
         /// Sets the composition node types.
         /// </summary>
         /// <param name="contentTypes">The content types.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypes" /> is <c>null</c>.</exception>
         private void SetCompositionNodeTypes(TContentType[] contentTypes)
         {
             if (contentTypes == null)
@@ -159,14 +158,14 @@ namespace Logikfabrik.Umbraco.Jet
                     continue;
                 }
 
-                var contentType = Resolver.ResolveType<TComposableContentTypeModel, TComposableContentTypeAttribute, TContentType>(contentTypeModel, contentTypes) as IContentTypeComposition;
+                var contentType = Resolver.ResolveType<TModel, TModelAttribute, TContentType>(contentTypeModel, contentTypes) as IContentTypeComposition;
 
                 if (contentType == null)
                 {
                     continue;
                 }
 
-                var compositionContentTypes = contentTypeModel.CompositionNodeTypes.Select(type => Resolver.ResolveType<TComposableContentTypeModel, TComposableContentTypeAttribute, TContentType>(GetContentTypeModel(type), contentTypes) as IContentTypeComposition).Where(ct => ct != null).ToArray();
+                var compositionContentTypes = contentTypeModel.CompositionNodeTypes.Select(type => Resolver.ResolveType<TModel, TModelAttribute, TContentType>(GetModel(type), contentTypes) as IContentTypeComposition).Where(ct => ct != null).ToArray();
 
                 var types = new List<IContentTypeComposition>(compositionContentTypes);
 
@@ -201,7 +200,6 @@ namespace Logikfabrik.Umbraco.Jet
         /// Sets the allowed content types.
         /// </summary>
         /// <param name="contentTypes">The content types.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypes" /> is <c>null</c>.</exception>
         private void SetAllowedContentTypes(TContentType[] contentTypes)
         {
             if (contentTypes == null)
@@ -211,7 +209,7 @@ namespace Logikfabrik.Umbraco.Jet
 
             foreach (var contentTypeModel in Models.Where(ctm => ctm.AllowedChildNodeTypes.Any()))
             {
-                var contentType = Resolver.ResolveType<TComposableContentTypeModel, TComposableContentTypeAttribute, TContentType>(contentTypeModel, contentTypes);
+                var contentType = Resolver.ResolveType<TModel, TModelAttribute, TContentType>(contentTypeModel, contentTypes);
 
                 if (contentType == null)
                 {
@@ -230,7 +228,6 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="contentTypes">The content types.</param>
         /// <param name="allowedChildNodeTypes">The allowed child node types.</param>
         /// <returns>The allowed child node content types.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypes" />, <paramref name="allowedChildNodeTypes" /> are <c>null</c>.</exception>
         private IEnumerable<ContentTypeSort> GetAllowedChildNodeContentTypes(
             TContentType[] contentTypes,
             IEnumerable<Type> allowedChildNodeTypes)
@@ -247,11 +244,11 @@ namespace Logikfabrik.Umbraco.Jet
 
             var childNodeContentTypes = new List<ContentTypeSort>();
 
-            var typeModels = new TypeModelResolver<TComposableContentTypeModel, TComposableContentTypeAttribute>().ResolveByModelTypes(allowedChildNodeTypes.ToArray(), Models);
+            var typeModels = new TypeModelResolver<TModel, TModelAttribute>().ResolveByModelTypes(allowedChildNodeTypes.ToArray(), Models);
 
             foreach (var typeModel in typeModels)
             {
-                var contentType = Resolver.ResolveType<TComposableContentTypeModel, TComposableContentTypeAttribute, TContentType>(typeModel, contentTypes);
+                var contentType = Resolver.ResolveType<TModel, TModelAttribute, TContentType>(typeModel, contentTypes);
 
                 if (contentType == null)
                 {

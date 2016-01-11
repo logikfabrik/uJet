@@ -63,11 +63,9 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Gets the content type models.
+        /// Gets the models.
         /// </summary>
-        /// <value>
-        /// The content type models.
-        /// </value>
+        /// <value>The models.</value>
         protected override DocumentType[] Models => Resolver.DocumentTypes.ToArray();
 
         /// <summary>
@@ -99,8 +97,8 @@ namespace Logikfabrik.Umbraco.Jet
         {
             contentType = base.UpdateContentType(contentType, model);
 
-            SetAllowedTemplates((IContentType)contentType, model);
-            SetDefaultTemplate((IContentType)contentType, model);
+            SetAllowedTemplates(contentType, model);
+            SetDefaultTemplate(contentType, model);
 
             return contentType;
         }
@@ -117,12 +115,12 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Gets a content type.
+        /// Creates a content type.
         /// </summary>
         /// <returns>
-        /// A content type.
+        /// The created content type.
         /// </returns>
-        protected override IContentType GetContentType()
+        protected override IContentType CreateContentType()
         {
             return new global::Umbraco.Core.Models.ContentType(-1);
         }
@@ -155,7 +153,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <returns>
         /// A content type model for the specified model type.
         /// </returns>
-        protected override DocumentType GetContentTypeModel(Type modelType)
+        protected override DocumentType GetModel(Type modelType)
         {
             return Models.SingleOrDefault(ctm => ctm.ModelType == modelType);
         }

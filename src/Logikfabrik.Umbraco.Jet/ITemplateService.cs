@@ -13,7 +13,7 @@ namespace Logikfabrik.Umbraco.Jet
     public interface ITemplateService
     {
         /// <summary>
-        /// Gets the template paths for templates in the view folder.
+        /// Gets the template paths for templates in the views folder.
         /// </summary>
         /// <value>
         /// The template paths.
@@ -24,7 +24,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// Gets the template content.
         /// </summary>
         /// <param name="templatePath">The template path.</param>
-        /// <returns>The content of the template.</returns>
+        /// <returns>The template content.</returns>
         string GetContent(string templatePath);
 
         /// <summary>

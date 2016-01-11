@@ -1,4 +1,4 @@
-﻿// <copyright file="ContentTypeModelValidator{T1,T2}.cs" company="Logikfabrik">
+﻿// <copyright file="ContentTypeModelValidator{TModel,TModelAttribute}.cs" company="Logikfabrik">
 //   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -9,20 +9,20 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Linq;
 
     /// <summary>
-    /// The <see cref="ContentTypeModelValidator{T1,T2}" /> class.
+    /// The <see cref="ContentTypeModelValidator{TModel,TModelAttribute}" /> class.
     /// </summary>
-    /// <typeparam name="T1">The <see cref="ContentTypeModel{T}" /> type.</typeparam>
-    /// <typeparam name="T2">The <see cref="ContentTypeModelAttribute" /> type.</typeparam>
-    public class ContentTypeModelValidator<T1, T2> : TypeModelValidator<T1, T2>
-        where T1 : ContentTypeModel<T2>
-        where T2 : ContentTypeModelAttribute
+    /// <typeparam name="TModel">The <see cref="ContentTypeModel{T}" /> type.</typeparam>
+    /// <typeparam name="TModelAttribute">The <see cref="ContentTypeModelAttribute" /> type.</typeparam>
+    public class ContentTypeModelValidator<TModel, TModelAttribute> : TypeModelValidator<TModel, TModelAttribute>
+        where TModel : ContentTypeModel<TModelAttribute>
+        where TModelAttribute : ContentTypeModelAttribute
     {
         /// <summary>
         /// Validates the specified models.
         /// </summary>
         /// <param name="models">The models.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="models" /> is <c>null</c>.</exception>
-        public void Validate(T1[] models)
+        public override void Validate(TModel[] models)
         {
             if (models == null)
             {
@@ -33,7 +33,7 @@ namespace Logikfabrik.Umbraco.Jet
             ValidateByAlias(models);
         }
 
-        private static void ValidateByAlias(T1[] models)
+        private static void ValidateByAlias(TModel[] models)
         {
             var set = new HashSet<string>();
 

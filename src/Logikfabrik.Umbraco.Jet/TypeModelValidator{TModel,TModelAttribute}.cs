@@ -1,4 +1,4 @@
-﻿// <copyright file="TypeModelValidator{TTypeModel,TTypeModelAttribute}.cs" company="Logikfabrik">
+﻿// <copyright file="TypeModelValidator{TModel,TModelAttribute}.cs" company="Logikfabrik">
 //   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -9,19 +9,25 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Linq;
 
     /// <summary>
-    /// The <see cref="TypeModelValidator{TTypeModel,TTypeModelAttribute}"/> class.
+    /// The <see cref="TypeModelValidator{TModel,TModelAttribute}" /> class.
     /// </summary>
-    /// <typeparam name="TTypeModel">The <see cref="TypeModel{T}"/> type.</typeparam>
-    /// <typeparam name="TTypeModelAttribute">The <see cref="TypeModelAttribute"/> type.</typeparam>
-    public abstract class TypeModelValidator<TTypeModel, TTypeModelAttribute>
-        where TTypeModel : TypeModel<TTypeModelAttribute>
-        where TTypeModelAttribute : TypeModelAttribute
+    /// <typeparam name="TModel">The <see cref="TypeModel{T}"/> type.</typeparam>
+    /// <typeparam name="TModelAttribute">The <see cref="TypeModelAttribute"/> type.</typeparam>
+    public abstract class TypeModelValidator<TModel, TModelAttribute>
+        where TModel : TypeModel<TModelAttribute>
+        where TModelAttribute : TypeModelAttribute
     {
+        /// <summary>
+        /// Validates the specified models.
+        /// </summary>
+        /// <param name="models">The models.</param>
+        public abstract void Validate(TModel[] models);
+
         /// <summary>
         /// Validates the specified models by identifier.
         /// </summary>
         /// <param name="models">The models.</param>
-        protected void ValidateById(TTypeModel[] models)
+        protected void ValidateById(TModel[] models)
         {
             var set = new HashSet<Guid>();
 

@@ -51,11 +51,9 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Gets the content type models.
+        /// Gets the models.
         /// </summary>
-        /// <value>
-        /// The content type models.
-        /// </value>
+        /// <value>The models.</value>
         protected override MediaType[] Models => Resolver.MediaTypes.ToArray();
 
         /// <summary>
@@ -70,12 +68,12 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Gets a content type.
+        /// Creates a content type.
         /// </summary>
         /// <returns>
-        /// A content type.
+        /// The created content type.
         /// </returns>
-        protected override IMediaType GetContentType()
+        protected override IMediaType CreateContentType()
         {
             return new global::Umbraco.Core.Models.MediaType(-1);
         }
@@ -102,13 +100,11 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Gets a content type model for the specified model type.
+        /// Gets a model for the specified model type.
         /// </summary>
         /// <param name="modelType">The model type.</param>
-        /// <returns>
-        /// A content type model for the specified model type.
-        /// </returns>
-        protected override MediaType GetContentTypeModel(Type modelType)
+        /// <returns>A model.</returns>
+        protected override MediaType GetModel(Type modelType)
         {
             return Models.SingleOrDefault(ctm => ctm.ModelType == modelType);
         }

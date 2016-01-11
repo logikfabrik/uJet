@@ -51,11 +51,9 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Gets the content type models.
+        /// Gets the models.
         /// </summary>
-        /// <value>
-        /// The content type models.
-        /// </value>
+        /// <value>The models.</value>
         protected override MemberType[] Models => Resolver.MemberTypes.ToArray();
 
         /// <summary>
@@ -70,12 +68,12 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Gets a content type.
+        /// Creates a content type.
         /// </summary>
         /// <returns>
-        /// A content type.
+        /// The created content type.
         /// </returns>
-        protected override IMemberType GetContentType()
+        protected override IMemberType CreateContentType()
         {
             return new global::Umbraco.Core.Models.MemberType(-1);
         }
