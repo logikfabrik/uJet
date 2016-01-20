@@ -5,7 +5,6 @@
 namespace Logikfabrik.Umbraco.Jet.Web.Mvc
 {
     using System;
-    using System.Linq;
     using System.Web.Mvc;
     using Data;
     using global::Umbraco.Web.Models;

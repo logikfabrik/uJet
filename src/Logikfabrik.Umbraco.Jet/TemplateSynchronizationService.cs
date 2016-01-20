@@ -2,6 +2,8 @@
 //   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
+using Logikfabrik.Umbraco.Jet.Extensions;
+
 namespace Logikfabrik.Umbraco.Jet
 {
     using System;
@@ -9,28 +11,17 @@ namespace Logikfabrik.Umbraco.Jet
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
-    using global::Umbraco.Core;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
 
     /// <summary>
     /// The <see cref="TemplateSynchronizationService" /> class. Adds and updates templates (Razor views).
     /// </summary>
-    public class TemplateSynchronizationService : ISynchronizationService
+    public class TemplateSynchronizationService : ISynchronizer
     {
         private readonly IFileService _fileService;
         private readonly ITemplateService _templateService;
         private readonly Regex _layoutRegex = new Regex("(?s:(?<=@{.*Layout\\s*=\\s*\").*(?=.cshtml\";.+}))");
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TemplateSynchronizationService" /> class.
-        /// </summary>
-        public TemplateSynchronizationService()
-            : this(
-                ApplicationContext.Current.Services.FileService,
-                TemplateService.Instance)
-        {
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TemplateSynchronizationService" /> class.
@@ -59,7 +50,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// Synchronizes this instance.
         /// </summary>
-        public void Synchronize()
+        public void Run()
         {
             AddNewTemplates();
             UpdateTemplates();

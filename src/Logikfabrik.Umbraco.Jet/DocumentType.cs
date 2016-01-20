@@ -9,7 +9,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Linq;
 
     /// <summary>
-    /// The <see cref="DocumentType" /> class. The model type for document types.
+    /// The <see cref="DocumentType" /> class.
     /// </summary>
     public class DocumentType : ComposableContentTypeModel<DocumentTypeAttribute>
     {

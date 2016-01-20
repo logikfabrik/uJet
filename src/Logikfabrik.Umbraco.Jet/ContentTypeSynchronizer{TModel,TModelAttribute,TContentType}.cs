@@ -1,6 +1,8 @@
-﻿// <copyright file="ContentTypeModelSynchronizationService{TModel,TModelAttribute,TContentType}.cs" company="Logikfabrik">
+﻿// <copyright file="ContentTypeSynchronizer{TModel,TModelAttribute,TContentType}.cs" company="Logikfabrik">
 //   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
+
+using Logikfabrik.Umbraco.Jet.Extensions;
 
 namespace Logikfabrik.Umbraco.Jet
 {
@@ -11,47 +13,37 @@ namespace Logikfabrik.Umbraco.Jet
     using Mappings;
 
     /// <summary>
-    /// The <see cref="ContentTypeModelSynchronizationService{TModel,TModelAttribute,TContentType}" /> class.
+    /// The <see cref="ContentTypeSynchronizer{TModel, TModelAttribute, TContentType}" /> class.
     /// </summary>
-    /// <typeparam name="TModel">The <see cref="ContentTypeModel{T}" /> type.</typeparam>
-    /// <typeparam name="TModelAttribute">The <see cref="ContentTypeModelAttribute" /> type.</typeparam>
-    /// <typeparam name="TContentType">The The <see cref="IContentTypeBase" /> type.</typeparam>
-    public abstract class ContentTypeModelSynchronizationService<TModel, TModelAttribute, TContentType> : ISynchronizationService
+    /// <typeparam name="TModel">The model type.</typeparam>
+    /// <typeparam name="TModelAttribute">The attribute type.</typeparam>
+    /// <typeparam name="TContentType">The content type.</typeparam>
+    public abstract class ContentTypeSynchronizer<TModel, TModelAttribute, TContentType> : ISynchronizer
         where TModel : ContentTypeModel<TModelAttribute>
         where TModelAttribute : ContentTypeModelAttribute
         where TContentType : IContentTypeBase
     {
         private readonly ITypeRepository _typeRepository;
+        private readonly ContentTypeFinder<TModel, TModelAttribute, TContentType> _contentTypeFinder;
+        private readonly PropertyTypeFinder _propertyTypeFinder;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContentTypeModelSynchronizationService{TModel,TModelAttribute,TContentType}" /> class.
+        /// Initializes a new instance of the <see cref="ContentTypeSynchronizer{TModel, TModelAttribute, TContentType}" /> class.
         /// </summary>
-        /// <param name="typeResolver">The type resolver.</param>
         /// <param name="typeRepository">The type repository.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="typeResolver" />, or <paramref name="typeRepository" /> are <c>null</c>.</exception>
-        protected ContentTypeModelSynchronizationService(ITypeResolver typeResolver, ITypeRepository typeRepository)
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="typeRepository" /> is <c>null</c>.</exception>
+        protected ContentTypeSynchronizer(ITypeRepository typeRepository)
         {
-            if (typeResolver == null)
-            {
-                throw new ArgumentNullException(nameof(typeResolver));
-            }
-
             if (typeRepository == null)
             {
                 throw new ArgumentNullException(nameof(typeRepository));
             }
 
-            Resolver = typeResolver;
             _typeRepository = typeRepository;
-        }
 
-        /// <summary>
-        /// Gets the type resolver.
-        /// </summary>
-        /// <value>
-        /// The type resolver.
-        /// </value>
-        protected ITypeResolver Resolver { get; }
+            _contentTypeFinder = new ContentTypeFinder<TModel, TModelAttribute, TContentType>(typeRepository);
+            _propertyTypeFinder = new PropertyTypeFinder(typeRepository);
+        }
 
         /// <summary>
         /// Gets the models.
@@ -62,7 +54,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// Synchronizes this instance.
         /// </summary>
-        public virtual void Synchronize()
+        public virtual void Run()
         {
             if (!Models.Any())
             {
@@ -80,18 +72,12 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Creates a content type for the specified model.
+        /// Creates a content type.
         /// </summary>
-        /// <param name="model">The model.</param>
+        /// <param name="model">The model to use when creating the content type.</param>
         /// <returns>The created content type.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="model" /> is <c>null</c>.</exception>
         internal virtual TContentType CreateContentType(TModel model)
         {
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
             var contentType = CreateContentType();
 
             contentType.Name = model.Name;
@@ -107,24 +93,13 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Updates the content type for the specified model.
+        /// Updates the specified content type.
         /// </summary>
-        /// <param name="contentType">The content type.</param>
-        /// <param name="model">The model.</param>
+        /// <param name="contentType">The content type to update.</param>
+        /// <param name="model">The model to use when updating the content type.</param>
         /// <returns>The updated content type.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentType" />, or <paramref name="model" /> are <c>null</c>.</exception>
         internal virtual TContentType UpdateContentType(TContentType contentType, TModel model)
         {
-            if (contentType == null)
-            {
-                throw new ArgumentNullException(nameof(contentType));
-            }
-
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
             contentType.Name = model.Name;
             contentType.Alias = model.Alias;
             contentType.Description = model.Description;
@@ -150,13 +125,6 @@ namespace Logikfabrik.Umbraco.Jet
         protected abstract TContentType CreateContentType();
 
         /// <summary>
-        /// Gets the content type with the specified alias.
-        /// </summary>
-        /// <param name="alias">The alias.</param>
-        /// <returns>The content type.</returns>
-        protected abstract TContentType GetContentType(string alias);
-
-        /// <summary>
         /// Saves the specified content type.
         /// </summary>
         /// <param name="contentType">The content type.</param>
@@ -164,17 +132,7 @@ namespace Logikfabrik.Umbraco.Jet
 
         private void Synchronize(TModel model, TContentType[] contentTypes)
         {
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
-            if (contentTypes == null)
-            {
-                throw new ArgumentNullException(nameof(contentTypes));
-            }
-
-            var contentType = Resolver.ResolveType<TModel, TModelAttribute, TContentType>(model, contentTypes);
+            var contentType = _contentTypeFinder.Find(model, contentTypes).SingleOrDefault();
 
             contentType = contentType == null
                 ? CreateContentType(model)
@@ -185,7 +143,7 @@ namespace Logikfabrik.Umbraco.Jet
             SaveContentType(contentType);
 
             // We get the content type once more to refresh it after saving it.
-            contentType = GetContentType(contentType.Alias);
+            contentType = GetContentTypes().SingleOrDefault(ct => ct.Alias.Equals(contentType.Alias, StringComparison.InvariantCultureIgnoreCase));
 
             // Set/update tracking.
             SetContentTypeId(model, contentType);
@@ -199,16 +157,6 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="contentType">The content type.</param>
         private void SetContentTypeId(TModel model, TContentType contentType)
         {
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
-            if (contentType == null)
-            {
-                throw new ArgumentNullException(nameof(contentType));
-            }
-
             if (!model.Id.HasValue)
             {
                 return;
@@ -224,17 +172,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="contentType">The content type.</param>
         private void SetPropertyTypeId(TModel model, TContentType contentType)
         {
-            if (contentType == null)
-            {
-                throw new ArgumentNullException(nameof(contentType));
-            }
-
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
-            var propertyTypes = contentType.PropertyTypes.ToArray();
+            var propertyTypes = contentType.PropertyTypes?.ToArray() ?? new global::Umbraco.Core.Models.PropertyType[] { };
 
             foreach (var property in model.Properties)
             {
@@ -243,7 +181,7 @@ namespace Logikfabrik.Umbraco.Jet
                     continue;
                 }
 
-                var propertyType = Resolver.ResolveType(property, propertyTypes);
+                var propertyType = _propertyTypeFinder.Find(property, propertyTypes).SingleOrDefault();
 
                 if (propertyType != null)
                 {
@@ -254,35 +192,15 @@ namespace Logikfabrik.Umbraco.Jet
 
         private void SynchronizePropertyTypes(TModel model, TContentType contentType)
         {
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
-            if (contentType == null)
-            {
-                throw new ArgumentNullException(nameof(contentType));
-            }
-
             foreach (var property in model.Properties)
             {
                 SynchronizePropertyType(contentType, property);
             }
         }
 
-        private void SynchronizePropertyType(TContentType contentType, TypeProperty propertyTypeModel)
+        private void SynchronizePropertyType(TContentType contentType, PropertyType propertyTypeModel)
         {
-            if (contentType == null)
-            {
-                throw new ArgumentNullException(nameof(contentType));
-            }
-
-            if (propertyTypeModel == null)
-            {
-                throw new ArgumentNullException(nameof(propertyTypeModel));
-            }
-
-            var propertyType = Resolver.ResolveType(propertyTypeModel, contentType.PropertyTypes.ToArray());
+            var propertyType = _propertyTypeFinder.Find(propertyTypeModel, contentType.PropertyTypes.ToArray()).SingleOrDefault();
 
             if (propertyType == null)
             {
@@ -299,18 +217,8 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="contentType">The content type.</param>
-        private void CreatePropertyType(TypeProperty model, TContentType contentType)
+        private void CreatePropertyType(PropertyType model, TContentType contentType)
         {
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
-            if (contentType == null)
-            {
-                throw new ArgumentNullException(nameof(contentType));
-            }
-
             var definition = GetDataTypeDefinition(model);
 
             var propertyType = new global::Umbraco.Core.Models.PropertyType(definition)
@@ -342,41 +250,26 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="contentType">The content type.</param>
         /// <param name="propertyType">The property type.</param>
-        /// <param name="propertyTypeModel">The property type model.</param>
-        private void UpdatePropertyType(TContentType contentType, global::Umbraco.Core.Models.PropertyType propertyType, TypeProperty propertyTypeModel)
+        /// <param name="model">The property type model.</param>
+        private void UpdatePropertyType(TContentType contentType, global::Umbraco.Core.Models.PropertyType propertyType, PropertyType model)
         {
-            if (contentType == null)
+            if (!contentType.PropertyGroups.Contains(model.PropertyGroup) || (contentType.PropertyGroups.Contains(model.PropertyGroup) && !contentType.PropertyGroups[model.PropertyGroup].PropertyTypes.Contains(model.Alias)))
             {
-                throw new ArgumentNullException(nameof(contentType));
+                contentType.MovePropertyType(model.Alias, model.PropertyGroup);
             }
 
-            if (propertyType == null)
+            propertyType.Name = model.Name;
+            propertyType.Alias = model.Alias;
+            propertyType.Mandatory = model.Mandatory;
+            propertyType.Description = model.Description;
+            propertyType.ValidationRegExp = model.RegularExpression;
+
+            if (model.SortOrder.HasValue)
             {
-                throw new ArgumentNullException(nameof(propertyType));
+                propertyType.SortOrder = model.SortOrder.Value;
             }
 
-            if (propertyTypeModel == null)
-            {
-                throw new ArgumentNullException(nameof(propertyTypeModel));
-            }
-
-            if (!contentType.PropertyGroups.Contains(propertyTypeModel.PropertyGroup) || (contentType.PropertyGroups.Contains(propertyTypeModel.PropertyGroup) && !contentType.PropertyGroups[propertyTypeModel.PropertyGroup].PropertyTypes.Contains(propertyTypeModel.Alias)))
-            {
-                contentType.MovePropertyType(propertyTypeModel.Alias, propertyTypeModel.PropertyGroup);
-            }
-
-            propertyType.Name = propertyTypeModel.Name;
-            propertyType.Alias = propertyTypeModel.Alias;
-            propertyType.Mandatory = propertyTypeModel.Mandatory;
-            propertyType.Description = propertyTypeModel.Description;
-            propertyType.ValidationRegExp = propertyTypeModel.RegularExpression;
-
-            if (propertyTypeModel.SortOrder.HasValue)
-            {
-                propertyType.SortOrder = propertyTypeModel.SortOrder.Value;
-            }
-
-            var definition = GetDataTypeDefinition(propertyTypeModel);
+            var definition = GetDataTypeDefinition(model);
 
             if (propertyType.DataTypeDefinitionId != definition.Id)
             {
@@ -389,7 +282,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="model">The model.</param>
         /// <returns>The data type definition.</returns>
-        private IDataTypeDefinition GetDataTypeDefinition(TypeProperty model)
+        private IDataTypeDefinition GetDataTypeDefinition(PropertyType model)
         {
             if (model == null)
             {

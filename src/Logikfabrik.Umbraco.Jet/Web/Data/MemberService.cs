@@ -48,7 +48,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         public T GetMember<T>(int id)
             where T : class, new()
         {
-            if (!typeof(T).IsMemberType())
+            if (!typeof(T).IsModelType<MemberTypeAttribute>())
             {
                 throw new ArgumentException($"Type {typeof(T)} is not a member model type.");
             }
@@ -72,7 +72,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
                 throw new ArgumentNullException(nameof(content));
             }
 
-            if (!typeof(T).IsMemberType())
+            if (!typeof(T).IsModelType<MemberTypeAttribute>())
             {
                 throw new ArgumentException($"Type {typeof(T)} is not a member model type.");
             }
@@ -100,7 +100,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
                 throw new ArgumentNullException(nameof(memberModelType));
             }
 
-            if (!memberModelType.IsMemberType())
+            if (!memberModelType.IsModelType<MemberTypeAttribute>())
             {
                 throw new ArgumentException($"Type {memberModelType} is not a member model type.", nameof(memberModelType));
             }

@@ -13,7 +13,7 @@ namespace Logikfabrik.Umbraco.Jet
     /// <summary>
     /// The <see cref="ComposableContentTypeModel{T}" /> class.
     /// </summary>
-    /// <typeparam name="T">The <see cref="ComposableContentTypeAttribute" /> type.</typeparam>
+    /// <typeparam name="T">The attribute type.</typeparam>
     public abstract class ComposableContentTypeModel<T> : ContentTypeModel<T>
         where T : ComposableContentTypeAttribute
     {
@@ -49,7 +49,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The allowed child node types.
         /// </value>
-        public IEnumerable<Type> AllowedChildNodeTypes => Attribute.AllowedChildNodeTypes?.Distinct() ?? new Type[] { };
+        public Type[] AllowedChildNodeTypes => Attribute.AllowedChildNodeTypes?.Distinct().ToArray() ?? new Type[] { };
 
         /// <summary>
         /// Gets the composition node types.
@@ -57,7 +57,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The composition node types.
         /// </value>
-        public IEnumerable<Type> CompositionNodeTypes => Attribute.CompositionNodeTypes?.Distinct() ?? new Type[] { };
+        public Type[] CompositionNodeTypes => Attribute.CompositionNodeTypes?.Distinct().ToArray() ?? new Type[] { };
 
         /// <summary>
         /// Gets the parent node type.
@@ -71,11 +71,11 @@ namespace Logikfabrik.Umbraco.Jet
         /// Gets the properties.
         /// </summary>
         /// <returns>The properties.</returns>
-        protected override IEnumerable<TypeProperty> GetProperties()
+        protected override IEnumerable<PropertyType> GetProperties()
         {
             var properties = GetInheritance()[ModelType].SelectMany(type => type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly));
 
-            return from property in properties where IsValidProperty(property) select new TypeProperty(property);
+            return properties.Where(IsValidProperty).Select(property => new PropertyType(property));
         }
 
         /// <summary>

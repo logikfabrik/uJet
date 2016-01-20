@@ -11,7 +11,7 @@ namespace Logikfabrik.Umbraco.Jet
     /// <summary>
     /// The <see cref="TypeModel{T}" /> class.
     /// </summary>
-    /// <typeparam name="T">The <see cref="TypeModelAttribute" /> type.</typeparam>
+    /// <typeparam name="T">The attribute type.</typeparam>
     public abstract class TypeModel<T>
         where T : TypeModelAttribute
     {
@@ -20,6 +20,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="modelType">The model type.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="modelType" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentException">Thrown if <paramref name="modelType" /> is not a model type.</exception>
         protected TypeModel(Type modelType)
         {
             if (modelType == null)

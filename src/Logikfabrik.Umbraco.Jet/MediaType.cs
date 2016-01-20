@@ -7,7 +7,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
 
     /// <summary>
-    /// The <see cref="MediaType" /> class. The model type for media types.
+    /// The <see cref="MediaType" /> class.
     /// </summary>
     public class MediaType : ComposableContentTypeModel<MediaTypeAttribute>
     {

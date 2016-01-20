@@ -13,49 +13,49 @@ namespace Logikfabrik.Umbraco.Jet.Test.Extensions
         [TestMethod]
         public void IsDocumentType()
         {
-            Assert.IsTrue(typeof(Models.DocumentType).IsDocumentType());
+            Assert.IsTrue(typeof(Models.DocumentType).IsModelType<DocumentTypeAttribute>());
         }
 
         [TestMethod]
         public void IsNotDocumentType()
         {
-            Assert.IsFalse(typeof(object).IsDocumentType());
+            Assert.IsFalse(typeof(object).IsModelType<DocumentTypeAttribute>());
         }
 
         [TestMethod]
         public void IsMediaType()
         {
-            Assert.IsTrue(typeof(Models.MediaType).IsMediaType());
+            Assert.IsTrue(typeof(Models.MediaType).IsModelType<MediaTypeAttribute>());
         }
 
         [TestMethod]
         public void IsNotMediaType()
         {
-            Assert.IsFalse(typeof(object).IsMediaType());
+            Assert.IsFalse(typeof(object).IsModelType<MediaTypeAttribute>());
         }
 
         [TestMethod]
         public void IsDataType()
         {
-            Assert.IsTrue(typeof(Models.DataType).IsDataType());
+            Assert.IsTrue(typeof(Models.DataType).IsModelType<DataTypeAttribute>());
         }
 
         [TestMethod]
         public void IsNotDataType()
         {
-            Assert.IsFalse(typeof(object).IsDataType());
+            Assert.IsFalse(typeof(object).IsModelType<DataTypeAttribute>());
         }
 
         [TestMethod]
         public void IsMemberType()
         {
-            Assert.IsTrue(typeof(Models.MemberType).IsMemberType());
+            Assert.IsTrue(typeof(Models.MemberType).IsModelType<MemberTypeAttribute>());
         }
 
         [TestMethod]
         public void IsNotMemberType()
         {
-            Assert.IsFalse(typeof(object).IsMemberType());
+            Assert.IsFalse(typeof(object).IsModelType<MemberTypeAttribute>());
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
 
     /// <summary>
-    /// The <see cref="DataType" /> class. The model type for data types.
+    /// The <see cref="DataType" /> class.
     /// </summary>
     public class DataType : TypeModel<DataTypeAttribute>
     {

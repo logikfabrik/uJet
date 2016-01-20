@@ -14,11 +14,11 @@ namespace Logikfabrik.Umbraco.Jet
     /// <summary>
     /// The <see cref="ContentTypeModel{T}" /> class.
     /// </summary>
-    /// <typeparam name="T">The <see cref="ContentTypeModelAttribute" /> type.</typeparam>
+    /// <typeparam name="T">The attribute type.</typeparam>
     public abstract class ContentTypeModel<T> : TypeModel<T>
         where T : ContentTypeModelAttribute
     {
-        private readonly Lazy<IEnumerable<TypeProperty>> _properties;
+        private readonly Lazy<IEnumerable<PropertyType>> _properties;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentTypeModel{T}" /> class.
@@ -27,7 +27,7 @@ namespace Logikfabrik.Umbraco.Jet
         protected ContentTypeModel(Type modelType)
             : base(modelType)
         {
-            _properties = new Lazy<IEnumerable<TypeProperty>>(GetProperties);
+            _properties = new Lazy<IEnumerable<PropertyType>>(GetProperties);
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The properties.
         /// </value>
-        public IEnumerable<TypeProperty> Properties => _properties.Value;
+        public IEnumerable<PropertyType> Properties => _properties.Value;
 
         /// <summary>
         /// Gets the description.
@@ -74,16 +74,18 @@ namespace Logikfabrik.Umbraco.Jet
         /// Gets the properties.
         /// </summary>
         /// <returns>The properties.</returns>
-        protected virtual IEnumerable<TypeProperty> GetProperties()
+        protected virtual IEnumerable<PropertyType> GetProperties()
         {
-            return from property in ModelType.GetProperties() where IsValidProperty(property) select new TypeProperty(property);
+            return ModelType.GetProperties().Where(IsValidProperty).Select(property => new PropertyType(property));
         }
 
         /// <summary>
         /// Determines whether the specified property is valid.
         /// </summary>
         /// <param name="property">The property.</param>
-        /// <returns><c>true</c> if valid; otherwise, <c>false</c>.</returns>
+        /// <returns>
+        ///   <c>true</c> if valid; otherwise, <c>false</c>.
+        /// </returns>
         protected bool IsValidProperty(PropertyInfo property)
         {
             if (property == null)

@@ -8,6 +8,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using Data;
     using global::Umbraco.Core.Models;
 
     /// <summary>
@@ -16,28 +17,33 @@ namespace Logikfabrik.Umbraco.Jet
     public class DefaultValueService
     {
         private readonly ITypeResolver _typeResolver;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultValueService" /> class.
-        /// </summary>
-        public DefaultValueService()
-            : this(TypeResolver.Instance)
-        {
-        }
+        private readonly ContentTypeModelFinder<DocumentType, DocumentTypeAttribute, IContentType> _documentTypeModelFinder;
+        private readonly ContentTypeModelFinder<MediaType, MediaTypeAttribute, IMediaType> _mediaTypeModelFinder;
+        private readonly ContentTypeModelFinder<MemberType, MemberTypeAttribute, IMemberType> _memberTypeModelFinder;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultValueService" /> class.
         /// </summary>
         /// <param name="typeResolver">The type resolver.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="typeResolver" /> is <c>null</c>.</exception>
-        public DefaultValueService(ITypeResolver typeResolver)
+        /// <param name="typeRepository">The type repository.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="typeResolver" />, or <paramref name="typeRepository" /> are <c>null</c>.</exception>
+        public DefaultValueService(ITypeResolver typeResolver, ITypeRepository typeRepository)
         {
             if (typeResolver == null)
             {
                 throw new ArgumentNullException(nameof(typeResolver));
             }
 
+            if (typeRepository == null)
+            {
+                throw new ArgumentNullException(nameof(typeRepository));
+            }
+
             _typeResolver = typeResolver;
+
+            _documentTypeModelFinder = new ContentTypeModelFinder<DocumentType, DocumentTypeAttribute, IContentType>(typeRepository);
+            _mediaTypeModelFinder = new ContentTypeModelFinder<MediaType, MediaTypeAttribute, IMediaType>(typeRepository);
+            _memberTypeModelFinder = new ContentTypeModelFinder<MemberType, MemberTypeAttribute, IMemberType>(typeRepository);
         }
 
         /// <summary>
@@ -70,14 +76,14 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(content));
             }
 
-            var typeModel = _typeResolver.ResolveTypeModel(content.ContentType);
+            var model = _documentTypeModelFinder.Find(content.ContentType, _typeResolver.DocumentTypes.ToArray()).SingleOrDefault();
 
-            if (typeModel == null)
+            if (model == null)
             {
                 return;
             }
 
-            SetDefaultValues(content, typeModel);
+            SetDefaultValues(content, model);
         }
 
         /// <summary>
@@ -110,14 +116,14 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(content));
             }
 
-            var typeModel = _typeResolver.ResolveTypeModel(content.ContentType);
+            var model = _mediaTypeModelFinder.Find(content.ContentType, _typeResolver.MediaTypes.ToArray()).SingleOrDefault();
 
-            if (typeModel == null)
+            if (model == null)
             {
                 return;
             }
 
-            SetDefaultValues(content, typeModel);
+            SetDefaultValues(content, model);
         }
 
         /// <summary>
@@ -150,37 +156,26 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(content));
             }
 
-            var typeModel = _typeResolver.ResolveTypeModel(content.ContentType);
+            var model = _memberTypeModelFinder.Find(content.ContentType, _typeResolver.MemberTypes.ToArray()).SingleOrDefault();
 
-            if (typeModel == null)
+            if (model == null)
             {
                 return;
             }
 
-            SetDefaultValues(content, typeModel);
+            SetDefaultValues(content, model);
         }
 
         /// <summary>
         /// Sets the default values.
         /// </summary>
-        /// <typeparam name="T">The type model type.</typeparam>
+        /// <typeparam name="T">The model type.</typeparam>
         /// <param name="content">The content to set default values for.</param>
-        /// <param name="typeModel">The type model.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" />, or <paramref name="typeModel" /> are <c>null</c>.</exception>
-        private static void SetDefaultValues<T>(IContentBase content, ContentTypeModel<T> typeModel)
+        /// <param name="model">The model.</param>
+        private static void SetDefaultValues<T>(IContentBase content, ContentTypeModel<T> model)
             where T : ContentTypeModelAttribute
         {
-            if (content == null)
-            {
-                throw new ArgumentNullException(nameof(content));
-            }
-
-            if (typeModel == null)
-            {
-                throw new ArgumentNullException(nameof(typeModel));
-            }
-
-            foreach (var property in typeModel.Properties)
+            foreach (var property in model.Properties)
             {
                 SetDefaultValue(content, property);
             }
@@ -190,47 +185,31 @@ namespace Logikfabrik.Umbraco.Jet
         /// Sets the default value.
         /// </summary>
         /// <param name="content">The content to set default values for.</param>
-        /// <param name="propertyTypeModel">The property type model.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" />, or <paramref name="propertyTypeModel" /> are <c>null</c>.</exception>
-        private static void SetDefaultValue(IContentBase content, TypeProperty propertyTypeModel)
+        /// <param name="model">The model.</param>
+        private static void SetDefaultValue(IContentBase content, PropertyType model)
         {
-            if (content == null)
-            {
-                throw new ArgumentNullException(nameof(content));
-            }
-
-            if (propertyTypeModel == null)
-            {
-                throw new ArgumentNullException(nameof(propertyTypeModel));
-            }
-
-            if (!propertyTypeModel.HasDefaultValue)
+            if (!model.HasDefaultValue)
             {
                 return;
             }
 
-            var value = content.GetValue(propertyTypeModel.Alias);
+            var value = content.GetValue(model.Alias);
 
             if (value != null)
             {
                 return;
             }
 
-            if (!CanSetDefaultValue(propertyTypeModel.Type, propertyTypeModel.DefaultValue))
+            if (!CanSetDefaultValue(model.Type, model.DefaultValue))
             {
                 return;
             }
 
-            content.SetValue(propertyTypeModel.Alias, propertyTypeModel.DefaultValue);
+            content.SetValue(model.Alias, model.DefaultValue);
         }
 
         private static bool CanSetDefaultValue(Type propertyType, object defaultValue)
         {
-            if (propertyType == null)
-            {
-                throw new ArgumentNullException(nameof(propertyType));
-            }
-
             return defaultValue == null
                 ? IsNullableType(propertyType)
                 : IsCastableTo(defaultValue.GetType(), propertyType);
@@ -241,26 +220,16 @@ namespace Logikfabrik.Umbraco.Jet
             return type.IsGenericType && (type.GetGenericTypeDefinition() == typeof(Nullable<>));
         }
 
-        private static bool IsCastableTo(Type from, Type to)
+        private static bool IsCastableTo(Type fromType, Type toType)
         {
-            if (from == null)
-            {
-                throw new ArgumentNullException(nameof(from));
-            }
-
-            if (to == null)
-            {
-                throw new ArgumentNullException(nameof(to));
-            }
-
-            if (to.IsAssignableFrom(from))
+            if (toType.IsAssignableFrom(fromType))
             {
                 return true;
             }
 
-            var methods = from.GetMethods(BindingFlags.Public | BindingFlags.Static)
+            var methods = fromType.GetMethods(BindingFlags.Public | BindingFlags.Static)
                 .Where(
-                    m => m.ReturnType == to &&
+                    m => m.ReturnType == toType &&
                          (m.Name == "op_Implicit" ||
                           m.Name == "op_Explicit"));
 

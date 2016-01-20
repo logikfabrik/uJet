@@ -1,4 +1,4 @@
-﻿// <copyright file="MemberTypeSynchronizationService.cs" company="Logikfabrik">
+﻿// <copyright file="MemberTypeSynchronizer.cs" company="Logikfabrik">
 //   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -7,54 +7,49 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
     using System.Linq;
     using Data;
-    using global::Umbraco.Core;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
 
     /// <summary>
-    /// The <see cref="MemberTypeSynchronizationService" /> class. Synchronizes model types annotated using the <see cref="MemberTypeAttribute" />.
+    /// The <see cref="MemberTypeSynchronizer" /> class. Synchronizes model types annotated using the <see cref="MemberTypeAttribute" />.
     /// </summary>
-    public class MemberTypeSynchronizationService : ContentTypeModelSynchronizationService<MemberType, MemberTypeAttribute, IMemberType>
+    public class MemberTypeSynchronizer : ContentTypeSynchronizer<MemberType, MemberTypeAttribute, IMemberType>
     {
         private readonly IMemberTypeService _memberTypeService;
+        private readonly Lazy<MemberType[]> _memberTypes;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MemberTypeSynchronizationService" /> class.
-        /// </summary>
-        public MemberTypeSynchronizationService()
-            : this(
-                ApplicationContext.Current.Services.MemberTypeService,
-                TypeResolver.Instance,
-                TypeRepository.Instance)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MemberTypeSynchronizationService" /> class.
+        /// Initializes a new instance of the <see cref="MemberTypeSynchronizer" /> class.
         /// </summary>
         /// <param name="memberTypeService">The member type service.</param>
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="typeRepository">The type repository.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="memberTypeService" /> is <c>null</c>.</exception>
-        public MemberTypeSynchronizationService(
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="memberTypeService" />, or <paramref name="typeResolver" /> are <c>null</c>.</exception>
+        public MemberTypeSynchronizer(
             IMemberTypeService memberTypeService,
             ITypeResolver typeResolver,
             ITypeRepository typeRepository)
-            : base(typeResolver, typeRepository)
+            : base(typeRepository)
         {
             if (memberTypeService == null)
             {
                 throw new ArgumentNullException(nameof(memberTypeService));
             }
 
+            if (typeResolver == null)
+            {
+                throw new ArgumentNullException(nameof(typeResolver));
+            }
+
             _memberTypeService = memberTypeService;
+            _memberTypes = new Lazy<MemberType[]>(() => typeResolver.MemberTypes.ToArray());
         }
 
         /// <summary>
         /// Gets the models.
         /// </summary>
         /// <value>The models.</value>
-        protected override MemberType[] Models => Resolver.MemberTypes.ToArray();
+        protected override MemberType[] Models => _memberTypes.Value;
 
         /// <summary>
         /// Gets the content types.
@@ -76,18 +71,6 @@ namespace Logikfabrik.Umbraco.Jet
         protected override IMemberType CreateContentType()
         {
             return new global::Umbraco.Core.Models.MemberType(-1);
-        }
-
-        /// <summary>
-        /// Gets the content type with the specified alias.
-        /// </summary>
-        /// <param name="alias">The alias.</param>
-        /// <returns>
-        /// The content type with the specified alias.
-        /// </returns>
-        protected override IMemberType GetContentType(string alias)
-        {
-            return _memberTypeService.Get(alias);
         }
 
         /// <summary>

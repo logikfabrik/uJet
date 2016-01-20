@@ -48,7 +48,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         public T GetDocument<T>(int id)
             where T : class, new()
         {
-            if (!typeof(T).IsDocumentType())
+            if (!typeof(T).IsModelType<DocumentTypeAttribute>())
             {
                 throw new ArgumentException($"Type {typeof(T)} is not a document model type.");
             }
@@ -72,7 +72,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
                 throw new ArgumentNullException(nameof(content));
             }
 
-            if (!typeof(T).IsDocumentType())
+            if (!typeof(T).IsModelType<DocumentTypeAttribute>())
             {
                 throw new ArgumentException($"Type {typeof(T)} is not a document model type.");
             }
@@ -100,7 +100,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
                 throw new ArgumentNullException(nameof(documentModelType));
             }
 
-            if (!documentModelType.IsDocumentType())
+            if (!documentModelType.IsModelType<DocumentTypeAttribute>())
             {
                 throw new ArgumentException($"Type {documentModelType} is not a document model type.", nameof(documentModelType));
             }

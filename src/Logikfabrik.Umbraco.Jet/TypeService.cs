@@ -6,6 +6,7 @@ namespace Logikfabrik.Umbraco.Jet
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Reflection;
     using Configuration;
@@ -18,29 +19,29 @@ namespace Logikfabrik.Umbraco.Jet
     {
         private static ITypeService instance;
 
-        private readonly Lazy<IEnumerable<Type>> _documentTypes;
-        private readonly Lazy<IEnumerable<Type>> _dataTypes;
-        private readonly Lazy<IEnumerable<Type>> _mediaTypes;
-        private readonly Lazy<IEnumerable<Type>> _memberTypes;
-        private readonly Lazy<IEnumerable<Assembly>> _assemblies;
+        private readonly Lazy<ReadOnlyCollection<Type>> _documentTypes;
+        private readonly Lazy<ReadOnlyCollection<Type>> _dataTypes;
+        private readonly Lazy<ReadOnlyCollection<Type>> _mediaTypes;
+        private readonly Lazy<ReadOnlyCollection<Type>> _memberTypes;
+        private readonly Lazy<Assembly[]> _assemblies;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TypeService" /> class.
         /// </summary>
         /// <param name="getAssemblies">Function to get assemblies to scan.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="getAssemblies" /> is <c>null</c>.</exception>
-        internal TypeService(Func<IEnumerable<Assembly>> getAssemblies)
+        internal TypeService(Func<Assembly[]> getAssemblies)
         {
             if (getAssemblies == null)
             {
                 throw new ArgumentNullException(nameof(getAssemblies));
             }
 
-            _assemblies = new Lazy<IEnumerable<Assembly>>(getAssemblies);
-            _documentTypes = new Lazy<IEnumerable<Type>>(GetDocumentTypes);
-            _dataTypes = new Lazy<IEnumerable<Type>>(GetDataTypes);
-            _mediaTypes = new Lazy<IEnumerable<Type>>(GetMediaTypes);
-            _memberTypes = new Lazy<IEnumerable<Type>>(GetMemberTypes);
+            _assemblies = new Lazy<Assembly[]>(getAssemblies);
+            _documentTypes = new Lazy<ReadOnlyCollection<Type>>(() => GetTypesByAttribute(TypeExtensions.IsModelType<DocumentTypeAttribute>));
+            _dataTypes = new Lazy<ReadOnlyCollection<Type>>(() => GetTypesByAttribute(TypeExtensions.IsModelType<DataTypeAttribute>));
+            _mediaTypes = new Lazy<ReadOnlyCollection<Type>>(() => GetTypesByAttribute(TypeExtensions.IsModelType<MediaTypeAttribute>));
+            _memberTypes = new Lazy<ReadOnlyCollection<Type>>(() => GetTypesByAttribute(TypeExtensions.IsModelType<MemberTypeAttribute>));
         }
 
         /// <summary>
@@ -62,7 +63,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The document type model types.
         /// </value>
-        public IEnumerable<Type> DocumentTypes => _documentTypes.Value;
+        public ReadOnlyCollection<Type> DocumentTypes => _documentTypes.Value;
 
         /// <summary>
         /// Gets the data type model types within the current application domain.
@@ -70,7 +71,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The data type model types.
         /// </value>
-        public IEnumerable<Type> DataTypes => _dataTypes.Value;
+        public ReadOnlyCollection<Type> DataTypes => _dataTypes.Value;
 
         /// <summary>
         /// Gets the media type model types within the current application domain.
@@ -78,7 +79,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The media type model types.
         /// </value>
-        public IEnumerable<Type> MediaTypes => _mediaTypes.Value;
+        public ReadOnlyCollection<Type> MediaTypes => _mediaTypes.Value;
 
         /// <summary>
         /// Gets the member type model types within the current application domain.
@@ -86,55 +87,19 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The member type model types.
         /// </value>
-        public IEnumerable<Type> MemberTypes => _memberTypes.Value;
+        public ReadOnlyCollection<Type> MemberTypes => _memberTypes.Value;
 
         /// <summary>
         /// Gets the assemblies to be scanned for model types, within the current application domain.
         /// </summary>
         /// <returns>The assemblies to be scanned.</returns>
-        private static IEnumerable<Assembly> GetAssemblies()
+        private static Assembly[] GetAssemblies()
         {
             var assemblyNames = JetConfigurationManager.Assemblies;
 
             return !assemblyNames.Any()
                 ? AppDomain.CurrentDomain.GetAssemblies()
-                : AppDomain.CurrentDomain.GetAssemblies().Where(a => assemblyNames.Contains(a.GetName().Name, StringComparer.InvariantCultureIgnoreCase));
-        }
-
-        /// <summary>
-        /// Gets the document type model types, within the current application domain.
-        /// </summary>
-        /// <returns>The document type model types.</returns>
-        private IEnumerable<Type> GetDocumentTypes()
-        {
-            return GetTypesByAttribute(TypeExtensions.IsDocumentType);
-        }
-
-        /// <summary>
-        /// Gets the data type model types, within the current application domain.
-        /// </summary>
-        /// <returns>The data type model types.</returns>
-        private IEnumerable<Type> GetDataTypes()
-        {
-            return GetTypesByAttribute(TypeExtensions.IsDataType);
-        }
-
-        /// <summary>
-        /// Gets the media type model types, within the current application domain.
-        /// </summary>
-        /// <returns>The media type model types.</returns>
-        private IEnumerable<Type> GetMediaTypes()
-        {
-            return GetTypesByAttribute(TypeExtensions.IsMediaType);
-        }
-
-        /// <summary>
-        /// Gets the member type model types, within the current application domain.
-        /// </summary>
-        /// <returns>The member type model types.</returns>
-        private IEnumerable<Type> GetMemberTypes()
-        {
-            return GetTypesByAttribute(TypeExtensions.IsMemberType);
+                : AppDomain.CurrentDomain.GetAssemblies().Where(a => assemblyNames.Contains(a.GetName().Name, StringComparer.InvariantCultureIgnoreCase)).ToArray();
         }
 
         /// <summary>
@@ -142,7 +107,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="predicate">A predicate for type scanning.</param>
         /// <returns>Types matching the given predicate.</returns>
-        private IEnumerable<Type> GetTypesByAttribute(Func<Type, bool> predicate)
+        private ReadOnlyCollection<Type> GetTypesByAttribute(Func<Type, bool> predicate)
         {
             if (predicate == null)
             {
@@ -156,7 +121,7 @@ namespace Logikfabrik.Umbraco.Jet
                 types.AddRange(GetTypes(assembly).Where(predicate));
             }
 
-            return types;
+            return Array.AsReadOnly(types.ToArray());
         }
 
         /// <summary>

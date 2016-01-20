@@ -48,7 +48,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         public T GetMedia<T>(int id)
             where T : class, new()
         {
-            if (!typeof(T).IsMediaType())
+            if (!typeof(T).IsModelType<MediaTypeAttribute>())
             {
                 throw new ArgumentException($"Type {typeof(T)} is not a media model type.");
             }
@@ -72,7 +72,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
                 throw new ArgumentNullException(nameof(content));
             }
 
-            if (!typeof(T).IsMediaType())
+            if (!typeof(T).IsModelType<MediaTypeAttribute>())
             {
                 throw new ArgumentException($"Type {typeof(T)} is not a media model type.");
             }
@@ -100,7 +100,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
                 throw new ArgumentNullException(nameof(mediaModelType));
             }
 
-            if (!mediaModelType.IsMediaType())
+            if (!mediaModelType.IsModelType<MediaTypeAttribute>())
             {
                 throw new ArgumentException($"Type {mediaModelType} is not a media model type.", nameof(mediaModelType));
             }

@@ -5,7 +5,7 @@
 namespace Logikfabrik.Umbraco.Jet
 {
     using System;
-    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
 
     /// <summary>
     /// The <see cref="ITypeService" /> interface.
@@ -18,7 +18,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The document type model types.
         /// </value>
-        IEnumerable<Type> DocumentTypes { get; }
+        ReadOnlyCollection<Type> DocumentTypes { get; }
 
         /// <summary>
         /// Gets the data type model types, within the current application domain.
@@ -26,7 +26,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The data type model types.
         /// </value>
-        IEnumerable<Type> DataTypes { get; }
+        ReadOnlyCollection<Type> DataTypes { get; }
 
         /// <summary>
         /// Gets the media type model types, within the current application domain.
@@ -34,7 +34,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The media type model types.
         /// </value>
-        IEnumerable<Type> MediaTypes { get; }
+        ReadOnlyCollection<Type> MediaTypes { get; }
 
         /// <summary>
         /// Gets the member type model types, within the current application domain.
@@ -42,6 +42,6 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The member type model types.
         /// </value>
-        IEnumerable<Type> MemberTypes { get; }
+        ReadOnlyCollection<Type> MemberTypes { get; }
     }
 }

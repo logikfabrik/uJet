@@ -1,17 +1,17 @@
-﻿// <copyright file="ISynchronizationService.cs" company="Logikfabrik">
+﻿// <copyright file="ISynchronizer.cs" company="Logikfabrik">
 //   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
 namespace Logikfabrik.Umbraco.Jet
 {
     /// <summary>
-    /// The <see cref="ISynchronizationService" /> interface.
+    /// The <see cref="ISynchronizer" /> interface.
     /// </summary>
-    public interface ISynchronizationService
+    public interface ISynchronizer
     {
         /// <summary>
         /// Synchronizes this instance.
         /// </summary>
-        void Synchronize();
+        void Run();
     }
 }

@@ -8,6 +8,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     using Configuration;
     using global::Umbraco.Core;
     using global::Umbraco.Web.Mvc;
+    using Jet.Data;
 
     /// <summary>
     /// The <see cref="JetMvcApplicationHandler" /> class.
@@ -57,7 +58,11 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
                 // Synchronize.
                 if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.DocumentTypes))
                 {
-                    new PreviewTemplateSynchronizationService().Synchronize();
+                    new PreviewTemplateSynchronizationService(
+                        ApplicationContext.Current.Services.ContentTypeService,
+                        ApplicationContext.Current.Services.FileService,
+                        TypeResolver.Instance,
+                        TypeRepository.Instance).Run();
                 }
 
                 ModelBinders.Binders.DefaultBinder = new JetModelBinder();

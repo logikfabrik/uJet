@@ -8,31 +8,21 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     using System.Collections.Generic;
     using System.Linq;
     using Extensions;
-    using global::Umbraco.Core;
+    using Jet.Data;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
 
     /// <summary>
     /// The <see cref="PreviewTemplateSynchronizationService" /> class.
     /// </summary>
-    public class PreviewTemplateSynchronizationService : ISynchronizationService
+    public class PreviewTemplateSynchronizationService : ISynchronizer
     {
         private readonly IContentTypeService _contentTypeService;
         private readonly IFileService _fileService;
         private readonly ITypeResolver _typeResolver;
+        private readonly ContentTypeFinder<DocumentType, DocumentTypeAttribute, IContentType> _documentTypeFinder;
 
         private ITemplate _previewTemplate;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PreviewTemplateSynchronizationService" /> class.
-        /// </summary>
-        public PreviewTemplateSynchronizationService()
-            : this(
-                ApplicationContext.Current.Services.ContentTypeService,
-                ApplicationContext.Current.Services.FileService,
-                TypeResolver.Instance)
-        {
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PreviewTemplateSynchronizationService" /> class.
@@ -40,11 +30,13 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// <param name="contentTypeService">The content type service.</param>
         /// <param name="fileService">The file service.</param>
         /// <param name="typeResolver">The type resolver.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeService" />, <paramref name="fileService" />, or <paramref name="typeResolver" /> are <c>null</c>.</exception>
+        /// <param name="typeRepository">The type repository.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeService" />, <paramref name="fileService" />, <paramref name="typeResolver" />, or <paramref name="typeRepository" /> are <c>null</c>.</exception>
         public PreviewTemplateSynchronizationService(
             IContentTypeService contentTypeService,
             IFileService fileService,
-            ITypeResolver typeResolver)
+            ITypeResolver typeResolver,
+            ITypeRepository typeRepository)
         {
             if (contentTypeService == null)
             {
@@ -61,21 +53,27 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
                 throw new ArgumentNullException(nameof(typeResolver));
             }
 
+            if (typeRepository == null)
+            {
+                throw new ArgumentNullException(nameof(typeRepository));
+            }
+
             _contentTypeService = contentTypeService;
             _fileService = fileService;
             _typeResolver = typeResolver;
+            _documentTypeFinder = new ContentTypeFinder<DocumentType, DocumentTypeAttribute, IContentType>(typeRepository);
         }
 
         /// <summary>
         /// Synchronizes this instance.
         /// </summary>
-        public void Synchronize()
+        public void Run()
         {
             var documentTypes = _contentTypeService.GetAllContentTypes().ToArray();
 
-            foreach (var documentTypeModel in _typeResolver.DocumentTypes.Where(typeModel => Attribute.IsDefined(typeModel.ModelType, typeof(PreviewTemplateAttribute), false)))
+            foreach (var model in _typeResolver.DocumentTypes.Where(model => Attribute.IsDefined(model.ModelType, typeof(PreviewTemplateAttribute), false)))
             {
-                var documentType = _typeResolver.ResolveType(documentTypeModel, documentTypes);
+                var documentType = _documentTypeFinder.Find(model, documentTypes).SingleOrDefault();
 
                 if (documentType == null)
                 {
@@ -90,14 +88,8 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// Updates the specified document type.
         /// </summary>
         /// <param name="documentType">The document type.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="documentType" /> is <c>null</c>.</exception>
         private void UpdateDocumentType(IContentType documentType)
         {
-            if (documentType == null)
-            {
-                throw new ArgumentNullException(nameof(documentType));
-            }
-
             var allowedTemplates = GetAllowedTemplates(documentType);
             var template = allowedTemplates.Single(t => t.Alias == PreviewTemplateAttribute.TemplateName.Alias());
 
@@ -112,14 +104,8 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// </summary>
         /// <param name="documentType">The document type.</param>
         /// <returns>The allowed templates.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="documentType" /> is <c>null</c>.</exception>
         private List<ITemplate> GetAllowedTemplates(IContentType documentType)
         {
-            if (documentType == null)
-            {
-                throw new ArgumentNullException(nameof(documentType));
-            }
-
             var templates = new List<ITemplate>();
 
             if (documentType.AllowedTemplates != null)

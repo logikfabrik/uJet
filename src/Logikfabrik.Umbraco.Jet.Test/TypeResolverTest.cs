@@ -4,9 +4,7 @@
 
 namespace Logikfabrik.Umbraco.Jet.Test
 {
-    using System.Linq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Moq;
     using Utilities;
 
     [TestClass]
@@ -19,11 +17,11 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var typeServiceMock = GetTypeServiceMock(type);
 
-            var typeResolver = new TypeResolver(typeServiceMock.Object, new Mock<Jet.Data.ITypeRepository>().Object);
+            var typeResolver = new TypeResolver(typeServiceMock.Object);
 
             var documentTypes = typeResolver.DocumentTypes;
 
-            Assert.AreEqual(1, documentTypes.Count());
+            Assert.AreEqual(1, documentTypes.Count);
         }
 
         [TestMethod]
@@ -33,11 +31,11 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var typeServiceMock = GetTypeServiceMock(type);
 
-            var typeResolver = new TypeResolver(typeServiceMock.Object, new Mock<Jet.Data.ITypeRepository>().Object);
+            var typeResolver = new TypeResolver(typeServiceMock.Object);
 
             var mediaTypes = typeResolver.MediaTypes;
 
-            Assert.AreEqual(1, mediaTypes.Count());
+            Assert.AreEqual(1, mediaTypes.Count);
         }
 
         [TestMethod]
@@ -47,11 +45,11 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var typeServiceMock = GetTypeServiceMock(type);
 
-            var typeResolver = new TypeResolver(typeServiceMock.Object, new Mock<Jet.Data.ITypeRepository>().Object);
+            var typeResolver = new TypeResolver(typeServiceMock.Object);
 
             var memberTypes = typeResolver.MemberTypes;
 
-            Assert.AreEqual(1, memberTypes.Count());
+            Assert.AreEqual(1, memberTypes.Count);
         }
 
         [TestMethod]
@@ -61,11 +59,11 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var typeServiceMock = GetTypeServiceMock(type);
 
-            var typeResolver = new TypeResolver(typeServiceMock.Object, new Mock<Jet.Data.ITypeRepository>().Object);
+            var typeResolver = new TypeResolver(typeServiceMock.Object);
 
             var dataTypes = typeResolver.DataTypes;
 
-            Assert.AreEqual(1, dataTypes.Count());
+            Assert.AreEqual(1, dataTypes.Count);
         }
     }
 }

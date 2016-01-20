@@ -22,7 +22,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         /// <returns>The type service mock.</returns>
         protected static Mock<TypeService> GetTypeServiceMock(Type type)
         {
-            Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
+            Func<Assembly[]> getAssemblies = () => new[] { type.Assembly };
 
             return new Mock<TypeService>(getAssemblies) { CallBase = true };
         }
@@ -31,9 +31,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             var typeServiceMock = GetTypeServiceMock(type);
 
-            var typeRepositoryMock = new Mock<Jet.Data.ITypeRepository>();
-
-            return new Mock<TypeResolver>(typeServiceMock.Object, typeRepositoryMock.Object) { CallBase = true };
+            return new Mock<TypeResolver>(typeServiceMock.Object) { CallBase = true };
         }
 
         /// <summary>

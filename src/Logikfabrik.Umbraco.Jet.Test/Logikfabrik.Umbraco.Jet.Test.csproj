@@ -295,12 +295,12 @@
     <Compile Include="Data\DataTypeRepositoryTest.cs" />
     <Compile Include="DefaultValueServiceTest.cs" />
     <Compile Include="DocumentTypeTest.cs" />
-    <Compile Include="DataTypeSynchronizationServiceTest.cs" />
-    <Compile Include="DocumentTypeSynchronizationServiceTest.cs" />
+    <Compile Include="DataTypeSynchronizerTest.cs" />
+    <Compile Include="DocumentTypeSynchronizerTest.cs" />
     <Compile Include="Extensions\StringExtensionsTest.cs" />
     <Compile Include="Extensions\TypeExtensionsTest.cs" />
-    <Compile Include="MediaTypeSynchronizationServiceTest.cs" />
-    <Compile Include="MemberTypeSynchronizationServiceTest.cs" />
+    <Compile Include="MediaTypeSynchronizerTest.cs" />
+    <Compile Include="MemberTypeSynchronizerTest.cs" />
     <Compile Include="MemberTypeTest.cs" />
     <Compile Include="Models\CompositionDocumentTypeA.cs" />
     <Compile Include="Models\CompositionDocumentTypeB.cs" />

@@ -7,7 +7,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
 
     /// <summary>
-    /// The <see cref="MemberType" /> class. The model type for member types.
+    /// The <see cref="MemberType" /> class.
     /// </summary>
     public class MemberType : ContentTypeModel<MemberTypeAttribute>
     {

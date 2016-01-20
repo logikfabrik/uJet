@@ -1,16 +1,18 @@
-﻿// <copyright file="DocumentTypeSynchronizationServiceTest.cs" company="Logikfabrik">
+﻿// <copyright file="DocumentTypeSynchronizerTest.cs" company="Logikfabrik">
 //   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
 namespace Logikfabrik.Umbraco.Jet.Test
 {
+    using System;
+    using System.Collections.Generic;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
 
     [TestClass]
-    public class DocumentTypeSynchronizationServiceTest : TestBase
+    public class DocumentTypeSynchronizerTest : TestBase
     {
         [TestMethod]
         public void CanCreateDocumentTypeWithAndWithoutId()
@@ -18,27 +20,25 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var documentTypeWithId = new DocumentType(typeof(DocumentTypeWithId));
             var documentTypeWithoutId = new DocumentType(typeof(DocumentTypeWithoutId));
 
-            var contentTypeWithIdMock = new Mock<IContentType>();
-            var contentTypeWithoutIdMock = new Mock<IContentType>();
-
             var typeResolverMock = new Mock<ITypeResolver>();
 
-            typeResolverMock.Setup(m => m.DocumentTypes).Returns(new[] { documentTypeWithId, documentTypeWithoutId });
+            typeResolverMock.Setup(m => m.DocumentTypes).Returns(Array.AsReadOnly(new[] { documentTypeWithId, documentTypeWithoutId }));
+
+            var contentTypes = new List<IContentType>();
 
             var contentTypeServiceMock = new Mock<IContentTypeService>();
 
-            contentTypeServiceMock.Setup(m => m.GetAllContentTypes()).Returns(new IContentType[] { });
-            contentTypeServiceMock.Setup(m => m.GetContentType(documentTypeWithId.Alias)).Returns(contentTypeWithIdMock.Object);
-            contentTypeServiceMock.Setup(m => m.GetContentType(documentTypeWithoutId.Alias)).Returns(contentTypeWithoutIdMock.Object);
+            contentTypeServiceMock.Setup(m => m.GetAllContentTypes()).Returns(contentTypes);
+            contentTypeServiceMock.Setup(m => m.Save(It.IsAny<IContentType>(), 0)).Callback((IContentType contentType, int userId) => { contentTypes.Add(contentType); });
 
-            var documentTypeSynchronizationServiceMock = new Mock<DocumentTypeSynchronizationService>(
+            var documentTypeSynchronizationServiceMock = new Mock<DocumentTypeSynchronizer>(
                 contentTypeServiceMock.Object,
                 typeResolverMock.Object,
                 new Mock<Jet.Data.ITypeRepository>().Object,
                 new Mock<IFileService>().Object)
             { CallBase = true };
 
-            documentTypeSynchronizationServiceMock.Object.Synchronize();
+            documentTypeSynchronizationServiceMock.Object.Run();
 
             documentTypeSynchronizationServiceMock.Verify(m => m.CreateContentType(It.IsAny<DocumentType>()), Times.Exactly(2));
         }
@@ -48,25 +48,25 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             var documentTypeWithId = new DocumentType(typeof(DocumentTypeWithId));
 
-            var contentTypeMock = new Mock<IContentType>();
-
             var typeResolverMock = new Mock<ITypeResolver>();
 
-            typeResolverMock.Setup(m => m.DocumentTypes).Returns(new[] { documentTypeWithId });
+            typeResolverMock.Setup(m => m.DocumentTypes).Returns(Array.AsReadOnly(new[] { documentTypeWithId }));
+
+            var contentTypes = new List<IContentType>();
 
             var contentTypeServiceMock = new Mock<IContentTypeService>();
 
-            contentTypeServiceMock.Setup(m => m.GetAllContentTypes()).Returns(new IContentType[] { });
-            contentTypeServiceMock.Setup(m => m.GetContentType(documentTypeWithId.Alias)).Returns(contentTypeMock.Object);
+            contentTypeServiceMock.Setup(m => m.GetAllContentTypes()).Returns(contentTypes);
+            contentTypeServiceMock.Setup(m => m.Save(It.IsAny<IContentType>(), 0)).Callback((IContentType contentType, int userId) => { contentTypes.Add(contentType); });
 
-            var documentTypeSynchronizationServiceMock = new Mock<DocumentTypeSynchronizationService>(
+            var documentTypeSynchronizationServiceMock = new Mock<DocumentTypeSynchronizer>(
                 contentTypeServiceMock.Object,
                 typeResolverMock.Object,
                 new Mock<Jet.Data.ITypeRepository>().Object,
                 new Mock<IFileService>().Object)
             { CallBase = true };
 
-            documentTypeSynchronizationServiceMock.Object.Synchronize();
+            documentTypeSynchronizationServiceMock.Object.Run();
 
             documentTypeSynchronizationServiceMock.Verify(m => m.CreateContentType(documentTypeWithId), Times.Once);
         }
@@ -76,25 +76,25 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             var documentTypeWithoutId = new DocumentType(typeof(DocumentTypeWithoutId));
 
-            var contentTypeMock = new Mock<IContentType>();
-
             var typeResolverMock = new Mock<ITypeResolver>();
 
-            typeResolverMock.Setup(m => m.DocumentTypes).Returns(new[] { documentTypeWithoutId });
+            typeResolverMock.Setup(m => m.DocumentTypes).Returns(Array.AsReadOnly(new[] { documentTypeWithoutId }));
+
+            var contentTypes = new List<IContentType>();
 
             var contentTypeServiceMock = new Mock<IContentTypeService>();
 
-            contentTypeServiceMock.Setup(m => m.GetAllContentTypes()).Returns(new IContentType[] { });
-            contentTypeServiceMock.Setup(m => m.GetContentType(documentTypeWithoutId.Alias)).Returns(contentTypeMock.Object);
+            contentTypeServiceMock.Setup(m => m.GetAllContentTypes()).Returns(contentTypes);
+            contentTypeServiceMock.Setup(m => m.Save(It.IsAny<IContentType>(), 0)).Callback((IContentType contentType, int userId) => { contentTypes.Add(contentType); });
 
-            var documentTypeSynchronizationServiceMock = new Mock<DocumentTypeSynchronizationService>(
+            var documentTypeSynchronizationServiceMock = new Mock<DocumentTypeSynchronizer>(
                 contentTypeServiceMock.Object,
                 typeResolverMock.Object,
                 new Mock<Jet.Data.ITypeRepository>().Object,
                 new Mock<IFileService>().Object)
             { CallBase = true };
 
-            documentTypeSynchronizationServiceMock.Object.Synchronize();
+            documentTypeSynchronizationServiceMock.Object.Run();
 
             documentTypeSynchronizationServiceMock.Verify(m => m.CreateContentType(documentTypeWithoutId), Times.Once);
         }
@@ -110,26 +110,24 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var typeResolverMock = new Mock<ITypeResolver>();
 
-            typeResolverMock.Setup(m => m.DocumentTypes).Returns(new[] { documentTypeWithId });
-            typeResolverMock.Setup(m => m.ResolveType<DocumentType, DocumentTypeAttribute, IContentType>(documentTypeWithId, It.IsAny<IContentType[]>())).Returns(contentTypeMock.Object);
+            typeResolverMock.Setup(m => m.DocumentTypes).Returns(Array.AsReadOnly(new[] { documentTypeWithId }));
 
             var contentTypeServiceMock = new Mock<IContentTypeService>();
 
             contentTypeServiceMock.Setup(m => m.GetAllContentTypes()).Returns(new[] { contentTypeMock.Object });
-            contentTypeServiceMock.Setup(m => m.GetContentType(documentTypeWithId.Alias)).Returns(contentTypeMock.Object);
 
             var typeRepositoryMock = new Mock<Jet.Data.ITypeRepository>();
 
             typeRepositoryMock.Setup(m => m.GetContentTypeId(documentTypeWithId.Id.Value)).Returns(contentTypeMock.Object.Id);
 
-            var documentTypeSynchronizationServiceMock = new Mock<DocumentTypeSynchronizationService>(
+            var documentTypeSynchronizationServiceMock = new Mock<DocumentTypeSynchronizer>(
                 contentTypeServiceMock.Object,
                 typeResolverMock.Object,
                 typeRepositoryMock.Object,
                 new Mock<IFileService>().Object)
             { CallBase = true };
 
-            documentTypeSynchronizationServiceMock.Object.Synchronize();
+            documentTypeSynchronizationServiceMock.Object.Run();
 
             documentTypeSynchronizationServiceMock.Verify(m => m.UpdateContentType(contentTypeMock.Object, documentTypeWithId), Times.Once);
         }
@@ -145,25 +143,23 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var typeResolverMock = new Mock<ITypeResolver>();
 
-            typeResolverMock.Setup(m => m.DocumentTypes).Returns(new[] { documentTypeWithId });
-            typeResolverMock.Setup(m => m.ResolveType<DocumentType, DocumentTypeAttribute, IContentType>(documentTypeWithId, It.IsAny<IContentType[]>())).Returns(contentTypeMock.Object);
+            typeResolverMock.Setup(m => m.DocumentTypes).Returns(Array.AsReadOnly(new[] { documentTypeWithId }));
 
             var contentTypeServiceMock = new Mock<IContentTypeService>();
 
             contentTypeServiceMock.Setup(m => m.GetAllContentTypes()).Returns(new[] { contentTypeMock.Object });
-            contentTypeServiceMock.Setup(m => m.GetContentType(documentTypeWithId.Alias)).Returns(contentTypeMock.Object);
 
             var typeRepositoryMock = new Mock<Jet.Data.ITypeRepository>();
 
             typeRepositoryMock.Setup(m => m.GetContentTypeId(documentTypeWithId.Id.Value)).Returns(contentTypeMock.Object.Id);
 
-            var documentTypeSynchronizationService = new DocumentTypeSynchronizationService(
+            var documentTypeSynchronizationService = new DocumentTypeSynchronizer(
                 contentTypeServiceMock.Object,
                 typeResolverMock.Object,
                 typeRepositoryMock.Object,
                 new Mock<IFileService>().Object);
 
-            documentTypeSynchronizationService.Synchronize();
+            documentTypeSynchronizationService.Run();
 
             contentTypeMock.VerifySet(m => m.Name = documentTypeWithId.Name, Times.Once);
         }
@@ -176,25 +172,24 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var contentTypeMock = new Mock<IContentType>();
 
             contentTypeMock.SetupAllProperties();
+            contentTypeMock.Object.Alias = documentTypeWithoutId.Alias;
 
             var typeResolverMock = new Mock<ITypeResolver>();
 
-            typeResolverMock.Setup(m => m.DocumentTypes).Returns(new[] { documentTypeWithoutId });
-            typeResolverMock.Setup(m => m.ResolveType<DocumentType, DocumentTypeAttribute, IContentType>(documentTypeWithoutId, It.IsAny<IContentType[]>())).Returns(contentTypeMock.Object);
+            typeResolverMock.Setup(m => m.DocumentTypes).Returns(Array.AsReadOnly(new[] { documentTypeWithoutId }));
 
             var contentTypeServiceMock = new Mock<IContentTypeService>();
 
             contentTypeServiceMock.Setup(m => m.GetAllContentTypes()).Returns(new[] { contentTypeMock.Object });
-            contentTypeServiceMock.Setup(m => m.GetContentType(documentTypeWithoutId.Alias)).Returns(contentTypeMock.Object);
 
-            var documentTypeSynchronizationServiceMock = new Mock<DocumentTypeSynchronizationService>(
+            var documentTypeSynchronizationServiceMock = new Mock<DocumentTypeSynchronizer>(
                 contentTypeServiceMock.Object,
                 typeResolverMock.Object,
                 new Mock<Jet.Data.ITypeRepository>().Object,
                 new Mock<IFileService>().Object)
             { CallBase = true };
 
-            documentTypeSynchronizationServiceMock.Object.Synchronize();
+            documentTypeSynchronizationServiceMock.Object.Run();
 
             documentTypeSynchronizationServiceMock.Verify(m => m.UpdateContentType(contentTypeMock.Object, documentTypeWithoutId), Times.Once);
         }

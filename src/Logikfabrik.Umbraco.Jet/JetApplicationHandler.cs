@@ -5,6 +5,7 @@
 namespace Logikfabrik.Umbraco.Jet
 {
     using Configuration;
+    using Data;
     using global::Umbraco.Core;
     using global::Umbraco.Core.Services;
 
@@ -13,9 +14,6 @@ namespace Logikfabrik.Umbraco.Jet
     /// </summary>
     public class JetApplicationHandler : ApplicationHandler
     {
-        /// <summary>
-        /// The lock.
-        /// </summary>
         private static readonly object Lock = new object();
 
         private static bool configured;
@@ -42,33 +40,50 @@ namespace Logikfabrik.Umbraco.Jet
                 // Synchronize.
                 if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.DataTypes))
                 {
-                    new DataTypeSynchronizationService().Synchronize();
+                    new DataTypeSynchronizer(
+                        ApplicationContext.Current.Services.DataTypeService,
+                        TypeResolver.Instance,
+                        TypeRepository.Instance).Run();
                 }
 
                 if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.DocumentTypes))
                 {
-                    new TemplateSynchronizationService().Synchronize();
-                    new DocumentTypeSynchronizationService().Synchronize();
+                    new TemplateSynchronizationService(
+                        ApplicationContext.Current.Services.FileService,
+                        TemplateService.Instance).Run();
+                    new DocumentTypeSynchronizer(
+                        ApplicationContext.Current.Services.ContentTypeService,
+                        TypeResolver.Instance,
+                        TypeRepository.Instance,
+                        ApplicationContext.Current.Services.FileService).Run();
                 }
 
                 if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.MediaTypes))
                 {
-                    new MediaTypeSynchronizationService().Synchronize();
+                    new MediaTypeSynchronizer(
+                        ApplicationContext.Current.Services.ContentTypeService,
+                        TypeResolver.Instance,
+                        TypeRepository.Instance).Run();
                 }
 
                 if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.MemberTypes))
                 {
-                    new MemberTypeSynchronizationService().Synchronize();
+                    new MemberTypeSynchronizer(
+                        ApplicationContext.Current.Services.MemberTypeService,
+                        TypeResolver.Instance,
+                        TypeRepository.Instance).Run();
                 }
 
+                var defaultValueService = new DefaultValueService(TypeResolver.Instance, TypeRepository.Instance);
+
                 // Wire up handler for document type default values.
-                ContentService.Saving += (sender, args) => new DefaultValueService().SetDefaultValues(args.SavedEntities);
+                ContentService.Saving += (sender, args) => defaultValueService.SetDefaultValues(args.SavedEntities);
 
                 // Wire up handler for media type default values.
-                MediaService.Saving += (sender, args) => new DefaultValueService().SetDefaultValues(args.SavedEntities);
+                MediaService.Saving += (sender, args) => defaultValueService.SetDefaultValues(args.SavedEntities);
 
                 // Wire up handler for member type default values.
-                MemberService.Saving += (sender, args) => new DefaultValueService().SetDefaultValues(args.SavedEntities);
+                MemberService.Saving += (sender, args) => defaultValueService.SetDefaultValues(args.SavedEntities);
 
                 configured = true;
             }

@@ -7,6 +7,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Extensions;
 
     /// <summary>
     /// The <see cref="ContentTypeModelValidator{TModel,TModelAttribute}" /> class.
