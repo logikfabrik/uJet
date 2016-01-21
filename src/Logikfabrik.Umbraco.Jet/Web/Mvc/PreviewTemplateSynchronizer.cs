@@ -1,4 +1,4 @@
-﻿// <copyright file="PreviewTemplateSynchronizationService.cs" company="Logikfabrik">
+﻿// <copyright file="PreviewTemplateSynchronizer.cs" company="Logikfabrik">
 //   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -8,14 +8,14 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     using System.Collections.Generic;
     using System.Linq;
     using Extensions;
-    using Jet.Data;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
+    using Jet.Data;
 
     /// <summary>
-    /// The <see cref="PreviewTemplateSynchronizationService" /> class.
+    /// The <see cref="PreviewTemplateSynchronizer" /> class.
     /// </summary>
-    public class PreviewTemplateSynchronizationService : ISynchronizer
+    public class PreviewTemplateSynchronizer : ISynchronizer
     {
         private readonly IContentTypeService _contentTypeService;
         private readonly IFileService _fileService;
@@ -25,14 +25,14 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         private ITemplate _previewTemplate;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PreviewTemplateSynchronizationService" /> class.
+        /// Initializes a new instance of the <see cref="PreviewTemplateSynchronizer" /> class.
         /// </summary>
         /// <param name="contentTypeService">The content type service.</param>
         /// <param name="fileService">The file service.</param>
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="typeRepository">The type repository.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeService" />, <paramref name="fileService" />, <paramref name="typeResolver" />, or <paramref name="typeRepository" /> are <c>null</c>.</exception>
-        public PreviewTemplateSynchronizationService(
+        public PreviewTemplateSynchronizer(
             IContentTypeService contentTypeService,
             IFileService fileService,
             ITypeResolver typeResolver,

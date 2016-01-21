@@ -80,7 +80,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             var documentType = new DocumentType(typeof(Models.DocumentType));
 
-            Assert.AreEqual(2, documentType.AllowedChildNodeTypes.Count());
+            Assert.AreEqual(2, documentType.AllowedChildNodeTypes.Length);
         }
 
         [TestMethod]
@@ -88,7 +88,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             var documentType = new DocumentType(typeof(Models.DocumentType));
 
-            Assert.AreEqual(2, documentType.CompositionNodeTypes.Count());
+            Assert.AreEqual(2, documentType.CompositionNodeTypes.Length);
         }
 
         [TestMethod]

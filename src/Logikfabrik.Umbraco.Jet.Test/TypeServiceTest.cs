@@ -21,7 +21,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var documentTypes = typeServiceMock.Object.DocumentTypes;
 
-            Assert.AreEqual(1, documentTypes.Count());
+            Assert.AreEqual(1, documentTypes.Count);
         }
 
         [TestMethod]
@@ -61,7 +61,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var dataTypes = typeServiceMock.Object.DataTypes;
 
-            Assert.AreEqual(1, dataTypes.Count());
+            Assert.AreEqual(1, dataTypes.Count);
         }
 
         [TestMethod]
@@ -101,7 +101,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var mediaTypes = typeServiceMock.Object.MediaTypes;
 
-            Assert.AreEqual(1, mediaTypes.Count());
+            Assert.AreEqual(1, mediaTypes.Count);
         }
 
         [TestMethod]
@@ -141,7 +141,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var memberTypes = typeServiceMock.Object.MemberTypes;
 
-            Assert.AreEqual(1, memberTypes.Count());
+            Assert.AreEqual(1, memberTypes.Count);
         }
 
         [TestMethod]

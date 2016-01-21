@@ -58,7 +58,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
                 // Synchronize.
                 if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.DocumentTypes))
                 {
-                    new PreviewTemplateSynchronizationService(
+                    new PreviewTemplateSynchronizer(
                         ApplicationContext.Current.Services.ContentTypeService,
                         ApplicationContext.Current.Services.FileService,
                         TypeResolver.Instance,

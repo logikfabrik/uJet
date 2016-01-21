@@ -11,9 +11,6 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
     /// </summary>
     public static class JetConfigurationManager
     {
-        /// <summary>
-        /// The configuration section.
-        /// </summary>
         private static readonly JetSection Section = GetSection();
 
         /// <summary>

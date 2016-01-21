@@ -1,4 +1,4 @@
-﻿// <copyright file="TemplateSynchronizationServiceTest.cs" company="Logikfabrik">
+﻿// <copyright file="TemplateSynchronizerTest.cs" company="Logikfabrik">
 //   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -13,12 +13,12 @@ namespace Logikfabrik.Umbraco.Jet.Test
     using Moq;
 
     [TestClass]
-    public class TemplateSynchronizationServiceTest
+    public class TemplateSynchronizerTest
     {
         [TestMethod]
         public void CanGetTemplatesToAdd()
         {
-            var service = GetTemplateSynchronizationService();
+            var service = GetTemplateSynchronizer();
 
             var templatesToAdd = service.GetTemplatesToAdd(service.GetTemplatesToAdd());
 
@@ -28,7 +28,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanGetLayoutForTemplateWithLayout()
         {
-            var service = GetTemplateSynchronizationService();
+            var service = GetTemplateSynchronizer();
 
             var template = GetTemplateMock(GetTemplatePath("Template1.cshtml"));
 
@@ -38,7 +38,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CannotGetLayoutForTemplateWithoutLayout()
         {
-            var service = GetTemplateSynchronizationService();
+            var service = GetTemplateSynchronizer();
 
             var template = GetTemplateMock(GetTemplatePath("Template2.cshtml"));
 
@@ -48,7 +48,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanGetPathsToTemplatesToAdd()
         {
-            var service = GetTemplateSynchronizationService();
+            var service = GetTemplateSynchronizer();
 
             var templatesToAdd = service.GetTemplatesToAdd();
 
@@ -70,7 +70,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             return templateMock.Object;
         }
 
-        private static TemplateSynchronizationService GetTemplateSynchronizationService()
+        private static TemplateSynchronizer GetTemplateSynchronizer()
         {
             var fileServiceMock = new Mock<IFileService>();
             var templateServiceMock = new Mock<ITemplateService>();
@@ -78,7 +78,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             templateServiceMock.Setup(m => m.TemplatePaths).Returns(TemplateService.Instance.TemplatePaths);
             templateServiceMock.Setup(m => m.GetTemplate(It.IsAny<string>())).Returns<string>(GetTemplateMock);
 
-            return new TemplateSynchronizationService(fileServiceMock.Object, templateServiceMock.Object);
+            return new TemplateSynchronizer(fileServiceMock.Object, templateServiceMock.Object);
         }
     }
 }

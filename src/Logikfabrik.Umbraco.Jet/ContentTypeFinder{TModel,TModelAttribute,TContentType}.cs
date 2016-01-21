@@ -7,7 +7,6 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
     using System.Linq;
     using Data;
-    using Extensions;
     using global::Umbraco.Core.Models;
 
     /// <summary>

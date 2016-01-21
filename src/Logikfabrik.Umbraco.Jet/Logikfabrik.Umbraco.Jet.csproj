@@ -369,9 +369,9 @@
     <Compile Include="Web\Mvc\JetMvcApplicationHandler.cs" />
     <Compile Include="Web\Mvc\JetViewEngine.cs" />
     <Compile Include="Web\Mvc\PreviewTemplateAttribute.cs" />
-    <Compile Include="Web\Mvc\PreviewTemplateSynchronizationService.cs" />
+    <Compile Include="Web\Mvc\PreviewTemplateSynchronizer.cs" />
     <Compile Include="TemplateService.cs" />
-    <Compile Include="TemplateSynchronizationService.cs" />
+    <Compile Include="TemplateSynchronizer.cs" />
     <Compile Include="Web\Mvc\Utilities\UrlUtility.cs" />
   </ItemGroup>
   <ItemGroup>

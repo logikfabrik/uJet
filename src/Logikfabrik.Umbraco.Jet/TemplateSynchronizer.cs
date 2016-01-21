@@ -1,8 +1,6 @@
-﻿// <copyright file="TemplateSynchronizationService.cs" company="Logikfabrik">
+﻿// <copyright file="TemplateSynchronizer.cs" company="Logikfabrik">
 //   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
-
-using Logikfabrik.Umbraco.Jet.Extensions;
 
 namespace Logikfabrik.Umbraco.Jet
 {
@@ -15,21 +13,21 @@ namespace Logikfabrik.Umbraco.Jet
     using global::Umbraco.Core.Services;
 
     /// <summary>
-    /// The <see cref="TemplateSynchronizationService" /> class. Adds and updates templates (Razor views).
+    /// The <see cref="TemplateSynchronizer" /> class. Adds and updates templates (Razor views).
     /// </summary>
-    public class TemplateSynchronizationService : ISynchronizer
+    public class TemplateSynchronizer : ISynchronizer
     {
         private readonly IFileService _fileService;
         private readonly ITemplateService _templateService;
         private readonly Regex _layoutRegex = new Regex("(?s:(?<=@{.*Layout\\s*=\\s*\").*(?=.cshtml\";.+}))");
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TemplateSynchronizationService" /> class.
+        /// Initializes a new instance of the <see cref="TemplateSynchronizer" /> class.
         /// </summary>
         /// <param name="fileService">The file service.</param>
         /// <param name="templateService">The template service.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="fileService" />, or <paramref name="templateService" /> are <c>null</c>.</exception>
-        public TemplateSynchronizationService(
+        public TemplateSynchronizer(
             IFileService fileService,
             ITemplateService templateService)
         {

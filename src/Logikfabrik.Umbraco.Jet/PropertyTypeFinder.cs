@@ -2,8 +2,6 @@
 //   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
-using Logikfabrik.Umbraco.Jet.Extensions;
-
 namespace Logikfabrik.Umbraco.Jet
 {
     using System;
