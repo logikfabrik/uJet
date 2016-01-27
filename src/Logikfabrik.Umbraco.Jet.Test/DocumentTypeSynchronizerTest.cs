@@ -33,9 +33,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var documentTypeSynchronizationServiceMock = new Mock<DocumentTypeSynchronizer>(
                 contentTypeServiceMock.Object,
+                new Mock<IFileService>().Object,
                 typeResolverMock.Object,
-                new Mock<Jet.Data.ITypeRepository>().Object,
-                new Mock<IFileService>().Object)
+                new Mock<Jet.Data.ITypeRepository>().Object)
             { CallBase = true };
 
             documentTypeSynchronizationServiceMock.Object.Run();
@@ -61,9 +61,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var documentTypeSynchronizationServiceMock = new Mock<DocumentTypeSynchronizer>(
                 contentTypeServiceMock.Object,
+                new Mock<IFileService>().Object,
                 typeResolverMock.Object,
-                new Mock<Jet.Data.ITypeRepository>().Object,
-                new Mock<IFileService>().Object)
+                new Mock<Jet.Data.ITypeRepository>().Object)
             { CallBase = true };
 
             documentTypeSynchronizationServiceMock.Object.Run();
@@ -89,9 +89,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var documentTypeSynchronizationServiceMock = new Mock<DocumentTypeSynchronizer>(
                 contentTypeServiceMock.Object,
+                new Mock<IFileService>().Object,
                 typeResolverMock.Object,
-                new Mock<Jet.Data.ITypeRepository>().Object,
-                new Mock<IFileService>().Object)
+                new Mock<Jet.Data.ITypeRepository>().Object)
             { CallBase = true };
 
             documentTypeSynchronizationServiceMock.Object.Run();
@@ -122,9 +122,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var documentTypeSynchronizationServiceMock = new Mock<DocumentTypeSynchronizer>(
                 contentTypeServiceMock.Object,
+                new Mock<IFileService>().Object,
                 typeResolverMock.Object,
-                typeRepositoryMock.Object,
-                new Mock<IFileService>().Object)
+                typeRepositoryMock.Object)
             { CallBase = true };
 
             documentTypeSynchronizationServiceMock.Object.Run();
@@ -155,9 +155,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var documentTypeSynchronizationService = new DocumentTypeSynchronizer(
                 contentTypeServiceMock.Object,
-                typeResolverMock.Object,
-                typeRepositoryMock.Object,
-                new Mock<IFileService>().Object);
+                new Mock<IFileService>().Object, typeResolverMock.Object, typeRepositoryMock.Object);
 
             documentTypeSynchronizationService.Run();
 
@@ -184,9 +182,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var documentTypeSynchronizationServiceMock = new Mock<DocumentTypeSynchronizer>(
                 contentTypeServiceMock.Object,
+                new Mock<IFileService>().Object,
                 typeResolverMock.Object,
-                new Mock<Jet.Data.ITypeRepository>().Object,
-                new Mock<IFileService>().Object)
+                new Mock<Jet.Data.ITypeRepository>().Object)
             { CallBase = true };
 
             documentTypeSynchronizationServiceMock.Object.Run();

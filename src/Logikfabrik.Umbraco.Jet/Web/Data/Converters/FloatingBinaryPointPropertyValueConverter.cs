@@ -80,11 +80,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
 
             float result;
 
-            if (float.TryParse(
-                    value.ToString(),
-                    NumberStyles.Float,
-                    CultureInfo.InvariantCulture.NumberFormat,
-                    out result))
+            if (float.TryParse(value.ToString(), NumberStyles.Float, CultureInfo.InvariantCulture.NumberFormat, out result))
             {
                 return result;
             }
@@ -106,11 +102,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
 
             double result;
 
-            if (double.TryParse(
-                    value.ToString(),
-                    NumberStyles.Float,
-                    CultureInfo.InvariantCulture.NumberFormat,
-                    out result))
+            if (double.TryParse(value.ToString(), NumberStyles.Float, CultureInfo.InvariantCulture.NumberFormat, out result))
             {
                 return result;
             }

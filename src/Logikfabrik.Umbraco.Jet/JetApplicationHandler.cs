@@ -37,13 +37,16 @@ namespace Logikfabrik.Umbraco.Jet
 
             lock (Lock)
             {
+                var typeResolver = TypeResolver.Instance;
+                var typeRepository = TypeRepository.Instance;
+
                 // Synchronize.
                 if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.DataTypes))
                 {
                     new DataTypeSynchronizer(
                         ApplicationContext.Current.Services.DataTypeService,
-                        TypeResolver.Instance,
-                        TypeRepository.Instance).Run();
+                        typeResolver,
+                        typeRepository).Run();
                 }
 
                 if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.DocumentTypes))
@@ -53,28 +56,28 @@ namespace Logikfabrik.Umbraco.Jet
                         TemplateService.Instance).Run();
                     new DocumentTypeSynchronizer(
                         ApplicationContext.Current.Services.ContentTypeService,
-                        TypeResolver.Instance,
-                        TypeRepository.Instance,
-                        ApplicationContext.Current.Services.FileService).Run();
+                        ApplicationContext.Current.Services.FileService,
+                        typeResolver,
+                        typeRepository).Run();
                 }
 
                 if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.MediaTypes))
                 {
                     new MediaTypeSynchronizer(
                         ApplicationContext.Current.Services.ContentTypeService,
-                        TypeResolver.Instance,
-                        TypeRepository.Instance).Run();
+                        typeResolver,
+                        typeRepository).Run();
                 }
 
                 if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.MemberTypes))
                 {
                     new MemberTypeSynchronizer(
                         ApplicationContext.Current.Services.MemberTypeService,
-                        TypeResolver.Instance,
-                        TypeRepository.Instance).Run();
+                        typeResolver,
+                        typeRepository).Run();
                 }
 
-                var defaultValueService = new DefaultValueService(TypeResolver.Instance, TypeRepository.Instance);
+                var defaultValueService = new DefaultValueService(typeResolver, typeRepository);
 
                 // Wire up handler for document type default values.
                 ContentService.Saving += (sender, args) => defaultValueService.SetDefaultValues(args.SavedEntities);

@@ -81,14 +81,8 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// </summary>
         /// <param name="property">The property to get the UI hint for.</param>
         /// <returns>The UI hint.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="property" /> is <c>null</c>.</exception>
-        private string GetPropertyUIHint(PropertyInfo property)
+        private static string GetPropertyUIHint(MemberInfo property)
         {
-            if (property == null)
-            {
-                throw new ArgumentNullException(nameof(property));
-            }
-
             var attribute = property.GetCustomAttribute<UIHintAttribute>();
 
             var uiHint = attribute?.UIHint;

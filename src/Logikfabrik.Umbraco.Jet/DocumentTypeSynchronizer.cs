@@ -25,15 +25,15 @@ namespace Logikfabrik.Umbraco.Jet
         /// Initializes a new instance of the <see cref="DocumentTypeSynchronizer" /> class.
         /// </summary>
         /// <param name="contentTypeService">The content type service.</param>
+        /// <param name="fileService">The file service.</param>
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="typeRepository">The type repository.</param>
-        /// <param name="fileService">The file service.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeService" />, <paramref name="typeResolver" />, or <paramref name="fileService" /> are <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeService" />, <paramref name="fileService" />, or <paramref name="typeResolver" /> are <c>null</c>.</exception>
         public DocumentTypeSynchronizer(
             IContentTypeService contentTypeService,
+            IFileService fileService,
             ITypeResolver typeResolver,
-            ITypeRepository typeRepository,
-            IFileService fileService)
+            ITypeRepository typeRepository)
             : base(typeRepository)
         {
             if (contentTypeService == null)

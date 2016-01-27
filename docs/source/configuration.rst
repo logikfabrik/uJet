@@ -37,7 +37,7 @@ The following constants are declared in the `SynchronizationMode` enumeration.
 +-----------------+---------------------------------------------------------+
 
 .. note::
-   Template synchronization and use of the built-in preview template, `PreviewTemplateAttribute`, requires document type synchronization to be enabled. Once uJet has synchronized all document types, document type synchronization can be disabled; it will still be possible to preview documents through the Umbraco back office. Template synchronization will, on the other hand, be disabled.
+   Template synchronization and use of the built-in preview template, by using `PreviewTemplateAttribute`, requires document type synchronization to be enabled. Once uJet has synchronized all document types, document type synchronization can be disabled; it will still be possible to preview documents through the Umbraco back office. Template synchronization will, on the other hand, be disabled.
 
 .. code-block:: xml
 

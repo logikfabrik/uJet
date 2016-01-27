@@ -3,13 +3,6 @@ Working with Types
 ******************
 uJet supports document types and media types (including inheritance and composition), member types and data types.
 
-**Type Tracking**
-As of version 3.0.0.0 uJet supports type tracking.
-
-When a document, media, or member type is synchronized, uJet tries to match the type declared in code with a type definition. uJet creates an Umbraco alias for the type, based on the type name (namespace excluded), and uses that alias to look for a matching type definition in the database. If a match is found the definition is updated; if not, a new type definition is created. Renaming a type that has been synchronized, in code or using the Umbraco back office, will cause duplicate definitions to be created, with different aliases.
-
-Type tracking refers to the use of the `id` parameter when declaring document types, media types, and member types in code. Using the `id` parameter uJet can keep track of types and their corresponding type definitions without relying on the type names. With type tracking types can be renamed; uJet will keep your Umbraco database synchronized.
-
 Document Types
 ==============
 A document type is created by decorating a public non-abstract class, with a default constructor that takes no parameters, using the `DocumentTypeAttribute` attribute.
@@ -334,3 +327,9 @@ Editor
 ^^^^^^
 **Required**
 The editor of the data type. The editor property will determine which property editor will be used for editing property values of this data type in the Umbraco back office.
+
+Type Tracking
+=============
+When a document, media, or member type is synchronized, uJet tries to match the type declared in code with a type definition. uJet creates an Umbraco alias for the type, based on the type name (namespace excluded), and uses that alias to look for a matching type definition in the database. If a match is found the definition is updated; if not, a new type definition is created. Renaming a type that has been synchronized, in code or using the Umbraco back office, will cause duplicate definitions to be created, with different aliases.
+
+Type tracking refers to the use of the `id` parameter when declaring document types, media types, and member types in code. Using the `id` parameter uJet can keep track of types and their corresponding type definitions without relying on the type names. With type tracking, types can be renamed; uJet will keep your Umbraco database synchronized.

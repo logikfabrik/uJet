@@ -55,11 +55,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
 
             decimal result;
 
-            if (decimal.TryParse(
-                    value.ToString(),
-                    NumberStyles.Float,
-                    CultureInfo.InvariantCulture.NumberFormat,
-                    out result))
+            if (decimal.TryParse(value.ToString(), NumberStyles.Float, CultureInfo.InvariantCulture.NumberFormat, out result))
             {
                 return result;
             }

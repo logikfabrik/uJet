@@ -32,19 +32,8 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// <param name="content">The content to map.</param>
         /// <param name="modelType">The model type to map to.</param>
         /// <returns>The mapped content.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" />, or <paramref name="modelType" /> are <c>null</c>.</exception>
         protected object GetMappedContent(IPublishedContent content, Type modelType)
         {
-            if (content == null)
-            {
-                throw new ArgumentNullException(nameof(content));
-            }
-
-            if (modelType == null)
-            {
-                throw new ArgumentNullException(nameof(modelType));
-            }
-
             var model = Activator.CreateInstance(modelType);
 
             MapByConvention(content, model);
@@ -73,19 +62,8 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// </summary>
         /// <param name="content">The content to map.</param>
         /// <param name="model">The model to map to.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" />, or <paramref name="model" /> are <c>null</c>.</exception>
         protected virtual void MapByConvention(IPublishedContent content, object model)
         {
-            if (content == null)
-            {
-                throw new ArgumentNullException(nameof(content));
-            }
-
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
             MapProperty(model, GetPropertyName(() => content.Id), content.Id);
             MapProperty(model, GetPropertyName(() => content.Url), content.Url);
             MapProperty(model, GetPropertyName(() => content.Name), content.Name);

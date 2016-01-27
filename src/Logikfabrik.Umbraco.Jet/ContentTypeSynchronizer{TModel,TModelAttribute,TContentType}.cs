@@ -196,17 +196,17 @@ namespace Logikfabrik.Umbraco.Jet
             }
         }
 
-        private void SynchronizePropertyType(TContentType contentType, PropertyType propertyTypeModel)
+        private void SynchronizePropertyType(TContentType contentType, PropertyType model)
         {
-            var propertyType = _propertyTypeFinder.Find(propertyTypeModel, contentType.PropertyTypes.ToArray()).SingleOrDefault();
+            var propertyType = _propertyTypeFinder.Find(model, contentType.PropertyTypes.ToArray()).SingleOrDefault();
 
             if (propertyType == null)
             {
-                CreatePropertyType(propertyTypeModel, contentType);
+                CreatePropertyType(model, contentType);
             }
             else
             {
-                UpdatePropertyType(contentType, propertyType, propertyTypeModel);
+                UpdatePropertyType(contentType, propertyType, model);
             }
         }
 
