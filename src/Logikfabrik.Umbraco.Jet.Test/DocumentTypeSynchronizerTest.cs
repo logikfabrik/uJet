@@ -155,7 +155,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var documentTypeSynchronizationService = new DocumentTypeSynchronizer(
                 contentTypeServiceMock.Object,
-                new Mock<IFileService>().Object, typeResolverMock.Object, typeRepositoryMock.Object);
+                new Mock<IFileService>().Object,
+                typeResolverMock.Object,
+                typeRepositoryMock.Object);
 
             documentTypeSynchronizationService.Run();
 

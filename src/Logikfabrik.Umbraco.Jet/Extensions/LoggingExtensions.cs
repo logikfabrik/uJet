@@ -1,59 +1,61 @@
-﻿using Umbraco.Core.Logging;
+﻿// <copyright file="LoggingExtensions.cs" company="Logikfabrik">
+//   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
+// </copyright>
 
 namespace Logikfabrik.Umbraco.Jet.Extensions
 {
     using System;
+    using global::Umbraco.Core.Logging;
 
     /// <summary>
-    /// Static logging extensions which wraps the standard Umbraco logging system.
+    /// The <see cref="LoggingExtensions" /> class. Logging extension methods which wraps the standard Umbraco logging system.
     /// </summary>
     public static class LoggingExtensions
     {
         /// <summary>
-        /// Debugs the specified message.
+        /// Writes the specified debug message to the log.
         /// </summary>
-        /// <param name="sender">The sender of the debug message.</param>
-        /// <param name="msg">The debug message by itself.</param>
-        /// <typeparam name="T">The type of the sender of the message.</typeparam>
-        public static void Debug<T>(this T sender, string msg)
+        /// <typeparam name="T">The sender type.</typeparam>
+        /// <param name="sender">The message sender.</param>
+        /// <param name="message">The message to write.</param>
+        public static void Debug<T>(this T sender, string message)
         {
-            LogHelper.Debug<T>(msg);
+            LogHelper.Debug<T>(message);
         }
 
         /// <summary>
-        /// Writes an Info message into the log.
+        /// Writes the specified message to the log.
         /// </summary>
-        /// <param name="sender">The sender of the info message.</param>
-        /// <param name="msg">The debug message by itself.</param>
-        /// <typeparam name="T">The type of the sender of the message.</typeparam>
-        public static void Info<T>(this T sender, string msg)
+        /// <typeparam name="T">The sender type.</typeparam>
+        /// <param name="sender">The message sender.</param>
+        /// <param name="message">The message to write.</param>
+        public static void Info<T>(this T sender, string message)
         {
-            LogHelper.Info<T>(msg);
+            LogHelper.Info<T>(message);
         }
 
         /// <summary>
-        /// Writes an Warning message into the log.
+        /// Writes the specified warning message to the log.
         /// </summary>
-        /// <param name="sender">The sender of the warning message.</param>
-        /// <param name="msg">The debug message by itself.</param>
-        /// <param name="exc">The exception where this warning is based on.</param>
-        /// <typeparam name="T">The type of the sender of the message.</typeparam>
-        public static void Warn<T>(this T sender, string msg, Exception exc = null)
+        /// <typeparam name="T">The sender type.</typeparam>
+        /// <param name="sender">The message sender.</param>
+        /// <param name="message">The message to write.</param>
+        /// <param name="ex">The exception to which this message refers, if any.</param>
+        public static void Warn<T>(this T sender, string message, Exception ex = null)
         {
-            LogHelper.Warn<T>(string.Format("{0} > {1}{2}\t{3}", msg, exc.Message, Environment.NewLine, exc));
+            LogHelper.Warn<T>($"{message} > {ex?.Message}{Environment.NewLine}\t{ex}");
         }
 
         /// <summary>
-        /// Writes an Error message into the log.
+        /// Writes the specified error message to the log.
         /// </summary>
-        /// <param name="sender">The sender of the error message.</param>
-        /// <param name="msg">The debug message by itself.</param>
-        /// <param name="exc">The exception where this fatal error is based on.</param>
-        /// <typeparam name="T">The type of the sender of the message.</typeparam>
-        public static void Fatal<T>(this T sender, string msg, Exception exc = null)
+        /// <typeparam name="T">The sender type.</typeparam>
+        /// <param name="sender">The message sender.</param>
+        /// <param name="message">The message to write.</param>
+        /// <param name="ex">The exception to which this message refers, if any.</param>
+        public static void Fatal<T>(this T sender, string message, Exception ex = null)
         {
-            LogHelper.Error<T>(msg, 
-                exc == null ? new Exception(msg) : exc);
+            LogHelper.Error<T>(message, ex ?? new Exception(message));
         }
     }
 }
