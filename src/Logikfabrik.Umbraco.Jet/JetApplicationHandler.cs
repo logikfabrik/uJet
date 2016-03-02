@@ -2,6 +2,8 @@
 //   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
+using Logikfabrik.Umbraco.Jet.Extensions;
+
 namespace Logikfabrik.Umbraco.Jet
 {
     using Configuration;
@@ -37,12 +39,16 @@ namespace Logikfabrik.Umbraco.Jet
 
             lock (Lock)
             {
+                this.Info("Begin synchronizing types.");
+
                 var typeResolver = TypeResolver.Instance;
                 var typeRepository = TypeRepository.Instance;
 
                 // Synchronize.
                 if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.DataTypes))
                 {
+                    this.Info("Data type synchronization enabled. Begin synchronizing data types.");
+
                     new DataTypeSynchronizer(
                         ApplicationContext.Current.Services.DataTypeService,
                         typeResolver,
@@ -51,9 +57,13 @@ namespace Logikfabrik.Umbraco.Jet
 
                 if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.DocumentTypes))
                 {
+                    this.Info("Document type synchronization enabled. Begin synchronizing templates.");
+
                     new TemplateSynchronizer(
                         ApplicationContext.Current.Services.FileService,
                         TemplateService.Instance).Run();
+
+                    this.Info("Document type synchronization enabled. Begin synchronizing document types.");
                     new DocumentTypeSynchronizer(
                         ApplicationContext.Current.Services.ContentTypeService,
                         ApplicationContext.Current.Services.FileService,
@@ -63,6 +73,8 @@ namespace Logikfabrik.Umbraco.Jet
 
                 if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.MediaTypes))
                 {
+                    this.Info("Media type synchronization enabled. Begin synchronizing media types.");
+
                     new MediaTypeSynchronizer(
                         ApplicationContext.Current.Services.ContentTypeService,
                         typeResolver,
@@ -71,6 +83,8 @@ namespace Logikfabrik.Umbraco.Jet
 
                 if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.MemberTypes))
                 {
+                    this.Info("Member type synchronization enabled. Begin synchronizing member types.");
+
                     new MemberTypeSynchronizer(
                         ApplicationContext.Current.Services.MemberTypeService,
                         typeResolver,
