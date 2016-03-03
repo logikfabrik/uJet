@@ -26,11 +26,11 @@ uJet is easy to use. Add a reference to uJet. Then create your types and decorat
 
 **Model**
 ```csharp
-using Logikfabrik.Umbraco.Jet;
-using System.ComponentModel.DataAnnotations;
-
 namespace Example.Models
 {
+	using System.ComponentModel.DataAnnotations;
+	using Logikfabrik.Umbraco.Jet;
+
     [DocumentType(
         "My page",
         Description = "Document type for my page",
@@ -69,12 +69,12 @@ namespace Example.Models
 
 **Controller**
 ```csharp
-using Example.Models;
-using Logikfabrik.Umbraco.Jet.Web.Mvc;
-using System.Web.Mvc;
-
 namespace Example.Controllers
 {
+	using System.Web.Mvc;
+	using Logikfabrik.Umbraco.Jet.Web.Mvc;
+	using Models;
+
     public class MyPageController : JetController
     {
         public ActionResult Index(MyPage model)
