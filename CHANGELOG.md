@@ -1,4 +1,6 @@
 ## Unreleased
+* 2016-03-02 Added basic logging to the `JetApplicationHandler`.
+* 2016-02-01 Added a logging wrapper (extension methods).
 * 2016-01-03 Added support for inheritance and composition.
 * 2015-12-21 Added support for nested templates (layouts/masters).
 * 2015-12-21 Fixed an issue with templates being duplicated on synchronization.
