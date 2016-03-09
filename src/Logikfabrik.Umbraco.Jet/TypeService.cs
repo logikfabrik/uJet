@@ -7,6 +7,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
     using Configuration;
@@ -23,7 +24,7 @@ namespace Logikfabrik.Umbraco.Jet
         private readonly Lazy<ReadOnlyCollection<Type>> _dataTypes;
         private readonly Lazy<ReadOnlyCollection<Type>> _mediaTypes;
         private readonly Lazy<ReadOnlyCollection<Type>> _memberTypes;
-        private readonly Lazy<Assembly[]> _assemblies;
+        private readonly Lazy<Type[]> _types;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TypeService" /> class.
@@ -37,7 +38,7 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(getAssemblies));
             }
 
-            _assemblies = new Lazy<Assembly[]>(getAssemblies);
+            _types = new Lazy<Type[]>(() => GetTypes(getAssemblies()));
             _documentTypes = new Lazy<ReadOnlyCollection<Type>>(() => GetTypesByAttribute(TypeExtensions.IsModelType<DocumentTypeAttribute>));
             _dataTypes = new Lazy<ReadOnlyCollection<Type>>(() => GetTypesByAttribute(TypeExtensions.IsModelType<DataTypeAttribute>));
             _mediaTypes = new Lazy<ReadOnlyCollection<Type>>(() => GetTypesByAttribute(TypeExtensions.IsModelType<MediaTypeAttribute>));
@@ -114,14 +115,42 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(predicate));
             }
 
+            this.Debug("Getting types by attribute.");
+
+            var watch = Stopwatch.StartNew();
+
+            var types = _types.Value.Where(predicate).ToArray();
+
+            watch.Stop();
+
+            this.Debug($"Got {types.Length} types by attribute in {watch.ElapsedMilliseconds} ms.");
+
+            return Array.AsReadOnly(types);
+        }
+
+        /// <summary>
+        /// Gets the types.
+        /// </summary>
+        /// <param name="assemblies">The assemblies to get types from.</param>
+        /// <returns>The types.</returns>
+        private Type[] GetTypes(IEnumerable<Assembly> assemblies)
+        {
+            this.Debug("Getting types.");
+
+            var watch = Stopwatch.StartNew();
+
             var types = new List<Type>();
 
-            foreach (var assembly in _assemblies.Value)
+            foreach (var assembly in assemblies)
             {
-                types.AddRange(GetTypes(assembly).Where(predicate));
+                types.AddRange(GetTypes(assembly));
             }
 
-            return Array.AsReadOnly(types.ToArray());
+            watch.Stop();
+
+            this.Debug($"Got {types.Count} types in {watch.ElapsedMilliseconds} ms.");
+
+            return types.ToArray();
         }
 
         /// <summary>
@@ -138,10 +167,20 @@ namespace Logikfabrik.Umbraco.Jet
 
             try
             {
-                return assembly.GetTypes();
+                var watch = Stopwatch.StartNew();
+
+                var types = assembly.GetTypes();
+
+                watch.Stop();
+
+                this.Debug($"Got {types.Length} types from assembly {assembly.FullName} in {watch.ElapsedMilliseconds} ms.");
+
+                return types;
             }
-            catch (ReflectionTypeLoadException)
+            catch (ReflectionTypeLoadException ex)
             {
+                this.Warn($"An exception was thrown when getting types from assembly {assembly.FullName}.", ex);
+
                 return new Type[] { };
             }
         }

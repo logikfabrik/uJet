@@ -1,4 +1,6 @@
 ## Unreleased
+* 2016-03-09 Added basic logging to the `TypeService`.
+* 2016-03-09 Added support for data type pre-values.
 * 2016-03-02 Added basic logging to the `JetApplicationHandler`.
 * 2016-02-01 Added a logging wrapper (extension methods).
 * 2016-01-03 Added support for inheritance and composition.
