@@ -356,7 +356,7 @@ Implementing interface `IDataType` is optional.
        public class MyData : IDataType
        {
            public Dictionary<string, string> PreValues => new Dictionary<string, string>
-		   {
+           {
                { "PreValue0", "Value0" },
                { "PreValue1", "Value1" },
                { "PreValue2", "Value2" }
