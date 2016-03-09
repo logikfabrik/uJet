@@ -137,6 +137,9 @@ namespace Logikfabrik.Umbraco.Jet
             // We get the data type once more to refresh it after saving it.
             dataType = _dataTypeService.GetDataTypeDefinitionByName(dataType.Name);
 
+            // Set the pre-values, if any.
+            SetDataTypePreValues(dataType, model);
+
             // Set/update tracking.
             SetDataTypeId(model, dataType);
         }
@@ -154,6 +157,18 @@ namespace Logikfabrik.Umbraco.Jet
             }
 
             _typeRepository.SetDefinitionId(model.Id.Value, dataType.Id);
+        }
+
+        private void SetDataTypePreValues(IEntity dataType, DataType model)
+        {
+            if (!model.PreValues.Any())
+            {
+                return;
+            }
+
+            var preValues = model.PreValues.ToDictionary(preValue => preValue.Key, v => new PreValue(v.Value));
+
+            _dataTypeService.SavePreValues(dataType.Id, preValues);
         }
     }
 }

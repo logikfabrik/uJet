@@ -5,6 +5,8 @@
 namespace Logikfabrik.Umbraco.Jet
 {
     using System;
+    using System.Collections.Generic;
+    using System.Reflection;
 
     /// <summary>
     /// The <see cref="DataType" /> class.
@@ -19,6 +21,7 @@ namespace Logikfabrik.Umbraco.Jet
             : base(modelType)
         {
             Name = modelType.Name;
+            PreValues = GetPreValues();
         }
 
         /// <summary>
@@ -44,5 +47,36 @@ namespace Logikfabrik.Umbraco.Jet
         /// The type.
         /// </value>
         public Type Type => Attribute.Type;
+
+        /// <summary>
+        /// Gets the pre-values.
+        /// </summary>
+        /// <value>
+        /// The pre-values.
+        /// </value>
+        public IDictionary<string, string> PreValues { get; }
+
+        private IDictionary<string, string> GetPreValues()
+        {
+            /*
+             * Gets the pre-value property (if one exists). Umbraco does not support inheritance or composition for data types,
+             * so inherited properties can safely be included, and should be included.
+             */
+            var property = ModelType.GetProperty("PreValues", BindingFlags.Public | BindingFlags.Instance);
+
+            if (property == null || !property.CanRead)
+            {
+                return new Dictionary<string, string>();
+            }
+
+            if (!typeof(IDictionary<string, string>).IsAssignableFrom(property.PropertyType))
+            {
+                return new Dictionary<string, string>();
+            }
+
+            var preValues = property.GetValue(Activator.CreateInstance(ModelType)) as IDictionary<string, string>;
+
+            return preValues ?? new Dictionary<string, string>();
+        }
     }
 }

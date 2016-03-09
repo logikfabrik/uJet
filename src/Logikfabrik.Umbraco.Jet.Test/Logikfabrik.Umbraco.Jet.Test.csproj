@@ -304,6 +304,8 @@
     <Compile Include="MemberTypeTest.cs" />
     <Compile Include="Models\CompositionDocumentTypeA.cs" />
     <Compile Include="Models\CompositionDocumentTypeB.cs" />
+    <Compile Include="Models\DataTypeA.cs" />
+    <Compile Include="Models\DataTypeB.cs" />
     <Compile Include="Models\DocumentTypeA.cs" />
     <Compile Include="Models\DocumentTypeB.cs" />
     <Compile Include="Models\ContentType.cs" />

@@ -73,6 +73,11 @@ namespace Logikfabrik.Umbraco.Jet
         /// <returns>The properties.</returns>
         protected override IEnumerable<PropertyType> GetProperties()
         {
+            /*
+             * Only include public instance properties declared for the model type in question. The type hierarchy
+             * is flattened down to model types. Inheritance for model types is handled by Umbraco, and adding
+             * inherited properties will cause collisions.
+             */
             var properties = GetInheritance()[ModelType].SelectMany(type => type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly));
 
             return properties.Where(IsValidProperty).Select(property => new PropertyType(property));

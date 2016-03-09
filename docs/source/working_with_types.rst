@@ -60,6 +60,18 @@ Icon
 ^^^^
 The icon for the document type. The document type icon is displayed in the Umbraco back office.
 
+.. code-block:: csharp
+
+   using Logikfabrik.Umbraco.Jet;
+
+   namespace Example.Models.DocumentTypes
+   {
+       [DocumentType("My Settings Page", Icon = "icon-settings")]
+       public class MySettingsPage
+       {
+       }
+   }
+
 Thumbnail
 ^^^^^^^^^
 The thumbnail for the document type. The document type thumbnail is displayed in the Umbraco back office.
@@ -327,6 +339,30 @@ Editor
 ^^^^^^
 **Required**
 The editor of the data type. The editor property will determine which property editor will be used for editing property values of this data type in the Umbraco back office.
+
+PreValues
+---------
+uJet supports pre-values defined in code. Simply add a public property (getter required) with the name `PreValues` of a type implementing interface `IDictionary<string, string>`. uJet will find the property, get the return value and save it as pre-values for the data type.
+
+Implementing interface `IDataType` is optional.
+
+.. code-block:: csharp
+   
+   using Logikfabrik.Umbraco.Jet;
+
+   namespace Example.Models.DataTypes
+   {
+       [DataType(typeof(int), "Umbraco.MediaPicker")]
+       public class MyData : IDataType
+       {
+           public Dictionary<string, string> PreValues => new Dictionary<string, string>
+		   {
+               { "PreValue0", "Value0" },
+               { "PreValue1", "Value1" },
+               { "PreValue2", "Value2" }
+           };
+       }
+   }
 
 Type Tracking
 =============

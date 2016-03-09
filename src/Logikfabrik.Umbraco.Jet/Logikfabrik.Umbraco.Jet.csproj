@@ -295,6 +295,7 @@
     <Compile Include="Data\ITypeRepository.cs" />
     <Compile Include="Data\TypeRepository.cs" />
     <Compile Include="Extensions\LoggingExtensions.cs" />
+    <Compile Include="IDataType.cs" />
     <Compile Include="ITypeResolver.cs" />
     <Compile Include="ContentTypeFinder{TModel,TModelAttribute,TContentType}.cs" />
     <Compile Include="PropertyTypeFinder.cs" />
