@@ -291,7 +291,7 @@ namespace Logikfabrik.Umbraco.Jet
 
             if (definition == null)
             {
-                throw new Exception($"There is data type no definition for type {model.Type}.");
+                throw new Exception($"There is no data type definition for type {model.Type}.");
             }
 
             return definition;

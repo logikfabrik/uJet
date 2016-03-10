@@ -298,6 +298,7 @@
     <Compile Include="IDataType.cs" />
     <Compile Include="ITypeResolver.cs" />
     <Compile Include="ContentTypeFinder{TModel,TModelAttribute,TContentType}.cs" />
+    <Compile Include="Mappings\DataTypeDefinitionMappingRegistrar.cs" />
     <Compile Include="PropertyTypeFinder.cs" />
     <Compile Include="TypeModelComparer{TModel,TModelAttribute}.cs" />
     <Compile Include="TypeModelFinder{TModel,TModelAttribute}.cs" />
@@ -329,6 +330,7 @@
     <Compile Include="Web\Data\Converters\HtmlStringPropertyValueConverter.cs" />
     <Compile Include="Web\Data\Converters\IPropertyValueConverter.cs" />
     <Compile Include="Web\Data\Converters\PropertyValueConverterDictionary.cs" />
+    <Compile Include="Web\Data\Converters\PropertyValueConverterRegistrar.cs" />
     <Compile Include="Web\Data\Converters\PropertyValueConverters.cs" />
     <Compile Include="Web\Data\DocumentService.cs" />
     <Compile Include="Web\Data\IUmbracoHelperWrapper.cs" />
