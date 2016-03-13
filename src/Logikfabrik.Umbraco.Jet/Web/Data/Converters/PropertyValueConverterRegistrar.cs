@@ -2,12 +2,11 @@
 //   Copyright (c) 2015 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
-using System.Linq;
-
 namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// The <see cref="PropertyValueConverterRegistrar" /> class. Utility class for registering property value converters.

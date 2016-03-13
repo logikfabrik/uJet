@@ -5,6 +5,7 @@
 namespace Logikfabrik.Umbraco.Jet
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using Data;
     using global::Umbraco.Core.Models;
@@ -19,7 +20,6 @@ namespace Logikfabrik.Umbraco.Jet
         private readonly IDataTypeService _dataTypeService;
         private readonly ITypeResolver _typeResolver;
         private readonly ITypeRepository _typeRepository;
-
         private readonly DataTypeFinder _dataTypeFinder;
 
         /// <summary>
@@ -163,6 +163,8 @@ namespace Logikfabrik.Umbraco.Jet
         {
             if (!model.PreValues.Any())
             {
+                _dataTypeService.SavePreValues(dataType.Id, new Dictionary<string, PreValue>());
+
                 return;
             }
 

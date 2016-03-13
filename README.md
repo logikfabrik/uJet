@@ -55,6 +55,10 @@ namespace Example.Models
 ```html
 @model Example.Models.MyPage
 
+@{
+    Layout = null;
+}
+
 <!DOCTYPE html>
 <html>
 <head>
