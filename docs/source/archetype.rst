@@ -20,63 +20,63 @@ PM> Install-Package Archetype
        using System.Collections.Generic;
        using Logikfabrik.Umbraco.Jet;
 	   
-	   [DataType(typeof(string), "Imulus.Archetype")]
+       [DataType(typeof(string), "Imulus.Archetype")]
        public class MyDataType : IDataType
        {
-		   public Dictionary<string, string> PreValues => new Dictionary<string, string> { { "archetypeConfig", @"{
-		       'showAdvancedOptions':false,
-		       'startWithAddButton':false,
-		       'hideFieldsetToolbar':false,
-		       'enableMultipleFieldsets':false,
-		       'hideFieldsetControls':false,
-		       'hidePropertyLabel':false,
-		       'maxFieldsets':null,
-		       'enableCollapsing':true,
-		       'enableCloning':false,
-		       'enableDisabling':true,
-		       'enableDeepDatatypeRequests':false,
-		       'fieldsets':[
-		       {
-		           'alias':'myProperty',
-		           'remove':false,
-		           'collapse':false,
-		           'labelTemplate':'',
-		           'icon':'',
-		           'label':'My Property',
-		           'properties':[
-		           {
-		               'alias':'property1',
-		               'remove':false,
-		               'collapse':true,
-		               'label':'Property 1',
-		               'helpText':'',
-		               'dataTypeGuid':'0cc0eba1-9960-42c9-bf9b-60e150b429ae',
-		               'value':'',
-		               'aliasIsDirty':true,
-		               '$$hashKey':'0RR'
-		           },
-		           {
-		               'alias':'property2',
-		               'remove':false,
-		               'collapse':true,
-		               'label':'Property 2',
-		               'helpText':'',
-		               'dataTypeGuid':'0cc0eba1-9960-42c9-bf9b-60e150b429ae',
-		               'value':'',
-		               'aliasIsDirty':true,
-		               '$$hashKey':'0RS'
-		           }],
-		           'group':null,
-		           'aliasIsDirty':true,
-		           '$$hashKey':'0RI'
-		           }],
-		       'fieldsetGroups':[],
-		       'selection':[]
-		   }" } };
+           public Dictionary<string, string> PreValues => new Dictionary<string, string> { { "archetypeConfig", @"{
+               'showAdvancedOptions':false,
+               'startWithAddButton':false,
+               'hideFieldsetToolbar':false,
+               'enableMultipleFieldsets':false,
+               'hideFieldsetControls':false,
+               'hidePropertyLabel':false,
+               'maxFieldsets':null,
+               'enableCollapsing':true,
+               'enableCloning':false,
+               'enableDisabling':true,
+               'enableDeepDatatypeRequests':false,
+               'fieldsets':[
+               {
+                   'alias':'myProperty',
+                   'remove':false,
+                   'collapse':false,
+                   'labelTemplate':'',
+                   'icon':'',
+                   'label':'My Property',
+                   'properties':[
+                   {
+                       'alias':'property1',
+                       'remove':false,
+                       'collapse':true,
+                       'label':'Property 1',
+                       'helpText':'',
+                       'dataTypeGuid':'0cc0eba1-9960-42c9-bf9b-60e150b429ae',
+                       'value':'',
+                       'aliasIsDirty':true,
+                       '$$hashKey':'0RR'
+                   },
+                   {
+                       'alias':'property2',
+                       'remove':false,
+                       'collapse':true,
+                       'label':'Property 2',
+                       'helpText':'',
+                       'dataTypeGuid':'0cc0eba1-9960-42c9-bf9b-60e150b429ae',
+                       'value':'',
+                       'aliasIsDirty':true,
+                       '$$hashKey':'0RS'
+                   }],
+                   'group':null,
+                   'aliasIsDirty':true,
+                   '$$hashKey':'0RI'
+                   }],
+               'fieldsetGroups':[],
+               'selection':[]
+           }" } };
 
-		   public string Property1 { get; set; }
+           public string Property1 { get; set; }
 
-		   public string Property2 { get; set; }
+           public string Property2 { get; set; }
        }
    }
    
@@ -87,12 +87,12 @@ PM> Install-Package Archetype
    namespace Example.Models.DocumentTypes
    {
        using DataTypes;
-	   using Logikfabrik.Umbraco.Jet;
+       using Logikfabrik.Umbraco.Jet;
 	   
-	   [DocumentType("My Page")]
+       [DocumentType("My Page")]
        public class MyPage
        {
-	       public MyDataType MyProperty { get; set; }
+           public MyDataType MyProperty { get; set; }
        }
    }
 
@@ -109,13 +109,13 @@ PM> Install-Package Archetype
        using Umbraco.Core;
        using Umbraco.Core.Models;
 	   
-	   public class MyDataTypeDataTypeDefinitionMapping : DataTypeDefinitionMapping
+       public class MyDataTypeDataTypeDefinitionMapping : DataTypeDefinitionMapping
        {
-	       protected override Type[] SupportedTypes => new[] { typeof(MyDataType) };
+           protected override Type[] SupportedTypes => new[] { typeof(MyDataType) };
 
-		   public override IDataTypeDefinition GetMappedDefinition(Type fromType)
-		   {
-		       return !CanMapToDefinition(fromType) ? null : GetDefinition();
+           public override IDataTypeDefinition GetMappedDefinition(Type fromType)
+           {
+               return !CanMapToDefinition(fromType) ? null : GetDefinition();
 		   }
 
 		   private static IDataTypeDefinition GetDefinition()
@@ -131,17 +131,17 @@ PM> Install-Package Archetype
    
    namespace Example
    {
-	   using Logikfabrik.Umbraco.Jet;
-	   using Logikfabrik.Umbraco.Jet.Mappings;
-	   using Models.DataTypes;
-	   using Umbraco.Core;
+       using Logikfabrik.Umbraco.Jet;
+       using Logikfabrik.Umbraco.Jet.Mappings;
+       using Models.DataTypes;
+       using Umbraco.Core;
 	   
-	   public class MyApplicationHandler : ApplicationHandler
+       public class MyApplicationHandler : ApplicationHandler
        {
-		   public override void OnApplicationStarting(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
-		   {
-		       DataTypeDefinitionMappingRegistrar.Register<MyDataType>(new MyDataTypeDataTypeDefinitionMapping());
-		   }
+           public override void OnApplicationStarting(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
+           {
+               DataTypeDefinitionMappingRegistrar.Register<MyDataType>(new MyDataTypeDataTypeDefinitionMapping());
+           }
        }
    }
    
@@ -159,30 +159,30 @@ If you're using the uJet model binder, create and register a property value conv
        using Logikfabrik.Umbraco.Jet.Web.Data.Converters;
        using Models.DataTypes;
 	   
-	   public class MyDataTypePropertyValueConverter : IPropertyValueConverter
+       public class MyDataTypePropertyValueConverter : IPropertyValueConverter
        {
-	       public bool CanConvertValue(string uiHint, Type from, Type to)
-	       {
-	           return to == typeof(MyDataType);
-	       }
+           public bool CanConvertValue(string uiHint, Type from, Type to)
+           {
+               return to == typeof(MyDataType);
+           }
 
-		   public object Convert(object value, Type to)
-	       {
-	           var model = value as ArchetypeModel;
+           public object Convert(object value, Type to)
+           {
+               var model = value as ArchetypeModel;
 
-	           if (model == null)
-	           {
-	               return null;
-	           }
+               if (model == null)
+               {
+                   return null;
+               }
 
-	           var fieldset = model.Fieldsets.First();
+               var fieldset = model.Fieldsets.First();
 
-	           return new MyDataType
-	           {
-	               Property1 = fieldset.Properties.First(p => p.Alias.Equals("property1")).Value as string,
-	               Property2 = fieldset.Properties.First(p => p.Alias.Equals("property2")).Value as string
-	           };
-	       }
+               return new MyDataType
+               {
+                   Property1 = fieldset.Properties.First(p => p.Alias.Equals("property1")).Value as string,
+                   Property2 = fieldset.Properties.First(p => p.Alias.Equals("property2")).Value as string
+               };
+           }
        }
    }
 
@@ -196,13 +196,13 @@ If you're using the uJet model binder, create and register a property value conv
        using Models.DataTypes;
        using Umbraco.Core;
 	   
-	   public class MyApplicationHandler : ApplicationHandler
+       public class MyApplicationHandler : ApplicationHandler
        {
-		   public override void OnApplicationStarting(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
-		   {
-		       DataTypeDefinitionMappingRegistrar.Register<MyDataType>(new MyDataTypeDataTypeDefinitionMapping());
-			   PropertyValueConverterRegistrar<MyDataType>(new MyDataTypePropertyValueConverter());
-		   }
+           public override void OnApplicationStarting(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
+           {
+               DataTypeDefinitionMappingRegistrar.Register<MyDataType>(new MyDataTypeDataTypeDefinitionMapping());
+               PropertyValueConverterRegistrar<MyDataType>(new MyDataTypePropertyValueConverter());
+           }
        }
    }
 
@@ -210,9 +210,9 @@ If you're using the uJet model binder, create and register a property value conv
    
    namespace Example.Controllers
    {
-	   using System.Web.Mvc;
-	   using Logikfabrik.Umbraco.Jet.Web.Mvc;
-	   using Models.DocumentTypes;
+       using System.Web.Mvc;
+       using Logikfabrik.Umbraco.Jet.Web.Mvc;
+       using Models.DocumentTypes;
 
        public class MyPageController : JetController
        {
