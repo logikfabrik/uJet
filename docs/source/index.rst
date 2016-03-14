@@ -22,5 +22,6 @@ Contents
    working_with_templates
    working_with_mvc_conventions
    archetype
+   logging
    license
    contributions

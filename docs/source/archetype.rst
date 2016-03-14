@@ -7,9 +7,11 @@ The following is a guide to how Archetype can be used with uJet.
 
 1. First, create a new solution in VS.
 
-PM> Install-Package uJet
-PM> Install-Package UmbracoCms
-PM> Install-Package Archetype
+.. code-block:: bat
+
+   PM> Install-Package uJet
+   PM> Install-Package UmbracoCms
+   PM> Install-Package Archetype
 
 1. Create your Archetype data type. Pre-values define the Archetype configuration.
 
@@ -116,14 +118,14 @@ PM> Install-Package Archetype
            public override IDataTypeDefinition GetMappedDefinition(Type fromType)
            {
                return !CanMapToDefinition(fromType) ? null : GetDefinition();
-		   }
+           }
 
-		   private static IDataTypeDefinition GetDefinition()
-		   {
-		       var definitions = ApplicationContext.Current.Services.DataTypeService.GetDataTypeDefinitionByPropertyEditorAlias("Imulus.Archetype");
+           private static IDataTypeDefinition GetDefinition()
+           {
+               var definitions = ApplicationContext.Current.Services.DataTypeService.GetDataTypeDefinitionByPropertyEditorAlias("Imulus.Archetype");
 
-		       return definitions.First(definition => definition.Name.Equals(typeof(MyDataType).Name));
-		   }
+               return definitions.First(definition => definition.Name.Equals(typeof(MyDataType).Name));
+           }
        }
    }
 
@@ -147,7 +149,7 @@ PM> Install-Package Archetype
    
 4. Make sure uJet is configured to synchronize data types and document types. Fire up your Umbraco application, create a new document of type MyPage, and edit the value for MyProperty. That's it!
 
-If you're using the uJet model binder, create and register a property value converter. The property value converter will be used by uJet to convert the property value into and instance of the data type created in step 1.
+5. This step is optional. If you're using the uJet model binder, create and register a property value converter. The property value converter will be used by uJet to convert the property value into and instance of the data type created in step 1.
 
 .. code-block:: csharp
    
@@ -201,7 +203,7 @@ If you're using the uJet model binder, create and register a property value conv
            public override void OnApplicationStarting(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
            {
                DataTypeDefinitionMappingRegistrar.Register<MyDataType>(new MyDataTypeDataTypeDefinitionMapping());
-               PropertyValueConverterRegistrar<MyDataType>(new MyDataTypePropertyValueConverter());
+               PropertyValueConverterRegistrar.Register<MyDataType>(new MyDataTypePropertyValueConverter());
            }
        }
    }
