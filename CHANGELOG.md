@@ -1,4 +1,4 @@
-## Unreleased
+## 4.0.0.0
 * 2016-03-09 Added basic logging to the `TypeService`.
 * 2016-03-09 Added support for data type pre-values.
 * 2016-03-02 Added basic logging to the `JetApplicationHandler`.
