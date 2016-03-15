@@ -5,6 +5,8 @@
 namespace Logikfabrik.Umbraco.Jet
 {
     using Configuration;
+    using Data;
+    using Extensions;
     using global::Umbraco.Core;
     using global::Umbraco.Core.Services;
 
@@ -13,9 +15,6 @@ namespace Logikfabrik.Umbraco.Jet
     /// </summary>
     public class JetApplicationHandler : ApplicationHandler
     {
-        /// <summary>
-        /// The lock.
-        /// </summary>
         private static readonly object Lock = new object();
 
         private static bool configured;
@@ -39,35 +38,68 @@ namespace Logikfabrik.Umbraco.Jet
 
             lock (Lock)
             {
+                this.Info("Begin synchronizing types.");
+
+                var typeResolver = TypeResolver.Instance;
+                var typeRepository = TypeRepository.Instance;
+
                 // Synchronize.
                 if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.DataTypes))
                 {
-                    new DataTypeSynchronizationService().Synchronize();
+                    this.Info("Data type synchronization enabled. Begin synchronizing data types.");
+
+                    new DataTypeSynchronizer(
+                        ApplicationContext.Current.Services.DataTypeService,
+                        typeResolver,
+                        typeRepository).Run();
                 }
 
                 if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.DocumentTypes))
                 {
-                    new DocumentTypeSynchronizationService().Synchronize();
+                    this.Info("Document type synchronization enabled. Begin synchronizing templates.");
+
+                    new TemplateSynchronizer(
+                        ApplicationContext.Current.Services.FileService,
+                        TemplateService.Instance).Run();
+
+                    this.Info("Document type synchronization enabled. Begin synchronizing document types.");
+                    new DocumentTypeSynchronizer(
+                        ApplicationContext.Current.Services.ContentTypeService,
+                        ApplicationContext.Current.Services.FileService,
+                        typeResolver,
+                        typeRepository).Run();
                 }
 
                 if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.MediaTypes))
                 {
-                    new MediaTypeSynchronizationService().Synchronize();
+                    this.Info("Media type synchronization enabled. Begin synchronizing media types.");
+
+                    new MediaTypeSynchronizer(
+                        ApplicationContext.Current.Services.ContentTypeService,
+                        typeResolver,
+                        typeRepository).Run();
                 }
 
                 if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.MemberTypes))
                 {
-                    new MemberTypeSynchronizationService().Synchronize();
+                    this.Info("Member type synchronization enabled. Begin synchronizing member types.");
+
+                    new MemberTypeSynchronizer(
+                        ApplicationContext.Current.Services.MemberTypeService,
+                        typeResolver,
+                        typeRepository).Run();
                 }
 
+                var defaultValueService = new DefaultValueService(typeResolver, typeRepository);
+
                 // Wire up handler for document type default values.
-                ContentService.Saving += (sender, args) => new DefaultValueService().SetDefaultValues(args.SavedEntities);
+                ContentService.Saving += (sender, args) => defaultValueService.SetDefaultValues(args.SavedEntities);
 
                 // Wire up handler for media type default values.
-                MediaService.Saving += (sender, args) => new DefaultValueService().SetDefaultValues(args.SavedEntities);
+                MediaService.Saving += (sender, args) => defaultValueService.SetDefaultValues(args.SavedEntities);
 
                 // Wire up handler for member type default values.
-                MemberService.Saving += (sender, args) => new DefaultValueService().SetDefaultValues(args.SavedEntities);
+                MemberService.Saving += (sender, args) => defaultValueService.SetDefaultValues(args.SavedEntities);
 
                 configured = true;
             }

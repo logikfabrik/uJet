@@ -7,46 +7,37 @@ namespace Logikfabrik.Umbraco.Jet.Test.Extensions
     using Jet.Extensions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    /// <summary>
-    /// The <see cref="TypeExtensionsTest" /> class.
-    /// </summary>
     [TestClass]
     public class StringExtensionsTest : TestBase
     {
-        /// <summary>
-        /// Test to get alias for 1 letter lowercase word.
-        /// </summary>
         [TestMethod]
         public void CanGetAliasFor1LetterLowercaseWord()
         {
             Assert.AreEqual("u", "u".Alias());
         }
 
-        /// <summary>
-        /// Test to get alias for 1 letter uppercase word.
-        /// </summary>
         [TestMethod]
         public void CanGetAliasFor1LetterUppercaseWord()
         {
             Assert.AreEqual("u", "U".Alias());
         }
 
-        /// <summary>
-        /// Test to get alias for word with valid characters.
-        /// </summary>
         [TestMethod]
         public void CanGetAliasForWordWithValidCharacters()
         {
             Assert.AreEqual("abc123", "abc123".Alias());
         }
 
-        /// <summary>
-        /// Test to get alias for word with invalid characters.
-        /// </summary>
         [TestMethod]
         public void CanGetAliasForWordWithInvalidCharacters()
         {
             Assert.AreEqual("abc", "abc;:_".Alias());
+        }
+
+        [TestMethod]
+        public void CanGetAliasForNullWord()
+        {
+            Assert.IsNull(((string)null).Alias());
         }
     }
 }

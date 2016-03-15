@@ -11,9 +11,6 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
     /// </summary>
     public static class JetConfigurationManager
     {
-        /// <summary>
-        /// The configuration section.
-        /// </summary>
         private static readonly JetSection Section = GetSection();
 
         /// <summary>
@@ -41,8 +38,7 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
         /// <returns>The configuration section.</returns>
         private static JetSection GetSection()
         {
-            return System.Configuration.ConfigurationManager.GetSection("logikfabrik.umbraco.jet") as JetSection ??
-                   new JetSection();
+            return System.Configuration.ConfigurationManager.GetSection("logikfabrik.umbraco.jet") as JetSection ?? new JetSection();
         }
     }
 }

@@ -9,15 +9,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Utilities;
 
-    /// <summary>
-    /// The <see cref="TypeServiceTest" /> class.
-    /// </summary>
     [TestClass]
     public class TypeServiceTest : TestBase
     {
-        /// <summary>
-        /// Test to get document types.
-        /// </summary>
         [TestMethod]
         public void CanGetDocumentTypes()
         {
@@ -27,12 +21,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var documentTypes = typeServiceMock.Object.DocumentTypes;
 
-            Assert.AreEqual(1, documentTypes.Count());
+            Assert.AreEqual(1, documentTypes.Count);
         }
 
-        /// <summary>
-        /// Test to get abstract document types.
-        /// </summary>
         [TestMethod]
         public void CannotGetAbstractDocumentTypes()
         {
@@ -45,9 +36,6 @@ namespace Logikfabrik.Umbraco.Jet.Test
             Assert.IsFalse(documentTypes.Any());
         }
 
-        /// <summary>
-        /// Test to get document types without public default constructor.
-        /// </summary>
         [TestMethod]
         public void CannotGetDocumentTypesWithoutPublicDefaultConstructor()
         {
@@ -64,9 +52,6 @@ namespace Logikfabrik.Umbraco.Jet.Test
             Assert.IsFalse(documentTypes.Any());
         }
 
-        /// <summary>
-        /// Test to get data types.
-        /// </summary>
         [TestMethod]
         public void CanGetDataTypes()
         {
@@ -76,12 +61,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var dataTypes = typeServiceMock.Object.DataTypes;
 
-            Assert.AreEqual(1, dataTypes.Count());
+            Assert.AreEqual(1, dataTypes.Count);
         }
 
-        /// <summary>
-        /// Test to get abstract data types.
-        /// </summary>
         [TestMethod]
         public void CannotGetAbstractDataTypes()
         {
@@ -94,9 +76,6 @@ namespace Logikfabrik.Umbraco.Jet.Test
             Assert.IsFalse(dataTypes.Any());
         }
 
-        /// <summary>
-        /// Test to get data types without public default constructor.
-        /// </summary>
         [TestMethod]
         public void CannotGetDataTypesWithoutPublicDefaultConstructor()
         {
@@ -113,9 +92,6 @@ namespace Logikfabrik.Umbraco.Jet.Test
             Assert.IsFalse(dataTypes.Any());
         }
 
-        /// <summary>
-        /// Test to get media types.
-        /// </summary>
         [TestMethod]
         public void CanGetMediaTypes()
         {
@@ -125,12 +101,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var mediaTypes = typeServiceMock.Object.MediaTypes;
 
-            Assert.AreEqual(1, mediaTypes.Count());
+            Assert.AreEqual(1, mediaTypes.Count);
         }
 
-        /// <summary>
-        /// Test to get abstract media types.
-        /// </summary>
         [TestMethod]
         public void CannotGetAbstractMediaTypes()
         {
@@ -143,9 +116,6 @@ namespace Logikfabrik.Umbraco.Jet.Test
             Assert.IsFalse(mediaTypes.Any());
         }
 
-        /// <summary>
-        /// Test to get media types without public default constructor.
-        /// </summary>
         [TestMethod]
         public void CannotGetMediaTypesWithoutPublicDefaultConstructor()
         {
@@ -162,9 +132,6 @@ namespace Logikfabrik.Umbraco.Jet.Test
             Assert.IsFalse(mediaTypes.Any());
         }
 
-        /// <summary>
-        /// Test to get member types.
-        /// </summary>
         [TestMethod]
         public void CanGetMemberTypes()
         {
@@ -174,12 +141,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var memberTypes = typeServiceMock.Object.MemberTypes;
 
-            Assert.AreEqual(1, memberTypes.Count());
+            Assert.AreEqual(1, memberTypes.Count);
         }
 
-        /// <summary>
-        /// Test to get abstract member types.
-        /// </summary>
         [TestMethod]
         public void CannotGetAbstractMemberTypes()
         {
@@ -192,9 +156,6 @@ namespace Logikfabrik.Umbraco.Jet.Test
             Assert.IsFalse(memberTypes.Any());
         }
 
-        /// <summary>
-        /// Test to get member types without public default constructor.
-        /// </summary>
         [TestMethod]
         public void CannotGetMemberTypesWithoutPublicDefaultConstructor()
         {

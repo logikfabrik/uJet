@@ -5,25 +5,19 @@
 namespace Logikfabrik.Umbraco.Jet
 {
     using System;
-    using Extensions;
 
     /// <summary>
     /// The <see cref="MemberType" /> class.
     /// </summary>
-    public class MemberType : BaseType<MemberTypeAttribute>
+    public class MemberType : ContentTypeModel<MemberTypeAttribute>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MemberType" /> class.
         /// </summary>
-        /// <param name="type">The type.</param>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is not a member type.</exception>
-        public MemberType(Type type)
-            : base(type)
+        /// <param name="modelType">The model type.</param>
+        public MemberType(Type modelType)
+            : base(modelType)
         {
-            if (!type.IsMemberType())
-            {
-                throw new ArgumentException($"Type {type} is not a document type.", nameof(type));
-            }
         }
     }
 }

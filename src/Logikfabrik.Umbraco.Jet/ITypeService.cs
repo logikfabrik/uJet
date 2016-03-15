@@ -5,7 +5,7 @@
 namespace Logikfabrik.Umbraco.Jet
 {
     using System;
-    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
 
     /// <summary>
     /// The <see cref="ITypeService" /> interface.
@@ -13,35 +13,35 @@ namespace Logikfabrik.Umbraco.Jet
     public interface ITypeService
     {
         /// <summary>
-        /// Gets the document types within the current application domain.
+        /// Gets the document type model types, within the current application domain.
         /// </summary>
         /// <value>
-        /// The document types.
+        /// The document type model types.
         /// </value>
-        IEnumerable<Type> DocumentTypes { get; }
+        ReadOnlyCollection<Type> DocumentTypes { get; }
 
         /// <summary>
-        /// Gets the data types within the current application domain.
+        /// Gets the data type model types, within the current application domain.
         /// </summary>
         /// <value>
-        /// The data types.
+        /// The data type model types.
         /// </value>
-        IEnumerable<Type> DataTypes { get; }
+        ReadOnlyCollection<Type> DataTypes { get; }
 
         /// <summary>
-        /// Gets the media types within the current application domain.
+        /// Gets the media type model types, within the current application domain.
         /// </summary>
         /// <value>
-        /// The media types.
+        /// The media type model types.
         /// </value>
-        IEnumerable<Type> MediaTypes { get; }
+        ReadOnlyCollection<Type> MediaTypes { get; }
 
         /// <summary>
-        /// Gets the member types within the current application domain.
+        /// Gets the member type model types, within the current application domain.
         /// </summary>
         /// <value>
-        /// The member types.
+        /// The member type model types.
         /// </value>
-        IEnumerable<Type> MemberTypes { get; }
+        ReadOnlyCollection<Type> MemberTypes { get; }
     }
 }

@@ -5,25 +5,19 @@
 namespace Logikfabrik.Umbraco.Jet
 {
     using System;
-    using Extensions;
 
     /// <summary>
     /// The <see cref="MediaType" /> class.
     /// </summary>
-    public class MediaType : ContentType<MediaTypeAttribute>
+    public class MediaType : ComposableContentTypeModel<MediaTypeAttribute>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MediaType" /> class.
         /// </summary>
-        /// <param name="type">The type.</param>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is not a media type.</exception>
-        public MediaType(Type type)
-            : base(type)
+        /// <param name="modelType">The model type.</param>
+        public MediaType(Type modelType)
+            : base(modelType)
         {
-            if (!type.IsMediaType())
-            {
-                throw new ArgumentException($"Type {type} is not a media type.", nameof(type));
-            }
         }
     }
 }

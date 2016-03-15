@@ -5,7 +5,6 @@
 namespace Logikfabrik.Umbraco.Jet.Web.Mvc
 {
     using System;
-    using System.Linq;
     using System.Web.Mvc;
     using Data;
     using global::Umbraco.Web.Models;
@@ -19,6 +18,31 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// The route data token key. Key found by examining the Umbraco source code.
         /// </summary>
         private const string RouteDataTokenKey = "umbraco";
+
+        private readonly ITypeService _typeService;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JetModelBinder" /> class.
+        /// </summary>
+        public JetModelBinder()
+            : this(TypeService.Instance)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JetModelBinder" /> class.
+        /// </summary>
+        /// <param name="typeService">The type service.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="typeService" /> is <c>null</c>.</exception>
+        public JetModelBinder(ITypeService typeService)
+        {
+            if (typeService == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            _typeService = typeService;
+        }
 
         /// <summary>
         /// Binds the model.
@@ -38,7 +62,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
                 return base.BindModel(controllerContext, bindingContext);
             }
 
-            var renderModel = controllerContext.RouteData.DataTokens[RouteDataTokenKey] as RenderModel;
+            var renderModel = controllerContext.RouteData.DataTokens[RouteDataTokenKey] as IRenderModel;
 
             return renderModel == null
                 ? base.BindModel(controllerContext, bindingContext)
@@ -49,10 +73,10 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// Determines if the model type should be bound.
         /// </summary>
         /// <param name="modelType">The model type.</param>
-        /// <returns><c>true</c> if the model should be bound; otherwise, <c>false</c>.</returns>
-        private static bool ShouldBind(Type modelType)
+        /// <returns><c>true</c> if the model type should be bound; otherwise, <c>false</c>.</returns>
+        private bool ShouldBind(Type modelType)
         {
-            return TypeService.Instance.DocumentTypes.Contains(modelType);
+            return _typeService.DocumentTypes.Contains(modelType);
         }
     }
 }

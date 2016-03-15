@@ -27,7 +27,7 @@
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>..\Logikfabrik.Umbraco.Jet.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\Logikfabrik.Umbraco.Jet.Test.ruleset</CodeAnalysisRuleSet>
     <DocumentationFile>bin\Debug\Logikfabrik.Umbraco.Jet.Test.XML</DocumentationFile>
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
@@ -39,7 +39,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\Logikfabrik.Umbraco.Jet.Test.XML</DocumentationFile>
-    <CodeAnalysisRuleSet>..\Logikfabrik.Umbraco.Jet.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\Logikfabrik.Umbraco.Jet.Test.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -291,16 +291,32 @@
   <ItemGroup>
     <Compile Include="Configuration\JetConfigurationManagerTest.cs" />
     <Compile Include="DataTypeTest.cs" />
+    <Compile Include="Data\ContentTypeRepositoryTest.cs" />
+    <Compile Include="Data\DataTypeRepositoryTest.cs" />
     <Compile Include="DefaultValueServiceTest.cs" />
     <Compile Include="DocumentTypeTest.cs" />
-    <Compile Include="DataTypeSynchronizationServiceTest.cs" />
-    <Compile Include="DocumentTypeSynchronizationServiceTest.cs" />
+    <Compile Include="DataTypeSynchronizerTest.cs" />
+    <Compile Include="DocumentTypeSynchronizerTest.cs" />
     <Compile Include="Extensions\StringExtensionsTest.cs" />
     <Compile Include="Extensions\TypeExtensionsTest.cs" />
-    <Compile Include="MediaTypeSynchronizationServiceTest.cs" />
-    <Compile Include="MemberTypeSynchronizationServiceTest.cs" />
+    <Compile Include="MediaTypeSynchronizerTest.cs" />
+    <Compile Include="MemberTypeSynchronizerTest.cs" />
     <Compile Include="MemberTypeTest.cs" />
+    <Compile Include="Models\CompositionDocumentTypeA.cs" />
+    <Compile Include="Models\CompositionDocumentTypeB.cs" />
+    <Compile Include="Models\DataTypeA.cs" />
+    <Compile Include="Models\DataTypeB.cs" />
+    <Compile Include="Models\DocumentTypeA.cs" />
+    <Compile Include="Models\DocumentTypeB.cs" />
+    <Compile Include="Models\ContentType.cs" />
+    <Compile Include="Models\DataType.cs" />
+    <Compile Include="Models\DocumentType.cs" />
+    <Compile Include="Models\IDocumentTypeB.cs" />
+    <Compile Include="Models\MediaType.cs" />
+    <Compile Include="Models\MemberType.cs" />
     <Compile Include="TestBase.cs" />
+    <Compile Include="TypeModelComparerTest.cs" />
+    <Compile Include="TypeResolverTest.cs" />
     <Compile Include="Utilities\DataTypeUtility.cs" />
     <Compile Include="Utilities\DocumentTypeUtility.cs" />
     <Compile Include="Utilities\MediaTypeUtility.cs" />
@@ -310,12 +326,14 @@
     <Compile Include="Web\Data\Converters\FloatingBinaryPointPropertyValueConverterTest.cs" />
     <Compile Include="Web\Data\Converters\HtmlStringPropertyValueConverterTest.cs" />
     <Compile Include="Web\Data\DocumentServiceTest.cs" />
+    <Compile Include="Web\Data\MediaServiceTest.cs" />
+    <Compile Include="Web\Data\MemberServiceTest.cs" />
     <Compile Include="Web\Mvc\JetControllerActionInvokerTest.cs" />
     <Compile Include="Mappings\DataTypeDefinitionMappingsTest.cs" />
     <Compile Include="MediaTypeTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Web\Mvc\TemplateServiceTest.cs" />
-    <Compile Include="Web\Mvc\TemplateSynchronizationServiceTest.cs" />
+    <Compile Include="TemplateServiceTest.cs" />
+    <Compile Include="TemplateSynchronizerTest.cs" />
     <Compile Include="TypeServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>

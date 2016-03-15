@@ -15,8 +15,8 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
         /// Determines whether this instance can convert between types.
         /// </summary>
         /// <param name="uiHint">The UI hint.</param>
-        /// <param name="from">From type.</param>
-        /// <param name="to">To type.</param>
+        /// <param name="from">The type to convert from.</param>
+        /// <param name="to">The type to convert to.</param>
         /// <returns>
         ///   <c>true</c> if this instance can convert between types; otherwise, <c>false</c>.
         /// </returns>
@@ -25,8 +25,8 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
         /// <summary>
         /// Converts the specified value.
         /// </summary>
-        /// <param name="value">The value.</param>
-        /// <param name="to">To type.</param>
+        /// <param name="value">The value to convert.</param>
+        /// <param name="to">The type to convert to.</param>
         /// <returns>The converted value.</returns>
         object Convert(object value, Type to);
     }

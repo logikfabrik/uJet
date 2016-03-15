@@ -39,27 +39,33 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         }
 
         /// <summary>
-        /// Gets typed document.
+        /// Gets the Umbraco document with the specified identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        /// <returns>
-        /// Typed document.
-        /// </returns>
+        /// <returns>The Umbraco document with the specified identifier.</returns>
         public IPublishedContent TypedDocument(int id)
         {
             return _umbracoHelper.TypedContent(id);
         }
 
         /// <summary>
-        /// Gets typed media.
+        /// Gets the Umbraco media with the specified identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        /// <returns>
-        /// Typed media.
-        /// </returns>
+        /// <returns>The Umbraco media with the specified identifier.</returns>
         public IPublishedContent TypedMedia(int id)
         {
             return _umbracoHelper.TypedMedia(id);
+        }
+
+        /// <summary>
+        /// Gets the Umbraco member with the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>The Umbraco member with the specified identifier.</returns>
+        public IPublishedContent TypedMember(int id)
+        {
+            return _umbracoHelper.TypedMember(id);
         }
     }
 }

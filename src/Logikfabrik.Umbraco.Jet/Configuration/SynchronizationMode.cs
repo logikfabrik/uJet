@@ -13,27 +13,27 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
     public enum SynchronizationMode
     {
         /// <summary>
-        /// Do not scan or synchronize any classes.
+        /// Do not scan or synchronize any model types.
         /// </summary>
         None = 0,
 
         /// <summary>
-        /// Scan and synchronize classes annotated using the <see cref="DocumentTypeAttribute" /> class.
+        /// Scan and synchronize model types annotated using the <see cref="DocumentTypeAttribute" /> class.
         /// </summary>
         DocumentTypes = 1,
 
         /// <summary>
-        /// Scan and synchronize classes annotated using the <see cref="MediaTypeAttribute" /> class.
+        /// Scan and synchronize model types annotated using the <see cref="MediaTypeAttribute" /> class.
         /// </summary>
         MediaTypes = 2,
 
         /// <summary>
-        /// Scan and synchronize classes annotated using the <see cref="DataTypeAttribute" /> class.
+        /// Scan and synchronize model types annotated using the <see cref="DataTypeAttribute" /> class.
         /// </summary>
         DataTypes = 4,
 
         /// <summary>
-        /// Scan and synchronize classes annotated using the <see cref="MemberTypeAttribute" /> class.
+        /// Scan and synchronize model types annotated using the <see cref="MemberTypeAttribute" /> class.
         /// </summary>
         MemberTypes = 8
     }

@@ -12,15 +12,9 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
     using Moq;
     using Utilities;
 
-    /// <summary>
-    /// The <see cref="DocumentServiceTest" /> class.
-    /// </summary>
     [TestClass]
     public class DocumentServiceTest : TestBase
     {
-        /// <summary>
-        /// Test to get document with ID mapped by convention.
-        /// </summary>
         [TestMethod]
         public void CanGetDocumentIdByConvention()
         {
@@ -35,16 +29,11 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
 
-            var typeServiceMock = GetTypeServiceMock(typeof(DocumentType));
-
-            var document = new DocumentService(umbracoHelperWrapperMock.Object, typeServiceMock.Object).GetDocument<DocumentType>(id);
+            var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
 
             Assert.AreEqual(id, document.Id);
         }
 
-        /// <summary>
-        /// Test to get document with URL mapped by convention.
-        /// </summary>
         [TestMethod]
         public void CanGetDocumentUrlByConvention()
         {
@@ -60,16 +49,11 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
 
-            var typeServiceMock = GetTypeServiceMock(typeof(DocumentType));
-
-            var document = new DocumentService(umbracoHelperWrapperMock.Object, typeServiceMock.Object).GetDocument<DocumentType>(id);
+            var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
 
             Assert.AreEqual(url, document.Url);
         }
 
-        /// <summary>
-        /// Test to get document with name mapped by convention.
-        /// </summary>
         [TestMethod]
         public void CanGetDocumentNameByConvention()
         {
@@ -85,16 +69,11 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
 
-            var typeServiceMock = GetTypeServiceMock(typeof(DocumentType));
-
-            var document = new DocumentService(umbracoHelperWrapperMock.Object, typeServiceMock.Object).GetDocument<DocumentType>(id);
+            var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
 
             Assert.AreEqual(name, document.Name);
         }
 
-        /// <summary>
-        /// Test to get document with create date mapped by convention.
-        /// </summary>
         [TestMethod]
         public void CanGetDocumentCreateDateByConvention()
         {
@@ -110,16 +89,11 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
 
-            var typeServiceMock = GetTypeServiceMock(typeof(DocumentType));
-
-            var document = new DocumentService(umbracoHelperWrapperMock.Object, typeServiceMock.Object).GetDocument<DocumentType>(id);
+            var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
 
             Assert.AreEqual(createDate, document.CreateDate);
         }
 
-        /// <summary>
-        /// Test to get document with update date mapped by convention.
-        /// </summary>
         [TestMethod]
         public void CanGetDocumentUpdateDateByConvention()
         {
@@ -135,55 +109,40 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
 
-            var typeServiceMock = GetTypeServiceMock(typeof(DocumentType));
-
-            var document = new DocumentService(umbracoHelperWrapperMock.Object, typeServiceMock.Object).GetDocument<DocumentType>(id);
+            var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
 
             Assert.AreEqual(updateDate, document.UpdateDate);
         }
 
-        /// <summary>
-        /// Test to get document for invalid document type.
-        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void CanNotGetDocumentForInvalidDocumentType()
         {
             var type = TypeUtility.GetTypeBuilder("MyType", TypeUtility.GetTypeAttributes()).CreateType();
 
-            var typeServiceMock = GetTypeServiceMock(type);
-
             var contentMock = new Mock<IPublishedContent>();
 
-            var service = new DocumentService(new Mock<IUmbracoHelperWrapper>().Object, typeServiceMock.Object);
+            var service = new DocumentService(new Mock<IUmbracoHelperWrapper>().Object);
 
             service.GetDocument(contentMock.Object, type);
         }
 
-        /// <summary>
-        /// Test to get document for valid document type.
-        /// </summary>
         [TestMethod]
         public void CanGetDocumentForValidDocumentType()
         {
             var type = DocumentTypeUtility.GetTypeBuilder().CreateType();
 
-            var typeServiceMock = GetTypeServiceMock(type);
-
             var contentMock = new Mock<IPublishedContent>();
 
             contentMock.Setup(m => m.Properties).Returns(new List<IPublishedProperty>());
 
-            var service = new DocumentService(new Mock<IUmbracoHelperWrapper>().Object, typeServiceMock.Object);
+            var service = new DocumentService(new Mock<IUmbracoHelperWrapper>().Object);
 
             var document = service.GetDocument(contentMock.Object, type);
 
             Assert.IsNotNull(document);
         }
 
-        /// <summary>
-        /// Test to get document for document type with <see cref="string" /> property.
-        /// </summary>
         [TestMethod]
         public void CanGetDocumentForDocumentTypeWithStringProperty()
         {
@@ -207,16 +166,11 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
 
-            var typeServiceMock = GetTypeServiceMock(typeof(DocumentType));
-
-            var document = new DocumentService(umbracoHelperWrapperMock.Object, typeServiceMock.Object).GetDocument<DocumentType>(id);
+            var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
 
             Assert.AreEqual(stringPropertyValue, document.StringProperty);
         }
 
-        /// <summary>
-        /// Test to get document for document type with <see cref="int" /> property.
-        /// </summary>
         [TestMethod]
         public void CanGetDocumentForDocumentTypeWithIntegerProperty()
         {
@@ -240,16 +194,11 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
 
-            var typeServiceMock = GetTypeServiceMock(typeof(DocumentType));
-
-            var document = new DocumentService(umbracoHelperWrapperMock.Object, typeServiceMock.Object).GetDocument<DocumentType>(id);
+            var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
 
             Assert.AreEqual(integerPropertyValue, document.IntegerProperty);
         }
 
-        /// <summary>
-        /// Test to get document for document type with <see cref="float" /> property.
-        /// </summary>
         [TestMethod]
         public void CanGetDocumentForDocumentTypeWithFloatingBinaryPointProperty()
         {
@@ -273,16 +222,11 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
 
-            var typeServiceMock = GetTypeServiceMock(typeof(DocumentType));
-
-            var document = new DocumentService(umbracoHelperWrapperMock.Object, typeServiceMock.Object).GetDocument<DocumentType>(id);
+            var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
 
             Assert.AreEqual(floatingBinaryPointPropertyValue, document.FloatingBinaryPointProperty);
         }
 
-        /// <summary>
-        /// Test to get document for document type with <see cref="double" /> property.
-        /// </summary>
         [TestMethod]
         public void CanGetDocumentForDocumentTypeWithFloatingDecimalPointProperty()
         {
@@ -306,16 +250,11 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
 
-            var typeServiceMock = GetTypeServiceMock(typeof(DocumentType));
-
-            var document = new DocumentService(umbracoHelperWrapperMock.Object, typeServiceMock.Object).GetDocument<DocumentType>(id);
+            var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
 
             Assert.AreEqual(floatingDecimalPointPropertyValue, document.FloatingDecimalPointProperty);
         }
 
-        /// <summary>
-        /// Test to get document for document type with <see cref="bool" /> property.
-        /// </summary>
         [TestMethod]
         public void CanGetDocumentForDocumentTypeWithBooleanProperty()
         {
@@ -339,16 +278,11 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
 
-            var typeServiceMock = GetTypeServiceMock(typeof(DocumentType));
-
-            var document = new DocumentService(umbracoHelperWrapperMock.Object, typeServiceMock.Object).GetDocument<DocumentType>(id);
+            var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
 
             Assert.AreEqual(booleanPropertyValue, document.BooleanProperty);
         }
 
-        /// <summary>
-        /// Test to get document for document type with <see cref="DateTime" /> property.
-        /// </summary>
         [TestMethod]
         public void CanGetDocumentForDocumentTypeWithDateTimeProperty()
         {
@@ -372,108 +306,9 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
 
-            var typeServiceMock = GetTypeServiceMock(typeof(DocumentType));
-
-            var document = new DocumentService(umbracoHelperWrapperMock.Object, typeServiceMock.Object).GetDocument<DocumentType>(id);
+            var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
 
             Assert.AreEqual(dateTimePropertyValue, document.DateTimeProperty);
-        }
-
-        /// <summary>
-        /// The <see cref="DocumentType" /> class.
-        /// </summary>
-        [DocumentType("DocumentType")]
-        protected class DocumentType
-        {
-            /// <summary>
-            /// Gets or sets the identifier.
-            /// </summary>
-            /// <value>
-            /// The identifier.
-            /// </value>
-            public int Id { get; set; }
-
-            /// <summary>
-            /// Gets or sets the URL.
-            /// </summary>
-            /// <value>
-            /// The URL.
-            /// </value>
-            public string Url { get; set; }
-
-            /// <summary>
-            /// Gets or sets the name.
-            /// </summary>
-            /// <value>
-            /// The name.
-            /// </value>
-            public string Name { get; set; }
-
-            /// <summary>
-            /// Gets or sets the create date.
-            /// </summary>
-            /// <value>
-            /// The create date.
-            /// </value>
-            public DateTime CreateDate { get; set; }
-
-            /// <summary>
-            /// Gets or sets the update date.
-            /// </summary>
-            /// <value>
-            /// The update date.
-            /// </value>
-            public DateTime UpdateDate { get; set; }
-
-            /// <summary>
-            /// Gets or sets the string property value.
-            /// </summary>
-            /// <value>
-            /// The string property value.
-            /// </value>
-            public string StringProperty { get; set; }
-
-            /// <summary>
-            /// Gets or sets the integer property value.
-            /// </summary>
-            /// <value>
-            /// The integer property value.
-            /// </value>
-            public int IntegerProperty { get; set; }
-
-            /// <summary>
-            /// Gets or sets the floating binary point property value.
-            /// </summary>
-            /// <value>
-            /// The floating binary point property value.
-            /// </value>
-            public float FloatingBinaryPointProperty { get; set; }
-
-            /// <summary>
-            /// Gets or sets the floating decimal point property value.
-            /// </summary>
-            /// <value>
-            /// The floating decimal point property value.
-            /// </value>
-            public decimal FloatingDecimalPointProperty { get; set; }
-
-            /// <summary>
-            /// Gets or sets the boolean property value.
-            /// </summary>
-            /// <value>
-            /// The boolean property value.
-            /// </value>
-#pragma warning disable SA1623
-            public bool BooleanProperty { get; set; }
-#pragma warning restore SA1623
-
-            /// <summary>
-            /// Gets or sets the DateTime property value.
-            /// </summary>
-            /// <value>
-            /// The DateTime property value.
-            /// </value>
-            public DateTime DateTimeProperty { get; set; }
         }
     }
 }

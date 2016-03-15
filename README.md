@@ -4,7 +4,7 @@ Umbraco Jet (uJet) is a Code First approach to building MVC applications in Umbr
 
 uJet is capable of serving you with instances of your document types. With uJet you're no longer bound by the `RenderModel`, or by the constraints set by the built-in `ControllerActionInvoker`. uJet brings you strongly typed views without you having to roll your own view models.
 
-uJet is a developer tool for Umbraco 7, released as Open Source (MIT). It supports document types, media types, member types, data types, and template synchronization.
+uJet is a developer tool for Umbraco 7, released as Open Source (MIT). It supports document types and media types (including inheritance and composition), member types, data types, and template synchronization.
 
 ### Documentation
 Online documentation can be found at [http://ujet.readthedocs.org/](http://ujet.readthedocs.org/).
@@ -26,11 +26,11 @@ uJet is easy to use. Add a reference to uJet. Then create your types and decorat
 
 **Model**
 ```csharp
-using Logikfabrik.Umbraco.Jet;
-using System.ComponentModel.DataAnnotations;
-
 namespace Example.Models
 {
+	using System.ComponentModel.DataAnnotations;
+	using Logikfabrik.Umbraco.Jet;
+
     [DocumentType(
         "My page",
         Description = "Document type for my page",
@@ -55,6 +55,10 @@ namespace Example.Models
 ```html
 @model Example.Models.MyPage
 
+@{
+    Layout = null;
+}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -69,12 +73,12 @@ namespace Example.Models
 
 **Controller**
 ```csharp
-using Example.Models;
-using Logikfabrik.Umbraco.Jet.Web.Mvc;
-using System.Web.Mvc;
-
 namespace Example.Controllers
 {
+	using System.Web.Mvc;
+	using Logikfabrik.Umbraco.Jet.Web.Mvc;
+	using Models;
+
     public class MyPageController : JetController
     {
         public ActionResult Index(MyPage model)

@@ -17,7 +17,10 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
         /// <value>
         /// The assembly full name.
         /// </value>
-        [ConfigurationProperty("name", IsRequired = true, IsKey = true)]
+        [ConfigurationProperty(
+            "name",
+            IsRequired = true,
+            IsKey = true)]
         public string Name
         {
             get { return (string)this["name"]; }

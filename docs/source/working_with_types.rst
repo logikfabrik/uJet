@@ -1,14 +1,7 @@
 ******************
 Working with Types
 ******************
-uJet supports document types, media types, member types and data types.
-
-**Type Tracking**
-As of version 3.0.0.0 uJet supports type tracking.
-
-When a document, media, or member type is synchronized, uJet tries to match the type declared in code with a type definition. uJet creates an Umbraco alias for the type, based on the type name (namespace excluded), and uses that alias to look for a matching type definition in the database. If a match is found the definition is updated; if not, a new type definition is created. Renaming a type that has been synchronized, in code or using the Umbraco back office, will cause duplicate definitions to be created, with different aliases.
-
-Type tracking refers to the use of the `id` parameter when declaring document types, media types, and member types in code. Using the `id` parameter uJet can keep track of types and their corresponding type definitions without relying on the type names. With type tracking types can be renamed; uJet will keep your Umbraco database synchronized.
+uJet supports document types and media types (including inheritance and composition), member types and data types.
 
 Document Types
 ==============
@@ -27,7 +20,7 @@ A document type is created by decorating a public non-abstract class, with a def
    }
 
 .. tip::
-   Your document type classes can be concidered models. Following MVC convention, models are placed in the `Models\\` folder. It's recommended to place all document type classes in `Models\\DocumentTypes\\`.
+   Your document type classes can be concidered models. Following ASP.NET MVC conventions, models are placed in the `Models\\` folder. It's recommended to place all document type classes in `Models\\DocumentTypes\\`.
 
 When your Umbraco application is started, uJet will scan all assemblies in the app domain, looking for document type classes. Found classes will be used as blueprints to synchronize your database.
 
@@ -40,44 +33,56 @@ The following document type properties can be set using the `DocumentTypeAttribu
 
 Id
 ^^
-Inherited from the `IdAttribute` attribute. The document type identifier. Specifying a document type identifier will enable document type tracking. Tracked document types can be renamed; uJet will keep your Umbraco database synchronized.
+The document type identifier. Specifying a document type identifier will enable document type tracking. Tracked document types can be renamed; uJet will keep your Umbraco database synchronized.
 
 .. code-block:: csharp
 
-	using Logikfabrik.Umbraco.Jet;
+   using Logikfabrik.Umbraco.Jet;
 
-	namespace Example.Models.DocumentTypes
-	{
-		[DocumentType("F3D4B9F1-711D-40A8-9091-FF5104CE0ACE", "My Page")]
-		public class MyPage
-		{
-		}
-	}
+   namespace Example.Models.DocumentTypes
+   {
+       [DocumentType("F3D4B9F1-711D-40A8-9091-FF5104CE0ACE", "My Page")]
+       public class MyPage
+       {
+       }
+   }
 
 Name
 ^^^^
 **Required**
-Inherited from the `ContentTypeAttribute` attribute. The name of the document type. The document type name is displayed in the Umbraco back office.
+The name of the document type. The document type name is displayed in the Umbraco back office.
 
 Description
 ^^^^^^^^^^^
-Inherited from the `ContentTypeAttribute` attribute. A description of the document type. The document type description is displayed in the Umbraco back office.
+A description of the document type. The document type description is displayed in the Umbraco back office.
 
 Icon
 ^^^^
-Inherited from the `ContentTypeAttribute` attribute. The icon for the document type. The document type icon is displayed in the Umbraco back office.
+The icon for the document type. The document type icon is displayed in the Umbraco back office.
+
+.. code-block:: csharp
+
+   using Logikfabrik.Umbraco.Jet;
+
+   namespace Example.Models.DocumentTypes
+   {
+       [DocumentType("My Settings Page", Icon = "icon-settings")]
+       public class MySettingsPage
+       {
+       }
+   }
 
 Thumbnail
 ^^^^^^^^^
-Inherited from the `ContentTypeAttribute` attribute. The thumbnail for the document type. The document type thumbnail is displayed in the Umbraco back office.
+The thumbnail for the document type. The document type thumbnail is displayed in the Umbraco back office.
 
 AllowedAsRoot
 ^^^^^^^^^^^^^
-Inherited from the `ContentTypeAttribute` attribute. Whether or not documents of this type can be created at the root of the content tree.
+Whether or not documents of this type can be created at the root of the content tree.
 
 AllowedChildNodeTypes
 ^^^^^^^^^^^^^^^^^^^^^
-Inherited from the `ContentTypeAttribute` attribute. The allowed child document types of the document type.
+Which other types are allowed as child nodes to documents of this type in the content tree.
 
 .. code-block:: csharp
 
@@ -86,6 +91,22 @@ Inherited from the `ContentTypeAttribute` attribute. The allowed child document 
    namespace Example.Models.DocumentTypes
    {
        [DocumentType("My Page", AllowedChildNodeTypes = new[] {typeof(OurPage), typeof(TheirPage)})]
+       public class MyPage
+       {
+       }
+   }
+
+CompositionNodeTypes
+^^^^^^^^^^^^^^^^^^^^
+The composition document types of the document type.
+
+.. code-block:: csharp
+
+   using Logikfabrik.Umbraco.Jet;
+
+   namespace Example.Models.DocumentTypes
+   {
+       [DocumentType("My Page", CompositionNodeTypes = new[] {typeof(OurPage), typeof(TheirPage)})]
        public class MyPage
        {
        }
@@ -144,7 +165,7 @@ A media type is created by decorating a public non-abstract class, with a defaul
    }
 
 .. tip::
-   Your media type classes can be concidered models. Following MVC convention, models are placed in the `Models\\` folder. It's recommended to place all media type classes in `Models\\MediaTypes\\`.
+   Your media type classes can be concidered models. Following ASP.NET MVC conventions, models are placed in the `Models\\` folder. It's recommended to place all media type classes in `Models\\MediaTypes\\`.
 
 When your Umbraco application is started, uJet will scan all assemblies in the app domain, looking for media type classes. Found classes will be used as blueprints to synchronize your database.
 
@@ -157,7 +178,7 @@ The following media type properties can be set using the `MediaTypeAttribute` at
 
 Id
 ^^
-Inherited from the `IdAttribute` attribute. The media type identifier. Specifying a media type identifier will enable media type tracking. Tracked media types can be renamed; uJet will keep your Umbraco database synchronized.
+The media type identifier. Specifying a media type identifier will enable media type tracking. Tracked media types can be renamed; uJet will keep your Umbraco database synchronized.
 
 .. code-block:: csharp
 
@@ -174,27 +195,27 @@ Inherited from the `IdAttribute` attribute. The media type identifier. Specifyin
 Name
 ^^^^
 **Required**
-Inherited from the `ContentTypeAttribute` attribute. The name of the media type. The media type name is displayed in the Umbraco back office.
+The name of the media type. The media type name is displayed in the Umbraco back office.
 
 Description
 ^^^^^^^^^^^
-Inherited from the `ContentTypeAttribute` attribute. A description of the media type. The media type description is displayed in the Umbraco back office.
+A description of the media type. The media type description is displayed in the Umbraco back office.
 
 Icon
 ^^^^
-Inherited from the `ContentTypeAttribute` attribute. The icon for the media type. The media type icon is displayed in the Umbraco back office.
+The icon for the media type. The media type icon is displayed in the Umbraco back office.
 
 Thumbnail
 ^^^^^^^^^
-Inherited from the `ContentTypeAttribute` attribute. The thumbnail for the media type. The media type thumbnail is displayed in the Umbraco back office.
+The thumbnail for the media type. The media type thumbnail is displayed in the Umbraco back office.
 
 AllowedAsRoot
 ^^^^^^^^^^^^^
-Inherited from the `ContentTypeAttribute` attribute. Whether or not media of this type can be created at the root of the content tree.
+Whether or not media of this type can be created at the root of the content tree.
 
 AllowedChildNodeTypes
 ^^^^^^^^^^^^^^^^^^^^^
-Inherited from the `ContentTypeAttribute` attribute. The allowed child media types of the media type.
+Which other types are allowed as child nodes to media of this type in the content tree.
 
 .. code-block:: csharp
 
@@ -203,6 +224,22 @@ Inherited from the `ContentTypeAttribute` attribute. The allowed child media typ
    namespace Example.Models.MediaTypes
    {
        [MediaType("My Media", AllowedChildNodeTypes = new[] {typeof(OurMedia), typeof(TheirMedia)})]
+       public class MyMedia
+       {
+       }
+   }
+
+CompositionNodeTypes
+^^^^^^^^^^^^^^^^^^^^
+The composition media types of the media type.
+
+.. code-block:: csharp
+
+   using Logikfabrik.Umbraco.Jet;
+
+   namespace Example.Models.MediaTypes
+   {
+       [MediaType("My Media", CompositionNodeTypes = new[] {typeof(OurMedia), typeof(TheirMedia)})]
        public class MyMedia
        {
        }
@@ -225,7 +262,7 @@ A member type is created by decorating a public non-abstract class, with a defau
    }
 
 .. tip::
-   Your member type classes can be concidered models. Following MVC convention, models are placed in the `Models\\` folder. It's recommended to place all member type classes in `Models\\MemberTypes\\`.
+   Your member type classes can be concidered models. Following ASP.NET MVC conventions, models are placed in the `Models\\` folder. It's recommended to place all member type classes in `Models\\MemberTypes\\`.
 
 When your Umbraco application is started, uJet will scan all assemblies in the app domain, looking for member type classes. Found classes will be used as blueprints to synchronize your database.
 
@@ -238,7 +275,7 @@ The following member type properties can be set using the `MemberTypeAttribute` 
 
 Id
 ^^
-Inherited from the `IdAttribute` attribute. The member type identifier. Specifying a member type identifier will enable member type tracking. Tracked member types can be renamed; uJet will keep your Umbraco database synchronized.
+The member type identifier. Specifying a member type identifier will enable member type tracking. Tracked member types can be renamed; uJet will keep your Umbraco database synchronized.
 
 .. code-block:: csharp
    
@@ -255,15 +292,15 @@ Inherited from the `IdAttribute` attribute. The member type identifier. Specifyi
 Name
 ^^^^
 **Required**
-Inherited from the `ContentTypeAttribute` attribute. The name of the member type. The member type name is displayed in the Umbraco back office.
+The name of the member type. The member type name is displayed in the Umbraco back office.
 
 Description
 ^^^^^^^^^^^
-Inherited from the `ContentTypeAttribute` attribute. A description of the member type. The member type description is displayed in the Umbraco back office.
+A description of the member type. The member type description is displayed in the Umbraco back office.
 
 Icon
 ^^^^
-Inherited from the `ContentTypeAttribute` attribute. The icon for the member type. The member type icon is displayed in the Umbraco back office.
+The icon for the member type. The member type icon is displayed in the Umbraco back office.
 
 Data Types
 ==========
@@ -282,7 +319,7 @@ A data type is created by decorating a public non-abstract class, with a default
    }
 
 .. tip::
-   Your data type classes can be concidered models. Following MVC convention, models are placed in the `Models\\` folder. It's recommended to place all data type classes in `Models\\DataTypes\\`.
+   Your data type classes can be concidered models. Following ASP.NET MVC conventions, models are placed in the `Models\\` folder. It's recommended to place all data type classes in `Models\\DataTypes\\`.
 
 When your Umbraco application is started, uJet will scan all assemblies in the app domain, looking for data type classes. Found classes will be used as blueprints to synchronize your database.
 
@@ -302,3 +339,33 @@ Editor
 ^^^^^^
 **Required**
 The editor of the data type. The editor property will determine which property editor will be used for editing property values of this data type in the Umbraco back office.
+
+PreValues
+---------
+uJet supports pre-values defined in code. Simply add a public property (getter required) with the name `PreValues` of a type implementing interface `IDictionary<string, string>`. uJet will find the property, get the return value and save it as pre-values for the data type.
+
+Implementing interface `IDataType` is optional.
+
+.. code-block:: csharp
+   
+   using Logikfabrik.Umbraco.Jet;
+
+   namespace Example.Models.DataTypes
+   {
+       [DataType(typeof(int), "Umbraco.MediaPicker")]
+       public class MyData : IDataType
+       {
+           public Dictionary<string, string> PreValues => new Dictionary<string, string>
+           {
+               { "PreValue0", "Value0" },
+               { "PreValue1", "Value1" },
+               { "PreValue2", "Value2" }
+           };
+       }
+   }
+
+Type Tracking
+=============
+When a document, media, or member type is synchronized, uJet tries to match the type declared in code with a type definition. uJet creates an Umbraco alias for the type, based on the type name (namespace excluded), and uses that alias to look for a matching type definition in the database. If a match is found the definition is updated; if not, a new type definition is created. Renaming a type that has been synchronized, in code or using the Umbraco back office, will cause duplicate definitions to be created, with different aliases.
+
+Type tracking refers to the use of the `id` parameter when declaring document types, media types, and member types in code. Using the `id` parameter uJet can keep track of types and their corresponding type definitions without relying on the type names. With type tracking, types can be renamed; uJet will keep your Umbraco database synchronized.

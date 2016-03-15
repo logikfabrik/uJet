@@ -64,6 +64,24 @@ namespace Logikfabrik.Umbraco.Jet.Data
         }
 
         /// <summary>
+        /// Gets the object of the specified object type using the specified query.
+        /// </summary>
+        /// <typeparam name="T">The object type.</typeparam>
+        /// <param name="sql">The query.</param>
+        /// <returns>The object.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="sql" /> is <c>null</c>.</exception>
+        public T Get<T>(Sql sql)
+            where T : class
+        {
+            if (sql == null)
+            {
+                throw new ArgumentNullException(nameof(sql));
+            }
+
+            return _database.FirstOrDefault<T>(sql);
+        }
+
+        /// <summary>
         /// Inserts the specified object.
         /// </summary>
         /// <typeparam name="T">The object type.</typeparam>

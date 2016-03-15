@@ -5,48 +5,24 @@
 namespace Logikfabrik.Umbraco.Jet
 {
     using System;
+    using System.Collections.Generic;
     using System.Reflection;
-    using Extensions;
 
     /// <summary>
     /// The <see cref="DataType" /> class.
     /// </summary>
-    public class DataType
+    public class DataType : TypeModel<DataTypeAttribute>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DataType" /> class.
         /// </summary>
-        /// <param name="type">The type.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="type" /> is <c>null</c>.</exception>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is not a data type.</exception>
-        public DataType(Type type)
+        /// <param name="modelType">The model type.</param>
+        public DataType(Type modelType)
+            : base(modelType)
         {
-            if (type == null)
-            {
-                throw new ArgumentNullException(nameof(type));
-            }
-
-            if (!type.IsDataType())
-            {
-                throw new ArgumentException("Type is not a data type.", nameof(type));
-            }
-
-            Name = GetName(type);
-
-            var attribute = type.GetCustomAttribute<DataTypeAttribute>();
-
-            Id = GetId(attribute);
-            Editor = GetEditor(attribute);
-            Type = GetType(attribute);
+            Name = modelType.Name;
+            PreValues = GetPreValues();
         }
-
-        /// <summary>
-        /// Gets the identifier.
-        /// </summary>
-        /// <value>
-        /// The identifier.
-        /// </value>
-        public Guid? Id { get; }
 
         /// <summary>
         /// Gets the name.
@@ -62,7 +38,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The editor.
         /// </value>
-        public string Editor { get; }
+        public string Editor => Attribute.Editor;
 
         /// <summary>
         /// Gets the type.
@@ -70,70 +46,37 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The type.
         /// </value>
-        public Type Type { get; }
+        public Type Type => Attribute.Type;
 
         /// <summary>
-        /// Gets the identifier.
+        /// Gets the pre-values.
         /// </summary>
-        /// <param name="attribute">The attribute.</param>
-        /// <returns>The identifier.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="attribute" /> is <c>null</c>.</exception>
-        private static Guid? GetId(IdAttribute attribute)
+        /// <value>
+        /// The pre-values.
+        /// </value>
+        public IDictionary<string, string> PreValues { get; }
+
+        private IDictionary<string, string> GetPreValues()
         {
-            if (attribute == null)
+            /*
+             * Gets the pre-value property (if one exists). Umbraco does not support inheritance or composition for data types,
+             * so inherited properties can safely be included, and should be included.
+             */
+            var property = ModelType.GetProperty("PreValues", BindingFlags.Public | BindingFlags.Instance);
+
+            if (property == null || !property.CanRead)
             {
-                throw new ArgumentNullException(nameof(attribute));
+                return new Dictionary<string, string>();
             }
 
-            return attribute.Id;
-        }
-
-        /// <summary>
-        /// Gets the name.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns>The name.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="type" /> is <c>null</c>.</exception>
-        private static string GetName(Type type)
-        {
-            if (type == null)
+            if (!typeof(IDictionary<string, string>).IsAssignableFrom(property.PropertyType))
             {
-                throw new ArgumentNullException(nameof(type));
+                return new Dictionary<string, string>();
             }
 
-            return type.Name;
-        }
+            var preValues = property.GetValue(Activator.CreateInstance(ModelType)) as IDictionary<string, string>;
 
-        /// <summary>
-        /// Gets the editor.
-        /// </summary>
-        /// <param name="attribute">The attribute.</param>
-        /// <returns>The editor.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="attribute" /> is <c>null</c>.</exception>
-        private static string GetEditor(DataTypeAttribute attribute)
-        {
-            if (attribute == null)
-            {
-                throw new ArgumentNullException(nameof(attribute));
-            }
-
-            return attribute.Editor;
-        }
-
-        /// <summary>
-        /// Gets the type.
-        /// </summary>
-        /// <param name="attribute">The attribute.</param>
-        /// <returns>The type.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="attribute" /> is <c>null</c>.</exception>
-        private static Type GetType(DataTypeAttribute attribute)
-        {
-            if (attribute == null)
-            {
-                throw new ArgumentNullException(nameof(attribute));
-            }
-
-            return attribute.Type;
+            return preValues ?? new Dictionary<string, string>();
         }
     }
 }

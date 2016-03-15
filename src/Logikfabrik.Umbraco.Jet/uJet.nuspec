@@ -8,13 +8,14 @@
     <owners>$author$</owners>
     <licenseUrl>https://github.com/logikfabrik/uJet/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/logikfabrik/uJet</projectUrl>
+    <iconUrl>http://img.logikfabrik.se/lf-64x64.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Umbraco Jet (uJet) is a Code First approach to building MVC applications in Umbraco 7.</description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright (c) 2015</copyright>
     <tags>Umbraco, Jet, MVC, Code First, uJet</tags>
     <dependencies>
-      <dependency id="UmbracoCms.Core" version="[7.3,8.0]" />
+      <dependency id="UmbracoCms.Core" version="[7.3.4,8.0]" />
     </dependencies>
   </metadata>
 </package>

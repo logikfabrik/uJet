@@ -5,7 +5,6 @@
 namespace Logikfabrik.Umbraco.Jet.Test
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq.Expressions;
     using System.Reflection;
     using Moq;
@@ -22,9 +21,16 @@ namespace Logikfabrik.Umbraco.Jet.Test
         /// <returns>The type service mock.</returns>
         protected static Mock<TypeService> GetTypeServiceMock(Type type)
         {
-            Func<IEnumerable<Assembly>> getAssemblies = () => new[] { type.Assembly };
+            Func<Assembly[]> getAssemblies = () => new[] { type.Assembly };
 
             return new Mock<TypeService>(getAssemblies) { CallBase = true };
+        }
+
+        protected static Mock<TypeResolver> GetTypeResolverMock(Type type)
+        {
+            var typeServiceMock = GetTypeServiceMock(type);
+
+            return new Mock<TypeResolver>(typeServiceMock.Object) { CallBase = true };
         }
 
         /// <summary>

@@ -5,9 +5,6 @@ Document, media, and member type properties are created by adding properties wit
 
 When your Umbraco application is started, uJet will scan your document, media, and member type classes, looking for properties. Found properties will be used as blueprints to synchronize your database.
 
-**Property Tracking**
-As of version 3.0.0.0 uJet supports property tracking.
-
 Data Annotations
 ================
 Data annotations can be used to customize the user experience in the Umbraco back office, e.g. to set property name and description.
@@ -159,3 +156,9 @@ uJet supports the following .NET data types out-of-the-box.
 
 .. seealso::
    The uJet .NET data type support can be extended by writing custom data type definition mappings and property value converters. For more information on the topic of custom data type definitions and property value converters see :doc:`working_with_data_types`.
+
+Property Tracking
+=================
+When a document, media, or member type is synchronized, uJet tries to match the type declared in code with a type definition. uJet does so for properties too. uJet creates an Umbraco alias for the property, based on the property name, and uses that alias to look for a matching property definition in the database. If a match is found the definition is updated; if not, a new property definition is created. Renaming a property that has been synchronized, in code or using the Umbraco back office, will cause duplicate definitions to be created, with different aliases.
+
+Property tracking refers to the use of the `id` parameter when declaring document type, media type, and member type properties in code. Using the `id` parameter, through `IdAttribute`, uJet can keep track of properties and their corresponding property definitions without relying on the property names. With property tracking, properties can be renamed; uJet will keep your Umbraco database synchronized.

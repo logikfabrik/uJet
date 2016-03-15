@@ -6,31 +6,20 @@ namespace Logikfabrik.Umbraco.Jet
 {
     using System;
     using System.Collections.Generic;
-    using System.Reflection;
-    using Extensions;
+    using System.Linq;
 
     /// <summary>
     /// The <see cref="DocumentType" /> class.
     /// </summary>
-    public class DocumentType : ContentType<DocumentTypeAttribute>
+    public class DocumentType : ComposableContentTypeModel<DocumentTypeAttribute>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DocumentType" /> class.
         /// </summary>
-        /// <param name="type">The type.</param>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is not a document type.</exception>
-        public DocumentType(Type type)
-            : base(type)
+        /// <param name="modelType">The model type.</param>
+        public DocumentType(Type modelType)
+            : base(modelType)
         {
-            if (!type.IsDocumentType())
-            {
-                throw new ArgumentException($"Type {type} is not a document type.", nameof(type));
-            }
-
-            var attribute = type.GetCustomAttribute<DocumentTypeAttribute>();
-
-            Templates = GetTemplates(attribute);
-            DefaultTemplate = GetDefaultTemplate(attribute);
         }
 
         /// <summary>
@@ -39,7 +28,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The default template.
         /// </value>
-        public string DefaultTemplate { get; }
+        public string DefaultTemplate => Attribute.DefaultTemplate;
 
         /// <summary>
         /// Gets the templates.
@@ -47,38 +36,6 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The templates.
         /// </value>
-        public IEnumerable<string> Templates { get; }
-
-        /// <summary>
-        /// Gets the default template.
-        /// </summary>
-        /// <param name="attribute">The attribute.</param>
-        /// <returns>The default template.</returns>
-        /// <exception cref="ArgumentNullException">Throw if <paramref name="attribute" /> is <c>null</c>.</exception>
-        private static string GetDefaultTemplate(DocumentTypeAttribute attribute)
-        {
-            if (attribute == null)
-            {
-                throw new ArgumentNullException(nameof(attribute));
-            }
-
-            return attribute.DefaultTemplate;
-        }
-
-        /// <summary>
-        /// Gets the templates.
-        /// </summary>
-        /// <param name="attribute">The attribute.</param>
-        /// <returns>The templates.</returns>
-        /// <exception cref="ArgumentNullException">Throw if <paramref name="attribute" /> is <c>null</c>.</exception>
-        private static IEnumerable<string> GetTemplates(DocumentTypeAttribute attribute)
-        {
-            if (attribute == null)
-            {
-                throw new ArgumentNullException(nameof(attribute));
-            }
-
-            return attribute.Templates;
-        }
+        public IEnumerable<string> Templates => Attribute.Templates?.Distinct(StringComparer.InvariantCultureIgnoreCase) ?? new string[] { };
     }
 }

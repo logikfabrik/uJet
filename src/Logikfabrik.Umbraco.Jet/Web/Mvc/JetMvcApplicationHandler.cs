@@ -8,15 +8,13 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     using Configuration;
     using global::Umbraco.Core;
     using global::Umbraco.Web.Mvc;
+    using Jet.Data;
 
     /// <summary>
     /// The <see cref="JetMvcApplicationHandler" /> class.
     /// </summary>
     public class JetMvcApplicationHandler : ApplicationHandler
     {
-        /// <summary>
-        /// The lock.
-        /// </summary>
         private static readonly object Lock = new object();
 
         private static bool configured;
@@ -28,7 +26,14 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// <param name="applicationContext">The application context.</param>
         public override void OnApplicationStarting(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
         {
-            FilteredControllerFactoriesResolver.Current.InsertTypeBefore(typeof(RenderControllerFactory), typeof(JetControllerFactory));
+            var resolver = FilteredControllerFactoriesResolver.Current;
+
+            if (resolver.ContainsType(typeof(JetControllerFactory)))
+            {
+                return;
+            }
+
+            resolver.InsertTypeBefore(typeof(RenderControllerFactory), typeof(JetControllerFactory));
         }
 
         /// <summary>
@@ -53,8 +58,11 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
                 // Synchronize.
                 if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.DocumentTypes))
                 {
-                    new TemplateSynchronizationService().Synchronize();
-                    new PreviewTemplateSynchronizationService().Synchronize();
+                    new PreviewTemplateSynchronizer(
+                        ApplicationContext.Current.Services.ContentTypeService,
+                        ApplicationContext.Current.Services.FileService,
+                        TypeResolver.Instance,
+                        TypeRepository.Instance).Run();
                 }
 
                 ModelBinders.Binders.DefaultBinder = new JetModelBinder();
