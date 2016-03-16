@@ -12,7 +12,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Umbraco Jet (uJet) is a Code First approach to building MVC applications in Umbraco 7.</description>
     <releaseNotes></releaseNotes>
-    <copyright>Copyright (c) 2015</copyright>
+    <copyright>Copyright (c) 2016</copyright>
     <tags>Umbraco, Jet, MVC, Code First, uJet</tags>
     <dependencies>
       <dependency id="UmbracoCms.Core" version="[7.3.4,8.0]" />
