@@ -1,3 +1,6 @@
+## Unreleased
+* 2016-04-18 Compiled using Umbraco 7.4.3 binaries.
+
 ## 4.0.0.0
 * 2016-03-09 Added basic logging to the `TypeService`.
 * 2016-03-09 Added support for data type pre-values.

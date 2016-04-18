@@ -15,7 +15,7 @@ PM> Install-Package uJet
 ```
 
 ## How To
-uJet is easy to use. Add a reference to uJet. Then create your types and decorate them using the `DocumentType`, `MediaType`, `MemberType` and `DataType` attributes. Fire up your application and all of your types will now be available in the Umbraco back office.
+uJet is easy to use. Add a reference to uJet. Then create your types and decorate them using the `DocumentType`, `MediaType`, `MemberType`, and `DataType` attributes. Fire up your application and all of your types will now be available in the Umbraco back office.
 
 ### Quick Start Example
 1. Get, compile, and reference the source code - or use the NuGet.
