@@ -27,9 +27,10 @@
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>..\Logikfabrik.Umbraco.Jet.Test.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\Logikfabrik.Test.ruleset</CodeAnalysisRuleSet>
     <DocumentationFile>bin\Debug\Logikfabrik.Umbraco.Jet.Test.XML</DocumentationFile>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -39,7 +40,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\Logikfabrik.Umbraco.Jet.Test.XML</DocumentationFile>
-    <CodeAnalysisRuleSet>..\Logikfabrik.Umbraco.Jet.Test.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\Logikfabrik.Test.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
