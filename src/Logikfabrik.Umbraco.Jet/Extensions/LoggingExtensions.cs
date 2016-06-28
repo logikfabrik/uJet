@@ -10,7 +10,7 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
     /// <summary>
     /// The <see cref="LoggingExtensions" /> class. Logging extension methods which wraps the standard Umbraco logging system.
     /// </summary>
-    public static class LoggingExtensions
+    internal static class LoggingExtensions
     {
         /// <summary>
         /// Writes the specified debug message to the log.

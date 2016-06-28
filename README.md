@@ -1,4 +1,4 @@
-# uJet [![Build status](https://ci.appveyor.com/api/projects/status/2ce4vbe5dexoqey7?svg=true)](https://ci.appveyor.com/project/logikfabrik/ujet) [![Docs status](https://readthedocs.org/projects/pip/badge/)](http://ujet.readthedocs.org/)
+# uJet [![Build status](https://ci.appveyor.com/api/projects/status/2ce4vbe5dexoqey7?svg=true)](https://ci.appveyor.com/project/logikfabrik/ujet) [![Docs status](https://readthedocs.org/projects/pip/badge/)](http://ujet.readthedocs.io/)
 
 Umbraco Jet (uJet) is a Code First approach to building MVC applications in Umbraco 7. Declare your document, media, member, and data types in code, and have uJet move them into Umbraco for you - simplifying development, deployment and versioning.
 
@@ -7,7 +7,7 @@ uJet is capable of serving you with instances of your document types. With uJet 
 uJet is a developer tool for Umbraco 7, released as Open Source (MIT). It supports document types and media types (including inheritance and composition), member types, data types, and template synchronization.
 
 ### Documentation
-Online documentation can be found at [http://ujet.readthedocs.org/](http://ujet.readthedocs.org/).
+Online documentation can be found at [http://ujet.readthedocs.io/](http://ujet.readthedocs.io/).
 
 ### NuGet
 ```

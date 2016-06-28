@@ -49,7 +49,7 @@ namespace Logikfabrik.Umbraco.Jet
                     this.Info("Data type synchronization enabled. Begin synchronizing data types.");
 
                     new DataTypeSynchronizer(
-                        ApplicationContext.Current.Services.DataTypeService,
+                        applicationContext.Services.DataTypeService,
                         typeResolver,
                         typeRepository).Run();
                 }
@@ -59,13 +59,13 @@ namespace Logikfabrik.Umbraco.Jet
                     this.Info("Document type synchronization enabled. Begin synchronizing templates.");
 
                     new TemplateSynchronizer(
-                        ApplicationContext.Current.Services.FileService,
+                        applicationContext.Services.FileService,
                         TemplateService.Instance).Run();
 
                     this.Info("Document type synchronization enabled. Begin synchronizing document types.");
                     new DocumentTypeSynchronizer(
-                        ApplicationContext.Current.Services.ContentTypeService,
-                        ApplicationContext.Current.Services.FileService,
+                        applicationContext.Services.ContentTypeService,
+                        applicationContext.Services.FileService,
                         typeResolver,
                         typeRepository).Run();
                 }
@@ -75,7 +75,7 @@ namespace Logikfabrik.Umbraco.Jet
                     this.Info("Media type synchronization enabled. Begin synchronizing media types.");
 
                     new MediaTypeSynchronizer(
-                        ApplicationContext.Current.Services.ContentTypeService,
+                        applicationContext.Services.ContentTypeService,
                         typeResolver,
                         typeRepository).Run();
                 }
@@ -85,7 +85,7 @@ namespace Logikfabrik.Umbraco.Jet
                     this.Info("Member type synchronization enabled. Begin synchronizing member types.");
 
                     new MemberTypeSynchronizer(
-                        ApplicationContext.Current.Services.MemberTypeService,
+                        applicationContext.Services.MemberTypeService,
                         typeResolver,
                         typeRepository).Run();
                 }
