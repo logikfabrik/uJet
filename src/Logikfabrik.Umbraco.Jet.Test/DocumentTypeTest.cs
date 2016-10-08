@@ -2,6 +2,8 @@
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
+using Logikfabrik.Umbraco.Jet.Test.Models;
+
 namespace Logikfabrik.Umbraco.Jet.Test
 {
     using System;
@@ -89,6 +91,22 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var documentType = new DocumentType(typeof(Models.DocumentType));
 
             Assert.AreEqual(2, documentType.CompositionNodeTypes.Length);
+        }
+
+        [TestMethod]
+        public void CanGetIsContainerFromAttribute()
+        {
+            var documentType = new DocumentType(typeof(Models.DocumentType));
+
+            Assert.IsTrue(documentType.IsContainer);
+        }
+
+        [TestMethod]
+        public void CanGetCustomAliasFromAttribute()
+        {
+            var documentType = new DocumentType(typeof(Models.DocumentTypeWithAlias));
+
+            Assert.AreEqual("customAlias", documentType.Alias);
         }
 
         [TestMethod]

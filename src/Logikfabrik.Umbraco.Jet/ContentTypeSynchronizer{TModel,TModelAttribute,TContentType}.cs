@@ -81,6 +81,7 @@ namespace Logikfabrik.Umbraco.Jet
             contentType.Name = model.Name;
             contentType.Alias = model.Alias;
             contentType.Description = model.Description;
+            contentType.IsContainer = model.IsContainer;
 
             if (!string.IsNullOrWhiteSpace(model.Icon))
             {
@@ -102,6 +103,7 @@ namespace Logikfabrik.Umbraco.Jet
             contentType.Alias = model.Alias;
             contentType.Description = model.Description;
             contentType.Icon = model.Icon ?? CreateContentType().Icon;
+            contentType.IsContainer = model.IsContainer;
 
             return contentType;
         }
