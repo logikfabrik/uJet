@@ -135,7 +135,7 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
             addHint(typeof(string), DataTypeDefinition.DropdownMultiple);
             addHint(typeof(string), DataTypeDefinition.FolderBrowser);
             addHint(typeof(string), DataTypeDefinition.Label);
-            addHint(typeof(int), DataTypeDefinition.MediaPicker);
+            addHint(typeof(string), DataTypeDefinition.MediaPicker); // Umbraco Media Picker uses Umbraco.MultipleMediaPicker which is string. Legacy Media Picker used int
             addHint(typeof(string), DataTypeDefinition.MultipleMediaPicker);
             addHint(typeof(int), DataTypeDefinition.Numeric);
             addHint(typeof(string), DataTypeDefinition.Radiobox);
