@@ -9,6 +9,8 @@ namespace Logikfabrik.Umbraco.Jet
     /// <summary>
     /// The <see cref="AliasAttribute" /> class.
     /// </summary>
+    [AttributeUsage(
+        AttributeTargets.Property)]
     public class AliasAttribute : Attribute
     {
         /// <summary>
