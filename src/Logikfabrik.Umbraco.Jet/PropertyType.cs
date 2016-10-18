@@ -32,7 +32,11 @@ namespace Logikfabrik.Umbraco.Jet
             Type = property.PropertyType;
             Id = property.GetCustomAttribute<IdAttribute>()?.Id;
             Mandatory = property.GetCustomAttribute<RequiredAttribute>() != null;
-            Alias = property.Name.Alias();
+
+            // Added Alias Override Attribute to allow support code first. Defaults to property name alias for backwards compat.
+            string alias = property.GetCustomAttribute<AliasAttribute>()?.Alias;
+            Alias = string.IsNullOrEmpty(alias) ? property.Name.Alias() : alias;
+
             RegularExpression = property.GetCustomAttribute<RegularExpressionAttribute>()?.Pattern;
             UIHint = property.GetCustomAttribute<UIHintAttribute>()?.UIHint;
             DefaultValue = GetDefaultValue(property, out _hasDefaultValue);

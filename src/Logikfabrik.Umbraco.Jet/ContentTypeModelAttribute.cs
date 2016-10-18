@@ -72,5 +72,27 @@ namespace Logikfabrik.Umbraco.Jet
         {
             get; set;
         }
+
+        /// <summary>
+        /// Gets or sets the is container.
+        /// </summary>
+        /// <value>
+        /// The is container.
+        /// </value>
+        public bool IsContainer
+        {
+            get; set;
+        }
+
+        /// <summary>
+        /// Gets or sets the alias.
+        /// </summary>
+        /// <value>
+        /// The alias.
+        /// </value>
+        public string Alias
+        {
+            get; set;
+        }
     }
 }

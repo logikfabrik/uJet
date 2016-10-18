@@ -44,7 +44,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The alias.
         /// </value>
-        public string Alias => ModelType.Name.Alias();
+        public string Alias => string.IsNullOrEmpty(Attribute.Alias) ? ModelType.Name.Alias() : Attribute.Alias;
 
         /// <summary>
         /// Gets the properties.
@@ -69,6 +69,14 @@ namespace Logikfabrik.Umbraco.Jet
         /// The icon.
         /// </value>
         public string Icon => Attribute.Icon;
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is container.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is container; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsContainer => Attribute.IsContainer;
 
         /// <summary>
         /// Gets the properties.

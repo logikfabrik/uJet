@@ -5,16 +5,17 @@
 namespace Logikfabrik.Umbraco.Jet.Test.Models
 {
     [DocumentType(
-        "85384e6c-9001-4c02-8b0e-eb76f1edabc7",
+        "870E2F78-27BA-47F9-BA5A-EF8D9CAEEBE4",
         "DocumentType",
         Description = "Description",
         AllowedAsRoot = true,
+        Alias = "customAlias",
         AllowedChildNodeTypes = new[] { typeof(IDocumentTypeB), typeof(ContentType) },
         CompositionNodeTypes = new[] { typeof(CompositionDocumentTypeA), typeof(CompositionDocumentTypeB) },
         DefaultTemplate = "DefaultTemplate",
         IsContainer = true,
         Templates = new string[] { })]
-    public class DocumentType : ContentType
+    public class DocumentTypeWithAlias : ContentType
     {
     }
 }
