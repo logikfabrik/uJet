@@ -1,4 +1,11 @@
 ## Unreleased
+
+## 4.1.0.0
+* 2016-10-17 Added attribute `AliasAttribute`.
+* 2016-10-17 Added property ID and alias validation.
+* 2016-10-17 Added content type property `IsContainer` to support list views.
+* 2016-10-17 Changed default data type for media picker from `int` to `string` (change in Umbraco 7.5+).
+* 2016-10-17 Compiled using Umbraco 7.5.3 binaries.
 * 2016-04-18 Compiled using Umbraco 7.4.3 binaries.
 
 ## 4.0.0.0
