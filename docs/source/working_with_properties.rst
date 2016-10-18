@@ -20,6 +20,9 @@ uJet supports the following data annotations.
 * `DisplayAttribute`
 * `ScaffoldColumnAttribute`
 
+* `AliasAttribute` (uJet specific)
+* `IdAttribute` (uJet specific)
+
 RequiredAttribute
 ^^^^^^^^^^^^^^^^^
 Properties decorated using the `RequiredAttribute` attribute will be mandatory in the Umbraco back office.
@@ -133,6 +136,14 @@ Properties decorated using the `ScaffoldColumnAttribute` attribute (set to false
            public string MyHiddenProperty { get; set; }
        }
    }
+
+AliasAttribute
+^^^^^^^^^^^^^^
+Use the `AliasAttribute` attribute to specify a custom property alias, overriding the default value.
+
+IdAttribute
+^^^^^^^^^^^
+Use the `IdAttribute` attribute to specify a property ID, enabling property tracking.
 
 Data Types
 ==========

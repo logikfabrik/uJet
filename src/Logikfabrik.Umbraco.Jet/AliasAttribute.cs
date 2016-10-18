@@ -1,4 +1,4 @@
-﻿// <copyright file="IdAttribute.cs" company="Logikfabrik">
+﻿// <copyright file="AliasAttribute.cs" company="Logikfabrik">
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -27,13 +27,11 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AliasAttribute" /> class.
+        /// Gets the alias.
         /// </summary>
-        protected AliasAttribute()
-        {
-        }
-
+        /// <value>
+        /// The alias.
+        /// </value>
         public string Alias { get; }
-
     }
 }

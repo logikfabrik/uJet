@@ -71,10 +71,10 @@ namespace Logikfabrik.Umbraco.Jet
         public string Icon => Attribute.Icon;
 
         /// <summary>
-        /// Gets a value indicating whether this instance is container.
+        /// Gets a value indicating whether this instance is a container.
         /// </summary>
         /// <value>
-        /// <c>true</c> if this instance is container; otherwise, <c>false</c>.
+        ///   <c>true</c> if this instance is a container; otherwise, <c>false</c>.
         /// </value>
         public bool IsContainer => Attribute.IsContainer;
 

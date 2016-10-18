@@ -31,6 +31,8 @@ namespace Logikfabrik.Umbraco.Jet
 
             ValidateById(models);
             ValidateByAlias(models);
+            ValidatePropertiesById(models);
+            ValidatePropertiesByAlias(models);
         }
 
         private static void ValidateByAlias(TModel[] models)
@@ -47,6 +49,61 @@ namespace Logikfabrik.Umbraco.Jet
                 }
 
                 set.Add(model.Alias);
+            }
+        }
+
+        private static void ValidatePropertiesById(TModel[] models)
+        {
+            foreach (var model in models)
+            {
+                ValidatePropertiesById(model);
+            }
+        }
+
+        private static void ValidatePropertiesByAlias(TModel[] models)
+        {
+            foreach (var model in models)
+            {
+                ValidatePropertiesByAlias(model);
+            }
+        }
+
+        private static void ValidatePropertiesById(TModel model)
+        {
+            var set = new HashSet<string>();
+
+            foreach (var property in model.Properties)
+            {
+                if (set.Contains(property.Alias, StringComparer.InvariantCultureIgnoreCase))
+                {
+                    var conflictingProperties = model.Properties.Where(m => m.Alias.Equals(property.Alias, StringComparison.InvariantCultureIgnoreCase)).Select(m => m.Name);
+
+                    throw new InvalidOperationException($"Alias conflict for properties {string.Join(", ", conflictingProperties)}. Alias {property.Alias} is already in use.");
+                }
+
+                set.Add(property.Alias);
+            }
+        }
+
+        private static void ValidatePropertiesByAlias(TModel model)
+        {
+            var set = new HashSet<Guid>();
+
+            foreach (var property in model.Properties)
+            {
+                if (!property.Id.HasValue)
+                {
+                    continue;
+                }
+
+                if (set.Contains(property.Id.Value))
+                {
+                    var conflictingProperties = model.Properties.Where(m => m.Id.HasValue && m.Id.Value == property.Id.Value).Select(m => m.Name);
+
+                    throw new InvalidOperationException($"ID conflict for properties {string.Join(", ", conflictingProperties)}. ID {property.Id.Value} is already in use.");
+                }
+
+                set.Add(property.Id.Value);
             }
         }
     }

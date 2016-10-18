@@ -32,11 +32,7 @@ namespace Logikfabrik.Umbraco.Jet
             Type = property.PropertyType;
             Id = property.GetCustomAttribute<IdAttribute>()?.Id;
             Mandatory = property.GetCustomAttribute<RequiredAttribute>() != null;
-
-            // Added Alias Override Attribute to allow support code first. Defaults to property name alias for backwards compat.
-            string alias = property.GetCustomAttribute<AliasAttribute>()?.Alias;
-            Alias = string.IsNullOrEmpty(alias) ? property.Name.Alias() : alias;
-
+            Alias = GetAlias(property);
             RegularExpression = property.GetCustomAttribute<RegularExpressionAttribute>()?.Pattern;
             UIHint = property.GetCustomAttribute<UIHintAttribute>()?.UIHint;
             DefaultValue = GetDefaultValue(property, out _hasDefaultValue);
@@ -141,6 +137,19 @@ namespace Logikfabrik.Umbraco.Jet
         /// Gets a value indicating whether this instance has a default value.
         /// </summary>
         public bool HasDefaultValue => _hasDefaultValue;
+
+        /// <summary>
+        /// Gets the alias.
+        /// </summary>
+        /// <param name="property">The property.</param>
+        /// <returns>The alias.</returns>
+        /// <remarks>Defaults to property name alias for backwards compatibility.</remarks>
+        private static string GetAlias(MemberInfo property)
+        {
+            var alias = property.GetCustomAttribute<AliasAttribute>()?.Alias;
+
+            return string.IsNullOrEmpty(alias) ? property.Name.Alias() : alias;
+        }
 
         /// <summary>
         /// Gets the name.

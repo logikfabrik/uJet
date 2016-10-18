@@ -76,6 +76,10 @@ Thumbnail
 ^^^^^^^^^
 The thumbnail for the document type. The document type thumbnail is displayed in the Umbraco back office.
 
+IsContainer
+^^^^^^^^^^^
+Whether or not documents of this type are containers (labeled *Enable list view* in the Umbraco back office).
+
 AllowedAsRoot
 ^^^^^^^^^^^^^
 Whether or not documents of this type can be created at the root of the content tree.
@@ -208,6 +212,10 @@ The icon for the media type. The media type icon is displayed in the Umbraco bac
 Thumbnail
 ^^^^^^^^^
 The thumbnail for the media type. The media type thumbnail is displayed in the Umbraco back office.
+
+IsContainer
+^^^^^^^^^^^
+Whether or not media of this type are containers (labeled *Enable list view* in the Umbraco back office).
 
 AllowedAsRoot
 ^^^^^^^^^^^^^

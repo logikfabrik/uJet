@@ -74,10 +74,10 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Gets or sets the is container.
+        /// Gets or sets a value indicating whether this instance is a container.
         /// </summary>
         /// <value>
-        /// The is container.
+        ///   <c>true</c> if this instance is a container; otherwise, <c>false</c>.
         /// </value>
         public bool IsContainer
         {
