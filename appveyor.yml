@@ -12,6 +12,8 @@ assembly_info:
   assembly_file_version: "{version}"
 platform: Any CPU
 configuration: Release
+before_build:
+- nuget restore src/Logikfabrik.Umbraco.Jet.sln
 build:
   project: src/Logikfabrik.Umbraco.Jet.sln
   publish_nuget: true
