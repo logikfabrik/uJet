@@ -372,7 +372,7 @@
       <SubType>Designer</SubType>
     </None>
     <AdditionalFiles Include="stylecop.json" />
-    <None Include="uJet.nuspec" />
+    <None Include="Logikfabrik.Umbraco.Jet.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\Newtonsoft.Json.dll" />
