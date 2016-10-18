@@ -19,3 +19,6 @@ build:
   publish_nuget: true
   publish_nuget_symbols: true
   verbosity: minimal
+nuget:
+  project_feed: true
+  disable_publish_on_pr: true
