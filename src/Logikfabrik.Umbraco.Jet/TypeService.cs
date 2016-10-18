@@ -179,9 +179,15 @@ namespace Logikfabrik.Umbraco.Jet
             }
             catch (ReflectionTypeLoadException ex)
             {
-                this.Warn($"An exception was thrown when getting types from assembly {assembly.FullName}.", ex);
+                this.Error($"An exception was thrown when getting types from assembly {assembly.FullName}.", ex);
 
                 return new Type[] { };
+            }
+            catch (Exception ex)
+            {
+                this.Error($"An exception was thrown when getting types from assembly {assembly.FullName}.", ex);
+
+                throw;
             }
         }
     }
