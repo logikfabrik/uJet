@@ -8,6 +8,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Linq;
     using Data;
     using global::Umbraco.Core.Models;
+    using Logging;
 
     /// <summary>
     /// The <see cref="ContentTypeFinder{TModel, TModelAttribute, TContentType}" /> class. Class for finding content types by model or by model type.
@@ -20,22 +21,31 @@ namespace Logikfabrik.Umbraco.Jet
         where TModelAttribute : ContentTypeModelAttribute
         where TContentType : IContentTypeBase
     {
-        private readonly EntityTypeComparer<TContentType> _comparer = new EntityTypeComparer<TContentType>();
+        private readonly ILogService _logService;
         private readonly ITypeRepository _typeRepository;
+        private readonly EntityTypeComparer<TContentType> _comparer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentTypeFinder{TModel, TModelAttribute, TContentType}" /> class.
         /// </summary>
+        /// <param name="logService">The log service.</param>
         /// <param name="typeRepository">The type repository.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="typeRepository" /> is <c>null</c>.</exception>
-        public ContentTypeFinder(ITypeRepository typeRepository)
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="logService" />, or <paramref name="typeRepository" /> are <c>null</c>.</exception>
+        public ContentTypeFinder(ILogService logService, ITypeRepository typeRepository)
         {
+            if (logService == null)
+            {
+                throw new ArgumentNullException(nameof(logService));
+            }
+
             if (typeRepository == null)
             {
                 throw new ArgumentNullException(nameof(typeRepository));
             }
 
+            _logService = logService;
             _typeRepository = typeRepository;
+            _comparer = new EntityTypeComparer<TContentType>();
         }
 
         /// <summary>
@@ -91,7 +101,7 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(contentTypesHaystack));
             }
 
-            var modelNeedles = new ContentTypeModelFinder<TModel, TModelAttribute, TContentType>(_typeRepository).Find(modelTypeNeedle, modelsHaystack);
+            var modelNeedles = new ContentTypeModelFinder<TModel, TModelAttribute, TContentType>(_logService, _typeRepository).Find(modelTypeNeedle, modelsHaystack);
 
             return Find(modelNeedles, contentTypesHaystack).Distinct(_comparer).ToArray();
         }
@@ -149,7 +159,7 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(contentTypesHaystack));
             }
 
-            var modelNeedles = new ContentTypeModelFinder<TModel, TModelAttribute, TContentType>(_typeRepository).FindAll(modelTypeNeedle, modelsHaystack);
+            var modelNeedles = new ContentTypeModelFinder<TModel, TModelAttribute, TContentType>(_logService, _typeRepository).FindAll(modelTypeNeedle, modelsHaystack);
 
             return Find(modelNeedles, contentTypesHaystack).Distinct(_comparer).ToArray();
         }

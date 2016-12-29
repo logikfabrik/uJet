@@ -10,6 +10,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
     using global::Umbraco.Core.Models;
     using Jet.Data;
     using Jet.Extensions;
+    using Logging;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
 
@@ -180,6 +181,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
         private static void CanSetDefaultValueForDocumentType<TPropertyType>(Models.DocumentType documentType, string propertyName)
         {
+            var logServiceMock = new Mock<ILogService>();
+
             var contentTypeMock = new Mock<IContentType>();
 
             contentTypeMock.Setup(m => m.Alias).Returns(documentType.GetType().Name.Alias());
@@ -188,13 +191,15 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             contentMock.Setup(m => m.ContentType).Returns(contentTypeMock.Object);
 
-            new DefaultValueService(GetTypeResolverMock(documentType.GetType()).Object, new Mock<ITypeRepository>().Object).SetDefaultValues(contentMock.Object);
+            new DefaultValueService(logServiceMock.Object, GetTypeResolverMock(documentType.GetType()).Object, new Mock<ITypeRepository>().Object).SetDefaultValues(contentMock.Object);
 
             contentMock.Verify(m => m.SetValue(propertyName.Alias(), GetPropertyDefaultValue<TPropertyType>(documentType.GetType(), propertyName)));
         }
 
         private static void CanSetDefaultValueForMediaType<TPropertyType>(Models.MediaType mediaType, string propertyName)
         {
+            var logServiceMock = new Mock<ILogService>();
+
             var contentTypeMock = new Mock<IMediaType>();
 
             contentTypeMock.Setup(m => m.Alias).Returns(mediaType.GetType().Name.Alias());
@@ -203,13 +208,15 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             contentMock.Setup(m => m.ContentType).Returns(contentTypeMock.Object);
 
-            new DefaultValueService(GetTypeResolverMock(mediaType.GetType()).Object, new Mock<ITypeRepository>().Object).SetDefaultValues(contentMock.Object);
+            new DefaultValueService(logServiceMock.Object, GetTypeResolverMock(mediaType.GetType()).Object, new Mock<ITypeRepository>().Object).SetDefaultValues(contentMock.Object);
 
             contentMock.Verify(m => m.SetValue(propertyName.Alias(), GetPropertyDefaultValue<TPropertyType>(mediaType.GetType(), propertyName)));
         }
 
         private static void CanSetDefaultValueForMemberType<TPropertyType>(Models.MemberType memberType, string propertyName)
         {
+            var logServiceMock = new Mock<ILogService>();
+
             var contentTypeMock = new Mock<IMemberType>();
 
             contentTypeMock.Setup(m => m.Alias).Returns(memberType.GetType().Name.Alias());
@@ -218,7 +225,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             contentMock.Setup(m => m.ContentType).Returns(contentTypeMock.Object);
 
-            new DefaultValueService(GetTypeResolverMock(memberType.GetType()).Object, new Mock<ITypeRepository>().Object).SetDefaultValues(contentMock.Object);
+            new DefaultValueService(logServiceMock.Object, GetTypeResolverMock(memberType.GetType()).Object, new Mock<ITypeRepository>().Object).SetDefaultValues(contentMock.Object);
 
             contentMock.Verify(m => m.SetValue(propertyName.Alias(), GetPropertyDefaultValue<TPropertyType>(memberType.GetType(), propertyName)));
         }

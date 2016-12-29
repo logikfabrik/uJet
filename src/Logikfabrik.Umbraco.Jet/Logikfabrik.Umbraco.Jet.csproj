@@ -279,11 +279,14 @@
     <Compile Include="DataTypeValidator.cs" />
     <Compile Include="Data\ITypeRepository.cs" />
     <Compile Include="Data\TypeRepository.cs" />
-    <Compile Include="Extensions\LoggingExtensions.cs" />
     <Compile Include="IDataType.cs" />
     <Compile Include="AliasAttribute.cs" />
+    <Compile Include="Logging\ILogService.cs" />
     <Compile Include="ITypeResolver.cs" />
     <Compile Include="ContentTypeFinder{TModel,TModelAttribute,TContentType}.cs" />
+    <Compile Include="Logging\LogEntry.cs" />
+    <Compile Include="Logging\LogEntryType.cs" />
+    <Compile Include="Logging\LogService.cs" />
     <Compile Include="Mappings\DataTypeDefinitionMappingRegistrar.cs" />
     <Compile Include="PropertyTypeFinder.cs" />
     <Compile Include="TypeModelComparer{TModel,TModelAttribute}.cs" />

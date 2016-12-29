@@ -8,6 +8,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Linq;
     using Data;
     using global::Umbraco.Core.Models;
+    using Logging;
     using Mappings;
 
     /// <summary>
@@ -28,10 +29,16 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentTypeSynchronizer{TModel, TModelAttribute, TContentType}" /> class.
         /// </summary>
+        /// <param name="logService">The log service.</param>
         /// <param name="typeRepository">The type repository.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="typeRepository" /> is <c>null</c>.</exception>
-        protected ContentTypeSynchronizer(ITypeRepository typeRepository)
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="logService" />, or <paramref name="typeRepository" /> are <c>null</c>.</exception>
+        protected ContentTypeSynchronizer(ILogService logService, ITypeRepository typeRepository)
         {
+            if (logService == null)
+            {
+                throw new ArgumentNullException(nameof(logService));
+            }
+
             if (typeRepository == null)
             {
                 throw new ArgumentNullException(nameof(typeRepository));
@@ -39,8 +46,8 @@ namespace Logikfabrik.Umbraco.Jet
 
             _typeRepository = typeRepository;
 
-            _contentTypeFinder = new ContentTypeFinder<TModel, TModelAttribute, TContentType>(typeRepository);
-            _propertyTypeFinder = new PropertyTypeFinder(typeRepository);
+            _contentTypeFinder = new ContentTypeFinder<TModel, TModelAttribute, TContentType>(logService, typeRepository);
+            _propertyTypeFinder = new PropertyTypeFinder(logService, typeRepository);
         }
 
         /// <summary>
@@ -271,10 +278,7 @@ namespace Logikfabrik.Umbraco.Jet
 
             var definition = GetDataTypeDefinition(model);
 
-            if (propertyType.DataTypeDefinitionId != definition.Id)
-            {
-                propertyType.DataTypeDefinitionId = definition.Id;
-            }
+            propertyType.DataTypeDefinitionId = definition.Id;
         }
 
         /// <summary>

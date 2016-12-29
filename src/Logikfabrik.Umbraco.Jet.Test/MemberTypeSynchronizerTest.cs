@@ -8,6 +8,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
     using System.Collections.Generic;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
+    using Logging;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
 
@@ -17,6 +18,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanCreateMemberTypeWithAndWithoutId()
         {
+            var logServiceMock = new Mock<ILogService>();
+
             var memberTypeWithId = new Jet.MemberType(typeof(MemberTypeWithId));
             var memberTypeWithoutId = new Jet.MemberType(typeof(MemberTypeWithoutId));
 
@@ -32,6 +35,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             memberTypeServiceMock.Setup(m => m.Save(It.IsAny<IMemberType>(), 0)).Callback((IMemberType memberType, int userId) => { memberTypes.Add(memberType); });
 
             var memberTypeSynchronizationServiceMock = new Mock<MemberTypeSynchronizer>(
+                logServiceMock.Object,
                 memberTypeServiceMock.Object,
                 typeResolverMock.Object,
                 new Mock<Jet.Data.ITypeRepository>().Object)
@@ -45,6 +49,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanCreateMemberTypeWithId()
         {
+            var logServiceMock = new Mock<ILogService>();
+
             var memberTypeWithId = new Jet.MemberType(typeof(MemberTypeWithId));
 
             var typeResolverMock = new Mock<ITypeResolver>();
@@ -59,6 +65,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             memberTypeServiceMock.Setup(m => m.Save(It.IsAny<IMemberType>(), 0)).Callback((IMemberType memberType, int userId) => { memberTypes.Add(memberType); });
 
             var memberTypeSynchronizationServiceMock = new Mock<MemberTypeSynchronizer>(
+                logServiceMock.Object,
                 memberTypeServiceMock.Object,
                 typeResolverMock.Object,
                 new Mock<Jet.Data.ITypeRepository>().Object)
@@ -72,6 +79,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanCreateMemberTypeWithoutId()
         {
+            var logServiceMock = new Mock<ILogService>();
+
             var memberTypeWithoutId = new Jet.MemberType(typeof(MemberTypeWithoutId));
 
             var typeResolverMock = new Mock<ITypeResolver>();
@@ -86,6 +95,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             memberTypeServiceMock.Setup(m => m.Save(It.IsAny<IMemberType>(), 0)).Callback((IMemberType memberType, int userId) => { memberTypes.Add(memberType); });
 
             var memberTypeSynchronizationServiceMock = new Mock<MemberTypeSynchronizer>(
+                logServiceMock.Object,
                 memberTypeServiceMock.Object,
                 typeResolverMock.Object,
                 new Mock<Jet.Data.ITypeRepository>().Object)
@@ -99,6 +109,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanUpdateMemberTypeWithId()
         {
+            var logServiceMock = new Mock<ILogService>();
+
             var memberTypeWithId = new Jet.MemberType(typeof(MemberTypeWithId));
 
             var memberTypeMock = new Mock<IMemberType>();
@@ -118,6 +130,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             typeRepositoryMock.Setup(m => m.GetContentTypeId(memberTypeWithId.Id.Value)).Returns(memberTypeMock.Object.Id);
 
             var memberTypeSynchronizationServiceMock = new Mock<MemberTypeSynchronizer>(
+                logServiceMock.Object,
                 memberTypeServiceMock.Object,
                 typeResolverMock.Object,
                 typeRepositoryMock.Object)
@@ -131,6 +144,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanUpdateNameForMemberTypeWithId()
         {
+            var logServiceMock = new Mock<ILogService>();
+
             var memberTypeWithId = new Jet.MemberType(typeof(MemberTypeWithId));
 
             var memberTypeMock = new Mock<IMemberType>();
@@ -150,6 +165,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             typeRepositoryMock.Setup(m => m.GetContentTypeId(memberTypeWithId.Id.Value)).Returns(memberTypeMock.Object.Id);
 
             var memberTypeSynchronizationServiceMock = new Mock<MemberTypeSynchronizer>(
+                logServiceMock.Object,
                 memberTypeServiceMock.Object,
                 typeResolverMock.Object,
                 typeRepositoryMock.Object)
@@ -163,6 +179,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanUpdateMemberTypeWithoutId()
         {
+            var logServiceMock = new Mock<ILogService>();
+
             var memberTypeWithoutId = new Jet.MemberType(typeof(MemberTypeWithoutId));
 
             var memberTypeMock = new Mock<IMemberType>();
@@ -179,6 +197,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             memberTypeServiceMock.Setup(m => m.GetAll()).Returns(new[] { memberTypeMock.Object });
 
             var memberTypeSynchronizationServiceMock = new Mock<MemberTypeSynchronizer>(
+                logServiceMock.Object,
                 memberTypeServiceMock.Object,
                 typeResolverMock.Object,
                 new Mock<Jet.Data.ITypeRepository>().Object)

@@ -1,4 +1,7 @@
 ## Unreleased
+* 2016-12-29 Added logging to `PropertyTypeFinder`.
+* 2016-12-29 Replaced extension methods for logging with service implementation, `LogService`.
+* 2015-12-28 Compiled using Umbraco 7.5.6 binaries.
 
 ## 4.1.0.0
 * 2016-10-17 Added attribute `AliasAttribute`.

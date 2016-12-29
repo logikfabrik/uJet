@@ -17,9 +17,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             var type = DocumentTypeUtility.GetTypeBuilder().CreateType();
 
-            var typeServiceMock = GetTypeServiceMock(type);
+            var typeService = GetTypeService(type);
 
-            var documentTypes = typeServiceMock.Object.DocumentTypes;
+            var documentTypes = typeService.DocumentTypes;
 
             Assert.AreEqual(1, documentTypes.Count);
         }
@@ -29,9 +29,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             var type = DocumentTypeUtility.GetTypeBuilder(TypeAttributes.Abstract).CreateType();
 
-            var typeServiceMock = GetTypeServiceMock(type);
+            var typeService = GetTypeService(type);
 
-            var documentTypes = typeServiceMock.Object.DocumentTypes;
+            var documentTypes = typeService.DocumentTypes;
 
             Assert.IsFalse(documentTypes.Any());
         }
@@ -45,9 +45,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var type = typeBuilder.CreateType();
 
-            var typeServiceMock = GetTypeServiceMock(type);
+            var typeService = GetTypeService(type);
 
-            var documentTypes = typeServiceMock.Object.DocumentTypes;
+            var documentTypes = typeService.DocumentTypes;
 
             Assert.IsFalse(documentTypes.Any());
         }
@@ -57,9 +57,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             var type = DataTypeUtility.GetTypeBuilder().CreateType();
 
-            var typeServiceMock = GetTypeServiceMock(type);
+            var typeService = GetTypeService(type);
 
-            var dataTypes = typeServiceMock.Object.DataTypes;
+            var dataTypes = typeService.DataTypes;
 
             Assert.AreEqual(1, dataTypes.Count);
         }
@@ -69,9 +69,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             var type = DataTypeUtility.GetTypeBuilder(TypeAttributes.Abstract).CreateType();
 
-            var typeServiceMock = GetTypeServiceMock(type);
+            var typeService = GetTypeService(type);
 
-            var dataTypes = typeServiceMock.Object.DataTypes;
+            var dataTypes = typeService.DataTypes;
 
             Assert.IsFalse(dataTypes.Any());
         }
@@ -85,9 +85,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var type = typeBuilder.CreateType();
 
-            var typeServiceMock = GetTypeServiceMock(type);
+            var typeService = GetTypeService(type);
 
-            var dataTypes = typeServiceMock.Object.DataTypes;
+            var dataTypes = typeService.DataTypes;
 
             Assert.IsFalse(dataTypes.Any());
         }
@@ -97,9 +97,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             var type = MediaTypeUtility.GetTypeBuilder().CreateType();
 
-            var typeServiceMock = GetTypeServiceMock(type);
+            var typeService = GetTypeService(type);
 
-            var mediaTypes = typeServiceMock.Object.MediaTypes;
+            var mediaTypes = typeService.MediaTypes;
 
             Assert.AreEqual(1, mediaTypes.Count);
         }
@@ -109,9 +109,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             var type = MediaTypeUtility.GetTypeBuilder(TypeAttributes.Abstract).CreateType();
 
-            var typeServiceMock = GetTypeServiceMock(type);
+            var typeService = GetTypeService(type);
 
-            var mediaTypes = typeServiceMock.Object.MediaTypes;
+            var mediaTypes = typeService.MediaTypes;
 
             Assert.IsFalse(mediaTypes.Any());
         }
@@ -125,9 +125,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var type = typeBuilder.CreateType();
 
-            var typeServiceMock = GetTypeServiceMock(type);
+            var typeService = GetTypeService(type);
 
-            var mediaTypes = typeServiceMock.Object.MediaTypes;
+            var mediaTypes = typeService.MediaTypes;
 
             Assert.IsFalse(mediaTypes.Any());
         }
@@ -137,9 +137,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             var type = MemberTypeUtility.GetTypeBuilder().CreateType();
 
-            var typeServiceMock = GetTypeServiceMock(type);
+            var typeService = GetTypeService(type);
 
-            var memberTypes = typeServiceMock.Object.MemberTypes;
+            var memberTypes = typeService.MemberTypes;
 
             Assert.AreEqual(1, memberTypes.Count);
         }
@@ -149,9 +149,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             var type = MemberTypeUtility.GetTypeBuilder(TypeAttributes.Abstract).CreateType();
 
-            var typeServiceMock = GetTypeServiceMock(type);
+            var typeService = GetTypeService(type);
 
-            var memberTypes = typeServiceMock.Object.MemberTypes;
+            var memberTypes = typeService.MemberTypes;
 
             Assert.IsFalse(memberTypes.Any());
         }
@@ -165,9 +165,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var type = typeBuilder.CreateType();
 
-            var typeServiceMock = GetTypeServiceMock(type);
+            var typeService = GetTypeService(type);
 
-            var memberTypes = typeServiceMock.Object.MemberTypes;
+            var memberTypes = typeService.MemberTypes;
 
             Assert.IsFalse(memberTypes.Any());
         }
