@@ -27,7 +27,17 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// Initializes a new instance of the <see cref="DefaultDataTypeDefinitionMapping" /> class.
         /// </summary>
         public DefaultDataTypeDefinitionMapping()
-            : this(ApplicationContext.Current.Services.DataTypeService, GetSupportedHints(UmbracoConfig.For.UmbracoSettings().Content.EnablePropertyValueConverters))
+            : this(UmbracoConfig.For.UmbracoSettings().Content.EnablePropertyValueConverters, ApplicationContext.Current.Services.DataTypeService)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultDataTypeDefinitionMapping" /> class.
+        /// </summary>
+        /// <param name="enablePropertyValueConverters">The value of EnablePropertyValueConverters in umbracoSettings.config</param>
+        /// <param name="dataTypeService">The data type service.</param>
+        public DefaultDataTypeDefinitionMapping(bool enablePropertyValueConverters, IDataTypeService dataTypeService)
+            : this(dataTypeService, GetSupportedHints(enablePropertyValueConverters))
         {
         }
 
