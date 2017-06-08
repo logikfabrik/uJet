@@ -191,7 +191,7 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
                 new KeyValuePair<Type, DataTypeDefinition>(typeof(string), DataTypeDefinition.CheckboxList),
                 new KeyValuePair<Type, DataTypeDefinition>(typeof(string), DataTypeDefinition.DropdownMultiple),
                 new KeyValuePair<Type, DataTypeDefinition>(typeof(string), DataTypeDefinition.MediaPicker), // Umbraco Media Picker uses Umbraco.MultipleMediaPicker which is string. Legacy Media Picker used int
-                new KeyValuePair<Type, DataTypeDefinition>(typeof(JArray), DataTypeDefinition.RelatedLinks),
+                new KeyValuePair<Type, DataTypeDefinition>(typeof(string), DataTypeDefinition.RelatedLinks),
                 new KeyValuePair<Type, DataTypeDefinition>(typeof(string), DataTypeDefinition.Tags)
             };
         }

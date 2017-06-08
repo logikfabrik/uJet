@@ -72,7 +72,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Mappings
         [TestMethod]
         public void CanUseOldRelatedLinksDataType()
         {
-            Assert.IsTrue(CanUseOldDataType(typeof(JArray), DataTypeDefinition.RelatedLinks));
+            Assert.IsTrue(CanUseOldDataType(typeof(string), DataTypeDefinition.RelatedLinks));
         }
 
         [TestMethod]
