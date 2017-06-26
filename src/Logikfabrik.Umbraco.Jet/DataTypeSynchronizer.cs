@@ -2,6 +2,8 @@
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
+using Logikfabrik.Umbraco.Jet.Extensions;
+
 namespace Logikfabrik.Umbraco.Jet
 {
     using System;
@@ -124,21 +126,31 @@ namespace Logikfabrik.Umbraco.Jet
             return type == typeof(DateTime) ? DataTypeDatabaseType.Date : DataTypeDatabaseType.Ntext;
         }
 
+        private static IDictionary<string, PreValue> GetDataTypePrevaluesDictionary(DataType model)
+        {
+            if (model.PreValues == null || !model.PreValues.Any())
+            {
+                return new Dictionary<string, PreValue>();
+            }
+
+            return model.PreValues.ToDictionary(preValue => preValue.Key, v => new PreValue(v.Value));
+        }
+
         private void Synchronize(IDataTypeDefinition[] dataTypes, DataType model)
         {
             var dataType = _dataTypeFinder.Find(model, dataTypes).SingleOrDefault();
 
-            dataType = dataType == null
-                ? CreateDataType(model)
-                : UpdateDataTypeDefinition(dataType, model);
+            if (dataType == null)
+            {
+                // create new data type
+                _dataTypeService.SaveDataTypeAndPreValues(CreateDataType(model), GetDataTypePrevaluesDictionary(model));
+                return;
+            }
 
-            _dataTypeService.Save(dataType);
+            _dataTypeService.Save(UpdateDataTypeDefinition(dataType, model));
 
-            // We get the data type once more to refresh it after saving it.
-            dataType = _dataTypeService.GetDataTypeDefinitionByName(dataType.Name);
-
-            // Set the pre-values, if any.
-            SetDataTypePreValues(dataType, model);
+            var existingPreValues = _dataTypeService.GetPreValuesCollectionByDataTypeId(dataType.Id);
+            _dataTypeService.SavePreValues(dataType.Id, existingPreValues.AddOrUpdate(model.PreValues));
 
             // Set/update tracking.
             SetDataTypeId(model, dataType);
@@ -157,20 +169,6 @@ namespace Logikfabrik.Umbraco.Jet
             }
 
             _typeRepository.SetDefinitionId(model.Id.Value, dataType.Id);
-        }
-
-        private void SetDataTypePreValues(IEntity dataType, DataType model)
-        {
-            if (!model.PreValues.Any())
-            {
-                _dataTypeService.SavePreValues(dataType.Id, new Dictionary<string, PreValue>());
-
-                return;
-            }
-
-            var preValues = model.PreValues.ToDictionary(preValue => preValue.Key, v => new PreValue(v.Value));
-
-            _dataTypeService.SavePreValues(dataType.Id, preValues);
         }
     }
 }

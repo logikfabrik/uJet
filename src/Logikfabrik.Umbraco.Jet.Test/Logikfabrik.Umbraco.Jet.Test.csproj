@@ -309,6 +309,7 @@
     <Compile Include="DocumentTypeTest.cs" />
     <Compile Include="DataTypeSynchronizerTest.cs" />
     <Compile Include="DocumentTypeSynchronizerTest.cs" />
+    <Compile Include="Extensions\PreValueCollectionExtensionsTest.cs" />
     <Compile Include="Extensions\StringExtensionsTest.cs" />
     <Compile Include="Extensions\TypeExtensionsTest.cs" />
     <Compile Include="Mappings\DefaultDataTypeDefinitionMappingTest.cs" />

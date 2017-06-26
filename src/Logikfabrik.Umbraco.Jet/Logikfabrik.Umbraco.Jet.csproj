@@ -279,6 +279,7 @@
     <Compile Include="DataTypeValidator.cs" />
     <Compile Include="Data\ITypeRepository.cs" />
     <Compile Include="Data\TypeRepository.cs" />
+    <Compile Include="Extensions\PreValueCollectionExtensions.cs" />
     <Compile Include="IDataType.cs" />
     <Compile Include="AliasAttribute.cs" />
     <Compile Include="Logging\ILogService.cs" />
