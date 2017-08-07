@@ -7,6 +7,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
     using System.Linq;
     using Extensions;
+    using Logging;
 
     /// <summary>
     /// The <see cref="TypeModelFinder{TModel,TModelAttribute}" /> class. Class for finding models by model type.
@@ -17,7 +18,24 @@ namespace Logikfabrik.Umbraco.Jet
         where TModel : TypeModel<TModelAttribute>
         where TModelAttribute : TypeModelAttribute
     {
-        private readonly TypeModelComparer<TModel, TModelAttribute> _comparer = new TypeModelComparer<TModel, TModelAttribute>();
+        private readonly ILogService _logService;
+        private readonly TypeModelComparer<TModel, TModelAttribute> _comparer;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TypeModelFinder{TModel, TModelAttribute}" /> class.
+        /// </summary>
+        /// <param name="logService">The log service.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="logService" /> is <c>null</c>.</exception>
+        public TypeModelFinder(ILogService logService)
+        {
+            if (logService == null)
+            {
+                throw new ArgumentNullException(nameof(logService));
+            }
+
+            _logService = logService;
+            _comparer = new TypeModelComparer<TModel, TModelAttribute>();
+        }
 
         /// <summary>
         /// Finds the models with a model type matching any of the specified model types.
@@ -48,7 +66,9 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(modelsHaystack));
             }
 
-            return modelTypeNeedles.SelectMany(needle => Find(needle, modelsHaystack)).Distinct(_comparer).ToArray();
+            var models = modelTypeNeedles.SelectMany(needle => Find(needle, modelsHaystack)).Distinct(_comparer).ToArray();
+
+            return models;
         }
 
         /// <summary>

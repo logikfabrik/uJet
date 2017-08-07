@@ -7,28 +7,38 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
     using System.Linq;
     using Data;
+    using Logging;
 
     /// <summary>
     /// The <see cref="PropertyTypeFinder" /> class.
     /// </summary>
     public class PropertyTypeFinder
     {
-        private readonly EntityTypeComparer<global::Umbraco.Core.Models.PropertyType> _comparer = new EntityTypeComparer<global::Umbraco.Core.Models.PropertyType>();
+        private readonly ILogService _logService;
         private readonly ITypeRepository _typeRepository;
+        private readonly EntityTypeComparer<global::Umbraco.Core.Models.PropertyType> _comparer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyTypeFinder" /> class.
         /// </summary>
+        /// <param name="logService">The log service.</param>
         /// <param name="typeRepository">The type repository.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="typeRepository" /> is <c>null</c>.</exception>
-        public PropertyTypeFinder(ITypeRepository typeRepository)
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="logService" />, or <paramref name="typeRepository" /> are <c>null</c>.</exception>
+        public PropertyTypeFinder(ILogService logService, ITypeRepository typeRepository)
         {
+            if (logService == null)
+            {
+                throw new ArgumentNullException(nameof(logService));
+            }
+
             if (typeRepository == null)
             {
                 throw new ArgumentNullException(nameof(typeRepository));
             }
 
+            _logService = logService;
             _typeRepository = typeRepository;
+            _comparer = new EntityTypeComparer<global::Umbraco.Core.Models.PropertyType>();
         }
 
         /// <summary>
@@ -50,22 +60,32 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(propertyTypesHaystack));
             }
 
+            _logService.Log<PropertyTypeFinder>(new LogEntry(LogEntryType.Debug, $"Find property types matching {modelNeedle.Name} ({modelNeedle.Alias})."));
+
+            global::Umbraco.Core.Models.PropertyType[] propertyTypes;
+
             if (modelNeedle.Id.HasValue)
             {
                 var id = _typeRepository.GetPropertyTypeId(modelNeedle.Id.Value);
 
                 if (id.HasValue)
                 {
-                    var propertyTypes = propertyTypesHaystack.Where(propertyType => propertyType.Id == id.Value).Distinct(_comparer).ToArray();
+                    propertyTypes = propertyTypesHaystack.Where(propertyType => propertyType.Id == id.Value).Distinct(_comparer).ToArray();
 
                     if (propertyTypes.Any())
                     {
+                        _logService.Log<PropertyTypeFinder>(new LogEntry(LogEntryType.Debug, $"Found {propertyTypes.Length} property types matching {modelNeedle.Name} ({modelNeedle.Alias}) with ID {id}."));
+
                         return propertyTypes;
                     }
                 }
             }
 
-            return propertyTypesHaystack.Where(propertyType => propertyType.Alias.Equals(modelNeedle.Alias, StringComparison.InvariantCultureIgnoreCase)).ToArray();
+            propertyTypes = propertyTypesHaystack.Where(propertyType => propertyType.Alias.Equals(modelNeedle.Alias, StringComparison.InvariantCultureIgnoreCase)).ToArray();
+
+            _logService.Log<PropertyTypeFinder>(new LogEntry(LogEntryType.Debug, $"Found {propertyTypes.Length} property types matching {modelNeedle.Name} ({modelNeedle.Alias})."));
+
+            return propertyTypes;
         }
     }
 }

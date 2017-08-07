@@ -10,6 +10,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Reflection;
     using Data;
     using global::Umbraco.Core.Models;
+    using Logging;
 
     /// <summary>
     /// The <see cref="DefaultValueService" /> class.
@@ -24,11 +25,17 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultValueService" /> class.
         /// </summary>
+        /// <param name="logService">The log service.</param>
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="typeRepository">The type repository.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="typeResolver" />, or <paramref name="typeRepository" /> are <c>null</c>.</exception>
-        public DefaultValueService(ITypeResolver typeResolver, ITypeRepository typeRepository)
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="logService" />, <paramref name="typeResolver" />, or <paramref name="typeRepository" /> are <c>null</c>.</exception>
+        public DefaultValueService(ILogService logService, ITypeResolver typeResolver, ITypeRepository typeRepository)
         {
+            if (logService == null)
+            {
+                throw new ArgumentNullException(nameof(logService));
+            }
+
             if (typeResolver == null)
             {
                 throw new ArgumentNullException(nameof(typeResolver));
@@ -41,9 +48,9 @@ namespace Logikfabrik.Umbraco.Jet
 
             _typeResolver = typeResolver;
 
-            _documentTypeModelFinder = new ContentTypeModelFinder<DocumentType, DocumentTypeAttribute, IContentType>(typeRepository);
-            _mediaTypeModelFinder = new ContentTypeModelFinder<MediaType, MediaTypeAttribute, IMediaType>(typeRepository);
-            _memberTypeModelFinder = new ContentTypeModelFinder<MemberType, MemberTypeAttribute, IMemberType>(typeRepository);
+            _documentTypeModelFinder = new ContentTypeModelFinder<DocumentType, DocumentTypeAttribute, IContentType>(logService, typeRepository);
+            _mediaTypeModelFinder = new ContentTypeModelFinder<MediaType, MediaTypeAttribute, IMediaType>(logService, typeRepository);
+            _memberTypeModelFinder = new ContentTypeModelFinder<MemberType, MemberTypeAttribute, IMemberType>(logService, typeRepository);
         }
 
         /// <summary>

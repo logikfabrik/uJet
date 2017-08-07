@@ -15,9 +15,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             var type = DocumentTypeUtility.GetTypeBuilder().CreateType();
 
-            var typeServiceMock = GetTypeServiceMock(type);
+            var typeService = GetTypeService(type);
 
-            var typeResolver = new TypeResolver(typeServiceMock.Object);
+            var typeResolver = new TypeResolver(typeService);
 
             var documentTypes = typeResolver.DocumentTypes;
 
@@ -29,9 +29,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             var type = MediaTypeUtility.GetTypeBuilder().CreateType();
 
-            var typeServiceMock = GetTypeServiceMock(type);
+            var typeService = GetTypeService(type);
 
-            var typeResolver = new TypeResolver(typeServiceMock.Object);
+            var typeResolver = new TypeResolver(typeService);
 
             var mediaTypes = typeResolver.MediaTypes;
 
@@ -43,9 +43,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             var type = MemberTypeUtility.GetTypeBuilder().CreateType();
 
-            var typeServiceMock = GetTypeServiceMock(type);
+            var typeService = GetTypeService(type);
 
-            var typeResolver = new TypeResolver(typeServiceMock.Object);
+            var typeResolver = new TypeResolver(typeService);
 
             var memberTypes = typeResolver.MemberTypes;
 
@@ -57,9 +57,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             var type = DataTypeUtility.GetTypeBuilder().CreateType();
 
-            var typeServiceMock = GetTypeServiceMock(type);
+            var typeService = GetTypeService(type);
 
-            var typeResolver = new TypeResolver(typeServiceMock.Object);
+            var typeResolver = new TypeResolver(typeService);
 
             var dataTypes = typeResolver.DataTypes;
 

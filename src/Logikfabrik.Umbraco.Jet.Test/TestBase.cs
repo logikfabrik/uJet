@@ -7,6 +7,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
     using System;
     using System.Linq.Expressions;
     using System.Reflection;
+    using Logging;
     using Moq;
 
     /// <summary>
@@ -19,18 +20,18 @@ namespace Logikfabrik.Umbraco.Jet.Test
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns>The type service mock.</returns>
-        protected static Mock<TypeService> GetTypeServiceMock(Type type)
+        protected static ITypeService GetTypeService(Type type)
         {
             Func<Assembly[]> getAssemblies = () => new[] { type.Assembly };
 
-            return new Mock<TypeService>(getAssemblies) { CallBase = true };
+            return new TypeService(new Mock<ILogService>().Object, getAssemblies);
         }
 
         protected static Mock<TypeResolver> GetTypeResolverMock(Type type)
         {
-            var typeServiceMock = GetTypeServiceMock(type);
+            var typeService = GetTypeService(type);
 
-            return new Mock<TypeResolver>(typeServiceMock.Object) { CallBase = true };
+            return new Mock<TypeResolver>(typeService) { CallBase = true };
         }
 
         /// <summary>

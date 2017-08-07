@@ -6,9 +6,12 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using global::Umbraco.Core;
+    using global::Umbraco.Core.Configuration;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
+    using global::Umbraco.Web.Models;
 
     /// <summary>
     /// The <see cref="DefaultDataTypeDefinitionMapping" /> class.
@@ -23,7 +26,17 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// Initializes a new instance of the <see cref="DefaultDataTypeDefinitionMapping" /> class.
         /// </summary>
         public DefaultDataTypeDefinitionMapping()
-            : this(ApplicationContext.Current.Services.DataTypeService, GetSupportedHints())
+            : this(UmbracoConfig.For.UmbracoSettings().Content.EnablePropertyValueConverters, ApplicationContext.Current.Services.DataTypeService)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultDataTypeDefinitionMapping" /> class.
+        /// </summary>
+        /// <param name="enablePropertyValueConverters">The value of EnablePropertyValueConverters in umbracoSettings.config</param>
+        /// <param name="dataTypeService">The data type service.</param>
+        public DefaultDataTypeDefinitionMapping(bool enablePropertyValueConverters, IDataTypeService dataTypeService)
+            : this(dataTypeService, GetSupportedHints(enablePropertyValueConverters))
         {
         }
 
@@ -118,8 +131,9 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// <summary>
         /// Gets the supported hints.
         /// </summary>
+        /// <param name="umbracoPropertyValueConvertersEnabled">The value of EnablePropertyValueConverters in umbracoSettings.config</param>
         /// <returns>The supported hints.</returns>
-        private static IDictionary<string, KeyValuePair<Type, DataTypeDefinition>> GetSupportedHints()
+        private static IDictionary<string, KeyValuePair<Type, DataTypeDefinition>> GetSupportedHints(bool umbracoPropertyValueConvertersEnabled)
         {
             var hints = new Dictionary<string, KeyValuePair<Type, DataTypeDefinition>>();
 
@@ -127,27 +141,58 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
             Action<Type, DataTypeDefinition> addHint = (t, v) => hints.Add(getName(v), new KeyValuePair<Type, DataTypeDefinition>(t, v));
 
             addHint(typeof(string), DataTypeDefinition.ApprovedColor);
-            addHint(typeof(string), DataTypeDefinition.CheckboxList);
-            addHint(typeof(int), DataTypeDefinition.ContentPicker);
+            addHint(typeof(IPublishedContent), DataTypeDefinition.ContentPicker2);
             addHint(typeof(string), DataTypeDefinition.DatePicker);
             addHint(typeof(DateTime), DataTypeDefinition.DatePickerWithTime);
             addHint(typeof(int), DataTypeDefinition.Dropdown);
-            addHint(typeof(string), DataTypeDefinition.DropdownMultiple);
             addHint(typeof(string), DataTypeDefinition.FolderBrowser);
             addHint(typeof(string), DataTypeDefinition.Label);
-            addHint(typeof(string), DataTypeDefinition.MediaPicker); // Umbraco Media Picker uses Umbraco.MultipleMediaPicker which is string. Legacy Media Picker used int
+            addHint(typeof(IPublishedContent), DataTypeDefinition.MediaPicker2);
             addHint(typeof(string), DataTypeDefinition.MultipleMediaPicker);
             addHint(typeof(int), DataTypeDefinition.Numeric);
             addHint(typeof(string), DataTypeDefinition.Radiobox);
-            addHint(typeof(string), DataTypeDefinition.RelatedLinks);
+            addHint(typeof(RelatedLinks), DataTypeDefinition.RelatedLinks2);
             addHint(typeof(string), DataTypeDefinition.RichtextEditor);
-            addHint(typeof(string), DataTypeDefinition.Tags);
             addHint(typeof(string), DataTypeDefinition.TextboxMultiple);
             addHint(typeof(string), DataTypeDefinition.Textstring);
             addHint(typeof(bool), DataTypeDefinition.TrueFalse);
             addHint(typeof(string), DataTypeDefinition.Upload);
 
+            GetSupportedHintsWithFallback(umbracoPropertyValueConvertersEnabled).ToList().ForEach(h => addHint(h.Key, h.Value));
+
             return hints;
+        }
+
+        /// <summary>
+        /// Gets supported hints with alternate data types. In Umbraco v7.6.0 some property value converters were added.
+        /// This makes mapping backwards-compatible.
+        /// </summary>
+        /// <param name="umbracoPropertyValueConvertersEnabled">The value of EnablePropertyValueConverters in umbracoSettings.config</param>
+        /// <returns>Obsolete supported hints</returns>
+        private static IEnumerable<KeyValuePair<Type, DataTypeDefinition>> GetSupportedHintsWithFallback(bool umbracoPropertyValueConvertersEnabled)
+        {
+            if (umbracoPropertyValueConvertersEnabled)
+            {
+                return new[]
+                {
+                    new KeyValuePair<Type, DataTypeDefinition>(typeof(IPublishedContent), DataTypeDefinition.ContentPicker),
+                    new KeyValuePair<Type, DataTypeDefinition>(typeof(IEnumerable<string>), DataTypeDefinition.CheckboxList),
+                    new KeyValuePair<Type, DataTypeDefinition>(typeof(IEnumerable<string>), DataTypeDefinition.DropdownMultiple),
+                    new KeyValuePair<Type, DataTypeDefinition>(typeof(IPublishedContent), DataTypeDefinition.MediaPicker),
+                    new KeyValuePair<Type, DataTypeDefinition>(typeof(RelatedLinks), DataTypeDefinition.RelatedLinks),
+                    new KeyValuePair<Type, DataTypeDefinition>(typeof(IEnumerable<string>), DataTypeDefinition.Tags)
+                };
+            }
+
+            return new[]
+            {
+                new KeyValuePair<Type, DataTypeDefinition>(typeof(int), DataTypeDefinition.ContentPicker),
+                new KeyValuePair<Type, DataTypeDefinition>(typeof(string), DataTypeDefinition.CheckboxList),
+                new KeyValuePair<Type, DataTypeDefinition>(typeof(string), DataTypeDefinition.DropdownMultiple),
+                new KeyValuePair<Type, DataTypeDefinition>(typeof(string), DataTypeDefinition.MediaPicker), // Umbraco Media Picker uses Umbraco.MultipleMediaPicker which is string. Legacy Media Picker used int
+                new KeyValuePair<Type, DataTypeDefinition>(typeof(string), DataTypeDefinition.RelatedLinks),
+                new KeyValuePair<Type, DataTypeDefinition>(typeof(string), DataTypeDefinition.Tags)
+            };
         }
 
         /// <summary>

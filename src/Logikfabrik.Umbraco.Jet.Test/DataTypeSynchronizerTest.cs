@@ -5,6 +5,7 @@
 namespace Logikfabrik.Umbraco.Jet.Test
 {
     using System;
+    using System.Collections.Generic;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -116,6 +117,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             dataTypeServiceMock.Setup(m => m.GetAllDataTypeDefinitions()).Returns(new[] { dataTypeDefinitionWithIdMock.Object });
             dataTypeServiceMock.Setup(m => m.GetDataTypeDefinitionByName(dataTypeWithId.Name)).Returns(dataTypeDefinitionWithIdMock.Object);
+            dataTypeServiceMock.Setup(m => m.GetPreValuesCollectionByDataTypeId(It.IsAny<int>())).Returns(new PreValueCollection(new Dictionary<string, PreValue>()));
 
             var typeRepositoryMock = new Mock<Jet.Data.ITypeRepository>();
 
@@ -149,6 +151,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             dataTypeServiceMock.Setup(m => m.GetAllDataTypeDefinitions()).Returns(new[] { dataTypeDefinitionWithIdMock.Object });
             dataTypeServiceMock.Setup(m => m.GetDataTypeDefinitionByName(dataTypeWithId.Name)).Returns(dataTypeDefinitionWithIdMock.Object);
+            dataTypeServiceMock.Setup(m => m.GetPreValuesCollectionByDataTypeId(It.IsAny<int>())).Returns(new PreValueCollection(new Dictionary<string, PreValue>()));
 
             var typeRepositoryMock = new Mock<Jet.Data.ITypeRepository>();
 
@@ -181,6 +184,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             dataTypeServiceMock.Setup(m => m.GetAllDataTypeDefinitions()).Returns(new[] { dataTypeDefinitionWithIdMock.Object });
             dataTypeServiceMock.Setup(m => m.GetDataTypeDefinitionByName(dataTypeWithId.Name)).Returns(dataTypeDefinitionWithIdMock.Object);
+            dataTypeServiceMock.Setup(m => m.GetPreValuesCollectionByDataTypeId(It.IsAny<int>())).Returns(new PreValueCollection(new Dictionary<string, PreValue>()));
 
             var typeRepositoryMock = new Mock<Jet.Data.ITypeRepository>();
 
@@ -214,6 +218,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             dataTypeServiceMock.Setup(m => m.GetAllDataTypeDefinitions()).Returns(new[] { dataTypeDefinitionWithoutIdMock.Object });
             dataTypeServiceMock.Setup(m => m.GetDataTypeDefinitionByName(dataTypeWithoutId.Name)).Returns(dataTypeDefinitionWithoutIdMock.Object);
+            dataTypeServiceMock.Setup(m => m.GetPreValuesCollectionByDataTypeId(It.IsAny<int>())).Returns(new PreValueCollection(new Dictionary<string, PreValue>()));
 
             var dataTypeSynchronizationServiceMock = new Mock<DataTypeSynchronizer>(
                 dataTypeServiceMock.Object,
@@ -244,6 +249,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             dataTypeServiceMock.Setup(m => m.GetAllDataTypeDefinitions()).Returns(new[] { dataTypeDefinitionWithoutIdMock.Object });
             dataTypeServiceMock.Setup(m => m.GetDataTypeDefinitionByName(dataTypeWithoutId.Name)).Returns(dataTypeDefinitionWithoutIdMock.Object);
+            dataTypeServiceMock.Setup(m => m.GetPreValuesCollectionByDataTypeId(It.IsAny<int>())).Returns(new PreValueCollection(new Dictionary<string, PreValue>()));
 
             var dataTypeSynchronizationService = new DataTypeSynchronizer(
                 dataTypeServiceMock.Object,

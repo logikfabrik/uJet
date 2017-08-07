@@ -9,6 +9,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Linq;
     using Data;
     using global::Umbraco.Core.Models;
+    using Logging;
 
     /// <summary>
     /// The <see cref="ComposableContentTypeSynchronizer{TModel, TModelAttribute, TContentType}" /> class.
@@ -26,11 +27,23 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// Initializes a new instance of the <see cref="ComposableContentTypeSynchronizer{TModel, TModelAttribute, TContentType}" /> class.
         /// </summary>
+        /// <param name="logService">The log service.</param>
         /// <param name="typeRepository">The type repository.</param>
-        protected ComposableContentTypeSynchronizer(ITypeRepository typeRepository)
-            : base(typeRepository)
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="logService" />, or <paramref name="typeRepository" /> are <c>null</c>.</exception>
+        protected ComposableContentTypeSynchronizer(ILogService logService, ITypeRepository typeRepository)
+            : base(logService, typeRepository)
         {
-            _contentTypeFinder = new ContentTypeFinder<TModel, TModelAttribute, TContentType>(typeRepository);
+            if (logService == null)
+            {
+                throw new ArgumentNullException(nameof(logService));
+            }
+
+            if (typeRepository == null)
+            {
+                throw new ArgumentNullException(nameof(typeRepository));
+            }
+
+            _contentTypeFinder = new ContentTypeFinder<TModel, TModelAttribute, TContentType>(logService, typeRepository);
         }
 
         /// <summary>

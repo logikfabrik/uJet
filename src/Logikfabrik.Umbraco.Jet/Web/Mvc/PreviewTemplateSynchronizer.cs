@@ -11,6 +11,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
     using Jet.Data;
+    using Logging;
 
     /// <summary>
     /// The <see cref="PreviewTemplateSynchronizer" /> class.
@@ -27,17 +28,24 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// <summary>
         /// Initializes a new instance of the <see cref="PreviewTemplateSynchronizer" /> class.
         /// </summary>
+        /// <param name="logService">The log service.</param>
         /// <param name="contentTypeService">The content type service.</param>
         /// <param name="fileService">The file service.</param>
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="typeRepository">The type repository.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeService" />, <paramref name="fileService" />, <paramref name="typeResolver" />, or <paramref name="typeRepository" /> are <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="logService" />, <paramref name="contentTypeService" />, <paramref name="fileService" />, <paramref name="typeResolver" />, or <paramref name="typeRepository" /> are <c>null</c>.</exception>
         public PreviewTemplateSynchronizer(
+            ILogService logService,
             IContentTypeService contentTypeService,
             IFileService fileService,
             ITypeResolver typeResolver,
             ITypeRepository typeRepository)
         {
+            if (logService == null)
+            {
+                throw new ArgumentNullException(nameof(logService));
+            }
+
             if (contentTypeService == null)
             {
                 throw new ArgumentNullException(nameof(contentTypeService));
@@ -61,7 +69,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
             _contentTypeService = contentTypeService;
             _fileService = fileService;
             _typeResolver = typeResolver;
-            _documentTypeFinder = new ContentTypeFinder<DocumentType, DocumentTypeAttribute, IContentType>(typeRepository);
+            _documentTypeFinder = new ContentTypeFinder<DocumentType, DocumentTypeAttribute, IContentType>(logService, typeRepository);
         }
 
         /// <summary>

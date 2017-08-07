@@ -9,6 +9,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     using global::Umbraco.Core;
     using global::Umbraco.Web.Mvc;
     using Jet.Data;
+    using Logging;
 
     /// <summary>
     /// The <see cref="JetMvcApplicationHandler" /> class.
@@ -17,7 +18,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     {
         private static readonly object Lock = new object();
 
-        private static bool configured;
+        private bool _configured;
 
         /// <summary>
         /// Called when the application is starting.
@@ -48,7 +49,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
                 return;
             }
 
-            if (configured)
+            if (_configured)
             {
                 return;
             }
@@ -59,6 +60,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
                 if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.DocumentTypes))
                 {
                     new PreviewTemplateSynchronizer(
+                        new LogService(),
                         ApplicationContext.Current.Services.ContentTypeService,
                         ApplicationContext.Current.Services.FileService,
                         TypeResolver.Instance,
@@ -70,7 +72,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
                 // Adds the Jet view engine. The Jet view engine allows views to be structured using the ASP.NET MVC convention.
                 ViewEngines.Engines.Insert(0, new JetViewEngine());
 
-                configured = true;
+                _configured = true;
             }
         }
     }

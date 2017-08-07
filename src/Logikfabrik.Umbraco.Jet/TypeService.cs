@@ -12,6 +12,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Reflection;
     using Configuration;
     using Extensions;
+    using Logging;
 
     /// <summary>
     /// The <see cref="TypeService" /> class. Scans assemblies for types annotated using the <see cref="DocumentTypeAttribute" />, <see cref="MediaTypeAttribute" />, <see cref="MemberTypeAttribute" />, and <see cref="DataTypeAttribute" />.
@@ -20,6 +21,7 @@ namespace Logikfabrik.Umbraco.Jet
     {
         private static ITypeService instance;
 
+        private readonly ILogService _logService;
         private readonly Lazy<ReadOnlyCollection<Type>> _documentTypes;
         private readonly Lazy<ReadOnlyCollection<Type>> _dataTypes;
         private readonly Lazy<ReadOnlyCollection<Type>> _mediaTypes;
@@ -29,15 +31,22 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// Initializes a new instance of the <see cref="TypeService" /> class.
         /// </summary>
+        /// <param name="logService">The log service.</param>
         /// <param name="getAssemblies">Function to get assemblies to scan.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="getAssemblies" /> is <c>null</c>.</exception>
-        internal TypeService(Func<Assembly[]> getAssemblies)
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="logService" />, or <paramref name="getAssemblies" /> are <c>null</c>.</exception>
+        internal TypeService(ILogService logService, Func<Assembly[]> getAssemblies)
         {
+            if (logService == null)
+            {
+                throw new ArgumentNullException(nameof(logService));
+            }
+
             if (getAssemblies == null)
             {
                 throw new ArgumentNullException(nameof(getAssemblies));
             }
 
+            _logService = logService;
             _types = new Lazy<Type[]>(() => GetTypes(getAssemblies()));
             _documentTypes = new Lazy<ReadOnlyCollection<Type>>(() => GetTypesByAttribute(TypeExtensions.IsModelType<DocumentTypeAttribute>));
             _dataTypes = new Lazy<ReadOnlyCollection<Type>>(() => GetTypesByAttribute(TypeExtensions.IsModelType<DataTypeAttribute>));
@@ -49,7 +58,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// Prevents a default instance of the <see cref="TypeService" /> class from being created.
         /// </summary>
         private TypeService()
-            : this(GetAssemblies)
+            : this(new LogService(), GetAssemblies)
         {
         }
 
@@ -115,7 +124,7 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(predicate));
             }
 
-            this.Debug("Getting types by attribute.");
+            _logService.Log<TypeService>(new LogEntry(LogEntryType.Debug, "Getting types by attribute."));
 
             var watch = Stopwatch.StartNew();
 
@@ -123,7 +132,7 @@ namespace Logikfabrik.Umbraco.Jet
 
             watch.Stop();
 
-            this.Debug($"Got {types.Length} types by attribute in {watch.ElapsedMilliseconds} ms.");
+            _logService.Log<TypeService>(new LogEntry(LogEntryType.Debug, $"Got {types.Length} types by attribute in {watch.ElapsedMilliseconds} ms."));
 
             return Array.AsReadOnly(types);
         }
@@ -135,7 +144,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <returns>The types.</returns>
         private Type[] GetTypes(IEnumerable<Assembly> assemblies)
         {
-            this.Debug("Getting types.");
+            _logService.Log<TypeService>(new LogEntry(LogEntryType.Debug, "Getting types from assemblies."));
 
             var watch = Stopwatch.StartNew();
 
@@ -148,7 +157,7 @@ namespace Logikfabrik.Umbraco.Jet
 
             watch.Stop();
 
-            this.Debug($"Got {types.Count} types in {watch.ElapsedMilliseconds} ms.");
+            _logService.Log<TypeService>(new LogEntry(LogEntryType.Debug, $"Got {types.Count} types in {watch.ElapsedMilliseconds} ms from assemblies."));
 
             return types.ToArray();
         }
@@ -167,21 +176,29 @@ namespace Logikfabrik.Umbraco.Jet
 
             try
             {
+                _logService.Log<TypeService>(new LogEntry(LogEntryType.Debug, $"Getting types from assembly {assembly.FullName}."));
+
                 var watch = Stopwatch.StartNew();
 
                 var types = assembly.GetTypes();
 
                 watch.Stop();
 
-                this.Debug($"Got {types.Length} types from assembly {assembly.FullName} in {watch.ElapsedMilliseconds} ms.");
+                _logService.Log<TypeService>(new LogEntry(LogEntryType.Debug, $"Got {types.Length} types from assembly {assembly.FullName} in {watch.ElapsedMilliseconds} ms."));
 
                 return types;
             }
             catch (ReflectionTypeLoadException ex)
             {
-                this.Warn($"An exception was thrown when getting types from assembly {assembly.FullName}.", ex);
+                _logService.Log<TypeService>(new LogEntry(LogEntryType.Error, $"An exception was thrown when getting types from assembly {assembly.FullName}.", ex));
 
                 return new Type[] { };
+            }
+            catch (Exception ex)
+            {
+                _logService.Log<TypeService>(new LogEntry(LogEntryType.Error, $"An exception was thrown when getting types from assembly {assembly.FullName}.", ex));
+
+                throw;
             }
         }
     }

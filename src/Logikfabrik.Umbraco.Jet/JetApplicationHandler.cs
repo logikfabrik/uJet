@@ -6,9 +6,9 @@ namespace Logikfabrik.Umbraco.Jet
 {
     using Configuration;
     using Data;
-    using Extensions;
     using global::Umbraco.Core;
     using global::Umbraco.Core.Services;
+    using Logging;
 
     /// <summary>
     /// The <see cref="JetApplicationHandler" /> class. Class for subscribing to Umbraco application events, setting up uJet.
@@ -17,7 +17,7 @@ namespace Logikfabrik.Umbraco.Jet
     {
         private static readonly object Lock = new object();
 
-        private static bool configured;
+        private bool _configured;
 
         /// <summary>
         /// Called when the application is started.
@@ -31,14 +31,16 @@ namespace Logikfabrik.Umbraco.Jet
                 return;
             }
 
-            if (configured)
+            if (_configured)
             {
                 return;
             }
 
             lock (Lock)
             {
-                this.Info("Begin synchronizing types.");
+                var logService = new LogService();
+
+                logService.Log<JetApplicationHandler>(new LogEntry(LogEntryType.Information, "Begin synchronizing types."));
 
                 var typeResolver = TypeResolver.Instance;
                 var typeRepository = TypeRepository.Instance;
@@ -46,7 +48,7 @@ namespace Logikfabrik.Umbraco.Jet
                 // Synchronize.
                 if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.DataTypes))
                 {
-                    this.Info("Data type synchronization enabled. Begin synchronizing data types.");
+                    logService.Log<JetApplicationHandler>(new LogEntry(LogEntryType.Information, "Data type synchronization enabled. Begin synchronizing data types."));
 
                     new DataTypeSynchronizer(
                         applicationContext.Services.DataTypeService,
@@ -56,14 +58,16 @@ namespace Logikfabrik.Umbraco.Jet
 
                 if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.DocumentTypes))
                 {
-                    this.Info("Document type synchronization enabled. Begin synchronizing templates.");
+                    logService.Log<JetApplicationHandler>(new LogEntry(LogEntryType.Information, "Document type synchronization enabled. Begin synchronizing templates."));
 
                     new TemplateSynchronizer(
                         applicationContext.Services.FileService,
                         TemplateService.Instance).Run();
 
-                    this.Info("Document type synchronization enabled. Begin synchronizing document types.");
+                    logService.Log<JetApplicationHandler>(new LogEntry(LogEntryType.Information, "Document type synchronization enabled. Begin synchronizing document types."));
+
                     new DocumentTypeSynchronizer(
+                        logService,
                         applicationContext.Services.ContentTypeService,
                         applicationContext.Services.FileService,
                         typeResolver,
@@ -72,9 +76,10 @@ namespace Logikfabrik.Umbraco.Jet
 
                 if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.MediaTypes))
                 {
-                    this.Info("Media type synchronization enabled. Begin synchronizing media types.");
+                    logService.Log<JetApplicationHandler>(new LogEntry(LogEntryType.Information, "Media type synchronization enabled. Begin synchronizing media types."));
 
                     new MediaTypeSynchronizer(
+                        logService,
                         applicationContext.Services.ContentTypeService,
                         typeResolver,
                         typeRepository).Run();
@@ -82,15 +87,16 @@ namespace Logikfabrik.Umbraco.Jet
 
                 if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.MemberTypes))
                 {
-                    this.Info("Member type synchronization enabled. Begin synchronizing member types.");
+                    logService.Log<JetApplicationHandler>(new LogEntry(LogEntryType.Information, "Member type synchronization enabled. Begin synchronizing member types."));
 
                     new MemberTypeSynchronizer(
+                        logService,
                         applicationContext.Services.MemberTypeService,
                         typeResolver,
                         typeRepository).Run();
                 }
 
-                var defaultValueService = new DefaultValueService(typeResolver, typeRepository);
+                var defaultValueService = new DefaultValueService(logService, typeResolver, typeRepository);
 
                 // Wire up handler for document type default values.
                 ContentService.Saving += (sender, args) => defaultValueService.SetDefaultValues(args.SavedEntities);
@@ -101,7 +107,7 @@ namespace Logikfabrik.Umbraco.Jet
                 // Wire up handler for member type default values.
                 MemberService.Saving += (sender, args) => defaultValueService.SetDefaultValues(args.SavedEntities);
 
-                configured = true;
+                _configured = true;
             }
         }
     }

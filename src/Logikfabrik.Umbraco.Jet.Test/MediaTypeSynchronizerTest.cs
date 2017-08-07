@@ -8,6 +8,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
     using System.Collections.Generic;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
+    using Logging;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
 
@@ -17,6 +18,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanCreateMediaTypeWithAndWithoutId()
         {
+            var logServiceMock = new Mock<ILogService>();
+
             var mediaTypeWithId = new Jet.MediaType(typeof(MediaTypeWithId));
             var mediaTypeWithoutId = new Jet.MediaType(typeof(MediaTypeWithoutId));
 
@@ -32,6 +35,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             contentTypeServiceMock.Setup(m => m.Save(It.IsAny<IMediaType>(), 0)).Callback((IMediaType mediaType, int userId) => { mediaTypes.Add(mediaType); });
 
             var mediaTypeSynchronizationServiceMock = new Mock<MediaTypeSynchronizer>(
+                logServiceMock.Object,
                 contentTypeServiceMock.Object,
                 typeResolverMock.Object,
                 new Mock<Jet.Data.ITypeRepository>().Object)
@@ -45,6 +49,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanCreateMediaTypeWithId()
         {
+            var logServiceMock = new Mock<ILogService>();
+
             var mediaTypeWithId = new Jet.MediaType(typeof(MediaTypeWithId));
 
             var typeResolverMock = new Mock<ITypeResolver>();
@@ -59,6 +65,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             contentTypeServiceMock.Setup(m => m.Save(It.IsAny<IMediaType>(), 0)).Callback((IMediaType mediaType, int userId) => { mediaTypes.Add(mediaType); });
 
             var mediaTypeSynchronizationServiceMock = new Mock<MediaTypeSynchronizer>(
+                logServiceMock.Object,
                 contentTypeServiceMock.Object,
                 typeResolverMock.Object,
                 new Mock<Jet.Data.ITypeRepository>().Object)
@@ -72,6 +79,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanCreateMediaTypeWithoutId()
         {
+            var logServiceMock = new Mock<ILogService>();
+
             var mediaTypeWithoutId = new Jet.MediaType(typeof(MediaTypeWithoutId));
 
             var typeResolverMock = new Mock<ITypeResolver>();
@@ -86,6 +95,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             contentTypeServiceMock.Setup(m => m.Save(It.IsAny<IMediaType>(), 0)).Callback((IMediaType mediaType, int userId) => { mediaTypes.Add(mediaType); });
 
             var mediaTypeSynchronizationServiceMock = new Mock<MediaTypeSynchronizer>(
+                logServiceMock.Object,
                 contentTypeServiceMock.Object,
                 typeResolverMock.Object,
                 new Mock<Jet.Data.ITypeRepository>().Object)
@@ -99,6 +109,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanUpdateMediaTypeWithId()
         {
+            var logServiceMock = new Mock<ILogService>();
+
             var mediaTypeWithId = new Jet.MediaType(typeof(MediaTypeWithId));
 
             var mediaTypeMock = new Mock<IMediaType>();
@@ -119,6 +131,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             typeRepositoryMock.Setup(m => m.GetContentTypeId(mediaTypeWithId.Id.Value)).Returns(mediaTypeMock.Object.Id);
 
             var mediaTypeSynchronizationServiceMock = new Mock<MediaTypeSynchronizer>(
+                logServiceMock.Object,
                 contentTypeServiceMock.Object,
                 typeResolverMock.Object,
                 typeRepositoryMock.Object)
@@ -132,6 +145,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanUpdateNameForMediaTypeWithId()
         {
+            var logServiceMock = new Mock<ILogService>();
+
             var mediaTypeWithId = new Jet.MediaType(typeof(MediaTypeWithId));
 
             var mediaTypeMock = new Mock<IMediaType>();
@@ -152,6 +167,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             typeRepositoryMock.Setup(m => m.GetContentTypeId(mediaTypeWithId.Id.Value)).Returns(mediaTypeMock.Object.Id);
 
             var mediaTypeSynchronizationService = new MediaTypeSynchronizer(
+                logServiceMock.Object,
                 contentTypeServiceMock.Object,
                 typeResolverMock.Object,
                 typeRepositoryMock.Object);
@@ -164,6 +180,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [TestMethod]
         public void CanUpdateMediaTypeWithoutId()
         {
+            var logServiceMock = new Mock<ILogService>();
+
             var mediaTypeWithoutId = new Jet.MediaType(typeof(MediaTypeWithoutId));
 
             var mediaTypeMock = new Mock<IMediaType>();
@@ -181,6 +199,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             contentTypeServiceMock.Setup(m => m.GetMediaType(mediaTypeWithoutId.Alias)).Returns(mediaTypeMock.Object);
 
             var mediaTypeSynchronizationServiceMock = new Mock<MediaTypeSynchronizer>(
+                logServiceMock.Object,
                 contentTypeServiceMock.Object,
                 typeResolverMock.Object,
                 new Mock<Jet.Data.ITypeRepository>().Object)

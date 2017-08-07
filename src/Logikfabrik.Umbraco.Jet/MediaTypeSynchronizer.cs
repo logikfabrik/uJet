@@ -9,6 +9,7 @@ namespace Logikfabrik.Umbraco.Jet
     using Data;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
+    using Logging;
 
     /// <summary>
     /// The <see cref="MediaTypeSynchronizer" /> class. Synchronizes model types annotated using the <see cref="MediaTypeAttribute" />.
@@ -21,15 +22,17 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// Initializes a new instance of the <see cref="MediaTypeSynchronizer" /> class.
         /// </summary>
+        /// <param name="logService">The log service.</param>
         /// <param name="contentTypeService">The content type service.</param>
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="typeRepository">The type repository.</param>
         /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeService" />, or <paramref name="typeResolver" /> are <c>null</c>.</exception>
         public MediaTypeSynchronizer(
+            ILogService logService,
             IContentTypeService contentTypeService,
             ITypeResolver typeResolver,
             ITypeRepository typeRepository)
-            : base(typeRepository)
+            : base(logService, typeRepository)
         {
             if (contentTypeService == null)
             {

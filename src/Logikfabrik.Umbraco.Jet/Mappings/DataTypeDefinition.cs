@@ -25,6 +25,11 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         ContentPicker = 1034,
 
         /// <summary>
+        /// Data type for new content picker.
+        /// </summary>
+        ContentPicker2 = 1046,
+
+        /// <summary>
         /// Data type for short date picker.
         /// </summary>
         DatePicker = -41,
@@ -60,9 +65,19 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         MediaPicker = 1035,
 
         /// <summary>
+        /// Data type for new media picker.
+        /// </summary>
+        MediaPicker2 = 1048,
+
+        /// <summary>
         /// Data type for member picker.
         /// </summary>
         MemberPicker = 1036,
+
+        /// <summary>
+        /// Data type for new member picker.
+        /// </summary>
+        MemberPicker2 = 1047,
 
         /// <summary>
         /// Data type for multiple media picker.
@@ -83,6 +98,11 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// Data type for related links.
         /// </summary>
         RelatedLinks = 1040,
+
+        /// <summary>
+        /// Data type for new related links.
+        /// </summary>
+        RelatedLinks2 = 1050,
 
         /// <summary>
         /// Data type for rich text.
