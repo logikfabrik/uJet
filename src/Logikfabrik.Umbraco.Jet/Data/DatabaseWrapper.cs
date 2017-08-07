@@ -44,7 +44,16 @@ namespace Logikfabrik.Umbraco.Jet.Data
 
             _databaseSchemaHelper = new DatabaseSchemaHelper(database, logger, syntaxProvider);
             _database = database;
+            SyntaxProvider = syntaxProvider;
         }
+
+        /// <summary>
+        /// Gets the syntax provider.
+        /// </summary>
+        /// <value>
+        /// The syntax provider.
+        /// </value>
+        public ISqlSyntaxProvider SyntaxProvider { get; }
 
         /// <summary>
         /// Gets the object of the specified object type with the specified primary key.

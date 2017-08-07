@@ -185,7 +185,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
                 return null;
             }
 
-            var sql = new Sql().Where<ContentType>(ct => ct.ContentTypeId == id);
+            var sql = new Sql().Where<ContentType>(ct => ct.ContentTypeId == id, _databaseWrapper.SyntaxProvider);
 
             return _databaseWrapper.Get<ContentType>(sql);
         }
@@ -212,7 +212,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
                 return null;
             }
 
-            var sql = new Sql().Where<PropertyType>(ct => ct.PropertyTypeId == id);
+            var sql = new Sql().Where<PropertyType>(ct => ct.PropertyTypeId == id, _databaseWrapper.SyntaxProvider);
 
             return _databaseWrapper.Get<PropertyType>(sql);
         }

@@ -6,12 +6,21 @@ namespace Logikfabrik.Umbraco.Jet.Data
 {
     using System;
     using global::Umbraco.Core.Persistence;
+    using global::Umbraco.Core.Persistence.SqlSyntax;
 
     /// <summary>
     /// The <see cref="IDatabaseWrapper" /> interface.
     /// </summary>
     public interface IDatabaseWrapper
     {
+        /// <summary>
+        /// Gets the syntax provider.
+        /// </summary>
+        /// <value>
+        /// The syntax provider.
+        /// </value>
+        ISqlSyntaxProvider SyntaxProvider { get; }
+
         /// <summary>
         /// Creates the table for the specified object type.
         /// </summary>

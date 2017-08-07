@@ -12,7 +12,6 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
     using global::Umbraco.Web.Models;
-    using Newtonsoft.Json.Linq;
 
     /// <summary>
     /// The <see cref="DefaultDataTypeDefinitionMapping" /> class.

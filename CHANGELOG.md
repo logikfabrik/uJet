@@ -1,4 +1,8 @@
-## Unreleased (4.2.0.0)
+## Unreleased
+
+## 4.2.0.0
+
+* 2017-08-07 Fix an issue with data type pre-values getting cleared on update synchronization.
 * 2017-06-09 Compiled using Umbraco 7.6.0 binaries.
 * 2017-06-09 Added support for `ContentPicker2`, `MediaPicker2`, `MemberPicker2`, and `RelatedLinks2`.
 * 2016-12-29 Added logging to `PropertyTypeFinder`.
