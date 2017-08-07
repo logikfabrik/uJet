@@ -122,7 +122,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
                 return null;
             }
 
-            var sql = new Sql().Where<DataType>(ct => ct.DefinitionId == id);
+            var sql = new Sql().Where<DataType>(ct => ct.DefinitionId == id, _databaseWrapper.SyntaxProvider);
 
             return _databaseWrapper.Get<DataType>(sql);
         }

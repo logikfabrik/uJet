@@ -1,16 +1,17 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
-using Umbraco.Web.Models;
+﻿// <copyright file="DefaultDataTypeDefinitionMappingTest.cs" company="Logikfabrik">
+//   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
+// </copyright>
 
 namespace Logikfabrik.Umbraco.Jet.Test.Mappings
 {
     using System;
+    using System.Collections.Generic;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
+    using global::Umbraco.Web.Models;
     using Jet.Mappings;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using DataTypeDefinition = Jet.Mappings.DataTypeDefinition;
 
     [TestClass]
     public class DefaultDataTypeDefinitionMappingTest
@@ -18,94 +19,94 @@ namespace Logikfabrik.Umbraco.Jet.Test.Mappings
         [TestMethod]
         public void CanUseNewContentPickerDataType()
         {
-            Assert.IsTrue(CanUseNewDataType(typeof(IPublishedContent), DataTypeDefinition.ContentPicker));
+            Assert.IsTrue(CanUseNewDataType(typeof(IPublishedContent), Jet.Mappings.DataTypeDefinition.ContentPicker));
         }
 
         [TestMethod]
         public void CanUseOldContentPickerDataType()
         {
-            Assert.IsTrue(CanUseOldDataType(typeof(int), DataTypeDefinition.ContentPicker));
+            Assert.IsTrue(CanUseOldDataType(typeof(int), Jet.Mappings.DataTypeDefinition.ContentPicker));
         }
 
         [TestMethod]
         public void CanUseNewCheckboxListDataType()
         {
-            Assert.IsTrue(CanUseNewDataType(typeof(IEnumerable<string>), DataTypeDefinition.CheckboxList));
+            Assert.IsTrue(CanUseNewDataType(typeof(IEnumerable<string>), Jet.Mappings.DataTypeDefinition.CheckboxList));
         }
 
         [TestMethod]
         public void CanUseOldCheckboxListDataType()
         {
-            Assert.IsTrue(CanUseOldDataType(typeof(string), DataTypeDefinition.CheckboxList));
+            Assert.IsTrue(CanUseOldDataType(typeof(string), Jet.Mappings.DataTypeDefinition.CheckboxList));
         }
 
         [TestMethod]
         public void CanUseNewDropdownMultipleDataType()
         {
-            Assert.IsTrue(CanUseNewDataType(typeof(IEnumerable<string>), DataTypeDefinition.DropdownMultiple));
+            Assert.IsTrue(CanUseNewDataType(typeof(IEnumerable<string>), Jet.Mappings.DataTypeDefinition.DropdownMultiple));
         }
 
         [TestMethod]
         public void CanUseOldDropdownMultipleDataType()
         {
-            Assert.IsTrue(CanUseOldDataType(typeof(string), DataTypeDefinition.DropdownMultiple));
+            Assert.IsTrue(CanUseOldDataType(typeof(string), Jet.Mappings.DataTypeDefinition.DropdownMultiple));
         }
 
         [TestMethod]
         public void CanUseNewMediaPickerDataType()
         {
-            Assert.IsTrue(CanUseNewDataType(typeof(IPublishedContent), DataTypeDefinition.MediaPicker));
+            Assert.IsTrue(CanUseNewDataType(typeof(IPublishedContent), Jet.Mappings.DataTypeDefinition.MediaPicker));
         }
 
         [TestMethod]
         public void CanUseOldMediaPickerDataType()
         {
-            Assert.IsTrue(CanUseOldDataType(typeof(string), DataTypeDefinition.MediaPicker));
+            Assert.IsTrue(CanUseOldDataType(typeof(string), Jet.Mappings.DataTypeDefinition.MediaPicker));
         }
 
         [TestMethod]
         public void CanUseNewRelatedLinksDataType()
         {
-            Assert.IsTrue(CanUseNewDataType(typeof(RelatedLinks), DataTypeDefinition.RelatedLinks));
+            Assert.IsTrue(CanUseNewDataType(typeof(RelatedLinks), Jet.Mappings.DataTypeDefinition.RelatedLinks));
         }
 
         [TestMethod]
         public void CanUseOldRelatedLinksDataType()
         {
-            Assert.IsTrue(CanUseOldDataType(typeof(string), DataTypeDefinition.RelatedLinks));
+            Assert.IsTrue(CanUseOldDataType(typeof(string), Jet.Mappings.DataTypeDefinition.RelatedLinks));
         }
 
         [TestMethod]
         public void CanUseNewTagsDataType()
         {
-            Assert.IsTrue(CanUseNewDataType(typeof(IEnumerable<string>), DataTypeDefinition.Tags));
+            Assert.IsTrue(CanUseNewDataType(typeof(IEnumerable<string>), Jet.Mappings.DataTypeDefinition.Tags));
         }
 
         [TestMethod]
         public void CanUseOldTagsDataType()
         {
-            Assert.IsTrue(CanUseOldDataType(typeof(string), DataTypeDefinition.Tags));
+            Assert.IsTrue(CanUseOldDataType(typeof(string), Jet.Mappings.DataTypeDefinition.Tags));
         }
 
         [TestMethod]
         public void CannotUseInvalidDataType()
         {
-            var dataTypeDefinition = GetMappedDefinition(typeof(string), DataTypeDefinition.ContentPicker, false);
+            var dataTypeDefinition = GetMappedDefinition(typeof(string), Jet.Mappings.DataTypeDefinition.ContentPicker, false);
 
             Assert.IsNull(dataTypeDefinition);
         }
 
-        private bool CanUseNewDataType(Type type, DataTypeDefinition dataTypeDefinition)
+        private static bool CanUseNewDataType(Type type, Jet.Mappings.DataTypeDefinition dataTypeDefinition)
         {
             return GetMappedDefinition(type, dataTypeDefinition, true) != null;
         }
 
-        private bool CanUseOldDataType(Type type, DataTypeDefinition dataTypeDefinition)
+        private static bool CanUseOldDataType(Type type, Jet.Mappings.DataTypeDefinition dataTypeDefinition)
         {
             return GetMappedDefinition(type, dataTypeDefinition, false) != null;
         }
 
-        private static IDataTypeDefinition GetMappedDefinition(Type type, DataTypeDefinition dataTypeDefinition, bool usePropertyValueConverter)
+        private static IDataTypeDefinition GetMappedDefinition(Type type, Jet.Mappings.DataTypeDefinition dataTypeDefinition, bool usePropertyValueConverter)
         {
             var propertyAlias = dataTypeDefinition.ToString();
             var dataTypeDefinitionId = (int)dataTypeDefinition;
