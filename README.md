@@ -15,7 +15,7 @@ PM> Install-Package uJet
 ```
 
 ## How To
-uJet is easy to use. Add a reference to uJet. Then create your types and decorate them using the `DocumentType`, `MediaType`, `MemberType`, and `DataType` attributes. Fire up your application and all of your types will now be available in the Umbraco back office.
+uJet is easy to use. Add a reference to uJet to your Umbraco application. Then create your types and decorate them using the `DocumentType`, `MediaType`, `MemberType`, and `DataType` attributes. Fire up your application and all of your types will now be available in the Umbraco back office.
 
 ### Quick Start Example
 1. Get, compile, and reference the source code - or use the NuGet.
@@ -28,8 +28,8 @@ uJet is easy to use. Add a reference to uJet. Then create your types and decorat
 ```csharp
 namespace Example.Models
 {
-	using System.ComponentModel.DataAnnotations;
-	using Logikfabrik.Umbraco.Jet;
+    using System.ComponentModel.DataAnnotations;
+    using Logikfabrik.Umbraco.Jet;
 
     [DocumentType(
         "My page",
@@ -75,9 +75,9 @@ namespace Example.Models
 ```csharp
 namespace Example.Controllers
 {
-	using System.Web.Mvc;
-	using Logikfabrik.Umbraco.Jet.Web.Mvc;
-	using Models;
+    using System.Web.Mvc;
+    using Logikfabrik.Umbraco.Jet.Web.Mvc;
+    using Models;
 
     public class MyPageController : JetController
     {

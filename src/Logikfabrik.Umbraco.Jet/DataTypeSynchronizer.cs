@@ -124,7 +124,7 @@ namespace Logikfabrik.Umbraco.Jet
             return type == typeof(DateTime) ? DataTypeDatabaseType.Date : DataTypeDatabaseType.Ntext;
         }
 
-        private static IDictionary<string, PreValue> GetDataTypePrevaluesDictionary(DataType model)
+        private static IDictionary<string, PreValue> GetPreValues(DataType model)
         {
             if (model.PreValues == null || !model.PreValues.Any())
             {
@@ -134,27 +134,26 @@ namespace Logikfabrik.Umbraco.Jet
             return model.PreValues.ToDictionary(preValue => preValue.Key, v => new PreValue(v.Value));
         }
 
-        // Updates a PreValueCollection and returns the result as a Dictionary. No existing keys are deleted.
-        private static IDictionary<string, PreValue> GetUpdatedPrevalues(IDictionary<string, PreValue> prevaluesToUpdate, IDictionary<string, string> newPreValues)
+        private static IDictionary<string, PreValue> GetUpdatedPreValues(IDictionary<string, PreValue> preValuesToUpdate, IDictionary<string, string> newPreValues)
         {
             if (newPreValues == null || !newPreValues.Any())
             {
                 return new Dictionary<string, PreValue>();
             }
 
-            foreach (var p in newPreValues)
+            foreach (var preValue in newPreValues)
             {
-                if (prevaluesToUpdate.ContainsKey(p.Key))
+                if (preValuesToUpdate.ContainsKey(preValue.Key))
                 {
-                    prevaluesToUpdate[p.Key].Value = p.Value;
+                    preValuesToUpdate[preValue.Key].Value = preValue.Value;
                 }
                 else
                 {
-                    prevaluesToUpdate[p.Key] = new PreValue(p.Value);
+                    preValuesToUpdate[preValue.Key] = new PreValue(preValue.Value);
                 }
             }
 
-            return prevaluesToUpdate;
+            return preValuesToUpdate;
         }
 
         private void Synchronize(IDataTypeDefinition[] dataTypes, DataType model)
@@ -163,20 +162,21 @@ namespace Logikfabrik.Umbraco.Jet
 
             if (dataType == null)
             {
-                // create new data type
+                // Create new data type.
                 dataType = CreateDataType(model);
-                _dataTypeService.SaveDataTypeAndPreValues(dataType, GetDataTypePrevaluesDictionary(model));
+
+                _dataTypeService.SaveDataTypeAndPreValues(dataType, GetPreValues(model));
             }
             else
             {
-                // update the data type and its prevalues
+                // Update the data type and its pre-values.
                 _dataTypeService.Save(UpdateDataTypeDefinition(dataType, model));
 
-                // get existing prevalues
                 var existingPreValues = _dataTypeService.GetPreValuesCollectionByDataTypeId(dataType.Id).FormatAsDictionary();
+
                 var preValuesToSave = existingPreValues.Any()
-                    ? GetUpdatedPrevalues(existingPreValues, model.PreValues) // update existing if found
-                    : GetDataTypePrevaluesDictionary(model); // otherwise just use new prevalues
+                    ? GetUpdatedPreValues(existingPreValues, model.PreValues)
+                    : GetPreValues(model);
 
                 _dataTypeService.SavePreValues(dataType.Id, preValuesToSave);
             }

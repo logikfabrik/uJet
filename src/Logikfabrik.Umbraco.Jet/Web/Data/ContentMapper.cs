@@ -81,6 +81,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// </summary>
         /// <param name="property">The property to get the UI hint for.</param>
         /// <returns>The UI hint.</returns>
+        // ReSharper disable once InconsistentNaming
         private static string GetPropertyUIHint(MemberInfo property)
         {
             var attribute = property.GetCustomAttribute<UIHintAttribute>();

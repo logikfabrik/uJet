@@ -123,6 +123,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The UI hint.
         /// </value>
+        // ReSharper disable once InconsistentNaming
         public string UIHint { get; }
 
         /// <summary>

@@ -11,7 +11,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
     /// </summary>
     public class TypeRepository : ITypeRepository
     {
-        private static ITypeRepository instance;
+        private static ITypeRepository _instance;
 
         private readonly IContentTypeRepository _contentTypeRepository;
         private readonly IDataTypeRepository _dataTypeRepository;
@@ -51,7 +51,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <summary>
         /// Gets a singleton instance of the type repository.
         /// </summary>
-        public static ITypeRepository Instance => instance ?? (instance = new TypeRepository());
+        public static ITypeRepository Instance => _instance ?? (_instance = new TypeRepository());
 
         /// <summary>
         /// Gets the content type model identifier.
