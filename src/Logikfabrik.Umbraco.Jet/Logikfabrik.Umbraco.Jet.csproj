@@ -386,7 +386,6 @@
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="stylecop.json" />
-    <None Include="app.config" />
     <None Include="Logikfabrik.Umbraco.Jet.nuspec" />
     <None Include="packages.config">
       <SubType>Designer</SubType>

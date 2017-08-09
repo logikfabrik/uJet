@@ -13,7 +13,7 @@ namespace Logikfabrik.Umbraco.Jet
     /// </summary>
     public class TypeResolver : ITypeResolver
     {
-        private static ITypeResolver _instance;
+        private static ITypeResolver instance;
 
         private readonly Lazy<ReadOnlyCollection<DocumentType>> _documentTypes;
         private readonly Lazy<ReadOnlyCollection<MediaType>> _mediaTypes;
@@ -49,7 +49,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// Gets a singleton instance of the <see cref="TypeResolver" />.
         /// </summary>
-        public static ITypeResolver Instance => _instance ?? (_instance = new TypeResolver());
+        public static ITypeResolver Instance => instance ?? (instance = new TypeResolver());
 
         /// <summary>
         /// Gets the document type models.
