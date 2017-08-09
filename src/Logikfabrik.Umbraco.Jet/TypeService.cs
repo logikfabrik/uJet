@@ -19,7 +19,7 @@ namespace Logikfabrik.Umbraco.Jet
     /// </summary>
     public class TypeService : ITypeService
     {
-        private static ITypeService instance;
+        private static ITypeService _instance;
 
         private readonly ILogService _logService;
         private readonly Lazy<ReadOnlyCollection<Type>> _documentTypes;
@@ -65,7 +65,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// Gets a singleton instance of the type service.
         /// </summary>
-        public static ITypeService Instance => instance ?? (instance = new TypeService());
+        public static ITypeService Instance => _instance ?? (_instance = new TypeService());
 
         /// <summary>
         /// Gets the document type model types within the current application domain.

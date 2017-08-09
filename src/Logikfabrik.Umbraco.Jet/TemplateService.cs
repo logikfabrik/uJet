@@ -16,7 +16,7 @@ namespace Logikfabrik.Umbraco.Jet
     /// </summary>
     public class TemplateService : ITemplateService
     {
-        private static ITemplateService instance;
+        private static ITemplateService _instance;
 
         /// <summary>
         /// Prevents a default instance of the <see cref="TemplateService" /> class from being created.
@@ -29,7 +29,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// Gets an singleton instance of the template service.
         /// </summary>
-        public static ITemplateService Instance => instance ?? (instance = new TemplateService());
+        public static ITemplateService Instance => _instance ?? (_instance = new TemplateService());
 
         /// <summary>
         /// Gets the template paths for templates in the views folder.
