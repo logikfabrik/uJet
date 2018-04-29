@@ -2,12 +2,11 @@
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
-using AutoFixture.Xunit2;
-
 namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 {
     using System;
     using System.Collections.Generic;
+    using AutoFixture.Xunit2;
     using global::Umbraco.Core.Models;
     using Jet.Web.Data;
     using Moq;

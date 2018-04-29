@@ -2,17 +2,16 @@
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
-using Logikfabrik.Umbraco.Jet.Configuration;
-using Logikfabrik.Umbraco.Jet.Logging;
-
 namespace Logikfabrik.Umbraco.Jet.Web.Mvc
 {
     using System;
     using System.Linq;
     using System.Web.Mvc;
+    using Configuration;
     using Data;
     using EnsureThat;
     using global::Umbraco.Web.Models;
+    using Logging;
 
     /// <summary>
     /// The <see cref="JetControllerFactory" /> class.

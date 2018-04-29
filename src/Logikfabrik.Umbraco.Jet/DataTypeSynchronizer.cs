@@ -2,14 +2,13 @@
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
-using EnsureThat;
-
 namespace Logikfabrik.Umbraco.Jet
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using Data;
+    using EnsureThat;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Models.EntityBase;
     using global::Umbraco.Core.Services;
@@ -17,6 +16,7 @@ namespace Logikfabrik.Umbraco.Jet
     /// <summary>
     /// The <see cref="DataTypeSynchronizer" /> class. Synchronizes model types annotated using the <see cref="DataTypeAttribute" />.
     /// </summary>
+    // ReSharper disable once InheritdocConsiderUsage
     public class DataTypeSynchronizer : ISynchronizer
     {
         private readonly IDataTypeService _dataTypeService;
@@ -65,12 +65,7 @@ namespace Logikfabrik.Umbraco.Jet
             }
         }
 
-        /// <summary>
-        /// Creates a data type.
-        /// </summary>
-        /// <param name="model">The model to use when creating the data type.</param>
-        /// <returns>The created data type.</returns>
-        internal virtual IDataTypeDefinition CreateDataType(DataType model)
+        private static IDataTypeDefinition CreateDataType(DataType model)
         {
             var dataType = new DataTypeDefinition(model.Editor)
             {
@@ -81,13 +76,7 @@ namespace Logikfabrik.Umbraco.Jet
             return dataType;
         }
 
-        /// <summary>
-        /// Updates the specified data type.
-        /// </summary>
-        /// <param name="dataType">The data type to update.</param>
-        /// <param name="model">The model to use when updating the data type.</param>
-        /// <returns>The updated data type.</returns>
-        internal virtual IDataTypeDefinition UpdateDataTypeDefinition(IDataTypeDefinition dataType, DataType model)
+        private static IDataTypeDefinition UpdateDataTypeDefinition(IDataTypeDefinition dataType, DataType model)
         {
             dataType.Name = model.Name;
             dataType.PropertyEditorAlias = model.Editor;
@@ -96,11 +85,6 @@ namespace Logikfabrik.Umbraco.Jet
             return dataType;
         }
 
-        /// <summary>
-        /// Gets the database type.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns>The database type.</returns>
         private static DataTypeDatabaseType GetDatabaseType(Type type)
         {
             if (type == typeof(int))

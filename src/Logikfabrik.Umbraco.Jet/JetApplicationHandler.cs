@@ -2,15 +2,15 @@
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
-using System;
-
 namespace Logikfabrik.Umbraco.Jet
 {
+    using System;
     using Configuration;
     using Data;
     using global::Umbraco.Core;
     using global::Umbraco.Core.Configuration;
     using global::Umbraco.Core.Logging;
+    using global::Umbraco.Core.Models;
     using global::Umbraco.Core.ObjectResolution;
     using global::Umbraco.Core.Services;
     using Logging;
@@ -107,7 +107,11 @@ namespace Logikfabrik.Umbraco.Jet
                         dataTypeDefinitionService).Run();
                 }
 
-                var defaultValueService = new DefaultValueService(logService, typeResolver, typeRepository);
+                var defaultValueService = new DefaultValueService(
+                    typeResolver,
+                    new ContentTypeModelFinder<DocumentType, DocumentTypeAttribute, IContentType>(logService, typeRepository),
+                    new ContentTypeModelFinder<MediaType, MediaTypeAttribute, IMediaType>(logService, typeRepository),
+                    new ContentTypeModelFinder<MemberType, MemberTypeAttribute, IMemberType>(logService, typeRepository));
 
                 // Wire up handler for document type default values.
                 ContentService.Saving += (sender, args) => defaultValueService.SetDefaultValues(args.SavedEntities);

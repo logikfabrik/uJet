@@ -18,14 +18,13 @@ namespace Logikfabrik.Umbraco.Jet
     /// <typeparam name="TModelAttribute">The model attribute type.</typeparam>
     /// <typeparam name="TContentType">The content type.</typeparam>
     // ReSharper disable once InheritdocConsiderUsage
-    public class ContentTypeModelFinder<TModel, TModelAttribute, TContentType> : TypeModelFinder<TModel, TModelAttribute>
+    public class ContentTypeModelFinder<TModel, TModelAttribute, TContentType> : TypeModelFinder<TModel, TModelAttribute>, IContentTypeModelFinder<TModel, TModelAttribute, TContentType>
         where TModel : ContentTypeModel<TModelAttribute>
         where TModelAttribute : ContentTypeModelAttribute
         where TContentType : IContentTypeBase
     {
         private readonly ILogService _logService;
         private readonly ITypeRepository _typeRepository;
-        private readonly TypeModelComparer<TModel, TModelAttribute> _comparer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentTypeModelFinder{TModel, TModelAttribute, TContentType}" /> class.
@@ -40,15 +39,9 @@ namespace Logikfabrik.Umbraco.Jet
 
             _logService = logService;
             _typeRepository = typeRepository;
-            _comparer = new TypeModelComparer<TModel, TModelAttribute>();
         }
 
-        /// <summary>
-        /// Finds the models matching the specified content type.
-        /// </summary>
-        /// <param name="contentTypeNeedle">The content type to find the models for.</param>
-        /// <param name="modelsHaystack">The haystack of models.</param>
-        /// <returns>The models found.</returns>
+        /// <inheritdoc />
         public TModel[] Find(TContentType contentTypeNeedle, TModel[] modelsHaystack)
         {
             EnsureArg.IsNotNull(contentTypeNeedle);
@@ -62,7 +55,7 @@ namespace Logikfabrik.Umbraco.Jet
 
             if (id.HasValue)
             {
-                models = modelsHaystack.Where(model => model.Id == id.Value).Distinct(_comparer).ToArray();
+                models = modelsHaystack.Where(model => model.Id == id.Value).Distinct(Comparer).ToArray();
 
                 if (models.Any())
                 {

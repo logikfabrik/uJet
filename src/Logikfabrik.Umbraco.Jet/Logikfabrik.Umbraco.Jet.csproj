@@ -271,8 +271,10 @@
     <Compile Include="Data\ITypeRepository.cs" />
     <Compile Include="Data\TypeRepository.cs" />
     <Compile Include="IAssemblyLoader.cs" />
+    <Compile Include="IContentTypeModelFinder.cs" />
     <Compile Include="IDataType.cs" />
     <Compile Include="AliasAttribute.cs" />
+    <Compile Include="ITypeModelFinder.cs" />
     <Compile Include="Logging\ILogService.cs" />
     <Compile Include="ITypeResolver.cs" />
     <Compile Include="ContentTypeFinder{TModel,TModelAttribute,TContentType}.cs" />

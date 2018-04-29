@@ -1,6 +1,11 @@
-﻿namespace Logikfabrik.Umbraco.Jet.Test.Utilities
+﻿// <copyright file="TypeBuilderExtensions.cs" company="Logikfabrik">
+//   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
+// </copyright>
+
+namespace Logikfabrik.Umbraco.Jet.Test.Utilities
 {
     using System;
+    using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
 
@@ -26,11 +31,24 @@
             AddProperty(typeBuilder, MethodAttributes.Public | MethodAttributes.SpecialName | MethodAttributes.HideBySig, propertyName, propertyType);
         }
 
-        private static void AddProperty(TypeBuilder typeBuilder, MethodAttributes attributes, string propertyName, Type propertyType)
+        public static void AddPublicProperty(this TypeBuilder typeBuilder, string propertyName, Type propertyType, IEnumerable<CustomAttributeBuilder> attributeBuilders)
+        {
+            AddProperty(typeBuilder, MethodAttributes.Public | MethodAttributes.SpecialName | MethodAttributes.HideBySig, propertyName, propertyType, attributeBuilders);
+        }
+
+        private static void AddProperty(TypeBuilder typeBuilder, MethodAttributes attributes, string propertyName, Type propertyType, IEnumerable<CustomAttributeBuilder> attributeBuilders = null)
         {
             var fieldBuilder = typeBuilder.DefineField($"_{propertyName}", propertyType, FieldAttributes.Private);
 
             var propertyBuilder = typeBuilder.DefineProperty(propertyName, PropertyAttributes.None, propertyType, null);
+
+            if (attributeBuilders != null)
+            {
+                foreach (var customAttribute in attributeBuilders)
+                {
+                    propertyBuilder.SetCustomAttribute(customAttribute);
+                }
+            }
 
             var getMethodBuilder = GetPropertyGetter(typeBuilder, fieldBuilder, attributes, propertyName, propertyType);
 
