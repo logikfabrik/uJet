@@ -11,6 +11,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     /// <summary>
     /// The <see cref="JetControllerActionInvoker" /> class.
     /// </summary>
+    // ReSharper disable once InheritdocConsiderUsage
     public class JetControllerActionInvoker : RenderActionInvoker
     {
         /// <summary>
@@ -23,13 +24,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
             return name == PreviewTemplateAttribute.TemplateName.Alias() ? "Index" : name;
         }
 
-        /// <summary>
-        /// Finds the action.
-        /// </summary>
-        /// <param name="controllerContext">The controller context.</param>
-        /// <param name="controllerDescriptor">The controller descriptor.</param>
-        /// <param name="actionName">Name of the action.</param>
-        /// <returns>The action.</returns>
+        /// <inheritdoc />
         protected override ActionDescriptor FindAction(ControllerContext controllerContext, ControllerDescriptor controllerDescriptor, string actionName)
         {
             var descriptor = base.FindAction(controllerContext, controllerDescriptor, actionName);

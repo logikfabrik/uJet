@@ -5,27 +5,24 @@
 namespace Logikfabrik.Umbraco.Jet
 {
     using System;
+    using EnsureThat;
 
     /// <summary>
     /// The <see cref="TypeModelAttribute" /> class.
     /// </summary>
+    // ReSharper disable once InheritdocConsiderUsage
     public abstract class TypeModelAttribute : Attribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TypeModelAttribute" /> class.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="id" /> is <c>null</c> or white space.</exception>
+        // ReSharper disable once InheritdocConsiderUsage
         protected TypeModelAttribute(string id)
         {
-            if (string.IsNullOrWhiteSpace(id))
-            {
-                throw new ArgumentException("ID cannot be null or white space.", nameof(id));
-            }
+            EnsureArg.IsNotNullOrWhiteSpace(id);
 
-            Guid result;
-
-            if (Guid.TryParse(id, out result))
+            if (Guid.TryParse(id, out var result))
             {
                 Id = result;
             }
@@ -34,6 +31,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// Initializes a new instance of the <see cref="TypeModelAttribute" /> class.
         /// </summary>
+        // ReSharper disable once InheritdocConsiderUsage
         protected TypeModelAttribute()
         {
         }

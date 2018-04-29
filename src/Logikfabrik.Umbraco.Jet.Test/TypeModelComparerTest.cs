@@ -4,31 +4,40 @@
 
 namespace Logikfabrik.Umbraco.Jet.Test
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using AutoFixture.Xunit2;
+    using Shouldly;
+    using Utilities;
+    using Xunit;
 
-    [TestClass]
     public class TypeModelComparerTest
     {
-        [TestMethod]
-        public void CanCompareTypeModelsAsEqual()
+        [Theory]
+        [AutoData]
+        public void CanCompareTypeModelsAsEqual(string typeName, string name)
         {
+            var modelType = new DocumentTypeModelTypeBuilder(typeName, name).CreateType();
+
+            var typeModelX = new DocumentType(modelType);
+            var typeModelY = new DocumentType(modelType);
+
             var comparer = new TypeModelComparer<DocumentType, DocumentTypeAttribute>();
 
-            var x = new DocumentType(typeof(Models.DocumentTypeA));
-            var y = new DocumentType(typeof(Models.DocumentTypeA));
-
-            Assert.IsTrue(comparer.Equals(x, y));
+            comparer.Equals(typeModelX, typeModelY).ShouldBeTrue();
         }
 
-        [TestMethod]
-        public void CannotCompareTypeModelsAsEqual()
+        [Theory]
+        [AutoData]
+        public void CanNotCompareTypeModelsAsEqual(string typeName, string name)
         {
+            var modelTypeX = new DocumentTypeModelTypeBuilder(typeName, name).CreateType();
+            var modelTypeY = new DocumentTypeModelTypeBuilder(typeName, name).CreateType();
+
+            var typeModelX = new DocumentType(modelTypeX);
+            var typeModelY = new DocumentType(modelTypeY);
+
             var comparer = new TypeModelComparer<DocumentType, DocumentTypeAttribute>();
 
-            var x = new DocumentType(typeof(Models.DocumentTypeA));
-            var y = new DocumentType(typeof(Models.DocumentTypeB));
-
-            Assert.IsFalse(comparer.Equals(x, y));
+            comparer.Equals(typeModelX, typeModelY).ShouldBeFalse();
         }
     }
 }

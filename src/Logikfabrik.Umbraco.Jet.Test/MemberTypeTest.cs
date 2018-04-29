@@ -6,147 +6,187 @@ namespace Logikfabrik.Umbraco.Jet.Test
 {
     using System;
     using System.Linq;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using AutoFixture.Xunit2;
+    using Shouldly;
+    using Utilities;
+    using Xunit;
 
-    [TestClass]
-    public class MemberTypeTest : TestBase
+    public class MemberTypeTest
     {
-        [TestMethod]
-        public void CanGetTypeFromAttribute()
+        [Theory]
+        [AutoData]
+        public void CanGetTypeFromAttribute(string typeName, string name)
         {
-            var memberType = new MemberType(typeof(Models.MemberType));
+            var modelType = new MemberTypeModelTypeBuilder(typeName, name).CreateType();
 
-            Assert.AreSame(typeof(Models.MemberType), memberType.ModelType);
+            var model = new MemberType(modelType);
+
+            model.ModelType.ShouldBe(modelType);
         }
 
-        [TestMethod]
-        public void CanGetNameFromAttribute()
+        [Theory]
+        [AutoData]
+        public void CanGetIdFromAttribute(string typeName, Guid id, string name)
         {
-            var memberType = new MemberType(typeof(Models.MemberType));
+            var modelType = new MemberTypeModelTypeBuilder(typeName, id.ToString(), name).CreateType();
 
-            Assert.AreEqual("MemberType", memberType.Name);
+            var model = new MemberType(modelType);
+
+            model.Id.ShouldBe(id);
         }
 
-        [TestMethod]
-        public void CanGetAliasFromAttribute()
+        [Theory]
+        [AutoData]
+        public void CanGetNameFromAttribute(string typeName, string name)
         {
-            var memberType = new MemberType(typeof(Models.MemberType));
+            var modelType = new MemberTypeModelTypeBuilder(typeName, name).CreateType();
 
-            Assert.AreEqual("memberType", memberType.Alias);
+            var model = new MemberType(modelType);
+
+            model.Name.ShouldBe(name);
         }
 
-        [TestMethod]
-        public void CanGetIdFromAttribute()
+        [Theory]
+        [AutoData]
+        public void CanGetDescriptionFromAttribute(string typeName, string name, string description)
         {
-            var memberType = new MemberType(typeof(Models.MemberType));
+            var modelType = new MemberTypeModelTypeBuilder(typeName, name) { Description = description }.CreateType();
 
-            Assert.AreEqual(Guid.Parse("0b698529-3507-4f5b-9155-95a3b51ee574"), memberType.Id);
+            var model = new MemberType(modelType);
+
+            model.Description.ShouldBe(description);
         }
 
-        [TestMethod]
-        public void CanGetDescriptionFromAttribute()
+        [Theory]
+        [AutoData]
+        public void CanGetIconFromAttribute(string typeName, string name, string icon)
         {
-            var memberType = new MemberType(typeof(Models.MemberType));
+            var modelType = new MemberTypeModelTypeBuilder(typeName, name) { Icon = icon }.CreateType();
 
-            Assert.AreEqual("Description", memberType.Description);
+            var model = new MemberType(modelType);
+
+            model.Icon.ShouldBe(icon);
         }
 
-        [TestMethod]
-        public void CanGetProperties()
+        [Theory]
+        [AutoData]
+        public void CanGetIsContainerFromAttribute(string typeName, string name, bool isContainer)
         {
-            var memberType = new MemberType(typeof(Models.MemberType));
+            var modelType = new MemberTypeModelTypeBuilder(typeName, name) { IsContainer = isContainer }.CreateType();
 
-            Assert.AreEqual(11, memberType.Properties.Count());
+            var model = new MemberType(modelType);
+
+            model.IsContainer.ShouldBe(isContainer);
         }
 
-        [TestMethod]
-        public void CanGetStringProperty()
+        [Theory]
+        [AutoData]
+        public void CanGetAliasFromAttribute(string typeName, string name, string alias)
         {
-            var member = new Models.MemberType();
-            var memberType = new MemberType(member.GetType());
-            var property = memberType.Properties.First(p => p.Name == GetPropertyName(() => member.StringProperty));
+            var modelType = new MemberTypeModelTypeBuilder(typeName, name) { Alias = alias }.CreateType();
 
-            Assert.AreSame(typeof(string), property.Type);
+            var model = new MemberType(modelType);
+
+            model.Alias.ShouldBe(alias);
         }
 
-        [TestMethod]
-        public void CanGetIntegerProperty()
+        [Theory]
+        [AutoData]
+        public void CanGetProperties(string typeName, string name)
         {
-            var member = new Models.MemberType();
-            var memberType = new MemberType(member.GetType());
-            var property = memberType.Properties.First(p => p.Name == GetPropertyName(() => member.IntegerProperty));
+            var modelType = new MemberTypeModelTypeBuilder(typeName, name).CreateType();
 
-            Assert.AreSame(typeof(int), property.Type);
+            var model = new MemberType(modelType);
+
+            model.Properties.ShouldNotBeNull();
         }
 
-        [TestMethod]
-        public void CanGetFloatingDecimalPointProperty()
+        [Theory]
+        [InlineAutoData(typeof(string))]
+        [InlineAutoData(typeof(int))]
+        [InlineAutoData(typeof(decimal))]
+        [InlineAutoData(typeof(float))]
+        [InlineAutoData(typeof(DateTime))]
+        [InlineAutoData(typeof(bool))]
+        public void CanGetPublicProperty(Type propertyType, string propertyName, string typeName, string name)
         {
-            var member = new Models.MemberType();
-            var memberType = new MemberType(member.GetType());
-            var property = memberType.Properties.First(p => p.Name == GetPropertyName(() => member.FloatingDecimalPointProperty));
+            var typeBuilder = new MemberTypeModelTypeBuilder(typeName, name).GetTypeBuilder();
 
-            Assert.AreSame(typeof(decimal), property.Type);
+            typeBuilder.AddPublicProperty(propertyName, propertyType);
+
+            var modelType = typeBuilder.CreateType();
+
+            var model = new MemberType(modelType);
+
+            var property = model.Properties.Single(p => p.Name == propertyName);
+
+            property.Type.ShouldBe(propertyType);
         }
 
-        [TestMethod]
-        public void CanGetFloatingBinaryPointProperty()
+        [Theory]
+        [InlineAutoData(typeof(string))]
+        [InlineAutoData(typeof(int))]
+        [InlineAutoData(typeof(decimal))]
+        [InlineAutoData(typeof(float))]
+        [InlineAutoData(typeof(DateTime))]
+        [InlineAutoData(typeof(bool))]
+        public void CanNotGetPrivateProperty(Type propertyType, string propertyName, string typeName, string name)
         {
-            var member = new Models.MemberType();
-            var memberType = new MemberType(member.GetType());
-            var property = memberType.Properties.First(p => p.Name == GetPropertyName(() => member.FloatingBinaryPointProperty));
+            var typeBuilder = new MemberTypeModelTypeBuilder(typeName, name).GetTypeBuilder();
 
-            Assert.AreSame(typeof(float), property.Type);
+            typeBuilder.AddPrivateProperty(propertyName, propertyType);
+
+            var modelType = typeBuilder.CreateType();
+
+            var model = new MemberType(modelType);
+
+            var property = model.Properties.SingleOrDefault(p => p.Name == propertyName);
+
+            property.ShouldBeNull();
         }
 
-        [TestMethod]
-        public void CanGetDateTimeProperty()
+        [Theory]
+        [InlineAutoData(typeof(string))]
+        [InlineAutoData(typeof(int))]
+        [InlineAutoData(typeof(decimal))]
+        [InlineAutoData(typeof(float))]
+        [InlineAutoData(typeof(DateTime))]
+        [InlineAutoData(typeof(bool))]
+        public void CanNotGetPublicReadOnlyProperty(Type propertyType, string propertyName, string typeName, string name)
         {
-            var member = new Models.MemberType();
-            var memberType = new MemberType(member.GetType());
-            var property = memberType.Properties.First(p => p.Name == GetPropertyName(() => member.DateTimeProperty));
+            var typeBuilder = new MemberTypeModelTypeBuilder(typeName, name).GetTypeBuilder();
 
-            Assert.AreSame(typeof(DateTime), property.Type);
+            typeBuilder.AddPublicReadOnlyProperty(propertyName, propertyType);
+
+            var modelType = typeBuilder.CreateType();
+
+            var model = new MemberType(modelType);
+
+            var property = model.Properties.SingleOrDefault(p => p.Name == propertyName);
+
+            property.ShouldBeNull();
         }
 
-        [TestMethod]
-        public void CanGetBooleanProperty()
+        [Theory]
+        [InlineAutoData(typeof(string))]
+        [InlineAutoData(typeof(int))]
+        [InlineAutoData(typeof(decimal))]
+        [InlineAutoData(typeof(float))]
+        [InlineAutoData(typeof(DateTime))]
+        [InlineAutoData(typeof(bool))]
+        public void CanNotGetPublicWriteOnlyProperty(Type propertyType, string propertyName, string typeName, string name)
         {
-            var member = new Models.MemberType();
-            var memberType = new MemberType(member.GetType());
-            var property = memberType.Properties.First(p => p.Name == GetPropertyName(() => member.BooleanProperty));
+            var typeBuilder = new MemberTypeModelTypeBuilder(typeName, name).GetTypeBuilder();
 
-            Assert.AreSame(typeof(bool), property.Type);
-        }
+            typeBuilder.AddPublicWriteOnlyProperty(propertyName, propertyType);
 
-        [TestMethod]
-        public void CannotGetNonScaffoldedProperty()
-        {
-            var member = new Models.MemberType();
-            var memberType = new MemberType(member.GetType());
-            var property = memberType.Properties.FirstOrDefault(p => p.Name == GetPropertyName(() => member.NonScaffoldedStringProperty));
+            var modelType = typeBuilder.CreateType();
 
-            Assert.IsNull(property);
-        }
+            var model = new MemberType(modelType);
 
-        [TestMethod]
-        public void CannotGetPropertyWithoutSetter()
-        {
-            var member = new Models.MemberType();
-            var memberType = new MemberType(member.GetType());
-            var property = memberType.Properties.FirstOrDefault(p => p.Name == GetPropertyName(() => member.StringPropertyWithoutSetter));
+            var property = model.Properties.SingleOrDefault(p => p.Name == propertyName);
 
-            Assert.IsNull(property);
-        }
-
-        [TestMethod]
-        public void CannotGetPrivateProperty()
-        {
-            var member = new Models.MemberType();
-            var memberType = new MemberType(member.GetType());
-            var property = memberType.Properties.FirstOrDefault(p => p.Name == "PrivateStringProperty");
-
-            Assert.IsNull(property);
+            property.ShouldBeNull();
         }
     }
 }

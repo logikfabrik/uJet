@@ -12,6 +12,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     /// <summary>
     /// The <see cref="JetController" /> class.
     /// </summary>
+    // ReSharper disable once InheritdocConsiderUsage
     public abstract class JetController : Controller, IRenderMvcController
     {
         /// <summary>
@@ -19,11 +20,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// </summary>
         private const string RouteDataTokenKey = "umbraco";
 
-        /// <summary>
-        /// Gets the index.
-        /// </summary>
-        /// <param name="model">The model.</param>
-        /// <returns>A view result.</returns>
+        /// <inheritdoc />
         [ActionName("404")]
         public virtual ActionResult Index(RenderModel model)
         {
@@ -78,14 +75,12 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// <returns>The page identifier.</returns>
         private int GetCurrentPageId()
         {
-            var renderModel = ControllerContext.RouteData.DataTokens[RouteDataTokenKey] as RenderModel;
-
-            if (renderModel == null)
+            if (ControllerContext.RouteData.DataTokens[RouteDataTokenKey] is RenderModel renderModel)
             {
-                return -1;
+                return renderModel.Content.Id;
             }
 
-            return renderModel.Content.Id;
+            return -1;
         }
     }
 }

@@ -4,58 +4,73 @@
 
 namespace Logikfabrik.Umbraco.Jet.Test.Extensions
 {
+    using System;
+    using AutoFixture.Xunit2;
     using Jet.Extensions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Shouldly;
+    using Utilities;
+    using Xunit;
 
-    [TestClass]
-    public class TypeExtensionsTest : TestBase
+    public class TypeExtensionsTest
     {
-        [TestMethod]
-        public void IsDocumentType()
+        [Theory]
+        [AutoData]
+        public void IsDocumentType(string typeName, string name)
         {
-            Assert.IsTrue(typeof(Models.DocumentType).IsModelType<DocumentTypeAttribute>());
+            var modelType = new DocumentTypeModelTypeBuilder(typeName, name).CreateType();
+
+            modelType.IsModelType<DocumentTypeAttribute>().ShouldBeTrue();
         }
 
-        [TestMethod]
+        [Fact]
         public void IsNotDocumentType()
         {
-            Assert.IsFalse(typeof(object).IsModelType<DocumentTypeAttribute>());
+            typeof(object).IsModelType<DocumentTypeAttribute>().ShouldBeFalse();
         }
 
-        [TestMethod]
-        public void IsMediaType()
+        [Theory]
+        [AutoData]
+        public void IsMediaType(string typeName, string name)
         {
-            Assert.IsTrue(typeof(Models.MediaType).IsModelType<MediaTypeAttribute>());
+            var modelType = new MediaTypeModelTypeBuilder(typeName, name).CreateType();
+
+            modelType.IsModelType<MediaTypeAttribute>().ShouldBeTrue();
         }
 
-        [TestMethod]
+        [Fact]
         public void IsNotMediaType()
         {
-            Assert.IsFalse(typeof(object).IsModelType<MediaTypeAttribute>());
+            typeof(object).IsModelType<MediaTypeAttribute>().ShouldBeFalse();
         }
 
-        [TestMethod]
-        public void IsDataType()
+        [Theory]
+        [AutoData]
+        public void IsMemberType(string typeName, string name)
         {
-            Assert.IsTrue(typeof(Models.DataType).IsModelType<DataTypeAttribute>());
+            var modelType = new MemberTypeModelTypeBuilder(typeName, name).CreateType();
+
+            modelType.IsModelType<MemberTypeAttribute>().ShouldBeTrue();
         }
 
-        [TestMethod]
-        public void IsNotDataType()
-        {
-            Assert.IsFalse(typeof(object).IsModelType<DataTypeAttribute>());
-        }
-
-        [TestMethod]
-        public void IsMemberType()
-        {
-            Assert.IsTrue(typeof(Models.MemberType).IsModelType<MemberTypeAttribute>());
-        }
-
-        [TestMethod]
+        [Fact]
         public void IsNotMemberType()
         {
-            Assert.IsFalse(typeof(object).IsModelType<MemberTypeAttribute>());
+            typeof(object).IsModelType<MemberTypeAttribute>().ShouldBeFalse();
+        }
+
+        [Theory]
+        [AutoData]
+        public void IsDataType(string typeName, Type type, string editor)
+        {
+            var modelType = new DataTypeModelTypeBuilder(typeName, type, editor).CreateType();
+
+            modelType.IsModelType<DataTypeAttribute>().ShouldBeTrue();
+        }
+
+        [Fact]
+        public void IsNotDataType()
+        {
+            typeof(object).IsModelType<DataTypeAttribute>().ShouldBeFalse();
         }
     }
 }

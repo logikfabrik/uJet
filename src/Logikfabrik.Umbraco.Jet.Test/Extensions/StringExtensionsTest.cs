@@ -4,40 +4,23 @@
 
 namespace Logikfabrik.Umbraco.Jet.Test.Extensions
 {
+    using AutoFixture.Xunit2;
     using Jet.Extensions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Shouldly;
+    using Xunit;
 
-    [TestClass]
     public class StringExtensionsTest : TestBase
     {
-        [TestMethod]
-        public void CanGetAliasFor1LetterLowercaseWord()
+        [Theory]
+        [InlineAutoData("u", "u")]
+        [InlineAutoData("U", "u")]
+        [InlineAutoData("umbraco7", "umbraco7")]
+        [InlineAutoData("UMBRACO7", "uMBRACO7")]
+        [InlineAutoData("umbraco;:_", "umbraco")]
+        [InlineAutoData(null, null)]
+        public void CanGetAlias(string s, string expected)
         {
-            Assert.AreEqual("u", "u".Alias());
-        }
-
-        [TestMethod]
-        public void CanGetAliasFor1LetterUppercaseWord()
-        {
-            Assert.AreEqual("u", "U".Alias());
-        }
-
-        [TestMethod]
-        public void CanGetAliasForWordWithValidCharacters()
-        {
-            Assert.AreEqual("abc123", "abc123".Alias());
-        }
-
-        [TestMethod]
-        public void CanGetAliasForWordWithInvalidCharacters()
-        {
-            Assert.AreEqual("abc", "abc;:_".Alias());
-        }
-
-        [TestMethod]
-        public void CanGetAliasForNullWord()
-        {
-            Assert.IsNull(((string)null).Alias());
+            s.Alias().ShouldBe(expected);
         }
     }
 }

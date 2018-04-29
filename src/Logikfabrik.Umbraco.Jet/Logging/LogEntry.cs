@@ -5,6 +5,7 @@
 namespace Logikfabrik.Umbraco.Jet.Logging
 {
     using System;
+    using EnsureThat;
 
     /// <summary>
     /// The <see cref="LogEntry" /> class.
@@ -12,28 +13,25 @@ namespace Logikfabrik.Umbraco.Jet.Logging
     public class LogEntry
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LogEntry"/> class.
+        /// Initializes a new instance of the <see cref="LogEntry" /> class.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="message">The message.</param>
+        // ReSharper disable once InheritdocConsiderUsage
         public LogEntry(LogEntryType type, string message)
             : this(type, message, null)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LogEntry"/> class.
+        /// Initializes a new instance of the <see cref="LogEntry" /> class.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="message">The message.</param>
         /// <param name="exception">The exception.</param>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="message" /> is <c>null</c> or white space.</exception>
         public LogEntry(LogEntryType type, string message, Exception exception)
         {
-            if (string.IsNullOrWhiteSpace(message))
-            {
-                throw new ArgumentException("Message cannot be null or white space.", nameof(message));
-            }
+            EnsureArg.IsNotNullOrWhiteSpace(message);
 
             Type = type;
             Message = message;

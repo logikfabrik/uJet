@@ -8,14 +8,17 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Collections.Generic;
     using System.Linq;
     using Data;
+    using EnsureThat;
     using Extensions;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
     using Logging;
+    using Mappings;
 
     /// <summary>
     /// The <see cref="DocumentTypeSynchronizer" /> class. Synchronizes model types annotated using the <see cref="DocumentTypeAttribute" />.
     /// </summary>
+    // ReSharper disable once InheritdocConsiderUsage
     public class DocumentTypeSynchronizer : ComposableContentTypeSynchronizer<DocumentType, DocumentTypeAttribute, IContentType>
     {
         private readonly IContentTypeService _contentTypeService;
@@ -26,50 +29,33 @@ namespace Logikfabrik.Umbraco.Jet
         /// Initializes a new instance of the <see cref="DocumentTypeSynchronizer" /> class.
         /// </summary>
         /// <param name="logService">The log service.</param>
+        /// <param name="typeRepository">The type repository.</param>
+        /// <param name="typeResolver">The type resolver.</param>
         /// <param name="contentTypeService">The content type service.</param>
         /// <param name="fileService">The file service.</param>
-        /// <param name="typeResolver">The type resolver.</param>
-        /// <param name="typeRepository">The type repository.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeService" />, <paramref name="fileService" />, or <paramref name="typeResolver" /> are <c>null</c>.</exception>
+        // ReSharper disable once InheritdocConsiderUsage
         public DocumentTypeSynchronizer(
             ILogService logService,
+            ITypeRepository typeRepository,
+            ITypeResolver typeResolver,
             IContentTypeService contentTypeService,
             IFileService fileService,
-            ITypeResolver typeResolver,
-            ITypeRepository typeRepository)
-            : base(logService, typeRepository)
+            IDataTypeDefinitionService dataTypeDefinitionService)
+            : base(logService, typeRepository, dataTypeDefinitionService)
         {
-            if (contentTypeService == null)
-            {
-                throw new ArgumentNullException(nameof(contentTypeService));
-            }
-
-            if (typeResolver == null)
-            {
-                throw new ArgumentNullException(nameof(typeResolver));
-            }
-
-            if (fileService == null)
-            {
-                throw new ArgumentNullException(nameof(fileService));
-            }
+            EnsureArg.IsNotNull(typeResolver);
+            EnsureArg.IsNotNull(contentTypeService);
+            EnsureArg.IsNotNull(fileService);
 
             _contentTypeService = contentTypeService;
             _fileService = fileService;
             _documentTypes = new Lazy<DocumentType[]>(() => typeResolver.DocumentTypes.ToArray());
         }
 
-        /// <summary>
-        /// Gets the models.
-        /// </summary>
-        /// <value>The models.</value>
+        /// <inheritdoc />
         protected override DocumentType[] Models => _documentTypes.Value;
 
-        /// <summary>
-        /// Creates a content type.
-        /// </summary>
-        /// <param name="model">The model to use when creating the content type.</param>
-        /// <returns>The created content type.</returns>
+        /// <inheritdoc />
         internal override IContentType CreateContentType(DocumentType model)
         {
             var contentType = base.CreateContentType(model);
@@ -80,12 +66,7 @@ namespace Logikfabrik.Umbraco.Jet
             return contentType;
         }
 
-        /// <summary>
-        /// Updates the specified content type.
-        /// </summary>
-        /// <param name="contentType">The content type to update.</param>
-        /// <param name="model">The model to use when updating the content type.</param>
-        /// <returns>The updated content type.</returns>
+        /// <inheritdoc />
         internal override IContentType UpdateContentType(IContentType contentType, DocumentType model)
         {
             contentType = base.UpdateContentType(contentType, model);
@@ -96,32 +77,19 @@ namespace Logikfabrik.Umbraco.Jet
             return contentType;
         }
 
-        /// <summary>
-        /// Gets the content types.
-        /// </summary>
-        /// <returns>
-        /// The content types.
-        /// </returns>
+        /// <inheritdoc />
         protected override IContentType[] GetContentTypes()
         {
             return _contentTypeService.GetAllContentTypes().ToArray();
         }
 
-        /// <summary>
-        /// Creates a content type.
-        /// </summary>
-        /// <returns>
-        /// The created content type.
-        /// </returns>
+        /// <inheritdoc />
         protected override IContentType CreateContentType()
         {
             return new global::Umbraco.Core.Models.ContentType(-1);
         }
 
-        /// <summary>
-        /// Saves the specified content type.
-        /// </summary>
-        /// <param name="contentType">The content type.</param>
+        /// <inheritdoc />
         protected override void SaveContentType(IContentType contentType)
         {
             _contentTypeService.Save(contentType);

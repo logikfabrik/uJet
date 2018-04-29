@@ -5,65 +5,82 @@
 namespace Logikfabrik.Umbraco.Jet.Test
 {
     using System;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using System.Collections.Generic;
+    using System.Linq;
+    using AutoFixture.Xunit2;
+    using Shouldly;
+    using Utilities;
+    using Xunit;
 
-    [TestClass]
     public class DataTypeTest : TestBase
     {
-        [TestMethod]
-        public void CanGetTypeFromAttribute()
+        [Theory]
+        [AutoData]
+        public void CanGetTypeFromAttribute(string typeName, Type type, string editor)
         {
-            var dataType = new DataType(typeof(Models.DataType));
+            var modelType = new DataTypeModelTypeBuilder(typeName, type, editor).CreateType();
 
-            Assert.AreSame(typeof(object), dataType.Type);
+            var model = new DataType(modelType);
+
+            model.ModelType.ShouldBe(modelType);
         }
 
-        [TestMethod]
-        public void CanGetEditorFromAttribute()
+        [Theory]
+        [AutoData]
+        public void CanGetIdFromAttribute(string typeName, Guid id, Type type, string editor)
         {
-            var dataType = new DataType(typeof(Models.DataType));
+            var modelType = new DataTypeModelTypeBuilder(typeName, id.ToString(), type, editor).CreateType();
 
-            Assert.AreEqual("Editor", dataType.Editor);
+            var model = new DataType(modelType);
+
+            model.Id.ShouldBe(id);
         }
 
-        [TestMethod]
-        public void CanGetNameFromAttribute()
+        [Theory]
+        [AutoData]
+        public void CanGetNameFromAttribute(string typeName, Type type, string editor)
         {
-            var dataType = new DataType(typeof(Models.DataType));
+            var modelType = new DataTypeModelTypeBuilder(typeName, type, editor).CreateType();
 
-            Assert.AreEqual("DataType", dataType.Name);
+            var model = new DataType(modelType);
+
+            model.Name.ShouldBe(modelType.Name);
         }
 
-        [TestMethod]
-        public void CanGetIdFromAttribute()
+        [Theory]
+        [AutoData]
+        public void CanGetEditorFromAttribute(string typeName, Type type, string editor)
         {
-            var dataType = new DataType(typeof(Models.DataType));
+            var modelType = new DataTypeModelTypeBuilder(typeName, type, editor).CreateType();
 
-            Assert.AreEqual(Guid.Parse("443c08bc-e314-4e2d-ba26-66c6a565ad60"), dataType.Id);
+            var model = new DataType(modelType);
+
+            model.Editor.ShouldBe(editor);
         }
 
-        [TestMethod]
-        public void CanGetPreValuesFromAttribute()
+        [Theory]
+        [AutoData]
+        public void CanGetPreValuesFromAttribute(string typeName, Type type, string editor)
         {
-            var dataType = new DataType(typeof(Models.DataType));
+            var typeBuilder = new DataTypeModelTypeBuilder(typeName, type, editor).GetTypeBuilder();
 
-            Assert.AreEqual(3, dataType.PreValues.Count);
+            typeBuilder.AddPublicReadOnlyProperty("PreValues", typeof(IDictionary<string, string>));
+
+            var modelType = typeBuilder.CreateType();
+
+            // TODO: Add default value for property.
+            throw new NotImplementedException();
         }
 
-        [TestMethod]
-        public void CanGetInheritedPreValuesFromAttribute()
+        [Theory]
+        [AutoData]
+        public void CanNotGetPreValuesFromAttribute(string typeName, Type type, string editor)
         {
-            var dataType = new DataType(typeof(Models.DataTypeA));
+            var modelType = new DataTypeModelTypeBuilder(typeName, type, editor).CreateType();
 
-            Assert.AreEqual(3, dataType.PreValues.Count);
-        }
+            var model = new DataType(modelType);
 
-        [TestMethod]
-        public void CannotGetPreValuesFromAttribute()
-        {
-            var dataType = new DataType(typeof(Models.DataTypeB));
-
-            Assert.AreEqual(0, dataType.PreValues.Count);
+            model.PreValues.Any().ShouldBeFalse();
         }
     }
 }

@@ -26,23 +26,12 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="fileService">The file service.</param>
         /// <param name="templateService">The template service.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="fileService" />, or <paramref name="templateService" /> are <c>null</c>.</exception>
         public TemplateSynchronizer(
             IFileService fileService,
             ITemplateService templateService)
         {
-            if (fileService == null)
-            {
-                throw new ArgumentNullException(nameof(fileService));
-            }
-
-            if (templateService == null)
-            {
-                throw new ArgumentNullException(nameof(templateService));
-            }
-
-            _fileService = fileService;
-            _templateService = templateService;
+            _fileService = fileService ?? throw new ArgumentNullException(nameof(fileService));
+            _templateService = templateService ?? throw new ArgumentNullException(nameof(templateService));
         }
 
         /// <summary>
@@ -59,7 +48,6 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="template">The template.</param>
         /// <returns>The template layout, without extension (.cshtml).</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="template" /> is <c>null</c>.</exception>
         internal string GetLayout(ITemplate template)
         {
             if (template == null)
@@ -101,7 +89,6 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="templatePaths">The template paths.</param>
         /// <returns>The templates to add.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="templatePaths" /> is <c>null</c>.</exception>
         internal IEnumerable<ITemplate> GetTemplatesToAdd(IEnumerable<string> templatePaths)
         {
             if (templatePaths == null)

@@ -6,203 +6,253 @@ namespace Logikfabrik.Umbraco.Jet.Test
 {
     using System;
     using System.Linq;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using AutoFixture.Xunit2;
+    using Shouldly;
+    using Utilities;
+    using Xunit;
 
-    [TestClass]
-    public class DocumentTypeTest : TestBase
+    public class DocumentTypeTest
     {
-        [TestMethod]
-        public void CanGetDefaultTemplateFromAttribute()
+        [Theory]
+        [AutoData]
+        public void CanGetTypeFromAttribute(string typeName, string name)
         {
-            var documentType = new DocumentType(typeof(Models.DocumentType));
+            var modelType = new DocumentTypeModelTypeBuilder(typeName, name).CreateType();
 
-            Assert.AreEqual("DefaultTemplate", documentType.DefaultTemplate);
+            var model = new DocumentType(modelType);
+
+            model.ModelType.ShouldBe(modelType);
         }
 
-        [TestMethod]
-        public void CanGetTemplatesFromAttribute()
+        [Theory]
+        [AutoData]
+        public void CanGetIdFromAttribute(string typeName, Guid id, string name)
         {
-            var documentType = new DocumentType(typeof(Models.DocumentType));
+            var modelType = new DocumentTypeModelTypeBuilder(typeName, id.ToString(), name).CreateType();
 
-            Assert.IsFalse(documentType.Templates.Any());
+            var model = new DocumentType(modelType);
+
+            model.Id.ShouldBe(id);
         }
 
-        [TestMethod]
-        public void CanGetTypeFromAttribute()
+        [Theory]
+        [AutoData]
+        public void CanGetNameFromAttribute(string typeName, string name)
         {
-            var documentType = new DocumentType(typeof(Models.DocumentType));
+            var modelType = new DocumentTypeModelTypeBuilder(typeName, name).CreateType();
 
-            Assert.AreSame(typeof(Models.DocumentType), documentType.ModelType);
+            var model = new DocumentType(modelType);
+
+            model.Name.ShouldBe(name);
         }
 
-        [TestMethod]
-        public void CanGetNameFromAttribute()
+        [Theory]
+        [AutoData]
+        public void CanGetDescriptionFromAttribute(string typeName, string name, string description)
         {
-            var documentType = new DocumentType(typeof(Models.DocumentType));
+            var modelType = new DocumentTypeModelTypeBuilder(typeName, name) { Description = description }.CreateType();
 
-            Assert.AreEqual("DocumentType", documentType.Name);
+            var model = new DocumentType(modelType);
+
+            model.Description.ShouldBe(description);
         }
 
-        [TestMethod]
-        public void CanGetAliasFromAttribute()
+        [Theory]
+        [AutoData]
+        public void CanGetIconFromAttribute(string typeName, string name, string icon)
         {
-            var documentType = new DocumentType(typeof(Models.DocumentType));
+            var modelType = new DocumentTypeModelTypeBuilder(typeName, name) { Icon = icon }.CreateType();
 
-            Assert.AreEqual("documentType", documentType.Alias);
+            var model = new DocumentType(modelType);
+
+            model.Icon.ShouldBe(icon);
         }
 
-        [TestMethod]
-        public void CanGetIdFromAttribute()
+        [Theory]
+        [AutoData]
+        public void CanGetIsContainerFromAttribute(string typeName, string name, bool isContainer)
         {
-            var documentType = new DocumentType(typeof(Models.DocumentType));
+            var modelType = new DocumentTypeModelTypeBuilder(typeName, name) { IsContainer = isContainer }.CreateType();
 
-            Assert.AreEqual(Guid.Parse("85384e6c-9001-4c02-8b0e-eb76f1edabc7"), documentType.Id);
+            var model = new DocumentType(modelType);
+
+            model.IsContainer.ShouldBe(isContainer);
         }
 
-        [TestMethod]
-        public void CanGetDescriptionFromAttribute()
+        [Theory]
+        [AutoData]
+        public void CanGetAliasFromAttribute(string typeName, string name, string alias)
         {
-            var documentType = new DocumentType(typeof(Models.DocumentType));
+            var modelType = new DocumentTypeModelTypeBuilder(typeName, name) { Alias = alias }.CreateType();
 
-            Assert.AreEqual("Description", documentType.Description);
+            var model = new DocumentType(modelType);
+
+            model.Alias.ShouldBe(alias);
         }
 
-        [TestMethod]
-        public void CanGetAllowedAsRootFromAttribute()
+        [Theory]
+        [AutoData]
+        public void CanGetThumbnailFromAttribute(string typeName, string name, string thumbnail)
         {
-            var documentType = new DocumentType(typeof(Models.DocumentType));
+            var modelType = new DocumentTypeModelTypeBuilder(typeName, name) { Thumbnail = thumbnail }.CreateType();
 
-            Assert.AreEqual(true, documentType.AllowedAsRoot);
+            var model = new DocumentType(modelType);
+
+            model.Thumbnail.ShouldBe(thumbnail);
         }
 
-        [TestMethod]
-        public void CanGetAllowedChildNodeTypesFromAttribute()
+        [Theory]
+        [AutoData]
+        public void CanGetAllowedAsRootFromAttribute(string typeName, string name, bool allowedAsRoot)
         {
-            var documentType = new DocumentType(typeof(Models.DocumentType));
+            var modelType = new DocumentTypeModelTypeBuilder(typeName, name) { AllowedAsRoot = allowedAsRoot }.CreateType();
 
-            Assert.AreEqual(2, documentType.AllowedChildNodeTypes.Length);
+            var model = new DocumentType(modelType);
+
+            model.AllowedAsRoot.ShouldBe(allowedAsRoot);
         }
 
-        [TestMethod]
-        public void CanGetCompositionNodeTypesFromAttribute()
+        [Theory]
+        [AutoData]
+        public void CanGetAllowedChildNodeTypesFromAttribute(string typeName, string name, Type[] allowedChildNodeTypes)
         {
-            var documentType = new DocumentType(typeof(Models.DocumentType));
+            var modelType = new DocumentTypeModelTypeBuilder(typeName, name) { AllowedChildNodeTypes = allowedChildNodeTypes }.CreateType();
 
-            Assert.AreEqual(2, documentType.CompositionNodeTypes.Length);
+            var model = new DocumentType(modelType);
+
+            model.AllowedChildNodeTypes.Any().ShouldBeTrue();
         }
 
-        [TestMethod]
-        public void CanGetIsContainerFromAttribute()
+        [Theory]
+        [AutoData]
+        public void CanGetCompositionNodeTypesFromAttribute(string typeName, string name, Type[] compositionNodeTypes)
         {
-            var documentType = new DocumentType(typeof(Models.DocumentType));
+            var modelType = new DocumentTypeModelTypeBuilder(typeName, name) { CompositionNodeTypes = compositionNodeTypes }.CreateType();
 
-            Assert.IsTrue(documentType.IsContainer);
+            var model = new DocumentType(modelType);
+
+            model.CompositionNodeTypes.Any().ShouldBeTrue();
         }
 
-        [TestMethod]
-        public void CanGetCustomAliasFromAttribute()
+        [Theory]
+        [AutoData]
+        public void CanGetDefaultTemplateFromAttribute(string typeName, string name, string defaultTemplate)
         {
-            var documentType = new DocumentType(typeof(Models.DocumentTypeWithAlias));
+            var modelType = new DocumentTypeModelTypeBuilder(typeName, name) { DefaultTemplate = defaultTemplate }.CreateType();
 
-            Assert.AreEqual("customAlias", documentType.Alias);
+            var model = new DocumentType(modelType);
+
+            model.DefaultTemplate.ShouldBe(defaultTemplate);
         }
 
-        [TestMethod]
-        public void CanGetProperties()
+        [Theory]
+        [AutoData]
+        public void CanGetTemplatesFromAttribute(string typeName, string name, string[] templates)
         {
-            var documentType = new DocumentType(typeof(Models.DocumentType));
+            var modelType = new DocumentTypeModelTypeBuilder(typeName, name) { Templates = templates }.CreateType();
 
-            Assert.AreEqual(11, documentType.Properties.Count());
+            var model = new DocumentType(modelType);
+
+            model.Templates.Any().ShouldBeTrue();
         }
 
-        [TestMethod]
-        public void CanGetStringProperty()
+        [Theory]
+        [AutoData]
+        public void CanGetProperties(string typeName, string name)
         {
-            var document = new Models.DocumentType();
-            var documentType = new DocumentType(document.GetType());
-            var property = documentType.Properties.First(p => p.Name == GetPropertyName(() => document.StringProperty));
+            var modelType = new DocumentTypeModelTypeBuilder(typeName, name).CreateType();
 
-            Assert.AreSame(typeof(string), property.Type);
+            var model = new DocumentType(modelType);
+
+            model.Properties.ShouldNotBeNull();
         }
 
-        [TestMethod]
-        public void CanGetIntegerProperty()
+        [Theory]
+        [InlineAutoData(typeof(string))]
+        [InlineAutoData(typeof(int))]
+        [InlineAutoData(typeof(decimal))]
+        [InlineAutoData(typeof(float))]
+        [InlineAutoData(typeof(DateTime))]
+        [InlineAutoData(typeof(bool))]
+        public void CanGetPublicProperty(Type propertyType, string propertyName, string typeName, string name)
         {
-            var document = new Models.DocumentType();
-            var documentType = new DocumentType(document.GetType());
-            var property = documentType.Properties.First(p => p.Name == GetPropertyName(() => document.IntegerProperty));
+            var typeBuilder = new DocumentTypeModelTypeBuilder(typeName, name).GetTypeBuilder();
 
-            Assert.AreSame(typeof(int), property.Type);
+            typeBuilder.AddPublicProperty(propertyName, propertyType);
+
+            var modelType = typeBuilder.CreateType();
+
+            var model = new DocumentType(modelType);
+
+            var property = model.Properties.Single(p => p.Name == propertyName);
+
+            property.Type.ShouldBe(propertyType);
         }
 
-        [TestMethod]
-        public void CanGetFloatingDecimalPointProperty()
+        [Theory]
+        [InlineAutoData(typeof(string))]
+        [InlineAutoData(typeof(int))]
+        [InlineAutoData(typeof(decimal))]
+        [InlineAutoData(typeof(float))]
+        [InlineAutoData(typeof(DateTime))]
+        [InlineAutoData(typeof(bool))]
+        public void CanNotGetPrivateProperty(Type propertyType, string propertyName, string typeName, string name)
         {
-            var document = new Models.DocumentType();
-            var documentType = new DocumentType(document.GetType());
-            var property = documentType.Properties.First(p => p.Name == GetPropertyName(() => document.FloatingDecimalPointProperty));
+            var typeBuilder = new DocumentTypeModelTypeBuilder(typeName, name).GetTypeBuilder();
 
-            Assert.AreSame(typeof(decimal), property.Type);
+            typeBuilder.AddPrivateProperty(propertyName, propertyType);
+
+            var modelType = typeBuilder.CreateType();
+
+            var model = new DocumentType(modelType);
+
+            var property = model.Properties.SingleOrDefault(p => p.Name == propertyName);
+
+            property.ShouldBeNull();
         }
 
-        [TestMethod]
-        public void CanGetFloatingBinaryPointProperty()
+        [Theory]
+        [InlineAutoData(typeof(string))]
+        [InlineAutoData(typeof(int))]
+        [InlineAutoData(typeof(decimal))]
+        [InlineAutoData(typeof(float))]
+        [InlineAutoData(typeof(DateTime))]
+        [InlineAutoData(typeof(bool))]
+        public void CanNotGetPublicReadOnlyProperty(Type propertyType, string propertyName, string typeName, string name)
         {
-            var document = new Models.DocumentType();
-            var documentType = new DocumentType(document.GetType());
-            var property = documentType.Properties.First(p => p.Name == GetPropertyName(() => document.FloatingBinaryPointProperty));
+            var typeBuilder = new DocumentTypeModelTypeBuilder(typeName, name).GetTypeBuilder();
 
-            Assert.AreSame(typeof(float), property.Type);
+            typeBuilder.AddPublicReadOnlyProperty(propertyName, propertyType);
+
+            var modelType = typeBuilder.CreateType();
+
+            var model = new DocumentType(modelType);
+
+            var property = model.Properties.SingleOrDefault(p => p.Name == propertyName);
+
+            property.ShouldBeNull();
         }
 
-        [TestMethod]
-        public void CanGetDateTimeProperty()
+        [Theory]
+        [InlineAutoData(typeof(string))]
+        [InlineAutoData(typeof(int))]
+        [InlineAutoData(typeof(decimal))]
+        [InlineAutoData(typeof(float))]
+        [InlineAutoData(typeof(DateTime))]
+        [InlineAutoData(typeof(bool))]
+        public void CanNotGetPublicWriteOnlyProperty(Type propertyType, string propertyName, string typeName, string name)
         {
-            var document = new Models.DocumentType();
-            var documentType = new DocumentType(document.GetType());
-            var property = documentType.Properties.First(p => p.Name == GetPropertyName(() => document.DateTimeProperty));
+            var typeBuilder = new DocumentTypeModelTypeBuilder(typeName, name).GetTypeBuilder();
 
-            Assert.AreSame(typeof(DateTime), property.Type);
-        }
+            typeBuilder.AddPublicWriteOnlyProperty(propertyName, propertyType);
 
-        [TestMethod]
-        public void CanGetBooleanProperty()
-        {
-            var document = new Models.DocumentType();
-            var documentType = new DocumentType(document.GetType());
-            var property = documentType.Properties.First(p => p.Name == GetPropertyName(() => document.BooleanProperty));
+            var modelType = typeBuilder.CreateType();
 
-            Assert.AreSame(typeof(bool), property.Type);
-        }
+            var model = new DocumentType(modelType);
 
-        [TestMethod]
-        public void CannotGetNonScaffoldedProperty()
-        {
-            var document = new Models.DocumentType();
-            var documentType = new DocumentType(document.GetType());
-            var property = documentType.Properties.FirstOrDefault(p => p.Name == GetPropertyName(() => document.NonScaffoldedStringProperty));
+            var property = model.Properties.SingleOrDefault(p => p.Name == propertyName);
 
-            Assert.IsNull(property);
-        }
-
-        [TestMethod]
-        public void CannotGetPropertyWithoutSetter()
-        {
-            var document = new Models.DocumentType();
-            var documentType = new DocumentType(document.GetType());
-            var property = documentType.Properties.FirstOrDefault(p => p.Name == GetPropertyName(() => document.StringPropertyWithoutSetter));
-
-            Assert.IsNull(property);
-        }
-
-        [TestMethod]
-        public void CannotGetPrivateProperty()
-        {
-            var document = new Models.DocumentType();
-            var documentType = new DocumentType(document.GetType());
-            var property = documentType.Properties.FirstOrDefault(p => p.Name == "PrivateStringProperty");
-
-            Assert.IsNull(property);
+            property.ShouldBeNull();
         }
     }
 }

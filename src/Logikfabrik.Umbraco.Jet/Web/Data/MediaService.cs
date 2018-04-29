@@ -5,12 +5,14 @@
 namespace Logikfabrik.Umbraco.Jet.Web.Data
 {
     using System;
+    using EnsureThat;
     using Extensions;
     using global::Umbraco.Core.Models;
 
     /// <summary>
     /// The <see cref="MediaService" /> class. Service for mapping instances of <see cref="IPublishedContent" /> to media models.
     /// </summary>
+    // ReSharper disable once InheritdocConsiderUsage
     public class MediaService : ContentService
     {
         private readonly IUmbracoHelperWrapper _umbracoHelperWrapper;
@@ -18,6 +20,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="MediaService" /> class.
         /// </summary>
+        // ReSharper disable once InheritdocConsiderUsage
         public MediaService()
             : this(new UmbracoHelperWrapper())
         {
@@ -27,13 +30,9 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// Initializes a new instance of the <see cref="MediaService" /> class.
         /// </summary>
         /// <param name="umbracoHelperWrapper">The Umbraco helper wrapper.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="umbracoHelperWrapper" /> is <c>null</c>.</exception>
         public MediaService(IUmbracoHelperWrapper umbracoHelperWrapper)
         {
-            if (umbracoHelperWrapper == null)
-            {
-                throw new ArgumentNullException(nameof(umbracoHelperWrapper));
-            }
+            EnsureArg.IsNotNull(umbracoHelperWrapper);
 
             _umbracoHelperWrapper = umbracoHelperWrapper;
         }
@@ -44,14 +43,10 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// <typeparam name="T">The media model type.</typeparam>
         /// <param name="id">The media identifier.</param>
         /// <returns>A model for the media with the specified identifier.</returns>
-        /// <exception cref="ArgumentException">Thrown if <typeparamref name="T" /> is not a media model type.</exception>
         public T GetMedia<T>(int id)
             where T : class, new()
         {
-            if (!typeof(T).IsModelType<MediaTypeAttribute>())
-            {
-                throw new ArgumentException($"Type {typeof(T)} is not a media model type.");
-            }
+            EnsureArg.IsTrue(typeof(T).IsModelType<MediaTypeAttribute>(), nameof(T));
 
             return GetMedia<T>(_umbracoHelperWrapper.TypedMedia(id));
         }
@@ -62,20 +57,11 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// <typeparam name="T">The media model type.</typeparam>
         /// <param name="content">The media content.</param>
         /// <returns>A model for the media.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" /> is <c>null</c>.</exception>
-        /// <exception cref="ArgumentException">Thrown if <typeparamref name="T" /> is not a media model type.</exception>
         public T GetMedia<T>(IPublishedContent content)
             where T : class, new()
         {
-            if (content == null)
-            {
-                throw new ArgumentNullException(nameof(content));
-            }
-
-            if (!typeof(T).IsModelType<MediaTypeAttribute>())
-            {
-                throw new ArgumentException($"Type {typeof(T)} is not a media model type.");
-            }
+            EnsureArg.IsTrue(typeof(T).IsModelType<MediaTypeAttribute>(), nameof(T));
+            EnsureArg.IsNotNull(content);
 
             return (T)GetMedia(content, typeof(T));
         }
@@ -86,24 +72,11 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// <param name="content">The media content.</param>
         /// <param name="mediaModelType">The media model type.</param>
         /// <returns>A model for the media.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" />, or <paramref name="mediaModelType" /> are <c>null</c>.</exception>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="mediaModelType" /> is not a media model type.</exception>
         public object GetMedia(IPublishedContent content, Type mediaModelType)
         {
-            if (content == null)
-            {
-                throw new ArgumentNullException(nameof(content));
-            }
-
-            if (mediaModelType == null)
-            {
-                throw new ArgumentNullException(nameof(mediaModelType));
-            }
-
-            if (!mediaModelType.IsModelType<MediaTypeAttribute>())
-            {
-                throw new ArgumentException($"Type {mediaModelType} is not a media model type.", nameof(mediaModelType));
-            }
+            EnsureArg.IsNotNull(content);
+            EnsureArg.IsNotNull(mediaModelType);
+            EnsureArg.IsTrue(mediaModelType.IsModelType<MediaTypeAttribute>(), nameof(mediaModelType));
 
             return GetMappedContent(content, mediaModelType);
         }

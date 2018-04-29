@@ -5,95 +5,49 @@
 namespace Logikfabrik.Umbraco.Jet.Test.Mappings
 {
     using System;
-    using global::Umbraco.Core.Models;
     using Jet.Mappings;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Moq;
+    using Moq.AutoMock;
+    using Shouldly;
+    using Xunit;
 
-    [TestClass]
-    public class DataTypeDefinitionMappingsTest
+    public class DataTypeDefinitionMappingsTest : IDisposable
     {
-        [TestMethod]
-        public void CanGetDataTypeDefinitionForBoolean()
-        {
-            var mapping = DataTypeDefinitionMappings.GetDefinitionMapping(typeof(bool));
-
-            Assert.IsTrue(mapping.CanMapToDefinition(typeof(bool)));
-        }
-
-        [TestMethod]
-        public void CanGetDataTypeDefinitionForDateTime()
-        {
-            var mapping = DataTypeDefinitionMappings.GetDefinitionMapping(typeof(DateTime));
-
-            Assert.IsTrue(mapping.CanMapToDefinition(typeof(DateTime)));
-        }
-
-        [TestMethod]
-        public void CanGetDataTypeDefinitionForFloatingBinary()
-        {
-            var mapping = DataTypeDefinitionMappings.GetDefinitionMapping(typeof(float));
-
-            Assert.IsTrue(mapping.CanMapToDefinition(typeof(float)));
-        }
-
-        [TestMethod]
-        public void CanGetDataTypeDefinitionForFloatingDecimal()
-        {
-            var mapping = DataTypeDefinitionMappings.GetDefinitionMapping(typeof(decimal));
-
-            Assert.IsTrue(mapping.CanMapToDefinition(typeof(decimal)));
-        }
-
-        [TestMethod]
-        public void CanGetDataTypeDefinitionForInteger()
-        {
-            var mapping = DataTypeDefinitionMappings.GetDefinitionMapping(typeof(int));
-
-            Assert.IsTrue(mapping.CanMapToDefinition(typeof(int)));
-        }
-
-        [TestMethod]
-        public void CanGetDataTypeDefinitionForString()
-        {
-            var mapping = DataTypeDefinitionMappings.GetDefinitionMapping(typeof(string));
-
-            Assert.IsTrue(mapping.CanMapToDefinition(typeof(string)));
-        }
-
-        [TestMethod]
+        [Fact]
         public void CanAddDataTypeDefinitionMapping()
         {
-            var mappingMock = new Mock<IDataTypeDefinitionMapping>();
+            var type = typeof(object);
 
-            mappingMock.Setup(m => m.CanMapToDefinition(It.IsAny<Type>())).Returns((Type t) => t == typeof(object));
-            mappingMock.Setup(m => m.GetMappedDefinition(It.IsAny<Type>())).Returns(new Mock<IDataTypeDefinition>().Object);
+            var mocker = new AutoMocker();
 
-            DataTypeDefinitionMappings.Mappings.Add(typeof(object), mappingMock.Object);
+            var mappingMock = mocker.GetMock<IDataTypeDefinitionMapping>();
 
-            var mapping = DataTypeDefinitionMappings.GetDefinitionMapping(typeof(object));
+            mappingMock.Setup(m => m.CanMapToDefinition(type)).Returns(true);
 
-            Assert.IsTrue(mapping.CanMapToDefinition(typeof(object)));
+            DataTypeDefinitionMappings.Mappings.Add(type, mappingMock.Object);
+
+            DataTypeDefinitionMappings.Mappings.TryGetValue(type, out var mapping).ShouldBeTrue();
         }
 
-        [TestMethod]
+        [Fact]
         public void CanRemoveDataTypeDefinitionMapping()
         {
-            var mappingMock = new Mock<IDataTypeDefinitionMapping>();
+            var type = typeof(object);
 
-            mappingMock.Setup(m => m.CanMapToDefinition(It.IsAny<Type>())).Returns((Type t) => t == typeof(object));
-            mappingMock.Setup(m => m.GetMappedDefinition(It.IsAny<Type>())).Returns(new Mock<IDataTypeDefinition>().Object);
+            var mocker = new AutoMocker();
 
-            var mapping = DataTypeDefinitionMappings.GetDefinitionMapping(mappingMock.Object.GetType());
+            var mappingMock = mocker.GetMock<IDataTypeDefinitionMapping>();
 
-            if (mapping != null)
-            {
-                DataTypeDefinitionMappings.Mappings.Remove(mappingMock.Object.GetType());
-            }
+            mappingMock.Setup(m => m.CanMapToDefinition(type)).Returns(true);
 
-            mapping = DataTypeDefinitionMappings.GetDefinitionMapping(mappingMock.Object.GetType());
+            DataTypeDefinitionMappings.Mappings.Add(type, mappingMock.Object);
+            DataTypeDefinitionMappings.Mappings.Remove(type);
 
-            Assert.IsNull(mapping);
+            DataTypeDefinitionMappings.Mappings.TryGetValue(type, out var _).ShouldBeFalse();
+        }
+
+        public void Dispose()
+        {
+            DataTypeDefinitionMappings.Mappings.Clear();
         }
     }
 }

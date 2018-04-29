@@ -11,14 +11,10 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     /// <summary>
     /// The <see cref="JetControllerFactory" /> class.
     /// </summary>
+    // ReSharper disable once InheritdocConsiderUsage
     public class JetControllerFactory : RenderControllerFactory
     {
-        /// <summary>
-        /// Creates the controller.
-        /// </summary>
-        /// <param name="requestContext">The request context.</param>
-        /// <param name="controllerName">Name of the controller.</param>
-        /// <returns>The controller.</returns>
+        /// <inheritdoc />
         public override IController CreateController(RequestContext requestContext, string controllerName)
         {
             var controller = base.CreateController(requestContext, controllerName) as Controller;

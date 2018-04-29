@@ -7,13 +7,16 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
     using System.Linq;
     using Data;
+    using EnsureThat;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
     using Logging;
+    using Mappings;
 
     /// <summary>
     /// The <see cref="MediaTypeSynchronizer" /> class. Synchronizes model types annotated using the <see cref="MediaTypeAttribute" />.
     /// </summary>
+    // ReSharper disable once InheritdocConsiderUsage
     public class MediaTypeSynchronizer : ComposableContentTypeSynchronizer<MediaType, MediaTypeAttribute, IMediaType>
     {
         private readonly IContentTypeService _contentTypeService;
@@ -23,63 +26,41 @@ namespace Logikfabrik.Umbraco.Jet
         /// Initializes a new instance of the <see cref="MediaTypeSynchronizer" /> class.
         /// </summary>
         /// <param name="logService">The log service.</param>
-        /// <param name="contentTypeService">The content type service.</param>
-        /// <param name="typeResolver">The type resolver.</param>
         /// <param name="typeRepository">The type repository.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeService" />, or <paramref name="typeResolver" /> are <c>null</c>.</exception>
+        /// <param name="typeResolver">The type resolver.</param>
+        /// <param name="contentTypeService">The content type service.</param>
+        // ReSharper disable once InheritdocConsiderUsage
         public MediaTypeSynchronizer(
             ILogService logService,
-            IContentTypeService contentTypeService,
+            ITypeRepository typeRepository,
             ITypeResolver typeResolver,
-            ITypeRepository typeRepository)
-            : base(logService, typeRepository)
+            IContentTypeService contentTypeService,
+            IDataTypeDefinitionService dataTypeDefinitionService)
+            : base(logService, typeRepository, dataTypeDefinitionService)
         {
-            if (contentTypeService == null)
-            {
-                throw new ArgumentNullException(nameof(contentTypeService));
-            }
-
-            if (typeResolver == null)
-            {
-                throw new ArgumentNullException(nameof(typeResolver));
-            }
+            EnsureArg.IsNotNull(typeResolver);
+            EnsureArg.IsNotNull(contentTypeService);
 
             _contentTypeService = contentTypeService;
             _mediaTypes = new Lazy<MediaType[]>(() => typeResolver.MediaTypes.ToArray());
         }
 
-        /// <summary>
-        /// Gets the models.
-        /// </summary>
-        /// <value>The models.</value>
+        /// <inheritdoc />
         protected override MediaType[] Models => _mediaTypes.Value;
 
-        /// <summary>
-        /// Gets the content types.
-        /// </summary>
-        /// <returns>
-        /// The content types.
-        /// </returns>
+        /// <inheritdoc />
         protected override IMediaType[] GetContentTypes()
         {
             return _contentTypeService.GetAllMediaTypes().ToArray();
         }
 
-        /// <summary>
-        /// Creates a content type.
-        /// </summary>
-        /// <returns>
-        /// The created content type.
-        /// </returns>
+        /// <inheritdoc />
         protected override IMediaType CreateContentType()
         {
             return new global::Umbraco.Core.Models.MediaType(-1);
         }
 
-        /// <summary>
-        /// Saves the specified content type.
-        /// </summary>
-        /// <param name="contentType">The content type.</param>
+        /// <inheritdoc />
         protected override void SaveContentType(IMediaType contentType)
         {
             _contentTypeService.Save(contentType);

@@ -4,66 +4,66 @@
 
 namespace Logikfabrik.Umbraco.Jet.Test
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Utilities;
+    using Moq;
+    using Moq.AutoMock;
+    using Xunit;
 
-    [TestClass]
-    public class TypeResolverTest : TestBase
+    public class TypeResolverTest
     {
-        [TestMethod]
+        [Fact]
         public void CanGetDocumentTypes()
         {
-            var type = DocumentTypeUtility.GetTypeBuilder().CreateType();
+            var mocker = new AutoMocker();
 
-            var typeService = GetTypeService(type);
+            var typeResolver = mocker.CreateInstance<TypeResolver>();
 
-            var typeResolver = new TypeResolver(typeService);
+            var typeServiceMock = mocker.GetMock<ITypeService>();
 
-            var documentTypes = typeResolver.DocumentTypes;
+            var _ = typeResolver.DocumentTypes;
 
-            Assert.AreEqual(1, documentTypes.Count);
+            typeServiceMock.Verify(m => m.DocumentTypes, Times.Once);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetMediaTypes()
         {
-            var type = MediaTypeUtility.GetTypeBuilder().CreateType();
+            var mocker = new AutoMocker();
 
-            var typeService = GetTypeService(type);
+            var typeResolver = mocker.CreateInstance<TypeResolver>();
 
-            var typeResolver = new TypeResolver(typeService);
+            var typeServiceMock = mocker.GetMock<ITypeService>();
 
-            var mediaTypes = typeResolver.MediaTypes;
+            var _ = typeResolver.MediaTypes;
 
-            Assert.AreEqual(1, mediaTypes.Count);
+            typeServiceMock.Verify(m => m.MediaTypes, Times.Once);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetMemberTypes()
         {
-            var type = MemberTypeUtility.GetTypeBuilder().CreateType();
+            var mocker = new AutoMocker();
 
-            var typeService = GetTypeService(type);
+            var typeResolver = mocker.CreateInstance<TypeResolver>();
 
-            var typeResolver = new TypeResolver(typeService);
+            var typeServiceMock = mocker.GetMock<ITypeService>();
 
-            var memberTypes = typeResolver.MemberTypes;
+            var _ = typeResolver.MemberTypes;
 
-            Assert.AreEqual(1, memberTypes.Count);
+            typeServiceMock.Verify(m => m.MemberTypes, Times.Once);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetDataTypes()
         {
-            var type = DataTypeUtility.GetTypeBuilder().CreateType();
+            var mocker = new AutoMocker();
 
-            var typeService = GetTypeService(type);
+            var typeResolver = mocker.CreateInstance<TypeResolver>();
 
-            var typeResolver = new TypeResolver(typeService);
+            var typeServiceMock = mocker.GetMock<ITypeService>();
 
-            var dataTypes = typeResolver.DataTypes;
+            var _ = typeResolver.DataTypes;
 
-            Assert.AreEqual(1, dataTypes.Count);
+            typeServiceMock.Verify(m => m.DataTypes, Times.Once);
         }
     }
 }

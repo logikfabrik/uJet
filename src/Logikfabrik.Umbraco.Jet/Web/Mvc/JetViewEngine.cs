@@ -11,11 +11,13 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     /// <summary>
     /// The <see cref="JetViewEngine" /> class.
     /// </summary>
+    // ReSharper disable once InheritdocConsiderUsage
     public class JetViewEngine : RenderViewEngine
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="JetViewEngine" /> class.
         /// </summary>
+        // ReSharper disable once InheritdocConsiderUsage
         public JetViewEngine()
         {
             ViewLocationFormats =
@@ -33,14 +35,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
                 }).Distinct().ToArray();
         }
 
-        /// <summary>
-        /// Finds the view.
-        /// </summary>
-        /// <param name="controllerContext">The controller context.</param>
-        /// <param name="viewName">Name of the view.</param>
-        /// <param name="masterName">Name of the master.</param>
-        /// <param name="useCache">If set to <c>true</c> use cache.</param>
-        /// <returns>The view.</returns>
+        /// <inheritdoc />
         public override ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
         {
             return base.FindView(controllerContext, JetControllerActionInvoker.GetActionName(viewName), masterName, useCache);

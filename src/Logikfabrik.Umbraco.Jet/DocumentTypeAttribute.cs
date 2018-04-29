@@ -12,12 +12,15 @@ namespace Logikfabrik.Umbraco.Jet
     [AttributeUsage(
         AttributeTargets.Class,
         Inherited = false)]
+
+    // ReSharper disable once InheritdocConsiderUsage
     public class DocumentTypeAttribute : ComposableContentTypeAttribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DocumentTypeAttribute" /> class.
         /// </summary>
         /// <param name="name">The name.</param>
+        // ReSharper disable once InheritdocConsiderUsage
         public DocumentTypeAttribute(string name)
             : base(name)
         {
@@ -28,6 +31,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="name">The name.</param>
+        // ReSharper disable once InheritdocConsiderUsage
         public DocumentTypeAttribute(string id, string name)
             : base(id, name)
         {

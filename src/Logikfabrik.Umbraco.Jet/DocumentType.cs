@@ -11,12 +11,14 @@ namespace Logikfabrik.Umbraco.Jet
     /// <summary>
     /// The <see cref="DocumentType" /> class.
     /// </summary>
+    // ReSharper disable once InheritdocConsiderUsage
     public class DocumentType : ComposableContentTypeModel<DocumentTypeAttribute>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DocumentType" /> class.
         /// </summary>
         /// <param name="modelType">The model type.</param>
+        // ReSharper disable once InheritdocConsiderUsage
         public DocumentType(Type modelType)
             : base(modelType)
         {

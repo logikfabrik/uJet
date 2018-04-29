@@ -7,27 +7,22 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using EnsureThat;
 
     /// <summary>
     /// The <see cref="ContentTypeModelValidator{TModel,TModelAttribute}" /> class.
     /// </summary>
     /// <typeparam name="TModel">The <see cref="ContentTypeModel{T}" /> type.</typeparam>
     /// <typeparam name="TModelAttribute">The <see cref="ContentTypeModelAttribute" /> type.</typeparam>
+    // ReSharper disable once InheritdocConsiderUsage
     public class ContentTypeModelValidator<TModel, TModelAttribute> : TypeModelValidator<TModel, TModelAttribute>
         where TModel : ContentTypeModel<TModelAttribute>
         where TModelAttribute : ContentTypeModelAttribute
     {
-        /// <summary>
-        /// Validates the specified models.
-        /// </summary>
-        /// <param name="models">The models.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="models" /> is <c>null</c>.</exception>
+        /// <inheritdoc />
         public override void Validate(TModel[] models)
         {
-            if (models == null)
-            {
-                throw new ArgumentNullException(nameof(models));
-            }
+            EnsureArg.IsNotNull(models);
 
             ValidateById(models);
             ValidateByAlias(models);

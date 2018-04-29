@@ -7,53 +7,33 @@ namespace Logikfabrik.Umbraco.Jet.Data
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using global::Umbraco.Core;
-    using global::Umbraco.Core.Logging;
-    using global::Umbraco.Core.ObjectResolution;
+    using EnsureThat;
     using global::Umbraco.Core.Persistence;
 
     /// <summary>
     /// The <see cref="ContentTypeRepository" /> class.
     /// </summary>
+    // ReSharper disable once InheritdocConsiderUsage
     public class ContentTypeRepository : IContentTypeRepository
     {
         private readonly IDatabaseWrapper _databaseWrapper;
-
         private readonly HashSet<Tuple<Guid, int>> _contentTypeId;
         private readonly HashSet<Tuple<Guid, int>> _propertyTypeId;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentTypeRepository" /> class.
         /// </summary>
-        public ContentTypeRepository()
-            : this(new DatabaseWrapper(ApplicationContext.Current.DatabaseContext.Database, ResolverBase<LoggerResolver>.Current.Logger, ApplicationContext.Current.DatabaseContext.SqlSyntax))
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ContentTypeRepository" /> class.
-        /// </summary>
         /// <param name="databaseWrapper">The database wrapper.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="databaseWrapper" /> is <code>null</code>.</exception>
         public ContentTypeRepository(IDatabaseWrapper databaseWrapper)
         {
-            if (databaseWrapper == null)
-            {
-                throw new ArgumentNullException(nameof(databaseWrapper));
-            }
+            EnsureArg.IsNotNull(databaseWrapper);
 
             _databaseWrapper = databaseWrapper;
             _contentTypeId = new HashSet<Tuple<Guid, int>>();
             _propertyTypeId = new HashSet<Tuple<Guid, int>>();
         }
 
-        /// <summary>
-        /// Gets the content type model identifier.
-        /// </summary>
-        /// <param name="contentTypeId">The content type identifier.</param>
-        /// <returns>
-        /// The content type model identifier.
-        /// </returns>
+        /// <inheritdoc />
         public Guid? GetContentTypeModelId(int contentTypeId)
         {
             var modelId = _contentTypeId.SingleOrDefault(t => t.Item2 == contentTypeId)?.Item1;
@@ -63,7 +43,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
                 return modelId;
             }
 
-            modelId = GetContentTypeByContentTypeId(contentTypeId)?.Id;
+            modelId = GetContentType(contentTypeId)?.Id;
 
             if (modelId.HasValue)
             {
@@ -73,23 +53,17 @@ namespace Logikfabrik.Umbraco.Jet.Data
             return modelId;
         }
 
-        /// <summary>
-        /// Gets the property type model identifier.
-        /// </summary>
-        /// <param name="propertyTypeId">The property type identifier.</param>
-        /// <returns>
-        /// The property type model identifier.
-        /// </returns>
+        /// <inheritdoc />
         public Guid? GetPropertyTypeModelId(int propertyTypeId)
         {
-            var modelId = _propertyTypeId.SingleOrDefault(t => t.Item2 == propertyTypeId)?.Item1;
+            var modelId = _propertyTypeId.SingleOrDefault(id => id.Item2 == propertyTypeId)?.Item1;
 
             if (modelId.HasValue)
             {
                 return modelId;
             }
 
-            modelId = GetPropertyTypeByPropertyTypeId(propertyTypeId)?.Id;
+            modelId = GetPropertyType(propertyTypeId)?.Id;
 
             if (modelId.HasValue)
             {
@@ -99,11 +73,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
             return modelId;
         }
 
-        /// <summary>
-        /// Gets the content type identifier.
-        /// </summary>
-        /// <param name="id">The content type model identifier.</param>
-        /// <returns>The content type identifier.</returns>
+        /// <inheritdoc />
         public int? GetContentTypeId(Guid id)
         {
             var contentTypeId = _contentTypeId.SingleOrDefault(t => t.Item1 == id)?.Item2;
@@ -113,7 +83,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
                 return contentTypeId;
             }
 
-            contentTypeId = GetContentTypeById(id)?.ContentTypeId;
+            contentTypeId = GetContentType(id)?.ContentTypeId;
 
             if (contentTypeId.HasValue)
             {
@@ -123,11 +93,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
             return contentTypeId;
         }
 
-        /// <summary>
-        /// Gets the property type identifier.
-        /// </summary>
-        /// <param name="id">The property model identifier.</param>
-        /// <returns>The property type identifier.</returns>
+        /// <inheritdoc />
         public int? GetPropertyTypeId(Guid id)
         {
             var propertyTypeId = _propertyTypeId.SingleOrDefault(t => t.Item1 == id)?.Item2;
@@ -137,7 +103,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
                 return propertyTypeId;
             }
 
-            propertyTypeId = GetPropertyTypeById(id)?.PropertyTypeId;
+            propertyTypeId = GetPropertyType(id)?.PropertyTypeId;
 
             if (propertyTypeId.HasValue)
             {
@@ -147,11 +113,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
             return propertyTypeId;
         }
 
-        /// <summary>
-        /// Sets the content type identifier.
-        /// </summary>
-        /// <param name="id">The content type model identifier.</param>
-        /// <param name="contentTypeId">The content type identifier.</param>
+        /// <inheritdoc />
         public void SetContentTypeId(Guid id, int contentTypeId)
         {
             var contentType = new ContentType { Id = id, ContentTypeId = contentTypeId };
@@ -160,11 +122,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
             _databaseWrapper.Insert(contentType, id);
         }
 
-        /// <summary>
-        /// Sets the property type identifier.
-        /// </summary>
-        /// <param name="id">The property type model identifier.</param>
-        /// <param name="propertyTypeId">The property type identifier.</param>
+        /// <inheritdoc />
         public void SetPropertyTypeId(Guid id, int propertyTypeId)
         {
             var propertyType = new PropertyType { Id = id, PropertyTypeId = propertyTypeId };
@@ -173,58 +131,44 @@ namespace Logikfabrik.Umbraco.Jet.Data
             _databaseWrapper.Insert(propertyType, id);
         }
 
-        /// <summary>
-        /// Gets the content type with the specified content type identifier.
-        /// </summary>
-        /// <param name="id">The content type identifier.</param>
-        /// <returns>The content type with the specified content type identifier.</returns>
-        internal virtual ContentType GetContentTypeByContentTypeId(int id)
+        private ContentType GetContentType(int contentTypeId)
         {
             if (!_databaseWrapper.TableExists<ContentType>())
             {
                 return null;
             }
 
-            var sql = new Sql().Where<ContentType>(ct => ct.ContentTypeId == id, _databaseWrapper.SyntaxProvider);
+            var sql = new Sql().Where<ContentType>(contentType => contentType.ContentTypeId == contentTypeId, _databaseWrapper.SyntaxProvider);
 
             return _databaseWrapper.Get<ContentType>(sql);
         }
 
-        /// <summary>
-        /// Gets the content type with the specified identifier.
-        /// </summary>
-        /// <param name="id">The content type model identifier.</param>
-        /// <returns>The content type with the specified identifier.</returns>
-        internal virtual ContentType GetContentTypeById(Guid id)
+        private ContentType GetContentType(Guid id)
         {
-            return !_databaseWrapper.TableExists<ContentType>() ? null : _databaseWrapper.Get<ContentType>(id);
+            return Get<ContentType>(id);
         }
 
-        /// <summary>
-        /// Gets the property type with the specified property type identifier.
-        /// </summary>
-        /// <param name="id">The property type identifier.</param>
-        /// <returns>The property type with the specified property type identifier.</returns>
-        internal virtual PropertyType GetPropertyTypeByPropertyTypeId(int id)
+        private PropertyType GetPropertyType(int propertyTypeId)
         {
             if (!_databaseWrapper.TableExists<PropertyType>())
             {
                 return null;
             }
 
-            var sql = new Sql().Where<PropertyType>(ct => ct.PropertyTypeId == id, _databaseWrapper.SyntaxProvider);
+            var sql = new Sql().Where<PropertyType>(propertyType => propertyType.PropertyTypeId == propertyTypeId, _databaseWrapper.SyntaxProvider);
 
             return _databaseWrapper.Get<PropertyType>(sql);
         }
 
-        /// <summary>
-        /// Gets the property type with the specified identifier.
-        /// </summary>
-        /// <param name="id">The property type model identifier.</param>
-        /// <returns>The property type with the specified identifier.</returns>
-        internal virtual PropertyType GetPropertyTypeById(Guid id)
+        private PropertyType GetPropertyType(Guid id)
         {
-            return !_databaseWrapper.TableExists<PropertyType>() ? null : _databaseWrapper.Get<PropertyType>(id);
+            return Get<PropertyType>(id);
+        }
+
+        private T Get<T>(Guid id)
+            where T : class
+        {
+            return !_databaseWrapper.TableExists<T>() ? null : _databaseWrapper.Get<T>(id);
         }
     }
 }

@@ -5,6 +5,7 @@
 namespace Logikfabrik.Umbraco.Jet
 {
     using System;
+    using EnsureThat;
 
     /// <summary>
     /// The <see cref="DataTypeAttribute" /> class. Attribute for model type annotation.
@@ -12,6 +13,8 @@ namespace Logikfabrik.Umbraco.Jet
     [AttributeUsage(
         AttributeTargets.Class,
         Inherited = false)]
+
+    // ReSharper disable once InheritdocConsiderUsage
     public class DataTypeAttribute : TypeModelAttribute
     {
         /// <summary>
@@ -19,19 +22,11 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="editor">The editor.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="type" /> is <c>null</c>.</exception>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="editor" /> is <c>null</c> or white space.</exception>
+        // ReSharper disable once InheritdocConsiderUsage
         public DataTypeAttribute(Type type, string editor)
         {
-            if (type == null)
-            {
-                throw new ArgumentNullException(nameof(type));
-            }
-
-            if (string.IsNullOrWhiteSpace(editor))
-            {
-                throw new ArgumentException("Editor cannot be null or white space.", nameof(editor));
-            }
+            EnsureArg.IsNotNull(type);
+            EnsureArg.IsNotNullOrWhiteSpace(editor);
 
             Type = type;
             Editor = editor;
@@ -43,20 +38,12 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="id">The identifier.</param>
         /// <param name="type">The type.</param>
         /// <param name="editor">The editor.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="type" /> is <c>null</c>.</exception>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="editor" /> is <c>null</c> or white space.</exception>
+        // ReSharper disable once InheritdocConsiderUsage
         public DataTypeAttribute(string id, Type type, string editor)
             : base(id)
         {
-            if (type == null)
-            {
-                throw new ArgumentNullException(nameof(type));
-            }
-
-            if (string.IsNullOrWhiteSpace(editor))
-            {
-                throw new ArgumentException("Editor cannot be null or white space.", nameof(editor));
-            }
+            EnsureArg.IsNotNull(type);
+            EnsureArg.IsNotNullOrWhiteSpace(editor);
 
             Type = type;
             Editor = editor;

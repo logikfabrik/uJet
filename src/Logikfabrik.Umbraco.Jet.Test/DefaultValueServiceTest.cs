@@ -11,13 +11,12 @@ namespace Logikfabrik.Umbraco.Jet.Test
     using Jet.Data;
     using Jet.Extensions;
     using Logging;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
+    using Xunit;
 
-    [TestClass]
     public class DefaultValueServiceTest : TestBase
     {
-        [TestMethod]
+        [Fact]
         public void CanSetDocumentTypeDefaultValueForStringProperty()
         {
             var documentType = new Models.DocumentType();
@@ -26,7 +25,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             CanSetDefaultValueForDocumentType<string>(documentType, propertyName);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanSetDocumentTypeDefaultValueForIntegerProperty()
         {
             var documentType = new Models.DocumentType();
@@ -35,7 +34,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             CanSetDefaultValueForDocumentType<int>(documentType, propertyName);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanSetDocumentTypeDefaultValueForFloatingBinaryPointProperty()
         {
             var documentType = new Models.DocumentType();
@@ -44,7 +43,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             CanSetDefaultValueForDocumentType<float>(documentType, propertyName);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanSetDocumentTypeDefaultValueForFloatingDecimalPointProperty()
         {
             var documentType = new Models.DocumentType();
@@ -53,7 +52,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             CanSetDefaultValueForDocumentType<decimal>(documentType, propertyName);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanSetDocumentTypeDefaultValueForBooleanProperty()
         {
             var documentType = new Models.DocumentType();
@@ -62,7 +61,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             CanSetDefaultValueForDocumentType<bool>(documentType, propertyName);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanSetDocumentTypeDefaultValueForDateTimeProperty()
         {
             var documentType = new Models.DocumentType();
@@ -71,7 +70,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             CanSetDefaultValueForDocumentType<DateTime>(documentType, propertyName);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanSetMediaTypeDefaultValueForStringProperty()
         {
             var mediaType = new Models.MediaType();
@@ -80,7 +79,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             CanSetDefaultValueForMediaType<string>(mediaType, propertyName);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanSetMediaTypeDefaultValueForIntegerProperty()
         {
             var mediaType = new Models.MediaType();
@@ -89,7 +88,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             CanSetDefaultValueForMediaType<int>(mediaType, propertyName);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanSetMediaTypeDefaultValueForFloatingBinaryPointProperty()
         {
             var mediaType = new Models.MediaType();
@@ -98,7 +97,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             CanSetDefaultValueForMediaType<float>(mediaType, propertyName);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanSetMediaTypeDefaultValueForFloatingDecimalPointProperty()
         {
             var mediaType = new Models.MediaType();
@@ -107,7 +106,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             CanSetDefaultValueForMediaType<decimal>(mediaType, propertyName);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanSetMediaTypeDefaultValueForDateTimeProperty()
         {
             var mediaType = new Models.MediaType();
@@ -116,7 +115,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             CanSetDefaultValueForMediaType<DateTime>(mediaType, propertyName);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanSetMediaTypeDefaultValueForBooleanProperty()
         {
             var mediaType = new Models.MediaType();
@@ -125,7 +124,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             CanSetDefaultValueForMediaType<bool>(mediaType, propertyName);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanSetMemberTypeDefaultValueForStringProperty()
         {
             var memberType = new Models.MemberType();
@@ -134,7 +133,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             CanSetDefaultValueForMemberType<string>(memberType, propertyName);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanSetMemberTypeDefaultValueForIntegerProperty()
         {
             var memberType = new Models.MemberType();
@@ -143,7 +142,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             CanSetDefaultValueForMemberType<int>(memberType, propertyName);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanSetMemberTypeDefaultValueForFloatingBinaryPointProperty()
         {
             var memberType = new Models.MemberType();
@@ -152,7 +151,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             CanSetDefaultValueForMemberType<float>(memberType, propertyName);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanSetMemberTypeDefaultValueForFloatingDecimalPointProperty()
         {
             var memberType = new Models.MemberType();
@@ -161,7 +160,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             CanSetDefaultValueForMemberType<decimal>(memberType, propertyName);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanSetMemberTypeDefaultValueForBooleanProperty()
         {
             var memberType = new Models.MemberType();
@@ -170,7 +169,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             CanSetDefaultValueForMemberType<bool>(memberType, propertyName);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanSetMemberTypeDefaultValueForDateTimeProperty()
         {
             var memberType = new Models.MemberType();

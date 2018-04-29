@@ -9,12 +9,14 @@ namespace Logikfabrik.Umbraco.Jet
     /// <summary>
     /// The <see cref="ComposableContentTypeAttribute" /> class.
     /// </summary>
+    // ReSharper disable once InheritdocConsiderUsage
     public abstract class ComposableContentTypeAttribute : ContentTypeModelAttribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ComposableContentTypeAttribute" /> class.
         /// </summary>
         /// <param name="name">The name.</param>
+        // ReSharper disable once InheritdocConsiderUsage
         protected ComposableContentTypeAttribute(string name)
             : base(name)
         {
@@ -25,6 +27,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="name">The name.</param>
+        // ReSharper disable once InheritdocConsiderUsage
         protected ComposableContentTypeAttribute(string id, string name)
             : base(id, name)
         {

@@ -22,9 +22,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         /// <returns>The type service mock.</returns>
         protected static ITypeService GetTypeService(Type type)
         {
-            Func<Assembly[]> getAssemblies = () => new[] { type.Assembly };
+            Assembly[] GetAssemblies() => new[] { type.Assembly };
 
-            return new TypeService(new Mock<ILogService>().Object, getAssemblies);
+            return new TypeService(new Mock<ILogService>().Object, null);
         }
 
         protected static Mock<TypeResolver> GetTypeResolverMock(Type type)

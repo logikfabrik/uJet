@@ -8,6 +8,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
     using System.ComponentModel.DataAnnotations;
     using System.Reflection;
     using Converters;
+    using EnsureThat;
 
     /// <summary>
     /// The <see cref="ContentMapper" /> class.
@@ -20,19 +21,10 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// <param name="model">The model.</param>
         /// <param name="propertyName">The name of the property.</param>
         /// <param name="propertyValue">The property value.</param>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="propertyName" /> is <c>null</c> or white space.</exception>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="model" /> is <c>null</c>.</exception>
         public void MapProperty(object model, string propertyName, object propertyValue)
         {
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
-            if (string.IsNullOrWhiteSpace(propertyName))
-            {
-                throw new ArgumentException("Property name cannot be null or white space.", nameof(propertyName));
-            }
+            EnsureArg.IsNotNull(model);
+            EnsureArg.IsNotNullOrWhiteSpace(propertyName);
 
             var property = model.GetType().GetProperty(propertyName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
 
@@ -68,8 +60,8 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// Gets a property converter.
         /// </summary>
         /// <param name="uiHint">The UI hint.</param>
-        /// <param name="from">The type to convert from.</param>
-        /// <param name="to">The type to convert to.</param>
+        /// <param name="from">The <see cref="Type" /> to convert from.</param>
+        /// <param name="to">The <see cref="Type" /> to convert to.</param>
         /// <returns>A converter.</returns>
         private static IPropertyValueConverter GetPropertyConverter(string uiHint, Type from, Type to)
         {

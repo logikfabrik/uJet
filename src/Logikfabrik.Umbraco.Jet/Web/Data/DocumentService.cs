@@ -5,12 +5,14 @@
 namespace Logikfabrik.Umbraco.Jet.Web.Data
 {
     using System;
+    using EnsureThat;
     using Extensions;
     using global::Umbraco.Core.Models;
 
     /// <summary>
     /// The <see cref="DocumentService" /> class. Service for mapping instances of <see cref="IPublishedContent" /> to document models.
     /// </summary>
+    // ReSharper disable once InheritdocConsiderUsage
     public class DocumentService : ContentService
     {
         private readonly IUmbracoHelperWrapper _umbracoHelperWrapper;
@@ -18,6 +20,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="DocumentService" /> class.
         /// </summary>
+        // ReSharper disable once InheritdocConsiderUsage
         public DocumentService()
             : this(new UmbracoHelperWrapper())
         {
@@ -27,13 +30,9 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// Initializes a new instance of the <see cref="DocumentService" /> class.
         /// </summary>
         /// <param name="umbracoHelperWrapper">The Umbraco helper wrapper.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="umbracoHelperWrapper" /> is <c>null</c>.</exception>
         public DocumentService(IUmbracoHelperWrapper umbracoHelperWrapper)
         {
-            if (umbracoHelperWrapper == null)
-            {
-                throw new ArgumentNullException(nameof(umbracoHelperWrapper));
-            }
+            EnsureArg.IsNotNull(umbracoHelperWrapper);
 
             _umbracoHelperWrapper = umbracoHelperWrapper;
         }
@@ -44,14 +43,10 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// <typeparam name="T">The document model type.</typeparam>
         /// <param name="id">The document identifier.</param>
         /// <returns>A model for the document with the specified identifier.</returns>
-        /// <exception cref="ArgumentException">Thrown if <typeparamref name="T" /> is not a document model type.</exception>
         public T GetDocument<T>(int id)
             where T : class, new()
         {
-            if (!typeof(T).IsModelType<DocumentTypeAttribute>())
-            {
-                throw new ArgumentException($"Type {typeof(T)} is not a document model type.");
-            }
+            EnsureArg.IsTrue(typeof(T).IsModelType<DocumentTypeAttribute>(), nameof(T));
 
             return GetDocument<T>(_umbracoHelperWrapper.TypedDocument(id));
         }
@@ -62,20 +57,11 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// <typeparam name="T">The document model type.</typeparam>
         /// <param name="content">The document content.</param>
         /// <returns>A model for the document.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" /> is <c>null</c>.</exception>
-        /// <exception cref="ArgumentException">Thrown if <typeparamref name="T" /> is not a document model type.</exception>
         public T GetDocument<T>(IPublishedContent content)
             where T : class, new()
         {
-            if (content == null)
-            {
-                throw new ArgumentNullException(nameof(content));
-            }
-
-            if (!typeof(T).IsModelType<DocumentTypeAttribute>())
-            {
-                throw new ArgumentException($"Type {typeof(T)} is not a document model type.");
-            }
+            EnsureArg.IsTrue(typeof(T).IsModelType<DocumentTypeAttribute>(), nameof(T));
+            EnsureArg.IsNotNull(content);
 
             return (T)GetDocument(content, typeof(T));
         }
@@ -86,33 +72,16 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// <param name="content">The document content.</param>
         /// <param name="documentModelType">The document model type.</param>
         /// <returns>A model for the document.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" />, or <paramref name="documentModelType" /> are <c>null</c>.</exception>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="documentModelType" /> is not a document model type.</exception>
         public object GetDocument(IPublishedContent content, Type documentModelType)
         {
-            if (content == null)
-            {
-                throw new ArgumentNullException(nameof(content));
-            }
-
-            if (documentModelType == null)
-            {
-                throw new ArgumentNullException(nameof(documentModelType));
-            }
-
-            if (!documentModelType.IsModelType<DocumentTypeAttribute>())
-            {
-                throw new ArgumentException($"Type {documentModelType} is not a document model type.", nameof(documentModelType));
-            }
+            EnsureArg.IsNotNull(content);
+            EnsureArg.IsNotNull(documentModelType);
+            EnsureArg.IsTrue(documentModelType.IsModelType<DocumentTypeAttribute>(), nameof(documentModelType));
 
             return GetMappedContent(content, documentModelType);
         }
 
-        /// <summary>
-        /// Maps content by convention.
-        /// </summary>
-        /// <param name="content">The content to map.</param>
-        /// <param name="model">The model to map to.</param>
+        /// <inheritdoc />
         protected override void MapByConvention(IPublishedContent content, object model)
         {
             base.MapByConvention(content, model);

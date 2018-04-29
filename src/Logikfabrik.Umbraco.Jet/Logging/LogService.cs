@@ -5,12 +5,14 @@
 namespace Logikfabrik.Umbraco.Jet.Logging
 {
     using System;
+    using EnsureThat;
     using global::Umbraco.Core.Logging;
     using global::Umbraco.Core.ObjectResolution;
 
     /// <summary>
     /// The <see cref="LogService" /> class.
     /// </summary>
+    // ReSharper disable once InheritdocConsiderUsage
     public class LogService : ILogService
     {
         private readonly Lazy<ILogger> _logger = new Lazy<ILogger>(() =>
@@ -23,18 +25,10 @@ namespace Logikfabrik.Umbraco.Jet.Logging
             return ResolverBase<LoggerResolver>.Current.Logger;
         });
 
-        /// <summary>
-        /// Logs the specified entry.
-        /// </summary>
-        /// <typeparam name="T">The logging type.</typeparam>
-        /// <param name="entry">The entry.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="entry" /> is <c>null</c>.</exception>
+        /// <inheritdoc />
         public void Log<T>(LogEntry entry)
         {
-            if (entry == null)
-            {
-                throw new ArgumentNullException(nameof(entry));
-            }
+            EnsureArg.IsNotNull(entry);
 
             var logger = _logger.Value;
 

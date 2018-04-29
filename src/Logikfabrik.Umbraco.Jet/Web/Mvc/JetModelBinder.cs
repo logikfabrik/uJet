@@ -2,16 +2,22 @@
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
+using Logikfabrik.Umbraco.Jet.Configuration;
+using Logikfabrik.Umbraco.Jet.Logging;
+
 namespace Logikfabrik.Umbraco.Jet.Web.Mvc
 {
     using System;
+    using System.Linq;
     using System.Web.Mvc;
     using Data;
+    using EnsureThat;
     using global::Umbraco.Web.Models;
 
     /// <summary>
     /// The <see cref="JetControllerFactory" /> class.
     /// </summary>
+    // ReSharper disable once InheritdocConsiderUsage
     public class JetModelBinder : DefaultModelBinder
     {
         /// <summary>
@@ -24,8 +30,9 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// <summary>
         /// Initializes a new instance of the <see cref="JetModelBinder" /> class.
         /// </summary>
+        // ReSharper disable once InheritdocConsiderUsage
         public JetModelBinder()
-            : this(TypeService.Instance)
+            : this(new TypeService(new LogService(), new AssemblyLoader(AppDomain.CurrentDomain, JetConfigurationManager.Assemblies)))
         {
         }
 
@@ -33,23 +40,14 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// Initializes a new instance of the <see cref="JetModelBinder" /> class.
         /// </summary>
         /// <param name="typeService">The type service.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="typeService" /> is <c>null</c>.</exception>
         public JetModelBinder(ITypeService typeService)
         {
-            if (typeService == null)
-            {
-                throw new ArgumentNullException();
-            }
+            EnsureArg.IsNotNull(typeService);
 
             _typeService = typeService;
         }
 
-        /// <summary>
-        /// Binds the model.
-        /// </summary>
-        /// <param name="controllerContext">The controller context.</param>
-        /// <param name="bindingContext">The binding context.</param>
-        /// <returns>The bound model.</returns>
+        /// <inheritdoc />
         public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {
             if (!ShouldBind(bindingContext.ModelType))
@@ -62,18 +60,18 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
                 return base.BindModel(controllerContext, bindingContext);
             }
 
-            var renderModel = controllerContext.RouteData.DataTokens[RouteDataTokenKey] as IRenderModel;
-
-            return renderModel == null
-                ? base.BindModel(controllerContext, bindingContext)
-                : new DocumentService().GetDocument(renderModel.Content, bindingContext.ModelType);
+            return controllerContext.RouteData.DataTokens[RouteDataTokenKey] is IRenderModel renderModel
+                ? new DocumentService().GetDocument(renderModel.Content, bindingContext.ModelType)
+                : base.BindModel(controllerContext, bindingContext);
         }
 
         /// <summary>
         /// Determines if the model type should be bound.
         /// </summary>
         /// <param name="modelType">The model type.</param>
-        /// <returns><c>true</c> if the model type should be bound; otherwise, <c>false</c>.</returns>
+        /// <returns>
+        ///   <c>true</c> if the model type should be bound; otherwise, <c>false</c>.
+        /// </returns>
         private bool ShouldBind(Type modelType)
         {
             return _typeService.DocumentTypes.Contains(modelType);

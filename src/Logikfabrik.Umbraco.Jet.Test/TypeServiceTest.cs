@@ -4,172 +4,235 @@
 
 namespace Logikfabrik.Umbraco.Jet.Test
 {
+    using System;
     using System.Linq;
     using System.Reflection;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using AutoFixture.Xunit2;
+    using Moq.AutoMock;
+    using Shouldly;
     using Utilities;
+    using Xunit;
 
-    [TestClass]
-    public class TypeServiceTest : TestBase
+    public class TypeServiceTest
     {
-        [TestMethod]
-        public void CanGetDocumentTypes()
+        [Theory]
+        [AutoData]
+        public void CanGetDocumentTypes(string typeName, string name)
         {
-            var type = DocumentTypeUtility.GetTypeBuilder().CreateType();
+            var modelType = new DocumentTypeModelTypeBuilder(typeName, name).GetTypeBuilder().CreateType();
 
-            var typeService = GetTypeService(type);
+            var mocker = new AutoMocker();
 
-            var documentTypes = typeService.DocumentTypes;
+            var assemblyLoader = mocker.GetMock<IAssemblyLoader>();
 
-            Assert.AreEqual(1, documentTypes.Count);
+            assemblyLoader.Setup(m => m.GetAssemblies()).Returns(new[] { modelType.Assembly });
+
+            var typeService = mocker.CreateInstance<TypeService>();
+
+            typeService.DocumentTypes.Count().ShouldBe(1);
         }
 
-        [TestMethod]
-        public void CannotGetAbstractDocumentTypes()
+        [Theory]
+        [AutoData]
+        public void CanNotGetAbstractDocumentTypes(string typeName, string name)
         {
-            var type = DocumentTypeUtility.GetTypeBuilder(TypeAttributes.Abstract).CreateType();
+            var modelType = new DocumentTypeModelTypeBuilder(typeName, name).CreateType(TypeAttributes.Abstract);
 
-            var typeService = GetTypeService(type);
+            var mocker = new AutoMocker();
 
-            var documentTypes = typeService.DocumentTypes;
+            var assemblyLoader = mocker.GetMock<IAssemblyLoader>();
 
-            Assert.IsFalse(documentTypes.Any());
+            assemblyLoader.Setup(m => m.GetAssemblies()).Returns(new[] { modelType.Assembly });
+
+            var typeService = mocker.CreateInstance<TypeService>();
+
+            typeService.DocumentTypes.Any().ShouldBeFalse();
         }
 
-        [TestMethod]
-        public void CannotGetDocumentTypesWithoutPublicDefaultConstructor()
+        [Theory]
+        [AutoData]
+        public void CanNotGetDocumentTypesWithoutPublicDefaultConstructor(string typeName, string name)
         {
-            var typeBuilder = DataTypeUtility.GetTypeBuilder();
+            var typeBuilder = new DocumentTypeModelTypeBuilder(typeName, name).GetTypeBuilder();
 
             typeBuilder.DefineDefaultConstructor(MethodAttributes.Private);
 
-            var type = typeBuilder.CreateType();
+            var modelType = typeBuilder.CreateType();
 
-            var typeService = GetTypeService(type);
+            var mocker = new AutoMocker();
 
-            var documentTypes = typeService.DocumentTypes;
+            var assemblyLoader = mocker.GetMock<IAssemblyLoader>();
 
-            Assert.IsFalse(documentTypes.Any());
+            assemblyLoader.Setup(m => m.GetAssemblies()).Returns(new[] { modelType.Assembly });
+
+            var typeService = mocker.CreateInstance<TypeService>();
+
+            typeService.DocumentTypes.Any().ShouldBeFalse();
         }
 
-        [TestMethod]
-        public void CanGetDataTypes()
+        [Theory]
+        [AutoData]
+        public void CanGetMediaTypes(string typeName, string name)
         {
-            var type = DataTypeUtility.GetTypeBuilder().CreateType();
+            var modelType = new MediaTypeModelTypeBuilder(typeName, name).GetTypeBuilder().CreateType();
 
-            var typeService = GetTypeService(type);
+            var mocker = new AutoMocker();
 
-            var dataTypes = typeService.DataTypes;
+            var assemblyLoader = mocker.GetMock<IAssemblyLoader>();
 
-            Assert.AreEqual(1, dataTypes.Count);
+            assemblyLoader.Setup(m => m.GetAssemblies()).Returns(new[] { modelType.Assembly });
+
+            var typeService = mocker.CreateInstance<TypeService>();
+
+            typeService.MediaTypes.Count().ShouldBe(1);
         }
 
-        [TestMethod]
-        public void CannotGetAbstractDataTypes()
+        [Theory]
+        [AutoData]
+        public void CanNotGetAbstractMediaTypes(string typeName, string name)
         {
-            var type = DataTypeUtility.GetTypeBuilder(TypeAttributes.Abstract).CreateType();
+            var modelType = new MediaTypeModelTypeBuilder(typeName, name).CreateType(TypeAttributes.Abstract);
 
-            var typeService = GetTypeService(type);
+            var mocker = new AutoMocker();
 
-            var dataTypes = typeService.DataTypes;
+            var assemblyLoader = mocker.GetMock<IAssemblyLoader>();
 
-            Assert.IsFalse(dataTypes.Any());
+            assemblyLoader.Setup(m => m.GetAssemblies()).Returns(new[] { modelType.Assembly });
+
+            var typeService = mocker.CreateInstance<TypeService>();
+
+            typeService.MediaTypes.Any().ShouldBeFalse();
         }
 
-        [TestMethod]
-        public void CannotGetDataTypesWithoutPublicDefaultConstructor()
+        [Theory]
+        [AutoData]
+        public void CanNotGetMediaTypesWithoutPublicDefaultConstructor(string typeName, string name)
         {
-            var typeBuilder = DataTypeUtility.GetTypeBuilder();
+            var typeBuilder = new MediaTypeModelTypeBuilder(typeName, name).GetTypeBuilder();
 
             typeBuilder.DefineDefaultConstructor(MethodAttributes.Private);
 
-            var type = typeBuilder.CreateType();
+            var modelType = typeBuilder.CreateType();
 
-            var typeService = GetTypeService(type);
+            var mocker = new AutoMocker();
 
-            var dataTypes = typeService.DataTypes;
+            var assemblyLoader = mocker.GetMock<IAssemblyLoader>();
 
-            Assert.IsFalse(dataTypes.Any());
+            assemblyLoader.Setup(m => m.GetAssemblies()).Returns(new[] { modelType.Assembly });
+
+            var typeService = mocker.CreateInstance<TypeService>();
+
+            typeService.MediaTypes.Any().ShouldBeFalse();
         }
 
-        [TestMethod]
-        public void CanGetMediaTypes()
+        [Theory]
+        [AutoData]
+        public void CanGetMemberTypes(string typeName, string name)
         {
-            var type = MediaTypeUtility.GetTypeBuilder().CreateType();
+            var modelType = new MemberTypeModelTypeBuilder(typeName, name).CreateType();
 
-            var typeService = GetTypeService(type);
+            var mocker = new AutoMocker();
 
-            var mediaTypes = typeService.MediaTypes;
+            var assemblyLoader = mocker.GetMock<IAssemblyLoader>();
 
-            Assert.AreEqual(1, mediaTypes.Count);
+            assemblyLoader.Setup(m => m.GetAssemblies()).Returns(new[] { modelType.Assembly });
+
+            var typeService = mocker.CreateInstance<TypeService>();
+
+            typeService.MemberTypes.Count().ShouldBe(1);
         }
 
-        [TestMethod]
-        public void CannotGetAbstractMediaTypes()
+        [Theory]
+        [AutoData]
+        public void CanNotGetAbstractMemberTypes(string typeName, string name)
         {
-            var type = MediaTypeUtility.GetTypeBuilder(TypeAttributes.Abstract).CreateType();
+            var modelType = new MemberTypeModelTypeBuilder(typeName, name).CreateType(TypeAttributes.Abstract);
 
-            var typeService = GetTypeService(type);
+            var mocker = new AutoMocker();
 
-            var mediaTypes = typeService.MediaTypes;
+            var assemblyLoader = mocker.GetMock<IAssemblyLoader>();
 
-            Assert.IsFalse(mediaTypes.Any());
+            assemblyLoader.Setup(m => m.GetAssemblies()).Returns(new[] { modelType.Assembly });
+
+            var typeService = mocker.CreateInstance<TypeService>();
+
+            typeService.MemberTypes.Any().ShouldBeFalse();
         }
 
-        [TestMethod]
-        public void CannotGetMediaTypesWithoutPublicDefaultConstructor()
+        [Theory]
+        [AutoData]
+        public void CanNotGetMemberTypesWithoutPublicDefaultConstructor(string typeName, string name)
         {
-            var typeBuilder = MediaTypeUtility.GetTypeBuilder();
+            var typeBuilder = new MemberTypeModelTypeBuilder(typeName, name).GetTypeBuilder();
 
             typeBuilder.DefineDefaultConstructor(MethodAttributes.Private);
 
-            var type = typeBuilder.CreateType();
+            var modelType = typeBuilder.CreateType();
 
-            var typeService = GetTypeService(type);
+            var mocker = new AutoMocker();
 
-            var mediaTypes = typeService.MediaTypes;
+            var assemblyLoader = mocker.GetMock<IAssemblyLoader>();
 
-            Assert.IsFalse(mediaTypes.Any());
+            assemblyLoader.Setup(m => m.GetAssemblies()).Returns(new[] { modelType.Assembly });
+
+            var typeService = mocker.CreateInstance<TypeService>();
+
+            typeService.MemberTypes.Any().ShouldBeFalse();
         }
 
-        [TestMethod]
-        public void CanGetMemberTypes()
+        [Theory]
+        [AutoData]
+        public void CanGetDataTypes(string typeName, Type type, string editor)
         {
-            var type = MemberTypeUtility.GetTypeBuilder().CreateType();
+            var modelType = new DataTypeModelTypeBuilder(typeName, type, editor).CreateType();
 
-            var typeService = GetTypeService(type);
+            var mocker = new AutoMocker();
 
-            var memberTypes = typeService.MemberTypes;
+            var assemblyLoader = mocker.GetMock<IAssemblyLoader>();
 
-            Assert.AreEqual(1, memberTypes.Count);
+            assemblyLoader.Setup(m => m.GetAssemblies()).Returns(new[] { modelType.Assembly });
+
+            var typeService = mocker.CreateInstance<TypeService>();
+
+            typeService.DataTypes.Count().ShouldBe(1);
         }
 
-        [TestMethod]
-        public void CannotGetAbstractMemberTypes()
+        [Theory]
+        [AutoData]
+        public void CanNotGetAbstractDataTypes(string typeName, Type type, string editor)
         {
-            var type = MemberTypeUtility.GetTypeBuilder(TypeAttributes.Abstract).CreateType();
+            var modelType = new DataTypeModelTypeBuilder(typeName, type, editor).CreateType(TypeAttributes.Abstract);
 
-            var typeService = GetTypeService(type);
+            var mocker = new AutoMocker();
 
-            var memberTypes = typeService.MemberTypes;
+            var assemblyLoader = mocker.GetMock<IAssemblyLoader>();
 
-            Assert.IsFalse(memberTypes.Any());
+            assemblyLoader.Setup(m => m.GetAssemblies()).Returns(new[] { modelType.Assembly });
+
+            var typeService = mocker.CreateInstance<TypeService>();
+
+            typeService.DataTypes.Any().ShouldBeFalse();
         }
 
-        [TestMethod]
-        public void CannotGetMemberTypesWithoutPublicDefaultConstructor()
+        [Theory]
+        [AutoData]
+        public void CanNotGetDataTypesWithoutPublicDefaultConstructor(string typeName, Type type, string editor)
         {
-            var typeBuilder = MemberTypeUtility.GetTypeBuilder();
+            var typeBuilder = new DataTypeModelTypeBuilder(typeName, type, editor).GetTypeBuilder();
 
             typeBuilder.DefineDefaultConstructor(MethodAttributes.Private);
 
-            var type = typeBuilder.CreateType();
+            var modelType = typeBuilder.CreateType();
 
-            var typeService = GetTypeService(type);
+            var mocker = new AutoMocker();
 
-            var memberTypes = typeService.MemberTypes;
+            var assemblyLoader = mocker.GetMock<IAssemblyLoader>();
 
-            Assert.IsFalse(memberTypes.Any());
+            assemblyLoader.Setup(m => m.GetAssemblies()).Returns(new[] { modelType.Assembly });
+
+            var typeService = mocker.CreateInstance<TypeService>();
+
+            typeService.DataTypes.Any().ShouldBeFalse();
         }
     }
 }

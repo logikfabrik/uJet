@@ -2,28 +2,31 @@
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
+using System;
+
 namespace Logikfabrik.Umbraco.Jet
 {
     using Configuration;
     using Data;
     using global::Umbraco.Core;
+    using global::Umbraco.Core.Configuration;
+    using global::Umbraco.Core.Logging;
+    using global::Umbraco.Core.ObjectResolution;
     using global::Umbraco.Core.Services;
     using Logging;
+    using Mappings;
 
     /// <summary>
     /// The <see cref="JetApplicationHandler" /> class. Class for subscribing to Umbraco application events, setting up uJet.
     /// </summary>
+    // ReSharper disable once InheritdocConsiderUsage
     public class JetApplicationHandler : ApplicationHandler
     {
         private static readonly object Lock = new object();
 
         private bool _configured;
 
-        /// <summary>
-        /// Called when the application is started.
-        /// </summary>
-        /// <param name="umbracoApplication">The Umbraco application.</param>
-        /// <param name="applicationContext">The application context.</param>
+        /// <inheritdoc />
         public override void OnApplicationStarted(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
         {
             if (!IsInstalled)
@@ -40,10 +43,15 @@ namespace Logikfabrik.Umbraco.Jet
             {
                 var logService = new LogService();
 
+                logService.Log<JetApplicationHandler>(new LogEntry(LogEntryType.Information, "Begin register built-in data type definition mappings."));
+
+                BuiltInDataTypeDefinitionMappingsRegistrar.RegisterAll();
+
                 logService.Log<JetApplicationHandler>(new LogEntry(LogEntryType.Information, "Begin synchronizing types."));
 
-                var typeResolver = TypeResolver.Instance;
-                var typeRepository = TypeRepository.Instance;
+                var typeResolver = new TypeResolver(new TypeService(logService, new AssemblyLoader(AppDomain.CurrentDomain, JetConfigurationManager.Assemblies)));
+                var typeRepository = new TypeRepository(new ContentTypeRepository(new DatabaseWrapper(ApplicationContext.Current.DatabaseContext.Database, ResolverBase<LoggerResolver>.Current.Logger, ApplicationContext.Current.DatabaseContext.SqlSyntax)), new DataTypeRepository(new DatabaseWrapper(ApplicationContext.Current.DatabaseContext.Database, ResolverBase<LoggerResolver>.Current.Logger, ApplicationContext.Current.DatabaseContext.SqlSyntax)));
+                var dataTypeDefinitionService = new DataTypeDefinitionService(applicationContext.Services.DataTypeService, UmbracoConfig.For.UmbracoSettings().Content.EnablePropertyValueConverters);
 
                 // Synchronize.
                 if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.DataTypes))
@@ -68,10 +76,11 @@ namespace Logikfabrik.Umbraco.Jet
 
                     new DocumentTypeSynchronizer(
                         logService,
+                        typeRepository,
+                        typeResolver,
                         applicationContext.Services.ContentTypeService,
                         applicationContext.Services.FileService,
-                        typeResolver,
-                        typeRepository).Run();
+                        dataTypeDefinitionService).Run();
                 }
 
                 if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.MediaTypes))
@@ -80,9 +89,10 @@ namespace Logikfabrik.Umbraco.Jet
 
                     new MediaTypeSynchronizer(
                         logService,
-                        applicationContext.Services.ContentTypeService,
+                        typeRepository,
                         typeResolver,
-                        typeRepository).Run();
+                        applicationContext.Services.ContentTypeService,
+                        dataTypeDefinitionService).Run();
                 }
 
                 if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.MemberTypes))
@@ -93,7 +103,8 @@ namespace Logikfabrik.Umbraco.Jet
                         logService,
                         applicationContext.Services.MemberTypeService,
                         typeResolver,
-                        typeRepository).Run();
+                        typeRepository,
+                        dataTypeDefinitionService).Run();
                 }
 
                 var defaultValueService = new DefaultValueService(logService, typeResolver, typeRepository);

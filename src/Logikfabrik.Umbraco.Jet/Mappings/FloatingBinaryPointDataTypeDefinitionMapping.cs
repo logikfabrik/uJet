@@ -5,35 +5,20 @@
 namespace Logikfabrik.Umbraco.Jet.Mappings
 {
     using System;
-    using global::Umbraco.Core;
-    using global::Umbraco.Core.Models;
 
     /// <summary>
     /// The <see cref="FloatingBinaryPointDataTypeDefinitionMapping" /> class for types <see cref="float" /> and <see cref="double" />.
     /// </summary>
+    // ReSharper disable once InheritdocConsiderUsage
     public class FloatingBinaryPointDataTypeDefinitionMapping : DataTypeDefinitionMapping
     {
-        /// <summary>
-        /// Gets the supported types.
-        /// </summary>
-        /// <value>
-        /// The supported types.
-        /// </value>
-        protected override Type[] SupportedTypes => new[] { typeof(float), typeof(float?), typeof(double), typeof(double?) };
-
-        /// <summary>
-        /// Gets the mapped definition.
-        /// </summary>
-        /// <param name="fromType">From type.</param>
-        /// <returns>
-        /// The mapped definition.
-        /// </returns>
-        public override IDataTypeDefinition GetMappedDefinition(Type fromType)
+        /// <inheritdoc />
+        protected override Type[] SupportedTypes => new[]
         {
-            // The Umbraco data model has no explicit support for floating binary point types.
-            return !CanMapToDefinition(fromType)
-                ? null
-                : GetDefinition(ApplicationContext.Current.Services.DataTypeService, (int)DataTypeDefinition.Textstring);
-        }
+            typeof(float),
+            typeof(float?),
+            typeof(double),
+            typeof(double?)
+        };
     }
 }

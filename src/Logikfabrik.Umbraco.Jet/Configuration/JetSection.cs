@@ -9,6 +9,7 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
     /// <summary>
     /// The <see cref="JetSection" /> class.
     /// </summary>
+    // ReSharper disable once InheritdocConsiderUsage
     public class JetSection : ConfigurationSection
     {
         /// <summary>
@@ -23,15 +24,15 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
             IsRequired = false)]
         public SynchronizationMode Synchronize
         {
-            get { return (SynchronizationMode)this["synchronize"]; }
-            set { this["synchronize"] = value; }
+            get => (SynchronizationMode)this["synchronize"];
+            set => this["synchronize"] = value;
         }
 
         /// <summary>
-        /// Gets or sets the assemblies.
+        /// Gets or sets the assemblies to scan.
         /// </summary>
         /// <value>
-        /// The assemblies.
+        /// The assemblies to scan.
         /// </value>
         [ConfigurationProperty(
             "assemblies",
@@ -39,8 +40,8 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
             IsDefaultCollection = true)]
         public JetAssemblyElementCollection Assemblies
         {
-            get { return (JetAssemblyElementCollection)this["assemblies"]; }
-            set { this["assemblies"] = value; }
+            get => (JetAssemblyElementCollection)this["assemblies"];
+            set => this["assemblies"] = value;
         }
     }
 }

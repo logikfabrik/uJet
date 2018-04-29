@@ -10,6 +10,7 @@ namespace Logikfabrik.Umbraco.Jet
     using Data;
     using global::Umbraco.Core.Models;
     using Logging;
+    using Mappings;
 
     /// <summary>
     /// The <see cref="ComposableContentTypeSynchronizer{TModel, TModelAttribute, TContentType}" /> class.
@@ -17,6 +18,7 @@ namespace Logikfabrik.Umbraco.Jet
     /// <typeparam name="TModel">The model type.</typeparam>
     /// <typeparam name="TModelAttribute">The model attribute type.</typeparam>
     /// <typeparam name="TContentType">The content type.</typeparam>
+    // ReSharper disable once InheritdocConsiderUsage
     public abstract class ComposableContentTypeSynchronizer<TModel, TModelAttribute, TContentType> : ContentTypeSynchronizer<TModel, TModelAttribute, TContentType>
         where TModel : ComposableContentTypeModel<TModelAttribute>
         where TModelAttribute : ComposableContentTypeAttribute
@@ -29,26 +31,14 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="logService">The log service.</param>
         /// <param name="typeRepository">The type repository.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="logService" />, or <paramref name="typeRepository" /> are <c>null</c>.</exception>
-        protected ComposableContentTypeSynchronizer(ILogService logService, ITypeRepository typeRepository)
-            : base(logService, typeRepository)
+        // ReSharper disable once InheritdocConsiderUsage
+        protected ComposableContentTypeSynchronizer(ILogService logService, ITypeRepository typeRepository, IDataTypeDefinitionService dataTypeDefinitionService)
+            : base(logService, typeRepository, dataTypeDefinitionService)
         {
-            if (logService == null)
-            {
-                throw new ArgumentNullException(nameof(logService));
-            }
-
-            if (typeRepository == null)
-            {
-                throw new ArgumentNullException(nameof(typeRepository));
-            }
-
             _contentTypeFinder = new ContentTypeFinder<TModel, TModelAttribute, TContentType>(logService, typeRepository);
         }
 
-        /// <summary>
-        /// Synchronizes this instance.
-        /// </summary>
+        /// <inheritdoc />
         public override void Run()
         {
             base.Run();
@@ -60,11 +50,7 @@ namespace Logikfabrik.Umbraco.Jet
             SetCompositionNodeTypes(contentTypes);
         }
 
-        /// <summary>
-        /// Creates a content type.
-        /// </summary>
-        /// <param name="model">The model to use when creating the content type.</param>
-        /// <returns>The created content type.</returns>
+        /// <inheritdoc />
         internal override TContentType CreateContentType(TModel model)
         {
             var contentType = base.CreateContentType(model);
@@ -79,12 +65,7 @@ namespace Logikfabrik.Umbraco.Jet
             return contentType;
         }
 
-        /// <summary>
-        /// Updates the specified content type.
-        /// </summary>
-        /// <param name="contentType">The content type to update.</param>
-        /// <param name="model">The model to use when updating the content type.</param>
-        /// <returns>The updated content type.</returns>
+        /// <inheritdoc />
         internal override TContentType UpdateContentType(TContentType contentType, TModel model)
         {
             contentType = base.UpdateContentType(contentType, model);
@@ -97,10 +78,11 @@ namespace Logikfabrik.Umbraco.Jet
 
         private void SetParentNodeType(TContentType[] contentTypes)
         {
-            Func<TModel, bool> hasParent = model => model.ParentNodeType != null;
+            bool HasParent(TModel model) => model.ParentNodeType != null;
 
-            foreach (var model in Models.Where(hasParent))
+            foreach (var model in Models.Where(HasParent))
             {
+                // ReSharper disable once UsePatternMatching
                 var contentType = _contentTypeFinder.Find(model, contentTypes).SingleOrDefault() as IContentTypeComposition;
 
                 if (contentType == null)
@@ -108,6 +90,7 @@ namespace Logikfabrik.Umbraco.Jet
                     continue;
                 }
 
+                // ReSharper disable once UsePatternMatching
                 var parentContentType = _contentTypeFinder.Find(model.ParentNodeType, Models, contentTypes).SingleOrDefault() as IContentTypeComposition;
 
                 if (parentContentType == null)
@@ -132,10 +115,11 @@ namespace Logikfabrik.Umbraco.Jet
 
         private void SetCompositionNodeTypes(TContentType[] contentTypes)
         {
-            Func<TModel, bool> hasComposition = model => model.ParentNodeType == null && model.CompositionNodeTypes.Any();
+            bool HasComposition(TModel model) => model.ParentNodeType == null && model.CompositionNodeTypes.Any();
 
-            foreach (var model in Models.Where(hasComposition))
+            foreach (var model in Models.Where(HasComposition))
             {
+                // ReSharper disable once UsePatternMatching
                 var contentType = _contentTypeFinder.Find(model, contentTypes).SingleOrDefault() as IContentTypeComposition;
 
                 if (contentType == null)
@@ -175,9 +159,9 @@ namespace Logikfabrik.Umbraco.Jet
 
         private void SetAllowedContentTypes(TContentType[] contentTypes)
         {
-            Func<TModel, bool> hasAllowedChildNodeTypes = model => model.AllowedChildNodeTypes.Any();
+            bool HasAllowedChildNodeTypes(TModel model) => model.AllowedChildNodeTypes.Any();
 
-            foreach (var model in Models.Where(hasAllowedChildNodeTypes))
+            foreach (var model in Models.Where(HasAllowedChildNodeTypes))
             {
                 var contentType = _contentTypeFinder.Find(model, contentTypes).SingleOrDefault();
 

@@ -7,15 +7,17 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
     using System.Linq;
     using Data;
+    using EnsureThat;
     using global::Umbraco.Core.Models;
     using Logging;
 
     /// <summary>
-    /// The <see cref="ContentTypeModelFinder{TModel, TModelAttribute, TContentType}"/> class.
+    /// The <see cref="ContentTypeModelFinder{TModel, TModelAttribute, TContentType}" /> class.
     /// </summary>
     /// <typeparam name="TModel">The model type.</typeparam>
     /// <typeparam name="TModelAttribute">The model attribute type.</typeparam>
     /// <typeparam name="TContentType">The content type.</typeparam>
+    // ReSharper disable once InheritdocConsiderUsage
     public class ContentTypeModelFinder<TModel, TModelAttribute, TContentType> : TypeModelFinder<TModel, TModelAttribute>
         where TModel : ContentTypeModel<TModelAttribute>
         where TModelAttribute : ContentTypeModelAttribute
@@ -26,23 +28,15 @@ namespace Logikfabrik.Umbraco.Jet
         private readonly TypeModelComparer<TModel, TModelAttribute> _comparer;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContentTypeModelFinder{TModel, TModelAttribute, TContentType}"/> class.
+        /// Initializes a new instance of the <see cref="ContentTypeModelFinder{TModel, TModelAttribute, TContentType}" /> class.
         /// </summary>
         /// <param name="logService">The log service,</param>
         /// <param name="typeRepository">The type repository.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="logService" />, or <paramref name="typeRepository" /> are <c>null</c>.</exception>
+        // ReSharper disable once InheritdocConsiderUsage
         public ContentTypeModelFinder(ILogService logService, ITypeRepository typeRepository)
-            : base(logService)
         {
-            if (logService == null)
-            {
-                throw new ArgumentNullException(nameof(logService));
-            }
-
-            if (typeRepository == null)
-            {
-                throw new ArgumentNullException(nameof(typeRepository));
-            }
+            EnsureArg.IsNotNull(logService);
+            EnsureArg.IsNotNull(typeRepository);
 
             _logService = logService;
             _typeRepository = typeRepository;
@@ -55,18 +49,10 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="contentTypeNeedle">The content type to find the models for.</param>
         /// <param name="modelsHaystack">The haystack of models.</param>
         /// <returns>The models found.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="contentTypeNeedle" />, or <paramref name="modelsHaystack" /> are <c>null</c>.</exception>
         public TModel[] Find(TContentType contentTypeNeedle, TModel[] modelsHaystack)
         {
-            if (contentTypeNeedle == null)
-            {
-                throw new ArgumentNullException(nameof(contentTypeNeedle));
-            }
-
-            if (modelsHaystack == null)
-            {
-                throw new ArgumentNullException(nameof(modelsHaystack));
-            }
+            EnsureArg.IsNotNull(contentTypeNeedle);
+            EnsureArg.IsNotNull(modelsHaystack);
 
             _logService.Log<ContentTypeModelFinder<TModel, TModelAttribute, TContentType>>(new LogEntry(LogEntryType.Debug, $"Find content type models matching {contentTypeNeedle.Name} ({contentTypeNeedle.Alias})."));
 

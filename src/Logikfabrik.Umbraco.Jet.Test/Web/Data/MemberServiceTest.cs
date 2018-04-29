@@ -2,20 +2,22 @@
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
+using AutoFixture.Xunit2;
+
 namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 {
     using System;
     using System.Collections.Generic;
     using global::Umbraco.Core.Models;
     using Jet.Web.Data;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
+    using Shouldly;
     using Utilities;
+    using Xunit;
 
-    [TestClass]
     public class MemberServiceTest : TestBase
     {
-        [TestMethod]
+        [Fact]
         public void CanGetMemberIdByConvention()
         {
             const int id = 123;
@@ -31,10 +33,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var member = new MemberService(umbracoHelperWrapperMock.Object).GetMember<Models.MemberType>(id);
 
-            Assert.AreEqual(id, member.Id);
+            member.Id.ShouldBe(id);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetMemberUrlByConvention()
         {
             const int id = 123;
@@ -51,10 +53,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var member = new MemberService(umbracoHelperWrapperMock.Object).GetMember<Models.MemberType>(id);
 
-            Assert.AreEqual(url, member.Url);
+            member.Url.ShouldBe(url);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetMemberNameByConvention()
         {
             const int id = 123;
@@ -71,10 +73,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var member = new MemberService(umbracoHelperWrapperMock.Object).GetMember<Models.MemberType>(id);
 
-            Assert.AreEqual(name, member.Name);
+            member.Name.ShouldBe(name);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetMemberCreateDateByConvention()
         {
             const int id = 123;
@@ -91,10 +93,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var member = new MemberService(umbracoHelperWrapperMock.Object).GetMember<Models.MemberType>(id);
 
-            Assert.AreEqual(createDate, member.CreateDate);
+            member.CreateDate.ShouldBe(createDate);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetMemberUpdateDateByConvention()
         {
             const int id = 123;
@@ -111,11 +113,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var member = new MemberService(umbracoHelperWrapperMock.Object).GetMember<Models.MemberType>(id);
 
-            Assert.AreEqual(updateDate, member.UpdateDate);
+            member.UpdateDate.ShouldBe(updateDate);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void CanNotGetMemberForInvalidMemberType()
         {
             var type = TypeUtility.GetTypeBuilder("MyType", TypeUtility.GetTypeAttributes()).CreateType();
@@ -124,13 +125,14 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var service = new MemberService(new Mock<IUmbracoHelperWrapper>().Object);
 
-            service.GetMember(contentMock.Object, type);
+            Assert.Throws<ArgumentException>(() => service.GetMember(contentMock.Object, type));
         }
 
-        [TestMethod]
-        public void CanGetMemberForValidMemberType()
+        [Theory]
+        [AutoData]
+        public void CanGetMemberForValidMemberType(string typeName, string name)
         {
-            var type = MemberTypeUtility.GetTypeBuilder().CreateType();
+            var modelType = new MemberTypeModelTypeBuilder(typeName, name).CreateType();
 
             var contentMock = new Mock<IPublishedContent>();
 
@@ -138,12 +140,12 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var service = new MemberService(new Mock<IUmbracoHelperWrapper>().Object);
 
-            var member = service.GetMember(contentMock.Object, type);
+            var member = service.GetMember(contentMock.Object, modelType);
 
-            Assert.IsNotNull(member);
+            member.ShouldNotBeNull();
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetMemberForMemberTypeWithStringProperty()
         {
             const int id = 123;
@@ -168,10 +170,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var member = new MemberService(umbracoHelperWrapperMock.Object).GetMember<Models.MemberType>(id);
 
-            Assert.AreEqual(stringPropertyValue, member.StringProperty);
+            member.StringProperty.ShouldBe(stringPropertyValue);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetMemberForMemberTypeWithIntegerProperty()
         {
             const int id = 123;
@@ -196,10 +198,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var member = new MemberService(umbracoHelperWrapperMock.Object).GetMember<Models.MemberType>(id);
 
-            Assert.AreEqual(integerPropertyValue, member.IntegerProperty);
+            member.IntegerProperty.ShouldBe(integerPropertyValue);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetMemberForMemberTypeWithFloatingBinaryPointProperty()
         {
             const int id = 123;
@@ -224,10 +226,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var member = new MemberService(umbracoHelperWrapperMock.Object).GetMember<Models.MemberType>(id);
 
-            Assert.AreEqual(floatingBinaryPointPropertyValue, member.FloatingBinaryPointProperty);
+            member.FloatingBinaryPointProperty.ShouldBe(floatingBinaryPointPropertyValue);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetMemberForMemberTypeWithFloatingDecimalPointProperty()
         {
             const int id = 123;
@@ -252,10 +254,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var member = new MemberService(umbracoHelperWrapperMock.Object).GetMember<Models.MemberType>(id);
 
-            Assert.AreEqual(floatingDecimalPointPropertyValue, member.FloatingDecimalPointProperty);
+            member.FloatingDecimalPointProperty.ShouldBe(floatingDecimalPointPropertyValue);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetMemberForMemberTypeWithBooleanProperty()
         {
             const int id = 123;
@@ -280,10 +282,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var member = new MemberService(umbracoHelperWrapperMock.Object).GetMember<Models.MemberType>(id);
 
-            Assert.AreEqual(booleanPropertyValue, member.BooleanProperty);
+            member.BooleanProperty.ShouldBe(booleanPropertyValue);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetMemberForMemberTypeWithDateTimeProperty()
         {
             const int id = 123;
@@ -308,7 +310,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var member = new MemberService(umbracoHelperWrapperMock.Object).GetMember<Models.MemberType>(id);
 
-            Assert.AreEqual(dateTimePropertyValue, member.DateTimeProperty);
+            member.DateTimeProperty.ShouldBe(dateTimePropertyValue);
         }
     }
 }

@@ -4,24 +4,22 @@
 
 namespace Logikfabrik.Umbraco.Jet
 {
-    using System;
+    using EnsureThat;
 
     /// <summary>
     /// The <see cref="ContentTypeModelAttribute" /> class.
     /// </summary>
+    // ReSharper disable once InheritdocConsiderUsage
     public abstract class ContentTypeModelAttribute : TypeModelAttribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentTypeModelAttribute" /> class.
         /// </summary>
         /// <param name="name">The name.</param>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="name" /> is <c>null</c> or white space.</exception>
+        // ReSharper disable once InheritdocConsiderUsage
         protected ContentTypeModelAttribute(string name)
         {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentException("Name cannot be null or white space.", nameof(name));
-            }
+            EnsureArg.IsNotNullOrWhiteSpace(name);
 
             Name = name;
         }
@@ -31,14 +29,11 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="name">The name.</param>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="name" /> is <c>null</c> or white space.</exception>
+        // ReSharper disable once InheritdocConsiderUsage
         protected ContentTypeModelAttribute(string id, string name)
             : base(id)
         {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentException("Name cannot be null or white space.", nameof(name));
-            }
+            EnsureArg.IsNotNullOrWhiteSpace(name);
 
             Name = name;
         }

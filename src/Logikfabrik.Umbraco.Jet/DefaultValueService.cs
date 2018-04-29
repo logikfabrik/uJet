@@ -28,7 +28,6 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="logService">The log service.</param>
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="typeRepository">The type repository.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="logService" />, <paramref name="typeResolver" />, or <paramref name="typeRepository" /> are <c>null</c>.</exception>
         public DefaultValueService(ILogService logService, ITypeResolver typeResolver, ITypeRepository typeRepository)
         {
             if (logService == null)
@@ -36,17 +35,12 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentNullException(nameof(logService));
             }
 
-            if (typeResolver == null)
-            {
-                throw new ArgumentNullException(nameof(typeResolver));
-            }
-
             if (typeRepository == null)
             {
                 throw new ArgumentNullException(nameof(typeRepository));
             }
 
-            _typeResolver = typeResolver;
+            _typeResolver = typeResolver ?? throw new ArgumentNullException(nameof(typeResolver));
 
             _documentTypeModelFinder = new ContentTypeModelFinder<DocumentType, DocumentTypeAttribute, IContentType>(logService, typeRepository);
             _mediaTypeModelFinder = new ContentTypeModelFinder<MediaType, MediaTypeAttribute, IMediaType>(logService, typeRepository);
@@ -57,7 +51,6 @@ namespace Logikfabrik.Umbraco.Jet
         /// Sets the default values.
         /// </summary>
         /// <param name="content">The content to set default values for.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" /> is <c>null</c>.</exception>
         public void SetDefaultValues(IEnumerable<IContent> content)
         {
             if (content == null)
@@ -75,7 +68,6 @@ namespace Logikfabrik.Umbraco.Jet
         /// Sets the default values.
         /// </summary>
         /// <param name="content">The content to set default values for.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" /> is <c>null</c>.</exception>
         public void SetDefaultValues(IContent content)
         {
             if (content == null)
@@ -97,7 +89,6 @@ namespace Logikfabrik.Umbraco.Jet
         /// Sets the default values.
         /// </summary>
         /// <param name="content">The content to set default values for.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" /> is <c>null</c>.</exception>
         public void SetDefaultValues(IEnumerable<IMedia> content)
         {
             if (content == null)
@@ -115,7 +106,6 @@ namespace Logikfabrik.Umbraco.Jet
         /// Sets the default values.
         /// </summary>
         /// <param name="content">The content to set default values for.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" /> is <c>null</c>.</exception>
         public void SetDefaultValues(IMedia content)
         {
             if (content == null)
@@ -137,7 +127,6 @@ namespace Logikfabrik.Umbraco.Jet
         /// Sets the default values.
         /// </summary>
         /// <param name="content">The content to set default values for.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" /> is <c>null</c>.</exception>
         public void SetDefaultValues(IEnumerable<IMember> content)
         {
             if (content == null)
@@ -155,7 +144,6 @@ namespace Logikfabrik.Umbraco.Jet
         /// Sets the default values.
         /// </summary>
         /// <param name="content">The content to set default values for.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="content" /> is <c>null</c>.</exception>
         public void SetDefaultValues(IMember content)
         {
             if (content == null)

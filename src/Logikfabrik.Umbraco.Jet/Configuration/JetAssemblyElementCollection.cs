@@ -9,26 +9,16 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
     /// <summary>
     /// The <see cref="JetAssemblyElementCollection" /> class.
     /// </summary>
+    // ReSharper disable once InheritdocConsiderUsage
     public class JetAssemblyElementCollection : ConfigurationElementCollection
     {
-        /// <summary>
-        /// Creates a new <see cref="JetAssemblyElement" />.
-        /// </summary>
-        /// <returns>
-        /// A new <see cref="JetAssemblyElement" />.
-        /// </returns>
+        /// <inheritdoc />
         protected override ConfigurationElement CreateNewElement()
         {
             return new JetAssemblyElement();
         }
 
-        /// <summary>
-        /// Gets the element key for a specified configuration element.
-        /// </summary>
-        /// <param name="element">The <see cref="JetAssemblyElement" /> to return the key for.</param>
-        /// <returns>
-        /// An <see cref="string" /> that acts as the key for the specified <see cref="JetAssemblyElement" />.
-        /// </returns>
+        /// <inheritdoc />
         protected override object GetElementKey(ConfigurationElement element)
         {
             return ((JetAssemblyElement)element).Name;

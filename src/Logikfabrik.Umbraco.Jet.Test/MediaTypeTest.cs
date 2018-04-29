@@ -6,163 +6,231 @@ namespace Logikfabrik.Umbraco.Jet.Test
 {
     using System;
     using System.Linq;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using AutoFixture.Xunit2;
+    using Shouldly;
+    using Utilities;
+    using Xunit;
 
-    [TestClass]
-    public class MediaTypeTest : TestBase
+    public class MediaTypeTest
     {
-        [TestMethod]
-        public void CanGetTypeFromAttribute()
+        [Theory]
+        [AutoData]
+        public void CanGetTypeFromAttribute(string typeName, string name)
         {
-            var mediaType = new MediaType(typeof(Models.MediaType));
+            var modelType = new MediaTypeModelTypeBuilder(typeName, name).CreateType();
 
-            Assert.AreSame(typeof(Models.MediaType), mediaType.ModelType);
+            var model = new MediaType(modelType);
+
+            model.ModelType.ShouldBe(modelType);
         }
 
-        [TestMethod]
-        public void CanGetNameFromAttribute()
+        [Theory]
+        [AutoData]
+        public void CanGetIdFromAttribute(string typeName, Guid id, string name)
         {
-            var mediaType = new MediaType(typeof(Models.MediaType));
+            var modelType = new MediaTypeModelTypeBuilder(typeName, id.ToString(), name).CreateType();
 
-            Assert.AreEqual("MediaType", mediaType.Name);
+            var model = new MediaType(modelType);
+
+            model.Id.ShouldBe(id);
         }
 
-        [TestMethod]
-        public void CanGetAliasFromAttribute()
+        [Theory]
+        [AutoData]
+        public void CanGetNameFromAttribute(string typeName, string name)
         {
-            var mediaType = new MediaType(typeof(Models.MediaType));
+            var modelType = new MediaTypeModelTypeBuilder(typeName, name).CreateType();
 
-            Assert.AreEqual("mediaType", mediaType.Alias);
+            var model = new MediaType(modelType);
+
+            model.Name.ShouldBe(name);
         }
 
-        [TestMethod]
-        public void CanGetIdFromAttribute()
+        [Theory]
+        [AutoData]
+        public void CanGetDescriptionFromAttribute(string typeName, string name, string description)
         {
-            var mediaType = new MediaType(typeof(Models.MediaType));
+            var modelType = new MediaTypeModelTypeBuilder(typeName, name) { Description = description }.CreateType();
 
-            Assert.AreEqual(Guid.Parse("7bbd6ff5-54ac-4b5a-80fb-4adabe366bcd"), mediaType.Id);
+            var model = new MediaType(modelType);
+
+            model.Description.ShouldBe(description);
         }
 
-        [TestMethod]
-        public void CanGetDescriptionFromAttribute()
+        [Theory]
+        [AutoData]
+        public void CanGetIconFromAttribute(string typeName, string name, string icon)
         {
-            var mediaType = new MediaType(typeof(Models.MediaType));
+            var modelType = new MediaTypeModelTypeBuilder(typeName, name) { Icon = icon }.CreateType();
 
-            Assert.AreEqual("Description", mediaType.Description);
+            var model = new MediaType(modelType);
+
+            model.Icon.ShouldBe(icon);
         }
 
-        [TestMethod]
-        public void CanGetAllowedAsRootFromAttribute()
+        [Theory]
+        [AutoData]
+        public void CanGetIsContainerFromAttribute(string typeName, string name, bool isContainer)
         {
-            var mediaType = new MediaType(typeof(Models.MediaType));
+            var modelType = new MediaTypeModelTypeBuilder(typeName, name) { IsContainer = isContainer }.CreateType();
 
-            Assert.AreEqual(true, mediaType.AllowedAsRoot);
+            var model = new MediaType(modelType);
+
+            model.IsContainer.ShouldBe(isContainer);
         }
 
-        [TestMethod]
-        public void CanGetAllowedChildNodeTypesFromAttribute()
+        [Theory]
+        [AutoData]
+        public void CanGetAliasFromAttribute(string typeName, string name, string alias)
         {
-            var mediaType = new MediaType(typeof(Models.MediaType));
+            var modelType = new MediaTypeModelTypeBuilder(typeName, name) { Alias = alias }.CreateType();
 
-            Assert.IsFalse(mediaType.AllowedChildNodeTypes.Any());
+            var model = new MediaType(modelType);
+
+            model.Alias.ShouldBe(alias);
         }
 
-        [TestMethod]
-        public void CanGetProperties()
+        [Theory]
+        [AutoData]
+        public void CanGetThumbnailFromAttribute(string typeName, string name, string thumbnail)
         {
-            var mediaType = new MediaType(typeof(Models.MediaType));
+            var modelType = new MediaTypeModelTypeBuilder(typeName, name) { Thumbnail = thumbnail }.CreateType();
 
-            Assert.AreEqual(11, mediaType.Properties.Count());
+            var model = new MediaType(modelType);
+
+            model.Thumbnail.ShouldBe(thumbnail);
         }
 
-        [TestMethod]
-        public void CanGetStringProperty()
+        [Theory]
+        [AutoData]
+        public void CanGetAllowedAsRootFromAttribute(string typeName, string name, bool allowedAsRoot)
         {
-            var media = new Models.MediaType();
-            var mediaType = new MediaType(media.GetType());
-            var property = mediaType.Properties.First(p => p.Name == GetPropertyName(() => media.StringProperty));
+            var modelType = new MediaTypeModelTypeBuilder(typeName, name) { AllowedAsRoot = allowedAsRoot }.CreateType();
 
-            Assert.AreSame(typeof(string), property.Type);
+            var model = new MediaType(modelType);
+
+            model.AllowedAsRoot.ShouldBe(allowedAsRoot);
         }
 
-        [TestMethod]
-        public void CanGetIntegerProperty()
+        [Theory]
+        [AutoData]
+        public void CanGetAllowedChildNodeTypesFromAttribute(string typeName, string name, Type[] allowedChildNodeTypes)
         {
-            var media = new Models.MediaType();
-            var mediaType = new MediaType(media.GetType());
-            var property = mediaType.Properties.First(p => p.Name == GetPropertyName(() => media.IntegerProperty));
+            var modelType = new MediaTypeModelTypeBuilder(typeName, name) { AllowedChildNodeTypes = allowedChildNodeTypes }.CreateType();
 
-            Assert.AreSame(typeof(int), property.Type);
+            var model = new MediaType(modelType);
+
+            model.AllowedChildNodeTypes.Any().ShouldBeTrue();
         }
 
-        [TestMethod]
-        public void CanGetFloatingDecimalPointProperty()
+        [Theory]
+        [AutoData]
+        public void CanGetCompositionNodeTypesFromAttribute(string typeName, string name, Type[] compositionNodeTypes)
         {
-            var media = new Models.MediaType();
-            var mediaType = new MediaType(media.GetType());
-            var property = mediaType.Properties.First(p => p.Name == GetPropertyName(() => media.FloatingDecimalPointProperty));
+            var modelType = new MediaTypeModelTypeBuilder(typeName, name) { CompositionNodeTypes = compositionNodeTypes }.CreateType();
 
-            Assert.AreSame(typeof(decimal), property.Type);
+            var model = new MediaType(modelType);
+
+            model.CompositionNodeTypes.Any().ShouldBeTrue();
         }
 
-        [TestMethod]
-        public void CanGetFloatingBinaryPointProperty()
+        [Theory]
+        [AutoData]
+        public void CanGetProperties(string typeName, string name)
         {
-            var media = new Models.MediaType();
-            var mediaType = new MediaType(media.GetType());
-            var property = mediaType.Properties.First(p => p.Name == GetPropertyName(() => media.FloatingBinaryPointProperty));
+            var modelType = new MediaTypeModelTypeBuilder(typeName, name).CreateType();
 
-            Assert.AreSame(typeof(float), property.Type);
+            var model = new MediaType(modelType);
+
+            model.Properties.ShouldNotBeNull();
         }
 
-        [TestMethod]
-        public void CanGetDateTimeProperty()
+        [Theory]
+        [InlineAutoData(typeof(string))]
+        [InlineAutoData(typeof(int))]
+        [InlineAutoData(typeof(decimal))]
+        [InlineAutoData(typeof(float))]
+        [InlineAutoData(typeof(DateTime))]
+        [InlineAutoData(typeof(bool))]
+        public void CanGetPublicProperty(Type propertyType, string propertyName, string typeName, string name)
         {
-            var media = new Models.MediaType();
-            var mediaType = new MediaType(media.GetType());
-            var property = mediaType.Properties.First(p => p.Name == GetPropertyName(() => media.DateTimeProperty));
+            var typeBuilder = new MediaTypeModelTypeBuilder(typeName, name).GetTypeBuilder();
 
-            Assert.AreSame(typeof(DateTime), property.Type);
+            typeBuilder.AddPublicProperty(propertyName, propertyType);
+
+            var modelType = typeBuilder.CreateType();
+
+            var model = new MediaType(modelType);
+
+            var property = model.Properties.Single(p => p.Name == propertyName);
+
+            property.Type.ShouldBe(propertyType);
         }
 
-        [TestMethod]
-        public void CanGetBooleanProperty()
+        [Theory]
+        [InlineAutoData(typeof(string))]
+        [InlineAutoData(typeof(int))]
+        [InlineAutoData(typeof(decimal))]
+        [InlineAutoData(typeof(float))]
+        [InlineAutoData(typeof(DateTime))]
+        [InlineAutoData(typeof(bool))]
+        public void CanNotGetPrivateProperty(Type propertyType, string propertyName, string typeName, string name)
         {
-            var media = new Models.MediaType();
-            var mediaType = new MediaType(media.GetType());
-            var property = mediaType.Properties.First(p => p.Name == GetPropertyName(() => media.BooleanProperty));
+            var typeBuilder = new MediaTypeModelTypeBuilder(typeName, name).GetTypeBuilder();
 
-            Assert.AreSame(typeof(bool), property.Type);
+            typeBuilder.AddPrivateProperty(propertyName, propertyType);
+
+            var modelType = typeBuilder.CreateType();
+
+            var model = new MediaType(modelType);
+
+            var property = model.Properties.SingleOrDefault(p => p.Name == propertyName);
+
+            property.ShouldBeNull();
         }
 
-        [TestMethod]
-        public void CannotGetNonScaffoldedProperty()
+        [Theory]
+        [InlineAutoData(typeof(string))]
+        [InlineAutoData(typeof(int))]
+        [InlineAutoData(typeof(decimal))]
+        [InlineAutoData(typeof(float))]
+        [InlineAutoData(typeof(DateTime))]
+        [InlineAutoData(typeof(bool))]
+        public void CanNotGetPublicReadOnlyProperty(Type propertyType, string propertyName, string typeName, string name)
         {
-            var media = new Models.MediaType();
-            var mediaType = new MediaType(media.GetType());
-            var property = mediaType.Properties.FirstOrDefault(p => p.Name == GetPropertyName(() => media.NonScaffoldedStringProperty));
+            var typeBuilder = new MediaTypeModelTypeBuilder(typeName, name).GetTypeBuilder();
 
-            Assert.IsNull(property);
+            typeBuilder.AddPublicReadOnlyProperty(propertyName, propertyType);
+
+            var modelType = typeBuilder.CreateType();
+
+            var model = new MediaType(modelType);
+
+            var property = model.Properties.SingleOrDefault(p => p.Name == propertyName);
+
+            property.ShouldBeNull();
         }
 
-        [TestMethod]
-        public void CannotGetPropertyWithoutSetter()
+        [Theory]
+        [InlineAutoData(typeof(string))]
+        [InlineAutoData(typeof(int))]
+        [InlineAutoData(typeof(decimal))]
+        [InlineAutoData(typeof(float))]
+        [InlineAutoData(typeof(DateTime))]
+        [InlineAutoData(typeof(bool))]
+        public void CanNotGetPublicWriteOnlyProperty(Type propertyType, string propertyName, string typeName, string name)
         {
-            var media = new Models.MediaType();
-            var mediaType = new MediaType(media.GetType());
-            var property = mediaType.Properties.FirstOrDefault(p => p.Name == GetPropertyName(() => media.StringPropertyWithoutSetter));
+            var typeBuilder = new MediaTypeModelTypeBuilder(typeName, name).GetTypeBuilder();
 
-            Assert.IsNull(property);
-        }
+            typeBuilder.AddPublicWriteOnlyProperty(propertyName, propertyType);
 
-        [TestMethod]
-        public void CannotGetPrivateProperty()
-        {
-            var media = new Models.MediaType();
-            var mediaType = new MediaType(media.GetType());
-            var property = mediaType.Properties.FirstOrDefault(p => p.Name == "PrivateStringProperty");
+            var modelType = typeBuilder.CreateType();
 
-            Assert.IsNull(property);
+            var model = new MediaType(modelType);
+
+            var property = model.Properties.SingleOrDefault(p => p.Name == propertyName);
+
+            property.ShouldBeNull();
         }
     }
 }

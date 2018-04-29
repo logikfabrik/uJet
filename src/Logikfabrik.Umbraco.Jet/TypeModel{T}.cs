@@ -6,6 +6,7 @@ namespace Logikfabrik.Umbraco.Jet
 {
     using System;
     using System.Reflection;
+    using EnsureThat;
     using Extensions;
 
     /// <summary>
@@ -19,19 +20,10 @@ namespace Logikfabrik.Umbraco.Jet
         /// Initializes a new instance of the <see cref="TypeModel{T}" /> class.
         /// </summary>
         /// <param name="modelType">The model type.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="modelType" /> is <c>null</c>.</exception>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="modelType" /> is not a model type.</exception>
         protected TypeModel(Type modelType)
         {
-            if (modelType == null)
-            {
-                throw new ArgumentNullException(nameof(modelType));
-            }
-
-            if (!modelType.IsModelType<T>())
-            {
-                throw new ArgumentException($"Type {modelType} is not a model type.", nameof(modelType));
-            }
+            EnsureArg.IsNotNull(modelType);
+            EnsureArg.IsTrue(modelType.IsModelType<T>(), nameof(modelType));
 
             ModelType = modelType;
             Attribute = modelType.GetCustomAttribute<T>(false);

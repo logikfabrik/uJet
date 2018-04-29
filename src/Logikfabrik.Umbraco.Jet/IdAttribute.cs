@@ -15,7 +15,6 @@ namespace Logikfabrik.Umbraco.Jet
         /// Initializes a new instance of the <see cref="IdAttribute" /> class.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="id" /> is <c>null</c> or white space.</exception>
         public IdAttribute(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -23,9 +22,7 @@ namespace Logikfabrik.Umbraco.Jet
                 throw new ArgumentException("ID cannot be null or white space.", nameof(id));
             }
 
-            Guid result;
-
-            if (Guid.TryParse(id, out result))
+            if (Guid.TryParse(id, out var result))
             {
                 Id = result;
             }

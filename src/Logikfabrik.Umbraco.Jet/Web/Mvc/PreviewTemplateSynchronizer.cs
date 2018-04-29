@@ -7,6 +7,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using EnsureThat;
     using Extensions;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
@@ -16,6 +17,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     /// <summary>
     /// The <see cref="PreviewTemplateSynchronizer" /> class.
     /// </summary>
+    // ReSharper disable once InheritdocConsiderUsage
     public class PreviewTemplateSynchronizer : ISynchronizer
     {
         private readonly IContentTypeService _contentTypeService;
@@ -33,7 +35,6 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// <param name="fileService">The file service.</param>
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="typeRepository">The type repository.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="logService" />, <paramref name="contentTypeService" />, <paramref name="fileService" />, <paramref name="typeResolver" />, or <paramref name="typeRepository" /> are <c>null</c>.</exception>
         public PreviewTemplateSynchronizer(
             ILogService logService,
             IContentTypeService contentTypeService,
@@ -41,30 +42,11 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
             ITypeResolver typeResolver,
             ITypeRepository typeRepository)
         {
-            if (logService == null)
-            {
-                throw new ArgumentNullException(nameof(logService));
-            }
-
-            if (contentTypeService == null)
-            {
-                throw new ArgumentNullException(nameof(contentTypeService));
-            }
-
-            if (fileService == null)
-            {
-                throw new ArgumentNullException(nameof(fileService));
-            }
-
-            if (typeResolver == null)
-            {
-                throw new ArgumentNullException(nameof(typeResolver));
-            }
-
-            if (typeRepository == null)
-            {
-                throw new ArgumentNullException(nameof(typeRepository));
-            }
+            EnsureArg.IsNotNull(logService);
+            EnsureArg.IsNotNull(contentTypeService);
+            EnsureArg.IsNotNull(fileService);
+            EnsureArg.IsNotNull(typeResolver);
+            EnsureArg.IsNotNull(typeRepository);
 
             _contentTypeService = contentTypeService;
             _fileService = fileService;
@@ -72,9 +54,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
             _documentTypeFinder = new ContentTypeFinder<DocumentType, DocumentTypeAttribute, IContentType>(logService, typeRepository);
         }
 
-        /// <summary>
-        /// Synchronizes this instance.
-        /// </summary>
+        /// <inheritdoc />
         public void Run()
         {
             var documentTypes = _contentTypeService.GetAllContentTypes().ToArray();

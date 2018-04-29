@@ -2,11 +2,15 @@
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
+using System;
+
 namespace Logikfabrik.Umbraco.Jet.Web.Mvc
 {
     using System.Web.Mvc;
     using Configuration;
     using global::Umbraco.Core;
+    using global::Umbraco.Core.Logging;
+    using global::Umbraco.Core.ObjectResolution;
     using global::Umbraco.Web.Mvc;
     using Jet.Data;
     using Logging;
@@ -14,17 +18,14 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     /// <summary>
     /// The <see cref="JetMvcApplicationHandler" /> class.
     /// </summary>
+    // ReSharper disable once InheritdocConsiderUsage
     public class JetMvcApplicationHandler : ApplicationHandler
     {
         private static readonly object Lock = new object();
 
         private bool _configured;
 
-        /// <summary>
-        /// Called when the application is starting.
-        /// </summary>
-        /// <param name="umbracoApplication">The Umbraco application.</param>
-        /// <param name="applicationContext">The application context.</param>
+        /// <inheritdoc />
         public override void OnApplicationStarting(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
         {
             var resolver = FilteredControllerFactoriesResolver.Current;
@@ -37,11 +38,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
             resolver.InsertTypeBefore(typeof(RenderControllerFactory), typeof(JetControllerFactory));
         }
 
-        /// <summary>
-        /// Called when the application is started.
-        /// </summary>
-        /// <param name="umbracoApplication">The Umbraco application.</param>
-        /// <param name="applicationContext">The application context.</param>
+        /// <inheritdoc />
         public override void OnApplicationStarted(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
         {
             if (!IsInstalled)
@@ -59,12 +56,14 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
                 // Synchronize.
                 if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.DocumentTypes))
                 {
+                    var typeRepository = new TypeRepository(new ContentTypeRepository(new DatabaseWrapper(ApplicationContext.Current.DatabaseContext.Database, ResolverBase<LoggerResolver>.Current.Logger, ApplicationContext.Current.DatabaseContext.SqlSyntax)), new DataTypeRepository(new DatabaseWrapper(ApplicationContext.Current.DatabaseContext.Database, ResolverBase<LoggerResolver>.Current.Logger, ApplicationContext.Current.DatabaseContext.SqlSyntax)));
+
                     new PreviewTemplateSynchronizer(
                         new LogService(),
                         ApplicationContext.Current.Services.ContentTypeService,
                         ApplicationContext.Current.Services.FileService,
-                        TypeResolver.Instance,
-                        TypeRepository.Instance).Run();
+                        new TypeResolver(new TypeService(new LogService(), new AssemblyLoader(AppDomain.CurrentDomain, JetConfigurationManager.Assemblies))),
+                        typeRepository).Run();
                 }
 
                 ModelBinders.Binders.DefaultBinder = new JetModelBinder();

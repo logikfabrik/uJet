@@ -6,219 +6,165 @@ namespace Logikfabrik.Umbraco.Jet.Test
 {
     using System;
     using System.Collections.Generic;
+    using AutoFixture.Xunit2;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
-    using Logging;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Jet.Data;
     using Moq;
+    using Moq.AutoMock;
+    using Utilities;
+    using Xunit;
 
-    [TestClass]
     public class MemberTypeSynchronizerTest
     {
-        [TestMethod]
-        public void CanCreateMemberTypeWithAndWithoutId()
+        [Theory]
+        [AutoData]
+        public void CanCreateModelWithoutId(string typeName, string name)
         {
-            var logServiceMock = new Mock<ILogService>();
+            var modelType = new MemberTypeModelTypeBuilder(typeName, name).CreateType();
 
-            var memberTypeWithId = new Jet.MemberType(typeof(MemberTypeWithId));
-            var memberTypeWithoutId = new Jet.MemberType(typeof(MemberTypeWithoutId));
+            var model = new Jet.MemberType(modelType);
 
-            var typeResolverMock = new Mock<ITypeResolver>();
+            var mocker = new AutoMocker();
 
-            typeResolverMock.Setup(m => m.MemberTypes).Returns(Array.AsReadOnly(new[] { memberTypeWithId, memberTypeWithoutId }));
+            var memberTypeSynchronizer = mocker.CreateInstance<MemberTypeSynchronizer>();
+
+            var typeResolverMock = mocker.GetMock<ITypeResolver>();
+
+            typeResolverMock
+                .Setup(m => m.MemberTypes)
+                .Returns(new[] { model });
 
             var memberTypes = new List<IMemberType>();
 
-            var memberTypeServiceMock = new Mock<IMemberTypeService>();
+            var memberTypeServiceMock = mocker.GetMock<IMemberTypeService>();
 
-            memberTypeServiceMock.Setup(m => m.GetAll()).Returns(memberTypes);
-            memberTypeServiceMock.Setup(m => m.Save(It.IsAny<IMemberType>(), 0)).Callback((IMemberType memberType, int userId) => { memberTypes.Add(memberType); });
+            memberTypeServiceMock
+                .Setup(m => m.GetAll())
+                .Returns(memberTypes);
 
-            var memberTypeSynchronizationServiceMock = new Mock<MemberTypeSynchronizer>(
-                logServiceMock.Object,
-                memberTypeServiceMock.Object,
-                typeResolverMock.Object,
-                new Mock<Jet.Data.ITypeRepository>().Object)
-            { CallBase = true };
+            memberTypeServiceMock
+                .Setup(m => m.Save(It.Is<IMemberType>(memberType => memberType.Id == 0), 0))
+                .Callback((IMemberType memberType, int userId) => { memberTypes.Add(memberType); })
+                .Verifiable();
 
-            memberTypeSynchronizationServiceMock.Object.Run();
+            memberTypeSynchronizer.Run();
 
-            memberTypeSynchronizationServiceMock.Verify(m => m.CreateContentType(It.IsAny<Jet.MemberType>()), Times.Exactly(2));
+            mocker.VerifyAll();
         }
 
-        [TestMethod]
-        public void CanCreateMemberTypeWithId()
+        [Theory]
+        [AutoData]
+        public void CanCreateModelWithId(string typeName, Guid id, string name)
         {
-            var logServiceMock = new Mock<ILogService>();
+            var modelType = new MemberTypeModelTypeBuilder(typeName, id.ToString(), name).CreateType();
 
-            var memberTypeWithId = new Jet.MemberType(typeof(MemberTypeWithId));
+            var model = new Jet.MemberType(modelType);
 
-            var typeResolverMock = new Mock<ITypeResolver>();
+            var mocker = new AutoMocker();
 
-            typeResolverMock.Setup(m => m.MemberTypes).Returns(Array.AsReadOnly(new[] { memberTypeWithId }));
+            var memberTypeSynchronizer = mocker.CreateInstance<MemberTypeSynchronizer>();
+
+            var typeResolverMock = mocker.GetMock<ITypeResolver>();
+
+            typeResolverMock
+                .Setup(m => m.MemberTypes)
+                .Returns(new[] { model });
 
             var memberTypes = new List<IMemberType>();
 
-            var memberTypeServiceMock = new Mock<IMemberTypeService>();
+            var memberTypeServiceMock = mocker.GetMock<IMemberTypeService>();
 
-            memberTypeServiceMock.Setup(m => m.GetAll()).Returns(memberTypes);
-            memberTypeServiceMock.Setup(m => m.Save(It.IsAny<IMemberType>(), 0)).Callback((IMemberType memberType, int userId) => { memberTypes.Add(memberType); });
+            memberTypeServiceMock
+                .Setup(m => m.GetAll())
+                .Returns(memberTypes);
 
-            var memberTypeSynchronizationServiceMock = new Mock<MemberTypeSynchronizer>(
-                logServiceMock.Object,
-                memberTypeServiceMock.Object,
-                typeResolverMock.Object,
-                new Mock<Jet.Data.ITypeRepository>().Object)
-            { CallBase = true };
+            memberTypeServiceMock
+                .Setup(m => m.Save(It.Is<IMemberType>(memberType => memberType.Id == 0), 0))
+                .Callback((IMemberType memberType, int userId) => { memberTypes.Add(memberType); })
+                .Verifiable();
 
-            memberTypeSynchronizationServiceMock.Object.Run();
+            var typeRepositoryMock = mocker.GetMock<ITypeRepository>();
 
-            memberTypeSynchronizationServiceMock.Verify(m => m.CreateContentType(memberTypeWithId), Times.Once);
+            typeRepositoryMock.Setup(m => m.SetContentTypeId(id, It.IsAny<int>())).Verifiable();
+
+            memberTypeSynchronizer.Run();
+
+            mocker.VerifyAll();
         }
 
-        [TestMethod]
-        public void CanCreateMemberTypeWithoutId()
+        [Theory]
+        [AutoData]
+        public void CanUpdateModelWithoutId(string typeName, string name)
         {
-            var logServiceMock = new Mock<ILogService>();
+            var modelType = new MemberTypeModelTypeBuilder(typeName, name).CreateType();
 
-            var memberTypeWithoutId = new Jet.MemberType(typeof(MemberTypeWithoutId));
+            var model = new Jet.MemberType(modelType);
 
-            var typeResolverMock = new Mock<ITypeResolver>();
+            var mocker = new AutoMocker();
 
-            typeResolverMock.Setup(m => m.MemberTypes).Returns(Array.AsReadOnly(new[] { memberTypeWithoutId }));
+            var memberTypeSynchronizer = mocker.CreateInstance<MemberTypeSynchronizer>();
 
-            var memberTypes = new List<IMemberType>();
+            var typeResolverMock = mocker.GetMock<ITypeResolver>();
 
-            var memberTypeServiceMock = new Mock<IMemberTypeService>();
+            typeResolverMock
+                .Setup(m => m.MemberTypes)
+                .Returns(new[] { model });
 
-            memberTypeServiceMock.Setup(m => m.GetAll()).Returns(memberTypes);
-            memberTypeServiceMock.Setup(m => m.Save(It.IsAny<IMemberType>(), 0)).Callback((IMemberType memberType, int userId) => { memberTypes.Add(memberType); });
+            var memberTypeMock = mocker.GetMock<IMemberType>();
 
-            var memberTypeSynchronizationServiceMock = new Mock<MemberTypeSynchronizer>(
-                logServiceMock.Object,
-                memberTypeServiceMock.Object,
-                typeResolverMock.Object,
-                new Mock<Jet.Data.ITypeRepository>().Object)
-            { CallBase = true };
+            memberTypeMock.Setup(m => m.Alias).Returns(model.Alias);
 
-            memberTypeSynchronizationServiceMock.Object.Run();
+            var memberTypeServiceMock = mocker.GetMock<IMemberTypeService>();
 
-            memberTypeSynchronizationServiceMock.Verify(m => m.CreateContentType(memberTypeWithoutId), Times.Once);
+            memberTypeServiceMock
+                .Setup(m => m.GetAll())
+                .Returns(new[] { memberTypeMock.Object });
+
+            memberTypeServiceMock.Setup(m => m.Save(memberTypeMock.Object, 0)).Verifiable();
+
+            memberTypeSynchronizer.Run();
+
+            mocker.VerifyAll();
         }
 
-        [TestMethod]
-        public void CanUpdateMemberTypeWithId()
+        [Theory]
+        [AutoData]
+        public void CanUpdateModelWithId(string typeName, Guid id, string name)
         {
-            var logServiceMock = new Mock<ILogService>();
+            var modelType = new MemberTypeModelTypeBuilder(typeName, id.ToString(), name).CreateType();
 
-            var memberTypeWithId = new Jet.MemberType(typeof(MemberTypeWithId));
+            var model = new Jet.MemberType(modelType);
 
-            var memberTypeMock = new Mock<IMemberType>();
+            var mocker = new AutoMocker();
 
-            memberTypeMock.SetupAllProperties();
+            var memberTypeSynchronizer = mocker.CreateInstance<MemberTypeSynchronizer>();
 
-            var typeResolverMock = new Mock<ITypeResolver>();
+            var typeResolverMock = mocker.GetMock<ITypeResolver>();
 
-            typeResolverMock.Setup(m => m.MemberTypes).Returns(Array.AsReadOnly(new[] { memberTypeWithId }));
+            typeResolverMock
+                .Setup(m => m.MemberTypes)
+                .Returns(new[] { model });
 
-            var memberTypeServiceMock = new Mock<IMemberTypeService>();
+            var memberTypeMock = mocker.GetMock<IMemberType>();
 
-            memberTypeServiceMock.Setup(m => m.GetAll()).Returns(new[] { memberTypeMock.Object });
+            memberTypeMock.Setup(m => m.Alias).Returns(model.Alias);
 
-            var typeRepositoryMock = new Mock<Jet.Data.ITypeRepository>();
+            var memberTypeServiceMock = mocker.GetMock<IMemberTypeService>();
 
-            typeRepositoryMock.Setup(m => m.GetContentTypeId(memberTypeWithId.Id.Value)).Returns(memberTypeMock.Object.Id);
+            memberTypeServiceMock
+                .Setup(m => m.GetAll())
+                .Returns(new[] { memberTypeMock.Object });
 
-            var memberTypeSynchronizationServiceMock = new Mock<MemberTypeSynchronizer>(
-                logServiceMock.Object,
-                memberTypeServiceMock.Object,
-                typeResolverMock.Object,
-                typeRepositoryMock.Object)
-            { CallBase = true };
+            memberTypeServiceMock.Setup(m => m.Save(memberTypeMock.Object, 0)).Verifiable();
 
-            memberTypeSynchronizationServiceMock.Object.Run();
+            var typeRepositoryMock = mocker.GetMock<ITypeRepository>();
 
-            memberTypeSynchronizationServiceMock.Verify(m => m.UpdateContentType(memberTypeMock.Object, memberTypeWithId), Times.Once);
-        }
+            typeRepositoryMock.Setup(m => m.SetContentTypeId(id, memberTypeMock.Object.Id)).Verifiable();
 
-        [TestMethod]
-        public void CanUpdateNameForMemberTypeWithId()
-        {
-            var logServiceMock = new Mock<ILogService>();
+            memberTypeSynchronizer.Run();
 
-            var memberTypeWithId = new Jet.MemberType(typeof(MemberTypeWithId));
-
-            var memberTypeMock = new Mock<IMemberType>();
-
-            memberTypeMock.SetupAllProperties();
-
-            var typeResolverMock = new Mock<ITypeResolver>();
-
-            typeResolverMock.Setup(m => m.MemberTypes).Returns(Array.AsReadOnly(new[] { memberTypeWithId }));
-
-            var memberTypeServiceMock = new Mock<IMemberTypeService>();
-
-            memberTypeServiceMock.Setup(m => m.GetAll()).Returns(new[] { memberTypeMock.Object });
-
-            var typeRepositoryMock = new Mock<Jet.Data.ITypeRepository>();
-
-            typeRepositoryMock.Setup(m => m.GetContentTypeId(memberTypeWithId.Id.Value)).Returns(memberTypeMock.Object.Id);
-
-            var memberTypeSynchronizationServiceMock = new Mock<MemberTypeSynchronizer>(
-                logServiceMock.Object,
-                memberTypeServiceMock.Object,
-                typeResolverMock.Object,
-                typeRepositoryMock.Object)
-            { CallBase = true };
-
-            memberTypeSynchronizationServiceMock.Object.Run();
-
-            memberTypeMock.VerifySet(m => m.Name = memberTypeWithId.Name, Times.Once);
-        }
-
-        [TestMethod]
-        public void CanUpdateMemberTypeWithoutId()
-        {
-            var logServiceMock = new Mock<ILogService>();
-
-            var memberTypeWithoutId = new Jet.MemberType(typeof(MemberTypeWithoutId));
-
-            var memberTypeMock = new Mock<IMemberType>();
-
-            memberTypeMock.SetupAllProperties();
-            memberTypeMock.Object.Alias = memberTypeWithoutId.Alias;
-
-            var typeResolverMock = new Mock<ITypeResolver>();
-
-            typeResolverMock.Setup(m => m.MemberTypes).Returns(Array.AsReadOnly(new[] { memberTypeWithoutId }));
-
-            var memberTypeServiceMock = new Mock<IMemberTypeService>();
-
-            memberTypeServiceMock.Setup(m => m.GetAll()).Returns(new[] { memberTypeMock.Object });
-
-            var memberTypeSynchronizationServiceMock = new Mock<MemberTypeSynchronizer>(
-                logServiceMock.Object,
-                memberTypeServiceMock.Object,
-                typeResolverMock.Object,
-                new Mock<Jet.Data.ITypeRepository>().Object)
-            { CallBase = true };
-
-            memberTypeSynchronizationServiceMock.Object.Run();
-
-            memberTypeSynchronizationServiceMock.Verify(m => m.UpdateContentType(memberTypeMock.Object, It.IsAny<Jet.MemberType>()), Times.Once);
-        }
-
-        [MemberType(
-            "65b9653f-d560-41c7-bc7e-71ea9dc70766",
-            "MemberTypeWithId")]
-        protected class MemberTypeWithId
-        {
-        }
-
-        [MemberType(
-            "MemberTypeWithoutId")]
-        protected class MemberTypeWithoutId
-        {
+            mocker.VerifyAll();
         }
     }
 }

@@ -5,7 +5,7 @@
 namespace Logikfabrik.Umbraco.Jet.Logging
 {
     /// <summary>
-    /// The <see cref="LogEntryType" /> enumerable.
+    /// The <see cref="LogEntryType" /> enumeration.
     /// </summary>
     public enum LogEntryType
     {

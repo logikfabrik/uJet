@@ -9,12 +9,14 @@ namespace Logikfabrik.Umbraco.Jet
     /// <summary>
     /// The <see cref="MemberType" /> class.
     /// </summary>
+    // ReSharper disable once InheritdocConsiderUsage
     public class MemberType : ContentTypeModel<MemberTypeAttribute>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MemberType" /> class.
         /// </summary>
         /// <param name="modelType">The model type.</param>
+        // ReSharper disable once InheritdocConsiderUsage
         public MemberType(Type modelType)
             : base(modelType)
         {

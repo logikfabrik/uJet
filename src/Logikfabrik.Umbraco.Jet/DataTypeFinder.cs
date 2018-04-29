@@ -21,15 +21,9 @@ namespace Logikfabrik.Umbraco.Jet
         /// Initializes a new instance of the <see cref="DataTypeFinder" /> class.
         /// </summary>
         /// <param name="typeRepository">The type repository.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="typeRepository" /> is <c>null</c>.</exception>
         public DataTypeFinder(ITypeRepository typeRepository)
         {
-            if (typeRepository == null)
-            {
-                throw new ArgumentNullException(nameof(typeRepository));
-            }
-
-            _typeRepository = typeRepository;
+            _typeRepository = typeRepository ?? throw new ArgumentNullException(nameof(typeRepository));
         }
 
         /// <summary>
@@ -38,7 +32,6 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="modelNeedle">The model to find the data types for.</param>
         /// <param name="dataTypesHaystack">The haystack of data types.</param>
         /// <returns>The data types found.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="modelNeedle" />, or <paramref name="dataTypesHaystack" /> are <c>null</c>.</exception>
         public IDataTypeDefinition[] Find(DataType modelNeedle, IDataTypeDefinition[] dataTypesHaystack)
         {
             if (modelNeedle == null)
@@ -66,7 +59,7 @@ namespace Logikfabrik.Umbraco.Jet
                 }
             }
 
-            return dataTypesHaystack.Where(dataType => dataType.Name.Equals(modelNeedle.Name, StringComparison.InvariantCultureIgnoreCase)).ToArray();
+            return dataTypesHaystack.Where(dataType => dataType.Name != null && dataType.Name.Equals(modelNeedle.Name, StringComparison.InvariantCultureIgnoreCase)).ToArray();
         }
     }
 }

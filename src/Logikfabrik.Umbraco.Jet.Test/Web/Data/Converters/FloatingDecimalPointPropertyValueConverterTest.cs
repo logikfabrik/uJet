@@ -6,43 +6,43 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data.Converters
 {
     using System.Globalization;
     using Jet.Web.Data.Converters;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Shouldly;
+    using Xunit;
 
-    [TestClass]
     public class FloatingDecimalPointPropertyValueConverterTest
     {
-        [TestMethod]
+        [Fact]
         public void CanConvertStringToDecimal()
         {
             const decimal value = 1.1m;
 
             var converter = new FloatingDecimalPointPropertyValueConverter();
 
-            Assert.AreEqual(value, converter.Convert(value.ToString(CultureInfo.InvariantCulture), typeof(decimal)));
+            converter.Convert(value.ToString(CultureInfo.InvariantCulture), typeof(decimal)).ShouldBe(value);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanConvertStringToNullableDecimal()
         {
             var converter = new FloatingDecimalPointPropertyValueConverter();
 
-            Assert.AreEqual(null, converter.Convert(null, typeof(decimal?)));
+            converter.Convert(null, typeof(decimal?)).ShouldBe(null);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanConvertValueReturnsTrueForDecimal()
         {
             var converter = new FloatingDecimalPointPropertyValueConverter();
 
-            Assert.IsTrue(converter.CanConvertValue(null, typeof(string), typeof(decimal)));
+            converter.CanConvertValue(null, typeof(string), typeof(decimal)).ShouldBeTrue();
         }
 
-        [TestMethod]
+        [Fact]
         public void CanConvertValueReturnsTrueForNullableDecimal()
         {
             var converter = new FloatingDecimalPointPropertyValueConverter();
 
-            Assert.IsTrue(converter.CanConvertValue(null, typeof(string), typeof(decimal?)));
+            converter.CanConvertValue(null, typeof(string), typeof(decimal?)).ShouldBeTrue();
         }
     }
 }

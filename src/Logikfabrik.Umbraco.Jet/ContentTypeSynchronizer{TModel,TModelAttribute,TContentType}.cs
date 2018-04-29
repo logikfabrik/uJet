@@ -7,6 +7,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
     using System.Linq;
     using Data;
+    using EnsureThat;
     using global::Umbraco.Core.Models;
     using Logging;
     using Mappings;
@@ -17,12 +18,14 @@ namespace Logikfabrik.Umbraco.Jet
     /// <typeparam name="TModel">The model type.</typeparam>
     /// <typeparam name="TModelAttribute">The attribute type.</typeparam>
     /// <typeparam name="TContentType">The content type.</typeparam>
+    // ReSharper disable once InheritdocConsiderUsage
     public abstract class ContentTypeSynchronizer<TModel, TModelAttribute, TContentType> : ISynchronizer
         where TModel : ContentTypeModel<TModelAttribute>
         where TModelAttribute : ContentTypeModelAttribute
         where TContentType : IContentTypeBase
     {
         private readonly ITypeRepository _typeRepository;
+        private readonly IDataTypeDefinitionService _dataTypeDefinitionService;
         private readonly ContentTypeFinder<TModel, TModelAttribute, TContentType> _contentTypeFinder;
         private readonly PropertyTypeFinder _propertyTypeFinder;
 
@@ -31,21 +34,15 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="logService">The log service.</param>
         /// <param name="typeRepository">The type repository.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="logService" />, or <paramref name="typeRepository" /> are <c>null</c>.</exception>
-        protected ContentTypeSynchronizer(ILogService logService, ITypeRepository typeRepository)
+        /// <param name="dataTypeDefinitionService">The data type definition service.</param>
+        protected ContentTypeSynchronizer(ILogService logService, ITypeRepository typeRepository, IDataTypeDefinitionService dataTypeDefinitionService)
         {
-            if (logService == null)
-            {
-                throw new ArgumentNullException(nameof(logService));
-            }
-
-            if (typeRepository == null)
-            {
-                throw new ArgumentNullException(nameof(typeRepository));
-            }
+            EnsureArg.IsNotNull(logService);
+            EnsureArg.IsNotNull(typeRepository);
+            EnsureArg.IsNotNull(dataTypeDefinitionService);
 
             _typeRepository = typeRepository;
-
+            _dataTypeDefinitionService = dataTypeDefinitionService;
             _contentTypeFinder = new ContentTypeFinder<TModel, TModelAttribute, TContentType>(logService, typeRepository);
             _propertyTypeFinder = new PropertyTypeFinder(logService, typeRepository);
         }
@@ -53,12 +50,12 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// Gets the models.
         /// </summary>
-        /// <value>The models.</value>
+        /// <value>
+        /// The models.
+        /// </value>
         protected abstract TModel[] Models { get; }
 
-        /// <summary>
-        /// Synchronizes this instance.
-        /// </summary>
+        /// <inheritdoc />
         public virtual void Run()
         {
             if (!Models.Any())
@@ -68,6 +65,7 @@ namespace Logikfabrik.Umbraco.Jet
 
             new ContentTypeModelValidator<TModel, TModelAttribute>().Validate(Models);
 
+            // TODO: Optimize. Whe get all contenttypes here, but also in the Synchronize method.
             var contentTypes = GetContentTypes();
 
             foreach (var model in Models)
@@ -134,8 +132,71 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// Saves the specified content type.
         /// </summary>
-        /// <param name="contentType">The content type.</param>
+        /// <param name="contentType">The content type to save.</param>
         protected abstract void SaveContentType(TContentType contentType);
+
+        private void CreatePropertyType(PropertyType model, TContentType contentType)
+        {
+            var definition = GetDataTypeDefinition(model);
+
+            var propertyType = new global::Umbraco.Core.Models.PropertyType(definition)
+            {
+                Name = model.Name,
+                Alias = model.Alias,
+                Mandatory = model.Mandatory,
+                Description = model.Description,
+                ValidationRegExp = model.RegularExpression
+            };
+
+            if (model.SortOrder.HasValue)
+            {
+                propertyType.SortOrder = model.SortOrder.Value;
+            }
+
+            if (!string.IsNullOrWhiteSpace(model.PropertyGroup))
+            {
+                contentType.AddPropertyType(propertyType, model.PropertyGroup);
+            }
+            else
+            {
+                contentType.AddPropertyType(propertyType);
+            }
+        }
+
+        private void UpdatePropertyType(TContentType contentType, global::Umbraco.Core.Models.PropertyType propertyType, PropertyType model)
+        {
+            if (!contentType.PropertyGroups.Contains(model.PropertyGroup) || (contentType.PropertyGroups.Contains(model.PropertyGroup) && !contentType.PropertyGroups[model.PropertyGroup].PropertyTypes.Contains(model.Alias)))
+            {
+                contentType.MovePropertyType(model.Alias, model.PropertyGroup);
+            }
+
+            propertyType.Name = model.Name;
+            propertyType.Alias = model.Alias;
+            propertyType.Mandatory = model.Mandatory;
+            propertyType.Description = model.Description;
+            propertyType.ValidationRegExp = model.RegularExpression;
+
+            if (model.SortOrder.HasValue)
+            {
+                propertyType.SortOrder = model.SortOrder.Value;
+            }
+
+            var definition = GetDataTypeDefinition(model);
+
+            propertyType.DataTypeDefinitionId = definition.Id;
+        }
+
+        private IDataTypeDefinition GetDataTypeDefinition(PropertyType model)
+        {
+            var definition = _dataTypeDefinitionService.GetDefinition(model.UIHint, model.Type);
+
+            if (definition == null)
+            {
+                throw new Exception($"There is no data type definition for type {model.Type}.");
+            }
+
+            return definition;
+        }
 
         private void Synchronize(TModel model, TContentType[] contentTypes)
         {
@@ -150,7 +211,7 @@ namespace Logikfabrik.Umbraco.Jet
             SaveContentType(contentType);
 
             // We get the content type once more to refresh it after saving it.
-            contentType = GetContentTypes().SingleOrDefault(ct => ct.Alias.Equals(contentType.Alias, StringComparison.InvariantCultureIgnoreCase));
+            contentType = GetContentTypes().Single(ct => ct.Alias != null && ct.Alias.Equals(contentType.Alias, StringComparison.InvariantCultureIgnoreCase));
 
             // Set/update tracking.
             SetContentTypeId(model, contentType);
@@ -217,90 +278,6 @@ namespace Logikfabrik.Umbraco.Jet
             {
                 UpdatePropertyType(contentType, propertyType, model);
             }
-        }
-
-        /// <summary>
-        /// Creates a property type for the specified model.
-        /// </summary>
-        /// <param name="model">The model.</param>
-        /// <param name="contentType">The content type.</param>
-        private void CreatePropertyType(PropertyType model, TContentType contentType)
-        {
-            var definition = GetDataTypeDefinition(model);
-
-            var propertyType = new global::Umbraco.Core.Models.PropertyType(definition)
-            {
-                Name = model.Name,
-                Alias = model.Alias,
-                Mandatory = model.Mandatory,
-                Description = model.Description,
-                ValidationRegExp = model.RegularExpression
-            };
-
-            if (model.SortOrder.HasValue)
-            {
-                propertyType.SortOrder = model.SortOrder.Value;
-            }
-
-            if (!string.IsNullOrWhiteSpace(model.PropertyGroup))
-            {
-                contentType.AddPropertyType(propertyType, model.PropertyGroup);
-            }
-            else
-            {
-                contentType.AddPropertyType(propertyType);
-            }
-        }
-
-        /// <summary>
-        /// Updates the property type for the specified property type model.
-        /// </summary>
-        /// <param name="contentType">The content type.</param>
-        /// <param name="propertyType">The property type.</param>
-        /// <param name="model">The property type model.</param>
-        private void UpdatePropertyType(TContentType contentType, global::Umbraco.Core.Models.PropertyType propertyType, PropertyType model)
-        {
-            if (!contentType.PropertyGroups.Contains(model.PropertyGroup) || (contentType.PropertyGroups.Contains(model.PropertyGroup) && !contentType.PropertyGroups[model.PropertyGroup].PropertyTypes.Contains(model.Alias)))
-            {
-                contentType.MovePropertyType(model.Alias, model.PropertyGroup);
-            }
-
-            propertyType.Name = model.Name;
-            propertyType.Alias = model.Alias;
-            propertyType.Mandatory = model.Mandatory;
-            propertyType.Description = model.Description;
-            propertyType.ValidationRegExp = model.RegularExpression;
-
-            if (model.SortOrder.HasValue)
-            {
-                propertyType.SortOrder = model.SortOrder.Value;
-            }
-
-            var definition = GetDataTypeDefinition(model);
-
-            propertyType.DataTypeDefinitionId = definition.Id;
-        }
-
-        /// <summary>
-        /// Gets the data type definition for the specified model.
-        /// </summary>
-        /// <param name="model">The model.</param>
-        /// <returns>The data type definition.</returns>
-        private IDataTypeDefinition GetDataTypeDefinition(PropertyType model)
-        {
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
-            var definition = DataTypeDefinitionMappings.GetDefinition(model.UIHint, model.Type);
-
-            if (definition == null)
-            {
-                throw new Exception($"There is no data type definition for type {model.Type}.");
-            }
-
-            return definition;
         }
     }
 }

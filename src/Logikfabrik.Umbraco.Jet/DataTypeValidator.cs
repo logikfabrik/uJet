@@ -17,7 +17,6 @@ namespace Logikfabrik.Umbraco.Jet
         /// Validates the specified models.
         /// </summary>
         /// <param name="models">The models.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="models" /> is <c>null</c>.</exception>
         public override void Validate(DataType[] models)
         {
             if (models == null)

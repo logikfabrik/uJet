@@ -9,12 +9,14 @@ namespace Logikfabrik.Umbraco.Jet
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Reflection;
+    using EnsureThat;
     using Extensions;
 
     /// <summary>
     /// The <see cref="ContentTypeModel{T}" /> class.
     /// </summary>
     /// <typeparam name="T">The attribute type.</typeparam>
+    // ReSharper disable once InheritdocConsiderUsage
     public abstract class ContentTypeModel<T> : TypeModel<T>
         where T : ContentTypeModelAttribute
     {
@@ -24,6 +26,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// Initializes a new instance of the <see cref="ContentTypeModel{T}" /> class.
         /// </summary>
         /// <param name="modelType">The model type.</param>
+        // ReSharper disable once InheritdocConsiderUsage
         protected ContentTypeModel(Type modelType)
             : base(modelType)
         {
@@ -96,10 +99,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// </returns>
         protected bool IsValidProperty(PropertyInfo property)
         {
-            if (property == null)
-            {
-                throw new ArgumentNullException(nameof(property));
-            }
+            EnsureArg.IsNotNull(property);
 
             if (!property.CanRead || !property.CanWrite)
             {

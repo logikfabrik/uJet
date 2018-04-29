@@ -7,6 +7,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using EnsureThat;
 
     /// <summary>
     /// The <see cref="PropertyValueConverterRegistrar" /> class. Utility class for registering property value converters.
@@ -16,22 +17,16 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
         /// <summary>
         /// Registers the specified property value converter.
         /// </summary>
-        /// <typeparam name="T">The type to register the specified property value converter for.</typeparam>
-        /// <param name="propertyValueConverter">The property value converter.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="propertyValueConverter" /> is <c>null</c>.</exception>
+        /// <typeparam name="T">The <see cref="Type" /> to register the specified property value converter for.</typeparam>
+        /// <param name="propertyValueConverter">The property value converter to register.</param>
         public static void Register<T>(IPropertyValueConverter propertyValueConverter)
         {
-            if (propertyValueConverter == null)
-            {
-                throw new ArgumentNullException(nameof(propertyValueConverter));
-            }
+            EnsureArg.IsNotNull(propertyValueConverter);
 
             var type = typeof(T);
             var registry = PropertyValueConverters.Converters;
 
-            IEnumerable<IPropertyValueConverter> converters;
-
-            if (registry.TryGetValue(type, out converters))
+            if (registry.TryGetValue(type, out var converters))
             {
                 var c = converters.ToArray();
 

@@ -6,77 +6,77 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data.Converters
 {
     using System.Globalization;
     using Jet.Web.Data.Converters;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Shouldly;
+    using Xunit;
 
-    [TestClass]
     public class FloatingBinaryPointPropertyValueConverterTest
     {
-        [TestMethod]
+        [Fact]
         public void CanConvertStringToFloat()
         {
             const float value = 1.1f;
 
             var converter = new FloatingBinaryPointPropertyValueConverter();
 
-            Assert.AreEqual(value, converter.Convert(value.ToString(CultureInfo.InvariantCulture), typeof(float)));
+            converter.Convert(value.ToString(CultureInfo.InvariantCulture), typeof(float)).ShouldBe(value);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanConvertStringToNullableFloat()
         {
             var converter = new FloatingBinaryPointPropertyValueConverter();
 
-            Assert.AreEqual(null, converter.Convert(null, typeof(float?)));
+            converter.Convert(null, typeof(float?)).ShouldBe(null);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanConvertStringToDouble()
         {
             const double value = 1.1;
 
             var converter = new FloatingBinaryPointPropertyValueConverter();
 
-            Assert.AreEqual(value, converter.Convert(value.ToString(CultureInfo.InvariantCulture), typeof(double)));
+            converter.Convert(value.ToString(CultureInfo.InvariantCulture), typeof(double)).ShouldBe(value);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanConvertStringToNullableDouble()
         {
             var converter = new FloatingBinaryPointPropertyValueConverter();
 
-            Assert.AreEqual(null, converter.Convert(null, typeof(double?)));
+            converter.Convert(null, typeof(double?)).ShouldBe(null);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanConvertValueReturnsTrueForFloat()
         {
             var converter = new FloatingBinaryPointPropertyValueConverter();
 
-            Assert.IsTrue(converter.CanConvertValue(null, typeof(string), typeof(float)));
+            converter.CanConvertValue(null, typeof(string), typeof(float)).ShouldBeTrue();
         }
 
-        [TestMethod]
+        [Fact]
         public void CanConvertValueReturnsTrueForNullableFloat()
         {
             var converter = new FloatingBinaryPointPropertyValueConverter();
 
-            Assert.IsTrue(converter.CanConvertValue(null, typeof(string), typeof(float?)));
+            converter.CanConvertValue(null, typeof(string), typeof(float?)).ShouldBeTrue();
         }
 
-        [TestMethod]
+        [Fact]
         public void CanConvertValueReturnsTrueForDouble()
         {
             var converter = new FloatingBinaryPointPropertyValueConverter();
 
-            Assert.IsTrue(converter.CanConvertValue(null, typeof(string), typeof(double)));
+            converter.CanConvertValue(null, typeof(string), typeof(double)).ShouldBeTrue();
         }
 
-        [TestMethod]
+        [Fact]
         public void CanConvertValueReturnsTrueForNullableDouble()
         {
             var converter = new FloatingBinaryPointPropertyValueConverter();
 
-            Assert.IsTrue(converter.CanConvertValue(null, typeof(string), typeof(double?)));
+            converter.CanConvertValue(null, typeof(string), typeof(double?)).ShouldBeTrue();
         }
     }
 }

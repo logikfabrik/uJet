@@ -6,8 +6,8 @@ namespace Logikfabrik.Umbraco.Jet
 {
     using System;
     using System.Linq;
+    using EnsureThat;
     using Extensions;
-    using Logging;
 
     /// <summary>
     /// The <see cref="TypeModelFinder{TModel,TModelAttribute}" /> class. Class for finding models by model type.
@@ -18,22 +18,13 @@ namespace Logikfabrik.Umbraco.Jet
         where TModel : TypeModel<TModelAttribute>
         where TModelAttribute : TypeModelAttribute
     {
-        private readonly ILogService _logService;
         private readonly TypeModelComparer<TModel, TModelAttribute> _comparer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TypeModelFinder{TModel, TModelAttribute}" /> class.
         /// </summary>
-        /// <param name="logService">The log service.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="logService" /> is <c>null</c>.</exception>
-        public TypeModelFinder(ILogService logService)
+        public TypeModelFinder()
         {
-            if (logService == null)
-            {
-                throw new ArgumentNullException(nameof(logService));
-            }
-
-            _logService = logService;
             _comparer = new TypeModelComparer<TModel, TModelAttribute>();
         }
 
@@ -43,28 +34,12 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="modelTypeNeedles">The model types to find the models for.</param>
         /// <param name="modelsHaystack">The haystack of models.</param>
         /// <returns>The models found.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="modelTypeNeedles" />, or <paramref name="modelsHaystack" /> are <c>null</c>.</exception>
-        /// <exception cref="ArgumentException">Thrown if a type in <paramref name="modelTypeNeedles" /> is not a model type.</exception>
         /// <remarks>A model is a match if a model type needle is the same type as the model's model type.</remarks>
         public TModel[] Find(Type[] modelTypeNeedles, TModel[] modelsHaystack)
         {
-            if (modelTypeNeedles == null)
-            {
-                throw new ArgumentNullException(nameof(modelTypeNeedles));
-            }
-
-            foreach (var needle in modelTypeNeedles)
-            {
-                if (!needle.IsModelType<TModelAttribute>())
-                {
-                    throw new ArgumentException($"Type {needle} is not a model type.", nameof(modelTypeNeedles));
-                }
-            }
-
-            if (modelsHaystack == null)
-            {
-                throw new ArgumentNullException(nameof(modelsHaystack));
-            }
+            EnsureArg.IsNotNull(modelTypeNeedles);
+            EnsureArg.IsTrue(modelTypeNeedles.All(needle => needle.IsModelType<TModelAttribute>()), nameof(modelTypeNeedles));
+            EnsureArg.IsNotNull(modelsHaystack);
 
             var models = modelTypeNeedles.SelectMany(needle => Find(needle, modelsHaystack)).Distinct(_comparer).ToArray();
 
@@ -77,25 +52,12 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="modelTypeNeedle">The model type to find the models for.</param>
         /// <param name="modelsHaystack">The haystack of models.</param>
         /// <returns>The models found.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="modelTypeNeedle" />, or <paramref name="modelsHaystack" /> are <c>null</c>.</exception>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="modelTypeNeedle" /> is not a model type.</exception>
         /// <remarks>A model is a match if the model type needle is the same type as the model's model type.</remarks>
         public TModel[] Find(Type modelTypeNeedle, TModel[] modelsHaystack)
         {
-            if (modelTypeNeedle == null)
-            {
-                throw new ArgumentNullException(nameof(modelTypeNeedle));
-            }
-
-            if (!modelTypeNeedle.IsModelType<TModelAttribute>())
-            {
-                throw new ArgumentException($"Type {modelTypeNeedle} is not a model type.", nameof(modelTypeNeedle));
-            }
-
-            if (modelsHaystack == null)
-            {
-                throw new ArgumentNullException(nameof(modelsHaystack));
-            }
+            EnsureArg.IsNotNull(modelTypeNeedle);
+            EnsureArg.IsTrue(modelTypeNeedle.IsModelType<TModelAttribute>(), nameof(modelTypeNeedle));
+            EnsureArg.IsNotNull(modelsHaystack);
 
             return modelsHaystack.Where(model => model.ModelType == modelTypeNeedle).Distinct(_comparer).ToArray();
         }
@@ -106,19 +68,11 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="modelTypeNeedles">The model types to find the models for.</param>
         /// <param name="modelsHaystack">The haystack of models.</param>
         /// <returns>The models found.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="modelTypeNeedles" />, or <paramref name="modelsHaystack" /> are <c>null</c>.</exception>
         /// <remarks>A model is a match if a model type needle is assignable from the model's model type.</remarks>
         public TModel[] FindAll(Type[] modelTypeNeedles, TModel[] modelsHaystack)
         {
-            if (modelTypeNeedles == null)
-            {
-                throw new ArgumentNullException(nameof(modelTypeNeedles));
-            }
-
-            if (modelsHaystack == null)
-            {
-                throw new ArgumentNullException(nameof(modelsHaystack));
-            }
+            EnsureArg.IsNotNull(modelTypeNeedles);
+            EnsureArg.IsNotNull(modelsHaystack);
 
             return modelTypeNeedles.SelectMany(needle => FindAll(needle, modelsHaystack)).Distinct(_comparer).ToArray();
         }
@@ -129,19 +83,11 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="modelTypeNeedle">The model type to find the models for.</param>
         /// <param name="modelsHaystack">The haystack of models.</param>
         /// <returns>The models found.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="modelTypeNeedle" />, or <paramref name="modelsHaystack" /> are <c>null</c>.</exception>
         /// <remarks>A model is a match if the model type needle is assignable from the model's model type.</remarks>
         public TModel[] FindAll(Type modelTypeNeedle, TModel[] modelsHaystack)
         {
-            if (modelTypeNeedle == null)
-            {
-                throw new ArgumentNullException(nameof(modelTypeNeedle));
-            }
-
-            if (modelsHaystack == null)
-            {
-                throw new ArgumentNullException(nameof(modelsHaystack));
-            }
+            EnsureArg.IsNotNull(modelTypeNeedle);
+            EnsureArg.IsNotNull(modelsHaystack);
 
             return modelsHaystack.Where(model => modelTypeNeedle.IsAssignableFrom(model.ModelType)).Distinct(_comparer).ToArray();
         }

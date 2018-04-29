@@ -4,13 +4,14 @@
 
 namespace Logikfabrik.Umbraco.Jet.Web.Data
 {
-    using System;
+    using EnsureThat;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Web;
 
     /// <summary>
     /// The <see cref="UmbracoHelperWrapper" /> class.
     /// </summary>
+    // ReSharper disable once InheritdocConsiderUsage
     public class UmbracoHelperWrapper : IUmbracoHelperWrapper
     {
         private readonly UmbracoHelper _umbracoHelper;
@@ -18,6 +19,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="UmbracoHelperWrapper" /> class.
         /// </summary>
+        // ReSharper disable once InheritdocConsiderUsage
         public UmbracoHelperWrapper()
             : this(new UmbracoHelper(UmbracoContext.Current))
         {
@@ -27,42 +29,26 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// Initializes a new instance of the <see cref="UmbracoHelperWrapper" /> class.
         /// </summary>
         /// <param name="umbracoHelper">The Umbraco helper.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="umbracoHelper" /> is <c>null</c>.</exception>
         public UmbracoHelperWrapper(UmbracoHelper umbracoHelper)
         {
-            if (umbracoHelper == null)
-            {
-                throw new ArgumentNullException(nameof(umbracoHelper));
-            }
+            EnsureArg.IsNotNull(umbracoHelper);
 
             _umbracoHelper = umbracoHelper;
         }
 
-        /// <summary>
-        /// Gets the Umbraco document with the specified identifier.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns>The Umbraco document with the specified identifier.</returns>
+        /// <inheritdoc />
         public IPublishedContent TypedDocument(int id)
         {
             return _umbracoHelper.TypedContent(id);
         }
 
-        /// <summary>
-        /// Gets the Umbraco media with the specified identifier.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns>The Umbraco media with the specified identifier.</returns>
+        /// <inheritdoc />
         public IPublishedContent TypedMedia(int id)
         {
             return _umbracoHelper.TypedMedia(id);
         }
 
-        /// <summary>
-        /// Gets the Umbraco member with the specified identifier.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns>The Umbraco member with the specified identifier.</returns>
+        /// <inheritdoc />
         public IPublishedContent TypedMember(int id)
         {
             return _umbracoHelper.TypedMember(id);

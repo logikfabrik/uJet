@@ -9,50 +9,50 @@ namespace Logikfabrik.Umbraco.Jet.Test
     using System.Linq;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
+    using Shouldly;
+    using Xunit;
 
-    [TestClass]
     public class TemplateSynchronizerTest
     {
-        [TestMethod]
+        [Fact]
         public void CanGetTemplatesToAdd()
         {
             var service = GetTemplateSynchronizer();
 
             var templatesToAdd = service.GetTemplatesToAdd(service.GetTemplatesToAdd());
 
-            Assert.AreEqual(2, templatesToAdd.Count());
+            templatesToAdd.Count().ShouldBe(2);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetLayoutForTemplateWithLayout()
         {
             var service = GetTemplateSynchronizer();
 
             var template = GetTemplateMock(GetTemplatePath("Template1.cshtml"));
 
-            Assert.AreEqual("Template1Master", service.GetLayout(template));
+            service.GetLayout(template).ShouldBe("Template1Master");
         }
 
-        [TestMethod]
+        [Fact]
         public void CannotGetLayoutForTemplateWithoutLayout()
         {
             var service = GetTemplateSynchronizer();
 
             var template = GetTemplateMock(GetTemplatePath("Template2.cshtml"));
 
-            Assert.IsNull(service.GetLayout(template));
+            service.GetLayout(template).ShouldBeNull();
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetPathsToTemplatesToAdd()
         {
             var service = GetTemplateSynchronizer();
 
             var templatesToAdd = service.GetTemplatesToAdd();
 
-            Assert.AreEqual(templatesToAdd.First(), GetTemplatePath("Template1.cshtml"));
+            GetTemplatePath("Template1.cshtml").ShouldBe(templatesToAdd.First());
         }
 
         private static string GetTemplatePath(string fileName)

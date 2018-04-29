@@ -5,8 +5,8 @@
 namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
+    using EnsureThat;
 
     /// <summary>
     /// The <see cref="PropertyValueConverters" /> class.
@@ -23,25 +23,15 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
         /// Gets a converter that can convert from and to the specified types.
         /// </summary>
         /// <param name="uiHint">The UI hint.</param>
-        /// <param name="from">The type to convert from.</param>
-        /// <param name="to">The type to convert to.</param>
+        /// <param name="from">The <see cref="Type" /> to convert from.</param>
+        /// <param name="to">The <see cref="Type" /> to convert to.</param>
         /// <returns>A converter that can convert from and to the specified types.</returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="from" />, or <paramref name="to" /> are <c>null</c>.</exception>
         internal static IPropertyValueConverter GetConverter(string uiHint, Type from, Type to)
         {
-            if (from == null)
-            {
-                throw new ArgumentNullException(nameof(from));
-            }
+            EnsureArg.IsNotNull(from);
+            EnsureArg.IsNotNull(to);
 
-            if (to == null)
-            {
-                throw new ArgumentNullException(nameof(to));
-            }
-
-            IEnumerable<IPropertyValueConverter> converters;
-
-            return !Converters.TryGetValue(to, out converters)
+            return !Converters.TryGetValue(to, out var converters)
                 ? null
                 : converters.FirstOrDefault(c => c.CanConvertValue(uiHint, from, to));
         }

@@ -5,33 +5,19 @@
 namespace Logikfabrik.Umbraco.Jet.Test.Configuration
 {
     using Jet.Configuration;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Shouldly;
+    using Xunit;
 
-    [TestClass]
     public class JetConfigurationManagerTest
     {
-        [TestMethod]
-        public void CanGetSynchronizationModeForDataTypes()
+        [Theory]
+        [InlineData(SynchronizationMode.DataTypes)]
+        [InlineData(SynchronizationMode.DocumentTypes)]
+        [InlineData(SynchronizationMode.MediaTypes)]
+        [InlineData(SynchronizationMode.MemberTypes)]
+        public void CanGetDefaultSynchronizationMode(SynchronizationMode synchronizationMode)
         {
-            Assert.IsTrue(JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.DataTypes));
-        }
-
-        [TestMethod]
-        public void CanGetSynchronizationModeForDocumentTypes()
-        {
-            Assert.IsTrue(JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.DocumentTypes));
-        }
-
-        [TestMethod]
-        public void CanGetSynchronizationModeForMediaTypes()
-        {
-            Assert.IsTrue(JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.MediaTypes));
-        }
-
-        [TestMethod]
-        public void CanGetSynchronizationModeForMemberTypes()
-        {
-            Assert.IsTrue(JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.MemberTypes));
+            JetConfigurationManager.Synchronize.HasFlag(synchronizationMode).ShouldBeTrue();
         }
     }
 }

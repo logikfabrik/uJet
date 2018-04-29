@@ -14,6 +14,7 @@ namespace Logikfabrik.Umbraco.Jet
     /// The <see cref="ComposableContentTypeModel{T}" /> class.
     /// </summary>
     /// <typeparam name="T">The attribute type.</typeparam>
+    // ReSharper disable once InheritdocConsiderUsage
     public abstract class ComposableContentTypeModel<T> : ContentTypeModel<T>
         where T : ComposableContentTypeAttribute
     {
@@ -21,6 +22,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// Initializes a new instance of the <see cref="ComposableContentTypeModel{T}" /> class.
         /// </summary>
         /// <param name="modelType">The model type.</param>
+        // ReSharper disable once InheritdocConsiderUsage
         protected ComposableContentTypeModel(Type modelType)
             : base(modelType)
         {
@@ -67,10 +69,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// </value>
         public Type ParentNodeType { get; }
 
-        /// <summary>
-        /// Gets the properties.
-        /// </summary>
-        /// <returns>The properties.</returns>
+        /// <inheritdoc />
         protected override IEnumerable<PropertyType> GetProperties()
         {
             /*

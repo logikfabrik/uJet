@@ -8,6 +8,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Reflection;
+    using EnsureThat;
     using Extensions;
 
     /// <summary>
@@ -21,13 +22,9 @@ namespace Logikfabrik.Umbraco.Jet
         /// Initializes a new instance of the <see cref="PropertyType" /> class.
         /// </summary>
         /// <param name="property">The property.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="property" /> is <c>null</c>.</exception>
         public PropertyType(PropertyInfo property)
         {
-            if (property == null)
-            {
-                throw new ArgumentNullException(nameof(property));
-            }
+            EnsureArg.IsNotNull(property);
 
             Type = property.PropertyType;
             Id = property.GetCustomAttribute<IdAttribute>()?.Id;

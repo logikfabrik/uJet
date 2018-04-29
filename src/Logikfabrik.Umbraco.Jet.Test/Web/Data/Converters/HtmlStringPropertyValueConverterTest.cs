@@ -7,43 +7,43 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data.Converters
     using System;
     using System.Web;
     using Jet.Web.Data.Converters;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Shouldly;
+    using Xunit;
 
-    [TestClass]
     public class HtmlStringPropertyValueConverterTest
     {
-        [TestMethod]
+        [Fact]
         public void CanConvertNullHtmlStringToNullString()
         {
             var converter = new HtmlStringPropertyValueConverter();
 
-            Assert.AreEqual(null, converter.Convert(new HtmlString(null), typeof(string)));
+            converter.Convert(new HtmlString(null), typeof(string)).ShouldBe(null);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanConvertEmptyHtmlStringToEmptyString()
         {
             var converter = new HtmlStringPropertyValueConverter();
 
-            Assert.AreEqual(string.Empty, converter.Convert(new HtmlString(string.Empty), typeof(string)));
+            converter.Convert(new HtmlString(string.Empty), typeof(string)).ShouldBe(string.Empty);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanConvertHtmlStringToString()
         {
             var value = Guid.NewGuid().ToString();
 
             var converter = new HtmlStringPropertyValueConverter();
 
-            Assert.AreEqual(value, converter.Convert(new HtmlString(value), typeof(string)));
+            converter.Convert(new HtmlString(value), typeof(string)).ShouldBe(value);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanConvertValueReturnsTrueForHtmlString()
         {
             var converter = new HtmlStringPropertyValueConverter();
 
-            Assert.IsTrue(converter.CanConvertValue(null, typeof(HtmlString), typeof(string)));
+            converter.CanConvertValue(null, typeof(HtmlString), typeof(string)).ShouldBeTrue();
         }
     }
 }

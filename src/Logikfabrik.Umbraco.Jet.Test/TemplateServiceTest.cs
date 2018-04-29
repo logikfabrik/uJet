@@ -6,33 +6,33 @@ namespace Logikfabrik.Umbraco.Jet.Test
 {
     using System.IO;
     using System.Linq;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Shouldly;
+    using Xunit;
 
-    [TestClass]
     public class TemplateServiceTest
     {
-        [TestMethod]
+        [Fact]
         public void CanGetTemplatePaths()
         {
             var templates = TemplateService.Instance.TemplatePaths;
 
-            Assert.AreEqual(2, templates.Count());
+            templates.Count().ShouldBe(2);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetContent()
         {
             var templatePath = TemplateService.Instance.TemplatePaths.First();
 
-            Assert.AreEqual(File.ReadAllText(templatePath), TemplateService.Instance.GetContent(templatePath));
+            TemplateService.Instance.GetContent(templatePath).ShouldBe(File.ReadAllText(templatePath));
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetTemplate()
         {
             var templatePath = TemplateService.Instance.TemplatePaths.First();
 
-            Assert.IsNotNull(TemplateService.Instance.GetTemplate(templatePath));
+            TemplateService.Instance.GetTemplate(templatePath).ShouldNotBeNull();
         }
     }
 }

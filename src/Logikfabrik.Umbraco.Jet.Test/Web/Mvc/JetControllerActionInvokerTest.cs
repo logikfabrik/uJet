@@ -6,21 +6,21 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Mvc
 {
     using Jet.Extensions;
     using Jet.Web.Mvc;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Shouldly;
+    using Xunit;
 
-    [TestClass]
     public class JetControllerActionInvokerTest
     {
-        [TestMethod]
+        [Fact]
         public void CanGetActionNameForPreviewAction()
         {
-            Assert.AreEqual("Index", JetControllerActionInvoker.GetActionName(PreviewTemplateAttribute.TemplateName.Alias()));
+            JetControllerActionInvoker.GetActionName(PreviewTemplateAttribute.TemplateName.Alias()).ShouldBe("Index");
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetActionNameForIndexAction()
         {
-            Assert.AreEqual("Index", JetControllerActionInvoker.GetActionName("Index"));
+            JetControllerActionInvoker.GetActionName("Index").ShouldBe("Index");
         }
     }
 }

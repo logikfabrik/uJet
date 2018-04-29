@@ -10,6 +10,7 @@ namespace Logikfabrik.Umbraco.Jet
     /// <summary>
     /// The <see cref="ApplicationHandler" /> class. Base class for subscribing to Umbraco application events.
     /// </summary>
+    // ReSharper disable once InheritdocConsiderUsage
     public abstract class ApplicationHandler : IApplicationEventHandler
     {
         /// <summary>
@@ -20,29 +21,17 @@ namespace Logikfabrik.Umbraco.Jet
         /// </value>
         protected bool IsInstalled => !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["umbracoConfigurationStatus"]);
 
-        /// <summary>
-        /// Called when the application is initialized.
-        /// </summary>
-        /// <param name="umbracoApplication">The Umbraco application.</param>
-        /// <param name="applicationContext">The application context.</param>
+        /// <inheritdoc />
         public virtual void OnApplicationInitialized(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
         {
         }
 
-        /// <summary>
-        /// Called when the application is starting.
-        /// </summary>
-        /// <param name="umbracoApplication">The Umbraco application.</param>
-        /// <param name="applicationContext">The application context.</param>
+        /// <inheritdoc />
         public virtual void OnApplicationStarting(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
         {
         }
 
-        /// <summary>
-        /// Called when the application is started.
-        /// </summary>
-        /// <param name="umbracoApplication">The Umbraco application.</param>
-        /// <param name="applicationContext">The application context.</param>
+        /// <inheritdoc />
         public virtual void OnApplicationStarted(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
         {
         }

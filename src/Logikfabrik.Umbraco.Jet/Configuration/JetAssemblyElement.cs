@@ -9,6 +9,7 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
     /// <summary>
     /// The <see cref="JetAssemblyElement" /> class.
     /// </summary>
+    // ReSharper disable once InheritdocConsiderUsage
     public class JetAssemblyElement : ConfigurationElement
     {
         /// <summary>
@@ -23,8 +24,8 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
             IsKey = true)]
         public string Name
         {
-            get { return (string)this["name"]; }
-            set { this["name"] = value; }
+            get => (string)this["name"];
+            set => this["name"] = value;
         }
     }
 }

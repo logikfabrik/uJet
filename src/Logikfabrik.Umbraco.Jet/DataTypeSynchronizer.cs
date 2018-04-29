@@ -2,6 +2,8 @@
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
+using EnsureThat;
+
 namespace Logikfabrik.Umbraco.Jet
 {
     using System;
@@ -28,26 +30,14 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="dataTypeService">The data type service.</param>
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="typeRepository">The type repository.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dataTypeService" />, <paramref name="typeResolver" />, or <paramref name="typeRepository" /> are <c>null</c>.</exception>
         public DataTypeSynchronizer(
             IDataTypeService dataTypeService,
             ITypeResolver typeResolver,
             ITypeRepository typeRepository)
         {
-            if (dataTypeService == null)
-            {
-                throw new ArgumentNullException(nameof(dataTypeService));
-            }
-
-            if (typeResolver == null)
-            {
-                throw new ArgumentNullException(nameof(typeResolver));
-            }
-
-            if (typeRepository == null)
-            {
-                throw new ArgumentNullException(nameof(typeRepository));
-            }
+            EnsureArg.IsNotNull(dataTypeService);
+            EnsureArg.IsNotNull(typeResolver);
+            EnsureArg.IsNotNull(typeRepository);
 
             _dataTypeService = dataTypeService;
             _typeResolver = typeResolver;
@@ -55,9 +45,7 @@ namespace Logikfabrik.Umbraco.Jet
             _dataTypeFinder = new DataTypeFinder(typeRepository);
         }
 
-        /// <summary>
-        /// Synchronizes this instance.
-        /// </summary>
+        /// <inheritdoc />
         public void Run()
         {
             var models = _typeResolver.DataTypes.ToArray();
@@ -81,7 +69,6 @@ namespace Logikfabrik.Umbraco.Jet
         /// Creates a data type.
         /// </summary>
         /// <param name="model">The model to use when creating the data type.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="model" /> is <c>null</c>.</exception>
         /// <returns>The created data type.</returns>
         internal virtual IDataTypeDefinition CreateDataType(DataType model)
         {

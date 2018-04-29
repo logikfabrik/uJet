@@ -5,9 +5,10 @@
 namespace Logikfabrik.Umbraco.Jet.Mappings
 {
     using System;
+    using EnsureThat;
 
     /// <summary>
-    /// The <see cref="DataTypeDefinitionMappingRegistrar" /> class. Utility class for registering data type definition mappings.
+    /// The <see cref="DataTypeDefinitionMappingRegistrar" /> class. Class for registering data type definition mappings.
     /// </summary>
     public static class DataTypeDefinitionMappingRegistrar
     {
@@ -16,28 +17,36 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// </summary>
         /// <typeparam name="T">The type to register the specified data type definition mapping for.</typeparam>
         /// <param name="dataTypeDefinitionMapping">The data type definition mapping.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="dataTypeDefinitionMapping" /> is <c>null</c>.</exception>
         public static void Register<T>(IDataTypeDefinitionMapping dataTypeDefinitionMapping)
         {
-            if (dataTypeDefinitionMapping == null)
-            {
-                throw new ArgumentNullException(nameof(dataTypeDefinitionMapping));
-            }
-
             var type = typeof(T);
-            var registry = DataTypeDefinitionMappings.Mappings;
 
-            if (registry.ContainsKey(type))
+            Register(type, dataTypeDefinitionMapping);
+        }
+
+        /// <summary>
+        /// Registers the specified data type definition mapping.
+        /// </summary>
+        /// <param name="type">The type to register the specified data type definition mapping for.</param>
+        /// <param name="dataTypeDefinitionMapping">The data type definition mapping.</param>
+        public static void Register(Type type, IDataTypeDefinitionMapping dataTypeDefinitionMapping)
+        {
+            EnsureArg.IsNotNull(type);
+            EnsureArg.IsNotNull(dataTypeDefinitionMapping);
+
+            if (DataTypeDefinitionMappings.Mappings.ContainsKey(type))
             {
-                if (registry[type].GetType() == dataTypeDefinitionMapping.GetType())
+                if (DataTypeDefinitionMappings.Mappings[type].GetType() == dataTypeDefinitionMapping.GetType())
                 {
+                    // There is already a mapping registered for the specified type and data type definition mapping.
                     return;
                 }
 
-                registry.Remove(type);
+                // Remove the existing mapping. It will be replaced using the specified data type definition mapping.
+                DataTypeDefinitionMappings.Mappings.Remove(type);
             }
 
-            registry.Add(type, dataTypeDefinitionMapping);
+            DataTypeDefinitionMappings.Mappings.Add(type, dataTypeDefinitionMapping);
         }
     }
 }

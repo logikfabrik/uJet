@@ -1,0 +1,30 @@
+﻿namespace Logikfabrik.Umbraco.Jet.Test.Utilities
+{
+    using System.Linq;
+
+    public class DocumentTypeModelTypeBuilder : ComposableContentTypeModelTypeBuilder<DocumentTypeAttribute>
+    {
+        public DocumentTypeModelTypeBuilder(string typeName, string name)
+            : base(typeName, name)
+        {
+        }
+
+        public DocumentTypeModelTypeBuilder(string typeName, string id, string name)
+            : base(typeName, id, name)
+        {
+        }
+
+        public string[] Templates { get; set; } = { };
+
+        public string DefaultTemplate { get; set; }
+
+        protected override string[] GetAttributePropertyNames()
+        {
+            return base.GetAttributePropertyNames().Concat(new[]
+            {
+                GetPropertyName(() => Templates),
+                GetPropertyName(() => DefaultTemplate)
+            }).ToArray();
+        }
+    }
+}

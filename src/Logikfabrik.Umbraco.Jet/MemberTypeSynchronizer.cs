@@ -7,9 +7,11 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
     using System.Linq;
     using Data;
+    using EnsureThat;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
     using Logging;
+    using Mappings;
 
     /// <summary>
     /// The <see cref="MemberTypeSynchronizer" /> class. Synchronizes model types annotated using the <see cref="MemberTypeAttribute" />.
@@ -26,60 +28,37 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="memberTypeService">The member type service.</param>
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="typeRepository">The type repository.</param>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="memberTypeService" />, or <paramref name="typeResolver" /> are <c>null</c>.</exception>
         public MemberTypeSynchronizer(
             ILogService logService,
             IMemberTypeService memberTypeService,
             ITypeResolver typeResolver,
-            ITypeRepository typeRepository)
-            : base(logService, typeRepository)
+            ITypeRepository typeRepository,
+            IDataTypeDefinitionService dataTypeDefinitionService)
+            : base(logService, typeRepository, dataTypeDefinitionService)
         {
-            if (memberTypeService == null)
-            {
-                throw new ArgumentNullException(nameof(memberTypeService));
-            }
-
-            if (typeResolver == null)
-            {
-                throw new ArgumentNullException(nameof(typeResolver));
-            }
+            EnsureArg.IsNotNull(memberTypeService);
+            EnsureArg.IsNotNull(typeResolver);
 
             _memberTypeService = memberTypeService;
             _memberTypes = new Lazy<MemberType[]>(() => typeResolver.MemberTypes.ToArray());
         }
 
-        /// <summary>
-        /// Gets the models.
-        /// </summary>
-        /// <value>The models.</value>
+        /// <inheritdoc />
         protected override MemberType[] Models => _memberTypes.Value;
 
-        /// <summary>
-        /// Gets the content types.
-        /// </summary>
-        /// <returns>
-        /// The content types.
-        /// </returns>
+        /// <inheritdoc />
         protected override IMemberType[] GetContentTypes()
         {
             return _memberTypeService.GetAll().ToArray();
         }
 
-        /// <summary>
-        /// Creates a content type.
-        /// </summary>
-        /// <returns>
-        /// The created content type.
-        /// </returns>
+        /// <inheritdoc />
         protected override IMemberType CreateContentType()
         {
             return new global::Umbraco.Core.Models.MemberType(-1);
         }
 
-        /// <summary>
-        /// Saves the specified content type.
-        /// </summary>
-        /// <param name="contentType">The content type.</param>
+        /// <inheritdoc />
         protected override void SaveContentType(IMemberType contentType)
         {
             _memberTypeService.Save(contentType);

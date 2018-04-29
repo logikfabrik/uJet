@@ -28,7 +28,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Models
 
         public string StringPropertyWithoutGetter
         {
-            set { throw new Exception(); }
+            set => throw new Exception();
         }
 
         [ScaffoldColumn(false)]

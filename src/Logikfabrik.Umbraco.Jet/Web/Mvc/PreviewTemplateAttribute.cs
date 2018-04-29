@@ -12,6 +12,8 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     [AttributeUsage(
         AttributeTargets.Class,
         Inherited = false)]
+
+    // ReSharper disable once InheritdocConsiderUsage
     public class PreviewTemplateAttribute : Attribute
     {
         /// <summary>

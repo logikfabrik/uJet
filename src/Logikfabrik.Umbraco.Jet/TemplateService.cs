@@ -16,7 +16,7 @@ namespace Logikfabrik.Umbraco.Jet
     /// </summary>
     public class TemplateService : ITemplateService
     {
-        private static ITemplateService instance;
+        private static ITemplateService _instance;
 
         /// <summary>
         /// Prevents a default instance of the <see cref="TemplateService" /> class from being created.
@@ -29,7 +29,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// Gets an singleton instance of the template service.
         /// </summary>
-        public static ITemplateService Instance => instance ?? (instance = new TemplateService());
+        public static ITemplateService Instance => _instance ?? (_instance = new TemplateService());
 
         /// <summary>
         /// Gets the template paths for templates in the views folder.
@@ -44,7 +44,6 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="templatePath">The template path.</param>
         /// <returns>The template content.</returns>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="templatePath" /> is <c>null</c> or white space.</exception>
         public string GetContent(string templatePath)
         {
             if (string.IsNullOrWhiteSpace(templatePath))
@@ -63,7 +62,6 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="templatePath">The template path.</param>
         /// <returns>The template.</returns>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="templatePath" /> is <c>null</c> or white space.</exception>
         public ITemplate GetTemplate(string templatePath)
         {
             if (string.IsNullOrWhiteSpace(templatePath))
@@ -96,9 +94,9 @@ namespace Logikfabrik.Umbraco.Jet
              * Exclude all files with a file names that starts with an underscore. We do not want to
              * add templates for _layout.cshtml, _viewstart.cshtml.
              */
-            Func<string, string> getPath = path => Path.GetFileName(path) ?? string.Empty;
+            string GetPath(string path) => Path.GetFileName(path) ?? string.Empty;
 
-            return paths.Where(path => !getPath(path).StartsWith("_", StringComparison.Ordinal));
+            return paths.Where(path => !GetPath(path).StartsWith("_", StringComparison.Ordinal));
         }
 
         /// <summary>

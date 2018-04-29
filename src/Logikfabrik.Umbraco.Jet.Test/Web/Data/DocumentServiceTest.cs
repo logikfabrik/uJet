@@ -6,20 +6,20 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 {
     using System;
     using System.Collections.Generic;
+    using AutoFixture.Xunit2;
     using global::Umbraco.Core.Models;
     using Jet.Web.Data;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
+    using Shouldly;
     using Utilities;
+    using Xunit;
 
-    [TestClass]
     public class DocumentServiceTest : TestBase
     {
-        [TestMethod]
-        public void CanGetDocumentIdByConvention()
+        [Theory]
+        [AutoData]
+        public void CanGetDocumentIdByConvention(int id)
         {
-            const int id = 123;
-
             var publishedContentMock = new Mock<IPublishedContent>();
 
             publishedContentMock.Setup(m => m.Id).Returns(id);
@@ -31,18 +31,16 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
 
-            Assert.AreEqual(id, document.Id);
+            document.Id.ShouldBe(id);
         }
 
-        [TestMethod]
-        public void CanGetDocumentUrlByConvention()
+        [Theory]
+        [AutoData]
+        public void CanGetDocumentUrlByConvention(int id, Uri url)
         {
-            const int id = 123;
-            const string url = "/umbraco/jet";
-
             var publishedContentMock = new Mock<IPublishedContent>();
 
-            publishedContentMock.Setup(m => m.Url).Returns(url);
+            publishedContentMock.Setup(m => m.Url).Returns(url.ToString);
             publishedContentMock.Setup(m => m.Properties).Returns(new IPublishedProperty[] { });
 
             var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
@@ -51,15 +49,13 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
 
-            Assert.AreEqual(url, document.Url);
+            document.Url.ShouldBe(url.ToString());
         }
 
-        [TestMethod]
-        public void CanGetDocumentNameByConvention()
+        [Theory]
+        [AutoData]
+        public void CanGetDocumentNameByConvention(int id, string name)
         {
-            const int id = 123;
-            const string name = "Umbraco Jet";
-
             var publishedContentMock = new Mock<IPublishedContent>();
 
             publishedContentMock.Setup(m => m.Name).Returns(name);
@@ -71,10 +67,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
 
-            Assert.AreEqual(name, document.Name);
+            document.Name.ShouldBe(name);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetDocumentCreateDateByConvention()
         {
             const int id = 123;
@@ -91,10 +87,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
 
-            Assert.AreEqual(createDate, document.CreateDate);
+            document.CreateDate.ShouldBe(createDate);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetDocumentUpdateDateByConvention()
         {
             const int id = 123;
@@ -111,11 +107,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
 
-            Assert.AreEqual(updateDate, document.UpdateDate);
+            document.UpdateDate.ShouldBe(updateDate);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void CanNotGetDocumentForInvalidDocumentType()
         {
             var type = TypeUtility.GetTypeBuilder("MyType", TypeUtility.GetTypeAttributes()).CreateType();
@@ -124,13 +119,14 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var service = new DocumentService(new Mock<IUmbracoHelperWrapper>().Object);
 
-            service.GetDocument(contentMock.Object, type);
+            Assert.Throws<ArgumentException>(() => service.GetDocument(contentMock.Object, type));
         }
 
-        [TestMethod]
-        public void CanGetDocumentForValidDocumentType()
+        [Theory]
+        [AutoData]
+        public void CanGetDocumentForValidDocumentType(string typeName, string name)
         {
-            var type = DocumentTypeUtility.GetTypeBuilder().CreateType();
+            var type = new DocumentTypeModelTypeBuilder(typeName, name).CreateType();
 
             var contentMock = new Mock<IPublishedContent>();
 
@@ -140,10 +136,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var document = service.GetDocument(contentMock.Object, type);
 
-            Assert.IsNotNull(document);
+            document.ShouldNotBeNull();
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetDocumentForDocumentTypeWithStringProperty()
         {
             const int id = 123;
@@ -168,10 +164,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
 
-            Assert.AreEqual(stringPropertyValue, document.StringProperty);
+            document.StringProperty.ShouldBe(stringPropertyValue);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetDocumentForDocumentTypeWithIntegerProperty()
         {
             const int id = 123;
@@ -196,10 +192,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
 
-            Assert.AreEqual(integerPropertyValue, document.IntegerProperty);
+            document.IntegerProperty.ShouldBe(integerPropertyValue);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetDocumentForDocumentTypeWithFloatingBinaryPointProperty()
         {
             const int id = 123;
@@ -224,10 +220,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
 
-            Assert.AreEqual(floatingBinaryPointPropertyValue, document.FloatingBinaryPointProperty);
+            document.FloatingBinaryPointProperty.ShouldBe(floatingBinaryPointPropertyValue);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetDocumentForDocumentTypeWithFloatingDecimalPointProperty()
         {
             const int id = 123;
@@ -252,10 +248,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
 
-            Assert.AreEqual(floatingDecimalPointPropertyValue, document.FloatingDecimalPointProperty);
+            document.FloatingDecimalPointProperty.ShouldBe(floatingDecimalPointPropertyValue);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetDocumentForDocumentTypeWithBooleanProperty()
         {
             const int id = 123;
@@ -280,10 +276,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
 
-            Assert.AreEqual(booleanPropertyValue, document.BooleanProperty);
+            document.BooleanProperty.ShouldBe(booleanPropertyValue);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetDocumentForDocumentTypeWithDateTimeProperty()
         {
             const int id = 123;
@@ -308,7 +304,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
 
-            Assert.AreEqual(dateTimePropertyValue, document.DateTimeProperty);
+            document.DateTimeProperty.ShouldBe(dateTimePropertyValue);
         }
     }
 }

@@ -7,45 +7,26 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
     using System;
     using System.Globalization;
     using System.Linq;
+    using EnsureThat;
 
     /// <summary>
     /// The <see cref="FloatingBinaryPointPropertyValueConverter" /> class for types <see cref="float" /> and <see cref="double" />.
     /// </summary>
+    // ReSharper disable once InheritdocConsiderUsage
     public class FloatingBinaryPointPropertyValueConverter : IPropertyValueConverter
     {
-        /// <summary>
-        /// Determines whether this instance can convert between types.
-        /// </summary>
-        /// <param name="uiHint">The UI hint.</param>
-        /// <param name="from">The type to convert from.</param>
-        /// <param name="to">The type to convert to.</param>
-        /// <returns>
-        ///   <c>true</c> if this instance can convert between types; otherwise, <c>false</c>.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">Thrown if <paramref name="from" />, or <paramref name="to" /> are <c>null</c>.</exception>
+        private readonly Type[] _validTypes = { typeof(float), typeof(float?), typeof(double), typeof(double?) };
+
+        /// <inheritdoc />
         public bool CanConvertValue(string uiHint, Type from, Type to)
         {
-            if (from == null)
-            {
-                throw new ArgumentNullException(nameof(from));
-            }
+            EnsureArg.IsNotNull(from);
+            EnsureArg.IsNotNull(to);
 
-            if (to == null)
-            {
-                throw new ArgumentNullException(nameof(to));
-            }
-
-            var validTypes = new[] { typeof(float), typeof(float?), typeof(double), typeof(double?) };
-
-            return from == typeof(string) && validTypes.Contains(to);
+            return from == typeof(string) && _validTypes.Contains(to);
         }
 
-        /// <summary>
-        /// Converts the specified value.
-        /// </summary>
-        /// <param name="value">The value to convert.</param>
-        /// <param name="to">The type to convert to.</param>
-        /// <returns>The converted value.</returns>
+        /// <inheritdoc />
         public object Convert(object value, Type to)
         {
             if (value == null)
@@ -78,9 +59,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
                 return null;
             }
 
-            float result;
-
-            if (float.TryParse(value.ToString(), NumberStyles.Float, CultureInfo.InvariantCulture.NumberFormat, out result))
+            if (float.TryParse(value.ToString(), NumberStyles.Float, CultureInfo.InvariantCulture.NumberFormat, out var result))
             {
                 return result;
             }
@@ -100,9 +79,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
                 return null;
             }
 
-            double result;
-
-            if (double.TryParse(value.ToString(), NumberStyles.Float, CultureInfo.InvariantCulture.NumberFormat, out result))
+            if (double.TryParse(value.ToString(), NumberStyles.Float, CultureInfo.InvariantCulture.NumberFormat, out var result))
             {
                 return result;
             }

@@ -12,12 +12,15 @@ namespace Logikfabrik.Umbraco.Jet
     [AttributeUsage(
         AttributeTargets.Class,
         Inherited = false)]
+
+    // ReSharper disable once InheritdocConsiderUsage
     public class MediaTypeAttribute : ComposableContentTypeAttribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MediaTypeAttribute" /> class.
         /// </summary>
         /// <param name="name">The name.</param>
+        // ReSharper disable once InheritdocConsiderUsage
         public MediaTypeAttribute(string name)
             : base(name)
         {
@@ -28,6 +31,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="name">The name.</param>
+        // ReSharper disable once InheritdocConsiderUsage
         public MediaTypeAttribute(string id, string name)
             : base(id, name)
         {

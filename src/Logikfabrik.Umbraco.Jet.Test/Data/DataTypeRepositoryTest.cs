@@ -5,77 +5,104 @@
 namespace Logikfabrik.Umbraco.Jet.Test.Data
 {
     using System;
+    using AutoFixture.Xunit2;
+    using global::Umbraco.Core.Persistence;
+    using global::Umbraco.Core.Persistence.SqlSyntax;
     using Jet.Data;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
+    using Moq.AutoMock;
+    using Shouldly;
+    using Xunit;
 
-    [TestClass]
     public class DataTypeRepositoryTest
     {
-        [TestMethod]
-        public void CanGetDefinitionModelId()
+        [Theory]
+        [AutoData]
+        public void CanGetDefinitionTypeModelId(int definitionId)
         {
-            var modelId = Guid.Parse("22f44f53-81de-4c2e-a9b9-186ea053d234");
+            var mocker = new AutoMocker();
 
-            var dataTypeRepositoryMock = new Mock<DataTypeRepository>(new Mock<IDatabaseWrapper>().Object)
-            {
-                CallBase = true
-            };
+            var dataTypeRepository = mocker.CreateInstance<DataTypeRepository>();
 
-            dataTypeRepositoryMock.Setup(m => m.GetDefinitionByDefinitionId(5)).Returns(new DataType { DefinitionId = 5, Id = modelId });
+            var databaseWrapperMock = mocker.GetMock<IDatabaseWrapper>();
 
-            Assert.AreEqual(modelId, dataTypeRepositoryMock.Object.GetDefinitionModelId(5));
+            databaseWrapperMock.Setup(m => m.SyntaxProvider).Returns(mocker.Get<ISqlSyntaxProvider>());
+            databaseWrapperMock.Setup(m => m.TableExists<DataType>()).Returns(true);
+            databaseWrapperMock.Setup(m => m.Get<DataType>(It.IsAny<Sql>())).Returns(new DataType());
+
+            dataTypeRepository.GetDefinitionTypeModelId(definitionId).ShouldNotBeNull();
         }
 
-        [TestMethod]
-        public void CanGetDefinitionModelIdFromCache()
+        [Theory]
+        [AutoData]
+        public void CanGetDefinitionTypeModelIdFromCache(int definitionId)
         {
-            var modelId = Guid.Parse("22f44f53-81de-4c2e-a9b9-186ea053d234");
+            var mocker = new AutoMocker();
 
-            var dataTypeRepositoryMock = new Mock<DataTypeRepository>(new Mock<IDatabaseWrapper>().Object)
-            {
-                CallBase = true
-            };
+            var dataTypeRepository = mocker.CreateInstance<DataTypeRepository>();
 
-            dataTypeRepositoryMock.Setup(m => m.GetDefinitionByDefinitionId(5)).Returns(new DataType { DefinitionId = 5, Id = modelId });
+            var databaseWrapperMock = mocker.GetMock<IDatabaseWrapper>();
 
-            dataTypeRepositoryMock.Object.GetDefinitionModelId(5);
-            dataTypeRepositoryMock.Object.GetDefinitionModelId(5);
+            databaseWrapperMock.Setup(m => m.SyntaxProvider).Returns(mocker.Get<ISqlSyntaxProvider>());
+            databaseWrapperMock.Setup(m => m.TableExists<DataType>()).Returns(true);
+            databaseWrapperMock.Setup(m => m.Get<DataType>(It.IsAny<Sql>())).Returns(new DataType());
 
-            dataTypeRepositoryMock.Verify(m => m.GetDefinitionByDefinitionId(5), Times.Once);
+            dataTypeRepository.GetDefinitionTypeModelId(definitionId);
+            dataTypeRepository.GetDefinitionTypeModelId(definitionId);
+
+            databaseWrapperMock.Verify(m => m.Get<DataType>(It.IsAny<Sql>()), Times.Once);
         }
 
-        [TestMethod]
-        public void CanGetDefinitionId()
+        [Theory]
+        [AutoData]
+        public void CanGetDefinitionId(Guid id, int definitionId)
         {
-            var modelId = Guid.Parse("22f44f53-81de-4c2e-a9b9-186ea053d234");
+            var mocker = new AutoMocker();
 
-            var dataTypeRepositoryMock = new Mock<DataTypeRepository>(new Mock<IDatabaseWrapper>().Object)
-            {
-                CallBase = true
-            };
+            var dataTypeRepository = mocker.CreateInstance<DataTypeRepository>();
 
-            dataTypeRepositoryMock.Setup(m => m.GetDefinitionById(modelId)).Returns(new DataType { DefinitionId = 5, Id = modelId });
+            var databaseWrapperMock = mocker.GetMock<IDatabaseWrapper>();
 
-            Assert.AreEqual(5, dataTypeRepositoryMock.Object.GetDefinitionId(modelId));
+            databaseWrapperMock.Setup(m => m.SyntaxProvider).Returns(mocker.Get<ISqlSyntaxProvider>());
+            databaseWrapperMock.Setup(m => m.TableExists<DataType>()).Returns(true);
+            databaseWrapperMock.Setup(m => m.Get<DataType>(id)).Returns(new DataType { DefinitionId = definitionId });
+
+            dataTypeRepository.GetDefinitionId(id).ShouldBe(definitionId);
         }
 
-        [TestMethod]
-        public void CanGetDefinitionIdFromCache()
+        [Theory]
+        [AutoData]
+        public void CanGetDefinitionIdFromCache(Guid id, int definitionId)
         {
-            var modelId = Guid.Parse("22f44f53-81de-4c2e-a9b9-186ea053d234");
+            var mocker = new AutoMocker();
 
-            var dataTypeRepositoryMock = new Mock<DataTypeRepository>(new Mock<IDatabaseWrapper>().Object)
-            {
-                CallBase = true
-            };
+            var dataTypeRepository = mocker.CreateInstance<DataTypeRepository>();
 
-            dataTypeRepositoryMock.Setup(m => m.GetDefinitionById(modelId)).Returns(new DataType { DefinitionId = 5, Id = modelId });
+            var databaseWrapperMock = mocker.GetMock<IDatabaseWrapper>();
 
-            dataTypeRepositoryMock.Object.GetDefinitionId(modelId);
-            dataTypeRepositoryMock.Object.GetDefinitionId(modelId);
+            databaseWrapperMock.Setup(m => m.SyntaxProvider).Returns(mocker.Get<ISqlSyntaxProvider>());
+            databaseWrapperMock.Setup(m => m.TableExists<DataType>()).Returns(true);
+            databaseWrapperMock.Setup(m => m.Get<DataType>(id)).Returns(new DataType { DefinitionId = definitionId });
 
-            dataTypeRepositoryMock.Verify(m => m.GetDefinitionById(modelId), Times.Once);
+            dataTypeRepository.GetDefinitionId(id);
+            dataTypeRepository.GetDefinitionId(id);
+
+            databaseWrapperMock.Verify(m => m.Get<DataType>(id), Times.Once);
+        }
+
+        [Theory]
+        [AutoData]
+        public void CanSetDefinitionId(Guid id, int definitionId)
+        {
+            var mocker = new AutoMocker();
+
+            var dataTypeRepository = mocker.CreateInstance<DataTypeRepository>();
+
+            var databaseWrapperMock = mocker.GetMock<IDatabaseWrapper>();
+
+            dataTypeRepository.SetDefinitionId(id, definitionId);
+
+            databaseWrapperMock.Verify(m => m.Insert(It.IsAny<DataType>(), id), Times.Once);
         }
     }
 }

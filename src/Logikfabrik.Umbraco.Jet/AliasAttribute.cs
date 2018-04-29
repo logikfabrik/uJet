@@ -5,25 +5,25 @@
 namespace Logikfabrik.Umbraco.Jet
 {
     using System;
+    using EnsureThat;
 
     /// <summary>
     /// The <see cref="AliasAttribute" /> class.
     /// </summary>
     [AttributeUsage(
         AttributeTargets.Property)]
+
+    // ReSharper disable once InheritdocConsiderUsage
     public class AliasAttribute : Attribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AliasAttribute" /> class.
         /// </summary>
         /// <param name="alias">The alias.</param>
-        /// <exception cref="ArgumentException">Thrown if <paramref name="alias" /> is <c>null</c> or white space.</exception>
+        // ReSharper disable once InheritdocConsiderUsage
         public AliasAttribute(string alias)
         {
-            if (string.IsNullOrWhiteSpace(alias))
-            {
-                throw new ArgumentException("Alias cannot be null or white space.", nameof(alias));
-            }
+            EnsureArg.IsNotNullOrWhiteSpace(alias);
 
             Alias = alias;
         }

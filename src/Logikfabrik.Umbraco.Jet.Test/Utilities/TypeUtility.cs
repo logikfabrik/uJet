@@ -16,7 +16,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Utilities
         /// <summary>
         /// Gets the type attributes.
         /// </summary>
-        /// <param name="typeAttributes">The type attributes, if any.</param>
+        /// <param name="typeAttributes">The type attributes.</param>
         /// <returns>The type attributes.</returns>
         public static TypeAttributes GetTypeAttributes(TypeAttributes? typeAttributes = null)
         {
@@ -41,7 +41,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Utilities
         /// <summary>
         /// Gets a type builder.
         /// </summary>
-        /// <param name="typeName">Name of the type.</param>
+        /// <param name="typeName">The type name.</param>
         /// <param name="typeAttributes">The type attributes.</param>
         /// <returns>A type builder.</returns>
         public static TypeBuilder GetTypeBuilder(string typeName, TypeAttributes typeAttributes)

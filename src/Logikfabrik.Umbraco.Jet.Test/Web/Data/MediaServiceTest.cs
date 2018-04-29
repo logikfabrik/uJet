@@ -2,20 +2,22 @@
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
+using AutoFixture.Xunit2;
+
 namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 {
     using System;
     using System.Collections.Generic;
     using global::Umbraco.Core.Models;
     using Jet.Web.Data;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
+    using Shouldly;
     using Utilities;
+    using Xunit;
 
-    [TestClass]
     public class MediaServiceTest : TestBase
     {
-        [TestMethod]
+        [Fact]
         public void CanGetMediaIdByConvention()
         {
             const int id = 123;
@@ -31,10 +33,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var media = new MediaService(umbracoHelperWrapperMock.Object).GetMedia<Models.MediaType>(id);
 
-            Assert.AreEqual(id, media.Id);
+            media.Id.ShouldBe(id);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetMediaUrlByConvention()
         {
             const int id = 123;
@@ -51,10 +53,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var media = new MediaService(umbracoHelperWrapperMock.Object).GetMedia<Models.MediaType>(id);
 
-            Assert.AreEqual(url, media.Url);
+            media.Url.ShouldBe(url);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetMediaNameByConvention()
         {
             const int id = 123;
@@ -71,10 +73,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var media = new MediaService(umbracoHelperWrapperMock.Object).GetMedia<Models.MediaType>(id);
 
-            Assert.AreEqual(name, media.Name);
+            media.Name.ShouldBe(name);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetMediaCreateDateByConvention()
         {
             const int id = 123;
@@ -91,10 +93,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var media = new MediaService(umbracoHelperWrapperMock.Object).GetMedia<Models.MediaType>(id);
 
-            Assert.AreEqual(createDate, media.CreateDate);
+            media.CreateDate.ShouldBe(createDate);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetMediaUpdateDateByConvention()
         {
             const int id = 123;
@@ -111,11 +113,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var media = new MediaService(umbracoHelperWrapperMock.Object).GetMedia<Models.MediaType>(id);
 
-            Assert.AreEqual(updateDate, media.UpdateDate);
+            media.UpdateDate.ShouldBe(updateDate);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Fact]
         public void CanNotGetMediaForInvalidMediaType()
         {
             var type = TypeUtility.GetTypeBuilder("MyType", TypeUtility.GetTypeAttributes()).CreateType();
@@ -124,13 +125,14 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var service = new MediaService(new Mock<IUmbracoHelperWrapper>().Object);
 
-            service.GetMedia(contentMock.Object, type);
+            Assert.Throws<ArgumentException>(() => service.GetMedia(contentMock.Object, type));
         }
 
-        [TestMethod]
-        public void CanGetMediaForValidMediaType()
+        [Theory]
+        [AutoData]
+        public void CanGetMediaForValidMediaType(string typeName, string name)
         {
-            var type = MediaTypeUtility.GetTypeBuilder().CreateType();
+            var modelType = new MediaTypeModelTypeBuilder(typeName, name).CreateType();
 
             var contentMock = new Mock<IPublishedContent>();
 
@@ -138,12 +140,12 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var service = new MediaService(new Mock<IUmbracoHelperWrapper>().Object);
 
-            var media = service.GetMedia(contentMock.Object, type);
+            var media = service.GetMedia(contentMock.Object, modelType);
 
-            Assert.IsNotNull(media);
+            media.ShouldNotBeNull();
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetMediaForMediaTypeWithStringProperty()
         {
             const int id = 123;
@@ -168,10 +170,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var media = new MediaService(umbracoHelperWrapperMock.Object).GetMedia<Models.MediaType>(id);
 
-            Assert.AreEqual(stringPropertyValue, media.StringProperty);
+            media.StringProperty.ShouldBe(stringPropertyValue);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetMediaForMediaTypeWithIntegerProperty()
         {
             const int id = 123;
@@ -196,10 +198,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var media = new MediaService(umbracoHelperWrapperMock.Object).GetMedia<Models.MediaType>(id);
 
-            Assert.AreEqual(integerPropertyValue, media.IntegerProperty);
+            media.IntegerProperty.ShouldBe(integerPropertyValue);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetMediaForMediaTypeWithFloatingBinaryPointProperty()
         {
             const int id = 123;
@@ -224,10 +226,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var media = new MediaService(umbracoHelperWrapperMock.Object).GetMedia<Models.MediaType>(id);
 
-            Assert.AreEqual(floatingBinaryPointPropertyValue, media.FloatingBinaryPointProperty);
+            media.FloatingBinaryPointProperty.ShouldBe(floatingBinaryPointPropertyValue);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetMediaForMediaTypeWithFloatingDecimalPointProperty()
         {
             const int id = 123;
@@ -252,10 +254,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var media = new MediaService(umbracoHelperWrapperMock.Object).GetMedia<Models.MediaType>(id);
 
-            Assert.AreEqual(floatingDecimalPointPropertyValue, media.FloatingDecimalPointProperty);
+            media.FloatingDecimalPointProperty.ShouldBe(floatingDecimalPointPropertyValue);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetMediaForMediaTypeWithBooleanProperty()
         {
             const int id = 123;
@@ -280,10 +282,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var media = new MediaService(umbracoHelperWrapperMock.Object).GetMedia<Models.MediaType>(id);
 
-            Assert.AreEqual(booleanPropertyValue, media.BooleanProperty);
+            media.BooleanProperty.ShouldBe(booleanPropertyValue);
         }
 
-        [TestMethod]
+        [Fact]
         public void CanGetMediaForMediaTypeWithDateTimeProperty()
         {
             const int id = 123;
@@ -308,7 +310,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var media = new MediaService(umbracoHelperWrapperMock.Object).GetMedia<Models.MediaType>(id);
 
-            Assert.AreEqual(dateTimePropertyValue, media.DateTimeProperty);
+            media.DateTimeProperty.ShouldBe(dateTimePropertyValue);
         }
     }
 }

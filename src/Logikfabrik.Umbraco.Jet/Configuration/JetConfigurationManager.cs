@@ -7,7 +7,7 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
     using System.Linq;
 
     /// <summary>
-    /// The <see cref="JetConfigurationManager" /> class. Manager for uJet configuration.
+    /// The <see cref="JetConfigurationManager" /> class.
     /// </summary>
     public static class JetConfigurationManager
     {
@@ -29,7 +29,7 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
         /// </value>
         public static string[] Assemblies
         {
-            get { return Section.Assemblies.Cast<JetAssemblyElement>().Select(e => e.Name).ToArray(); }
+            get { return Section.Assemblies.Cast<JetAssemblyElement>().Select(element => element.Name).ToArray(); }
         }
 
         /// <summary>

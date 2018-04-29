@@ -5,143 +5,193 @@
 namespace Logikfabrik.Umbraco.Jet.Test.Data
 {
     using System;
+    using AutoFixture.Xunit2;
+    using global::Umbraco.Core.Persistence;
+    using global::Umbraco.Core.Persistence.SqlSyntax;
     using Jet.Data;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
+    using Moq.AutoMock;
+    using Shouldly;
+    using Xunit;
 
-    [TestClass]
     public class ContentTypeRepositoryTest
     {
-        [TestMethod]
-        public void CanGetContentTypeModelId()
+        [Theory]
+        [AutoData]
+        public void CanGetContentTypeModelId(int contentTypeId)
         {
-            var modelId = Guid.Parse("22f44f53-81de-4c2e-a9b9-186ea053d234");
+            var mocker = new AutoMocker();
 
-            var contentTypeRepositoryMock = new Mock<ContentTypeRepository>(new Mock<IDatabaseWrapper>().Object)
-            {
-                CallBase = true
-            };
+            var contentTypeRepository = mocker.CreateInstance<ContentTypeRepository>();
 
-            contentTypeRepositoryMock.Setup(m => m.GetContentTypeByContentTypeId(5)).Returns(new ContentType { ContentTypeId = 5, Id = modelId });
+            var databaseWrapperMock = mocker.GetMock<IDatabaseWrapper>();
 
-            Assert.AreEqual(modelId, contentTypeRepositoryMock.Object.GetContentTypeModelId(5));
+            databaseWrapperMock.Setup(m => m.SyntaxProvider).Returns(mocker.Get<ISqlSyntaxProvider>());
+            databaseWrapperMock.Setup(m => m.TableExists<ContentType>()).Returns(true);
+            databaseWrapperMock.Setup(m => m.Get<ContentType>(It.IsAny<Sql>())).Returns(new ContentType());
+
+            contentTypeRepository.GetContentTypeModelId(contentTypeId).ShouldNotBeNull();
         }
 
-        [TestMethod]
-        public void CanGetContentTypeModelIdFromCache()
+        [Theory]
+        [AutoData]
+        public void CanGetContentTypeModelIdFromCache(int contentTypeId)
         {
-            var modelId = Guid.Parse("22f44f53-81de-4c2e-a9b9-186ea053d234");
+            var mocker = new AutoMocker();
 
-            var contentTypeRepositoryMock = new Mock<ContentTypeRepository>(new Mock<IDatabaseWrapper>().Object)
-            {
-                CallBase = true
-            };
+            var contentTypeRepository = mocker.CreateInstance<ContentTypeRepository>();
 
-            contentTypeRepositoryMock.Setup(m => m.GetContentTypeByContentTypeId(5)).Returns(new ContentType { ContentTypeId = 5, Id = modelId });
+            var databaseWrapperMock = mocker.GetMock<IDatabaseWrapper>();
 
-            contentTypeRepositoryMock.Object.GetContentTypeModelId(5);
-            contentTypeRepositoryMock.Object.GetContentTypeModelId(5);
+            databaseWrapperMock.Setup(m => m.SyntaxProvider).Returns(mocker.Get<ISqlSyntaxProvider>());
+            databaseWrapperMock.Setup(m => m.TableExists<ContentType>()).Returns(true);
+            databaseWrapperMock.Setup(m => m.Get<ContentType>(It.IsAny<Sql>())).Returns(new ContentType());
 
-            contentTypeRepositoryMock.Verify(m => m.GetContentTypeByContentTypeId(5), Times.Once);
+            contentTypeRepository.GetContentTypeModelId(contentTypeId);
+            contentTypeRepository.GetContentTypeModelId(contentTypeId);
+
+            databaseWrapperMock.Verify(m => m.Get<ContentType>(It.IsAny<Sql>()), Times.Once);
         }
 
-        [TestMethod]
-        public void CanGetPropertyTypeModelId()
+        [Theory]
+        [AutoData]
+        public void CanGetPropertyTypeModelId(int propertyTypeId)
         {
-            var modelId = Guid.Parse("22f44f53-81de-4c2e-a9b9-186ea053d234");
+            var mocker = new AutoMocker();
 
-            var contentTypeRepositoryMock = new Mock<ContentTypeRepository>(new Mock<IDatabaseWrapper>().Object)
-            {
-                CallBase = true
-            };
+            var contentTypeRepository = mocker.CreateInstance<ContentTypeRepository>();
 
-            contentTypeRepositoryMock.Setup(m => m.GetPropertyTypeByPropertyTypeId(5)).Returns(new PropertyType { PropertyTypeId = 5, Id = modelId });
+            var databaseWrapperMock = mocker.GetMock<IDatabaseWrapper>();
 
-            Assert.AreEqual(modelId, contentTypeRepositoryMock.Object.GetPropertyTypeModelId(5));
+            databaseWrapperMock.Setup(m => m.SyntaxProvider).Returns(mocker.Get<ISqlSyntaxProvider>());
+            databaseWrapperMock.Setup(m => m.TableExists<PropertyType>()).Returns(true);
+            databaseWrapperMock.Setup(m => m.Get<PropertyType>(It.IsAny<Sql>())).Returns(new PropertyType());
+
+            contentTypeRepository.GetPropertyTypeModelId(propertyTypeId).ShouldNotBeNull();
         }
 
-        [TestMethod]
-        public void CanGetPropertyTypeModelIdFromCache()
+        [Theory]
+        [AutoData]
+        public void CanGetPropertyTypeModelIdFromCache(int propertyTypeId)
         {
-            var modelId = Guid.Parse("22f44f53-81de-4c2e-a9b9-186ea053d234");
+            var mocker = new AutoMocker();
 
-            var contentTypeRepositoryMock = new Mock<ContentTypeRepository>(new Mock<IDatabaseWrapper>().Object)
-            {
-                CallBase = true
-            };
+            var contentTypeRepository = mocker.CreateInstance<ContentTypeRepository>();
 
-            contentTypeRepositoryMock.Setup(m => m.GetPropertyTypeByPropertyTypeId(5)).Returns(new PropertyType { PropertyTypeId = 5, Id = modelId });
+            var databaseWrapperMock = mocker.GetMock<IDatabaseWrapper>();
 
-            contentTypeRepositoryMock.Object.GetPropertyTypeModelId(5);
-            contentTypeRepositoryMock.Object.GetPropertyTypeModelId(5);
+            databaseWrapperMock.Setup(m => m.SyntaxProvider).Returns(mocker.Get<ISqlSyntaxProvider>());
+            databaseWrapperMock.Setup(m => m.TableExists<PropertyType>()).Returns(true);
+            databaseWrapperMock.Setup(m => m.Get<PropertyType>(It.IsAny<Sql>())).Returns(new PropertyType());
 
-            contentTypeRepositoryMock.Verify(m => m.GetPropertyTypeByPropertyTypeId(5), Times.Once);
+            contentTypeRepository.GetPropertyTypeModelId(propertyTypeId);
+            contentTypeRepository.GetPropertyTypeModelId(propertyTypeId);
+
+            databaseWrapperMock.Verify(m => m.Get<PropertyType>(It.IsAny<Sql>()), Times.Once);
         }
 
-        [TestMethod]
-        public void CanGetContentTypeId()
+        [Theory]
+        [AutoData]
+        public void CanGetContentTypeId(Guid id, int contentTypeId)
         {
-            var modelId = Guid.Parse("22f44f53-81de-4c2e-a9b9-186ea053d234");
+            var mocker = new AutoMocker();
 
-            var contentTypeRepositoryMock = new Mock<ContentTypeRepository>(new Mock<IDatabaseWrapper>().Object)
-            {
-                CallBase = true
-            };
+            var contentTypeRepository = mocker.CreateInstance<ContentTypeRepository>();
 
-            contentTypeRepositoryMock.Setup(m => m.GetContentTypeById(modelId)).Returns(new ContentType { ContentTypeId = 5, Id = modelId });
+            var databaseWrapperMock = mocker.GetMock<IDatabaseWrapper>();
 
-            Assert.AreEqual(5, contentTypeRepositoryMock.Object.GetContentTypeId(modelId));
+            databaseWrapperMock.Setup(m => m.SyntaxProvider).Returns(mocker.Get<ISqlSyntaxProvider>());
+            databaseWrapperMock.Setup(m => m.TableExists<ContentType>()).Returns(true);
+            databaseWrapperMock.Setup(m => m.Get<ContentType>(id)).Returns(new ContentType { ContentTypeId = contentTypeId });
+
+            contentTypeRepository.GetContentTypeId(id).ShouldBe(contentTypeId);
         }
 
-        [TestMethod]
-        public void CanGetContentTypeIdFromCache()
+        [Theory]
+        [AutoData]
+        public void CanGetContentTypeIdFromCache(Guid id, int contentTypeId)
         {
-            var modelId = Guid.Parse("22f44f53-81de-4c2e-a9b9-186ea053d234");
+            var mocker = new AutoMocker();
 
-            var contentTypeRepositoryMock = new Mock<ContentTypeRepository>(new Mock<IDatabaseWrapper>().Object)
-            {
-                CallBase = true
-            };
+            var contentTypeRepository = mocker.CreateInstance<ContentTypeRepository>();
 
-            contentTypeRepositoryMock.Setup(m => m.GetContentTypeById(modelId)).Returns(new ContentType { ContentTypeId = 5, Id = modelId });
+            var databaseWrapperMock = mocker.GetMock<IDatabaseWrapper>();
 
-            contentTypeRepositoryMock.Object.GetContentTypeId(modelId);
-            contentTypeRepositoryMock.Object.GetContentTypeId(modelId);
+            databaseWrapperMock.Setup(m => m.SyntaxProvider).Returns(mocker.Get<ISqlSyntaxProvider>());
+            databaseWrapperMock.Setup(m => m.TableExists<ContentType>()).Returns(true);
+            databaseWrapperMock.Setup(m => m.Get<ContentType>(id)).Returns(new ContentType { ContentTypeId = contentTypeId });
 
-            contentTypeRepositoryMock.Verify(m => m.GetContentTypeById(modelId), Times.Once);
+            contentTypeRepository.GetContentTypeId(id);
+            contentTypeRepository.GetContentTypeId(id);
+
+            databaseWrapperMock.Verify(m => m.Get<ContentType>(id), Times.Once);
         }
 
-        [TestMethod]
-        public void CanGetPropertyTypeId()
+        [Theory]
+        [AutoData]
+        public void CanGetPropertyTypeId(Guid id, int propertyTypeId)
         {
-            var modelId = Guid.Parse("22f44f53-81de-4c2e-a9b9-186ea053d234");
+            var mocker = new AutoMocker();
 
-            var contentTypeRepositoryMock = new Mock<ContentTypeRepository>(new Mock<IDatabaseWrapper>().Object)
-            {
-                CallBase = true
-            };
+            var contentTypeRepository = mocker.CreateInstance<ContentTypeRepository>();
 
-            contentTypeRepositoryMock.Setup(m => m.GetPropertyTypeById(modelId)).Returns(new PropertyType { PropertyTypeId = 5, Id = modelId });
+            var databaseWrapperMock = mocker.GetMock<IDatabaseWrapper>();
 
-            Assert.AreEqual(5, contentTypeRepositoryMock.Object.GetPropertyTypeId(modelId));
+            databaseWrapperMock.Setup(m => m.SyntaxProvider).Returns(mocker.Get<ISqlSyntaxProvider>());
+            databaseWrapperMock.Setup(m => m.TableExists<PropertyType>()).Returns(true);
+            databaseWrapperMock.Setup(m => m.Get<PropertyType>(id)).Returns(new PropertyType { PropertyTypeId = propertyTypeId });
+
+            contentTypeRepository.GetPropertyTypeId(id).ShouldBe(propertyTypeId);
         }
 
-        [TestMethod]
-        public void CanGetPropertyTypeIdFromCache()
+        [Theory]
+        [AutoData]
+        public void CanGetPropertyTypeIdFromCache(Guid id, int propertyTypeId)
         {
-            var modelId = Guid.Parse("22f44f53-81de-4c2e-a9b9-186ea053d234");
+            var mocker = new AutoMocker();
 
-            var contentTypeRepositoryMock = new Mock<ContentTypeRepository>(new Mock<IDatabaseWrapper>().Object)
-            {
-                CallBase = true
-            };
+            var contentTypeRepository = mocker.CreateInstance<ContentTypeRepository>();
 
-            contentTypeRepositoryMock.Setup(m => m.GetPropertyTypeById(modelId)).Returns(new PropertyType { PropertyTypeId = 5, Id = modelId });
+            var databaseWrapperMock = mocker.GetMock<IDatabaseWrapper>();
 
-            contentTypeRepositoryMock.Object.GetPropertyTypeId(modelId);
-            contentTypeRepositoryMock.Object.GetPropertyTypeId(modelId);
+            databaseWrapperMock.Setup(m => m.SyntaxProvider).Returns(mocker.Get<ISqlSyntaxProvider>());
+            databaseWrapperMock.Setup(m => m.TableExists<PropertyType>()).Returns(true);
+            databaseWrapperMock.Setup(m => m.Get<PropertyType>(id)).Returns(new PropertyType { PropertyTypeId = propertyTypeId });
 
-            contentTypeRepositoryMock.Verify(m => m.GetPropertyTypeById(modelId), Times.Once);
+            contentTypeRepository.GetPropertyTypeId(id);
+            contentTypeRepository.GetPropertyTypeId(id);
+
+            databaseWrapperMock.Verify(m => m.Get<PropertyType>(id), Times.Once);
+        }
+
+        [Theory]
+        [AutoData]
+        public void CanSetContentTypeId(Guid id, int contentTypeId)
+        {
+            var mocker = new AutoMocker();
+
+            var contentTypeRepository = mocker.CreateInstance<ContentTypeRepository>();
+
+            var databaseWrapperMock = mocker.GetMock<IDatabaseWrapper>();
+
+            contentTypeRepository.SetContentTypeId(id, contentTypeId);
+
+            databaseWrapperMock.Verify(m => m.Insert(It.IsAny<ContentType>(), id), Times.Once);
+        }
+
+        [Theory]
+        [AutoData]
+        public void CanSetPropertyTypeId(Guid id, int propertyTypeId)
+        {
+            var mocker = new AutoMocker();
+
+            var contentTypeRepository = mocker.CreateInstance<ContentTypeRepository>();
+
+            var databaseWrapperMock = mocker.GetMock<IDatabaseWrapper>();
+
+            contentTypeRepository.SetPropertyTypeId(id, propertyTypeId);
+
+            databaseWrapperMock.Verify(m => m.Insert(It.IsAny<PropertyType>(), id), Times.Once);
         }
     }
 }

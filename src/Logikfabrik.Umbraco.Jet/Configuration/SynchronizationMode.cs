@@ -7,7 +7,7 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
     using System;
 
     /// <summary>
-    /// The <see cref="SynchronizationMode" /> enumerable.
+    /// The <see cref="SynchronizationMode" /> enumeration.
     /// </summary>
     [Flags]
     public enum SynchronizationMode
