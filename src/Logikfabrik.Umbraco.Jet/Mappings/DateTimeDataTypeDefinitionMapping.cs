@@ -13,7 +13,10 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
     public class DateTimeDataTypeDefinitionMapping : DataTypeDefinitionMapping
     {
         /// <inheritdoc />
-        protected override Type[] SupportedTypes => new[]
+        public override DefaultDataTypeDefinition DefaultDataTypeDefinition => DefaultDataTypeDefinition.DatePicker;
+
+        /// <inheritdoc />
+        public override Type[] SupportedTypes => new[]
         {
             typeof(DateTime),
             typeof(DateTime?)

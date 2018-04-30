@@ -284,6 +284,7 @@
     <Compile Include="Mappings\DataTypeDefinitionMappingRegistrar.cs" />
     <Compile Include="Mappings\BuiltInDataTypeDefinitionMappingsRegistrar.cs" />
     <Compile Include="Mappings\DataTypeDefinitionService.cs" />
+    <Compile Include="Mappings\UIHints.cs" />
     <Compile Include="Mappings\IDataTypeDefinitionService.cs" />
     <Compile Include="PropertyTypeFinder.cs" />
     <Compile Include="AssemblyLoader.cs" />
@@ -334,7 +335,7 @@
     <Compile Include="ITypeService.cs" />
     <Compile Include="JetApplicationHandler.cs" />
     <Compile Include="Mappings\BooleanDataTypeDefinitionMapping.cs" />
-    <Compile Include="Mappings\DataTypeDefinition.cs" />
+    <Compile Include="Mappings\DefaultDataTypeDefinition.cs" />
     <Compile Include="Mappings\DataTypeDefinitionMapping.cs" />
     <Compile Include="Mappings\DataTypeDefinitionMappingDictionary.cs" />
     <Compile Include="Mappings\DataTypeDefinitionMappings.cs" />

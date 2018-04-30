@@ -2,6 +2,8 @@
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
+using Logikfabrik.Umbraco.Jet.Mappings;
+
 namespace Logikfabrik.Umbraco.Jet.Test.Models
 {
     using System;

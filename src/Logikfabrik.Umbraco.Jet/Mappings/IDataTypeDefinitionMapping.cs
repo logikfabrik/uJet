@@ -12,6 +12,22 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
     public interface IDataTypeDefinitionMapping
     {
         /// <summary>
+        /// Gets the default data type definition.
+        /// </summary>
+        /// <value>
+        /// The default data type definition.
+        /// </value>
+        DefaultDataTypeDefinition DefaultDataTypeDefinition { get; }
+
+        /// <summary>
+        /// Gets the supported types.
+        /// </summary>
+        /// <value>
+        /// The supported types.
+        /// </value>
+        Type[] SupportedTypes { get; }
+
+        /// <summary>
         /// Determines whether this instance can map the specified from type to a definition.
         /// </summary>
         /// <param name="fromType">The from type.</param>

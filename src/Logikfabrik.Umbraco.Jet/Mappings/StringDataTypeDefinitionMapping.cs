@@ -13,6 +13,9 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
     public class StringDataTypeDefinitionMapping : DataTypeDefinitionMapping
     {
         /// <inheritdoc />
-        protected override Type[] SupportedTypes => new[] { typeof(string) };
+        public override DefaultDataTypeDefinition DefaultDataTypeDefinition => DefaultDataTypeDefinition.Textstring;
+
+        /// <inheritdoc />
+        public override Type[] SupportedTypes => new[] { typeof(string) };
     }
 }

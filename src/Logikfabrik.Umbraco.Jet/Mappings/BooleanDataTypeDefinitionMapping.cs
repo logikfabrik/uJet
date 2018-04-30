@@ -13,7 +13,10 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
     public class BooleanDataTypeDefinitionMapping : DataTypeDefinitionMapping
     {
         /// <inheritdoc />
-        protected override Type[] SupportedTypes => new[]
+        public override DefaultDataTypeDefinition DefaultDataTypeDefinition => DefaultDataTypeDefinition.TrueFalse;
+
+        /// <inheritdoc />
+        public override Type[] SupportedTypes => new[]
         {
             typeof(bool),
             typeof(bool?)

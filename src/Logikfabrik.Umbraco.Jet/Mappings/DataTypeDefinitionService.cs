@@ -6,6 +6,7 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using EnsureThat;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
@@ -18,8 +19,8 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
     public class DataTypeDefinitionService : IDataTypeDefinitionService
     {
         private readonly IDataTypeService _dataTypeService;
-        private readonly Lazy<IDictionary<string, Tuple<Type, DataTypeDefinition>>> _hints;
-        private readonly IDictionary<DataTypeDefinition, IDataTypeDefinition> _definitions;
+        private readonly IDictionary<DefaultDataTypeDefinition, Type> _hints;
+        private readonly List<IDataTypeDefinition> _definitions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataTypeDefinitionService" /> class.
@@ -31,69 +32,90 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
             EnsureArg.IsNotNull(dataTypeService);
 
             _dataTypeService = dataTypeService;
-            _hints = new Lazy<IDictionary<string, Tuple<Type, DataTypeDefinition>>>(() => GetHints(enablePropertyValueConverters));
-            _definitions = new Dictionary<DataTypeDefinition, IDataTypeDefinition>();
+            _hints = GetDefaultDataTypeHints(enablePropertyValueConverters);
+            _definitions = new List<IDataTypeDefinition>();
+        }
+
+        /// <inheritdoc />
+        public IDataTypeDefinition GetDefinition(Type fromType)
+        {
+            if (!DataTypeDefinitionMappings.Mappings.TryGetValue(fromType, out var mapping))
+            {
+                return null;
+            }
+
+            return mapping.CanMapToDefinition(fromType) ? GetDefinition(mapping.DefaultDataTypeDefinition) : null;
         }
 
         /// <inheritdoc />
         public IDataTypeDefinition GetDefinition(string uiHint, Type fromType)
         {
-            if (!_hints.Value.TryGetValue(uiHint, out var hint))
+            if (!Enum.TryParse(uiHint, out DefaultDataTypeDefinition defaultDataTypeDefinition))
             {
-                return null;
+                return GetDefinition(uiHint);
             }
 
-            if (hint.Item1 != fromType)
+            if (!_hints.TryGetValue(defaultDataTypeDefinition, out var type))
             {
-                return GetNullableType(hint.Item1) == fromType ? GetDefinition(hint.Item2) : null;
+                // Find data type definition by name.
+                return GetDefinition(uiHint);
             }
 
-            return GetDefinition(hint.Item2);
+            if (type == fromType || GetNullableType(type) == fromType)
+            {
+                return GetDefinition(defaultDataTypeDefinition);
+            }
+
+            return null;
         }
 
-        private static IDictionary<string, Tuple<Type, DataTypeDefinition>> GetHints(bool enablePropertyValueConverters)
+        private static IDictionary<DefaultDataTypeDefinition, Type> GetDefaultDataTypeHints(bool enablePropertyValueConverters)
         {
-            var hints = new Dictionary<string, Tuple<Type, DataTypeDefinition>>();
+            var hints = new Dictionary<DefaultDataTypeDefinition, Type>();
 
-            string GetName(DataTypeDefinition dtd) => Enum.GetName(typeof(DataTypeDefinition), dtd);
+            void AddHint(Type type, DefaultDataTypeDefinition defaultDataTypeDefinition)
+            {
+                // ReSharper disable once AssignNullToNotNullAttribute
+                hints.Add(defaultDataTypeDefinition, type);
+            }
 
-            void AddHint(Type t, DataTypeDefinition dtd) => hints.Add(GetName(dtd), new Tuple<Type, DataTypeDefinition>(t, dtd));
-
-            AddHint(typeof(string), DataTypeDefinition.ApprovedColor);
-            AddHint(typeof(IPublishedContent), DataTypeDefinition.ContentPicker2);
-            AddHint(typeof(string), DataTypeDefinition.DatePicker);
-            AddHint(typeof(DateTime), DataTypeDefinition.DatePickerWithTime);
-            AddHint(typeof(int), DataTypeDefinition.Dropdown);
-            AddHint(typeof(string), DataTypeDefinition.FolderBrowser);
-            AddHint(typeof(string), DataTypeDefinition.Label);
-            AddHint(typeof(IPublishedContent), DataTypeDefinition.MediaPicker2);
-            AddHint(typeof(string), DataTypeDefinition.MultipleMediaPicker);
-            AddHint(typeof(int), DataTypeDefinition.Numeric);
-            AddHint(typeof(string), DataTypeDefinition.Radiobox);
-            AddHint(typeof(RelatedLinks), DataTypeDefinition.RelatedLinks2);
-            AddHint(typeof(string), DataTypeDefinition.RichtextEditor);
-            AddHint(typeof(string), DataTypeDefinition.TextboxMultiple);
-            AddHint(typeof(string), DataTypeDefinition.Textstring);
-            AddHint(typeof(bool), DataTypeDefinition.TrueFalse);
-            AddHint(typeof(string), DataTypeDefinition.Upload);
+            AddHint(typeof(string), DefaultDataTypeDefinition.ListViewMembers);
+            AddHint(typeof(string), DefaultDataTypeDefinition.ListViewMedia);
+            AddHint(typeof(string), DefaultDataTypeDefinition.ListViewContent);
+            AddHint(typeof(string), DefaultDataTypeDefinition.Label);
+            AddHint(typeof(string), DefaultDataTypeDefinition.Upload);
+            AddHint(typeof(string), DefaultDataTypeDefinition.Textarea);
+            AddHint(typeof(string), DefaultDataTypeDefinition.Textstring);
+            AddHint(typeof(string), DefaultDataTypeDefinition.RichtextEditor);
+            AddHint(typeof(int), DefaultDataTypeDefinition.Numeric);
+            AddHint(typeof(bool), DefaultDataTypeDefinition.TrueFalse);
+            AddHint(typeof(int), DefaultDataTypeDefinition.Dropdown);
+            AddHint(typeof(DateTime), DefaultDataTypeDefinition.DatePicker);
+            AddHint(typeof(string), DefaultDataTypeDefinition.Radiobox);
+            AddHint(typeof(string), DefaultDataTypeDefinition.ApprovedColor);
+            AddHint(typeof(DateTime), DefaultDataTypeDefinition.DatePickerWithTime);
+            AddHint(typeof(string), DefaultDataTypeDefinition.ImageCropper);
+            AddHint(typeof(int), DefaultDataTypeDefinition.MemberPicker);
 
             if (enablePropertyValueConverters)
             {
-                AddHint(typeof(IPublishedContent), DataTypeDefinition.ContentPicker);
-                AddHint(typeof(IEnumerable<string>), DataTypeDefinition.CheckboxList);
-                AddHint(typeof(IEnumerable<string>), DataTypeDefinition.DropdownMultiple);
-                AddHint(typeof(IPublishedContent), DataTypeDefinition.MediaPicker);
-                AddHint(typeof(RelatedLinks), DataTypeDefinition.RelatedLinks);
-                AddHint(typeof(IEnumerable<string>), DataTypeDefinition.Tags);
+                AddHint(typeof(IEnumerable<string>), DefaultDataTypeDefinition.CheckboxList);
+                AddHint(typeof(IEnumerable<string>), DefaultDataTypeDefinition.DropdownMultiple);
+                AddHint(typeof(IEnumerable<string>), DefaultDataTypeDefinition.Tags);
+                AddHint(typeof(IPublishedContent), DefaultDataTypeDefinition.ContentPicker);
+                AddHint(typeof(IPublishedContent), DefaultDataTypeDefinition.MediaPicker);
+                AddHint(typeof(IEnumerable<IPublishedContent>), DefaultDataTypeDefinition.MultipleMediaPicker);
+                AddHint(typeof(RelatedLinks), DefaultDataTypeDefinition.RelatedLinks);
             }
             else
             {
-                AddHint(typeof(int), DataTypeDefinition.ContentPicker);
-                AddHint(typeof(string), DataTypeDefinition.CheckboxList);
-                AddHint(typeof(string), DataTypeDefinition.DropdownMultiple);
-                AddHint(typeof(string), DataTypeDefinition.MediaPicker);
-                AddHint(typeof(string), DataTypeDefinition.RelatedLinks);
-                AddHint(typeof(string), DataTypeDefinition.Tags);
+                AddHint(typeof(string), DefaultDataTypeDefinition.CheckboxList);
+                AddHint(typeof(string), DefaultDataTypeDefinition.DropdownMultiple);
+                AddHint(typeof(string), DefaultDataTypeDefinition.Tags);
+                AddHint(typeof(int), DefaultDataTypeDefinition.ContentPicker);
+                AddHint(typeof(string), DefaultDataTypeDefinition.MediaPicker);
+                AddHint(typeof(string), DefaultDataTypeDefinition.MultipleMediaPicker);
+                AddHint(typeof(string), DefaultDataTypeDefinition.RelatedLinks);
             }
 
             return hints;
@@ -104,23 +126,51 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
             return type.IsValueType ? typeof(Nullable<>).MakeGenericType(type) : type;
         }
 
-        private IDataTypeDefinition GetDefinition(DataTypeDefinition dataTypeDefinition)
+        private IDataTypeDefinition GetDefinition(DefaultDataTypeDefinition defaultDataTypeDefinition)
         {
-            if (_definitions.TryGetValue(dataTypeDefinition, out var dtd))
+            var definition = _definitions.SingleOrDefault(d => d.Id == (int)defaultDataTypeDefinition);
+
+            if (definition != null)
             {
-                return dtd;
+                return definition;
             }
 
-            dtd = _dataTypeService.GetDataTypeDefinitionById((int)dataTypeDefinition);
+            definition = _dataTypeService.GetDataTypeDefinitionById((int)defaultDataTypeDefinition);
 
-            if (dtd == null)
+            if (definition == null)
             {
                 return null;
             }
 
-            _definitions.Add(dataTypeDefinition, dtd);
+            _definitions.Add(definition);
 
-            return dtd;
+            return definition;
+        }
+
+        private IDataTypeDefinition GetDefinition(string dataTypeDefinitionName)
+        {
+            if (dataTypeDefinitionName == null)
+            {
+                return null;
+            }
+
+            var definition = _definitions.SingleOrDefault(d => d.Name == dataTypeDefinitionName);
+
+            if (definition != null)
+            {
+                return definition;
+            }
+
+            definition = _dataTypeService.GetDataTypeDefinitionByName(dataTypeDefinitionName);
+
+            if (definition == null)
+            {
+                return null;
+            }
+
+            _definitions.Add(definition);
+
+            return definition;
         }
     }
 }

@@ -13,13 +13,11 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
     // ReSharper disable once InheritdocConsiderUsage
     public abstract class DataTypeDefinitionMapping : IDataTypeDefinitionMapping
     {
-        /// <summary>
-        /// Gets the supported types.
-        /// </summary>
-        /// <value>
-        /// The supported types.
-        /// </value>
-        protected abstract Type[] SupportedTypes { get; }
+        /// <inheritdoc />
+        public abstract DefaultDataTypeDefinition DefaultDataTypeDefinition { get; }
+
+        /// <inheritdoc />
+        public abstract Type[] SupportedTypes { get; }
 
         /// <inheritdoc />
         public bool CanMapToDefinition(Type fromType)

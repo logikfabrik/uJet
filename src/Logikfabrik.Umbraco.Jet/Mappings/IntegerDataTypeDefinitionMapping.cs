@@ -13,7 +13,10 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
     public class IntegerDataTypeDefinitionMapping : DataTypeDefinitionMapping
     {
         /// <inheritdoc />
-        protected override Type[] SupportedTypes => new[]
+        public override DefaultDataTypeDefinition DefaultDataTypeDefinition => DefaultDataTypeDefinition.Numeric;
+
+        /// <inheritdoc />
+        public override Type[] SupportedTypes => new[]
         {
             typeof(short),
             typeof(short?),

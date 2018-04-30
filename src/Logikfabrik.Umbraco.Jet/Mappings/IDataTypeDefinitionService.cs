@@ -13,6 +13,13 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
     public interface IDataTypeDefinitionService
     {
         /// <summary>
+        /// Gets a definition for the specified UI from type.
+        /// </summary>
+        /// <param name="fromType">The from type.</param>
+        /// <returns>A definition; or <c>null</c>.</returns>
+        IDataTypeDefinition GetDefinition(Type fromType);
+
+        /// <summary>
         /// Gets a definition for the specified UI hint and from type.
         /// </summary>
         /// <param name="uiHint">The UI hint.</param>

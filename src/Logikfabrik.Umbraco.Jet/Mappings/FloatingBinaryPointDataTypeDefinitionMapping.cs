@@ -13,7 +13,10 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
     public class FloatingBinaryPointDataTypeDefinitionMapping : DataTypeDefinitionMapping
     {
         /// <inheritdoc />
-        protected override Type[] SupportedTypes => new[]
+        public override DefaultDataTypeDefinition DefaultDataTypeDefinition => DefaultDataTypeDefinition.Textstring;
+
+        /// <inheritdoc />
+        public override Type[] SupportedTypes => new[]
         {
             typeof(float),
             typeof(float?),

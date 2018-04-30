@@ -190,6 +190,13 @@ namespace Logikfabrik.Umbraco.Jet
         {
             var definition = _dataTypeDefinitionService.GetDefinition(model.UIHint, model.Type);
 
+            if (definition != null)
+            {
+                return definition;
+            }
+
+            definition = _dataTypeDefinitionService.GetDefinition(model.Type);
+
             if (definition == null)
             {
                 throw new Exception($"There is no data type definition for type {model.Type}.");

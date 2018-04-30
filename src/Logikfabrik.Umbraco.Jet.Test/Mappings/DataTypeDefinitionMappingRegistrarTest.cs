@@ -25,7 +25,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Mappings
 
             DataTypeDefinitionMappingRegistrar.Register(type, mappingMock.Object);
 
-            DataTypeDefinitionMappings.Mappings.TryGetValue(type, out var _).ShouldBeTrue();
+            DataTypeDefinitionMappings.Mappings.TryGetValue(type, out _).ShouldBeTrue();
         }
 
         public void Dispose()

@@ -13,7 +13,10 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
     public class FloatingDecimalPointDataTypeDefinitionMapping : DataTypeDefinitionMapping
     {
         /// <inheritdoc />
-        protected override Type[] SupportedTypes => new[]
+        public override DefaultDataTypeDefinition DefaultDataTypeDefinition => DefaultDataTypeDefinition.Textstring;
+
+        /// <inheritdoc />
+        public override Type[] SupportedTypes => new[]
         {
             typeof(decimal),
             typeof(decimal?)

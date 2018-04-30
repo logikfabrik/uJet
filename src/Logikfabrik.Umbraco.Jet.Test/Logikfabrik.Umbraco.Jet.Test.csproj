@@ -293,14 +293,12 @@
     <Compile Include="Extensions\TypeExtensionsTest.cs" />
     <Compile Include="Mappings\BuiltInDataTypeDefinitionMappingsRegistrarTest.cs" />
     <Compile Include="Mappings\DataTypeDefinitionMappingRegistrarTest.cs" />
+    <Compile Include="Mappings\DataTypeDefinitionServiceTest.cs" />
     <Compile Include="MediaTypeSynchronizerTest.cs" />
     <Compile Include="MemberTypeSynchronizerTest.cs" />
     <Compile Include="MemberTypeTest.cs" />
     <Compile Include="Models\CompositionDocumentTypeA.cs" />
     <Compile Include="Models\CompositionDocumentTypeB.cs" />
-    <Compile Include="Models\DocumentTypeWithAlias.cs" />
-    <Compile Include="Models\DocumentTypeA.cs" />
-    <Compile Include="Models\DocumentTypeB.cs" />
     <Compile Include="Models\ContentType.cs" />
     <Compile Include="Models\DocumentType.cs" />
     <Compile Include="Models\IDocumentTypeB.cs" />

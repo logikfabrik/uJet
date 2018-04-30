@@ -12,12 +12,12 @@ namespace Logikfabrik.Umbraco.Jet.Test.Extensions
     public class StringExtensionsTest : TestBase
     {
         [Theory]
-        [InlineAutoData("u", "u")]
-        [InlineAutoData("U", "u")]
-        [InlineAutoData("umbraco7", "umbraco7")]
-        [InlineAutoData("UMBRACO7", "uMBRACO7")]
-        [InlineAutoData("umbraco;:_", "umbraco")]
-        [InlineAutoData(null, null)]
+        [InlineData("u", "u")]
+        [InlineData("U", "u")]
+        [InlineData("umbraco7", "umbraco7")]
+        [InlineData("UMBRACO7", "uMBRACO7")]
+        [InlineData("umbraco;:_", "umbraco")]
+        [InlineData(null, null)]
         public void CanGetAlias(string s, string expected)
         {
             s.Alias().ShouldBe(expected);
