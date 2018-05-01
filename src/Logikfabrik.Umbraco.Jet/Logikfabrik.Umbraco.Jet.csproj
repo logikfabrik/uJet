@@ -274,6 +274,7 @@
     <Compile Include="IContentTypeModelFinder{TModel,TModelAttribute,TContentType}.cs" />
     <Compile Include="IDataType.cs" />
     <Compile Include="AliasAttribute.cs" />
+    <Compile Include="IDataTypeDefinitionFinder.cs" />
     <Compile Include="ITypeModelFinder.cs" />
     <Compile Include="Logging\ILogService.cs" />
     <Compile Include="ITypeResolver.cs" />

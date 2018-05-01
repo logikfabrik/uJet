@@ -13,7 +13,7 @@ namespace Logikfabrik.Umbraco.Jet
     /// <summary>
     /// The <see cref="DataTypeDefinitionFinder" /> class.
     /// </summary>
-    public class DataTypeDefinitionFinder
+    public class DataTypeDefinitionFinder : IDataTypeDefinitionFinder
     {
         private readonly ITypeRepository _typeRepository;
         private readonly EntityTypeComparer<IDataTypeDefinition> _comparer;
@@ -30,12 +30,7 @@ namespace Logikfabrik.Umbraco.Jet
             _comparer = new EntityTypeComparer<IDataTypeDefinition>();
         }
 
-        /// <summary>
-        /// Finds the data type definitions matching the specified model.
-        /// </summary>
-        /// <param name="modelNeedle">The model to find the data type definitions for.</param>
-        /// <param name="dataTypeDefinitionsHaystack">The haystack of data type definitions.</param>
-        /// <returns>The data type definitionss found.</returns>
+        /// <inheritdoc />
         public IDataTypeDefinition[] Find(DataType modelNeedle, IDataTypeDefinition[] dataTypeDefinitionsHaystack)
         {
             EnsureArg.IsNotNull(modelNeedle);

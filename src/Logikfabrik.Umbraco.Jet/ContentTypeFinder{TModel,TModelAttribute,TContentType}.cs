@@ -115,7 +115,6 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="modelNeedles">The models to find the content types for.</param>
         /// <param name="contentTypesHaystack">The haystack of content types.</param>
         /// <returns>The content types found.</returns>
-        /// <remarks>A content type is a match if a model needle's ID can be mapped to the ID of the content type, or if a model needle and the content type has the same alias.</remarks>
         public TContentType[] Find(TModel[] modelNeedles, TContentType[] contentTypesHaystack)
         {
             EnsureArg.IsNotNull(modelNeedles);

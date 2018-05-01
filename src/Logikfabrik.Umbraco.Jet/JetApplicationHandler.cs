@@ -60,6 +60,7 @@ namespace Logikfabrik.Umbraco.Jet
 
                     new DataTypeSynchronizer(
                         applicationContext.Services.DataTypeService,
+                        new DataTypeDefinitionFinder(typeRepository),
                         typeResolver,
                         typeRepository).Run();
                 }

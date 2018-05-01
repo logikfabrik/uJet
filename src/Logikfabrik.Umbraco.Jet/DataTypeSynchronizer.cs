@@ -20,29 +20,32 @@ namespace Logikfabrik.Umbraco.Jet
     public class DataTypeSynchronizer : ISynchronizer
     {
         private readonly IDataTypeService _dataTypeService;
+        private readonly IDataTypeDefinitionFinder _dataTypeDefinitionFinder;
         private readonly ITypeResolver _typeResolver;
         private readonly ITypeRepository _typeRepository;
-        private readonly DataTypeDefinitionFinder _dataTypeDefinitionFinder;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataTypeSynchronizer" /> class.
         /// </summary>
         /// <param name="dataTypeService">The data type service.</param>
+        /// <param name="dataTypeDefinitionFinder">The data type definition finder.</param>
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="typeRepository">The type repository.</param>
         public DataTypeSynchronizer(
             IDataTypeService dataTypeService,
+            IDataTypeDefinitionFinder dataTypeDefinitionFinder,
             ITypeResolver typeResolver,
             ITypeRepository typeRepository)
         {
             EnsureArg.IsNotNull(dataTypeService);
+            EnsureArg.IsNotNull(dataTypeDefinitionFinder);
             EnsureArg.IsNotNull(typeResolver);
             EnsureArg.IsNotNull(typeRepository);
 
             _dataTypeService = dataTypeService;
+            _dataTypeDefinitionFinder = dataTypeDefinitionFinder;
             _typeResolver = typeResolver;
             _typeRepository = typeRepository;
-            _dataTypeDefinitionFinder = new DataTypeDefinitionFinder(typeRepository);
         }
 
         /// <inheritdoc />
