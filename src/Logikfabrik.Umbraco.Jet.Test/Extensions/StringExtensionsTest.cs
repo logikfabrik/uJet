@@ -9,7 +9,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Extensions
     using Shouldly;
     using Xunit;
 
-    public class StringExtensionsTest : TestBase
+    public class StringExtensionsTest
     {
         [Theory]
         [InlineData("u", "u")]

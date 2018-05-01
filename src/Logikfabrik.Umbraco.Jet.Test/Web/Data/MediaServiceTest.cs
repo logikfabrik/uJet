@@ -14,7 +14,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
     using Utilities;
     using Xunit;
 
-    public class MediaServiceTest : TestBase
+    public class MediaServiceTest
     {
         [Fact]
         public void CanGetMediaIdByConvention()

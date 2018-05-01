@@ -15,7 +15,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
     using Utilities;
     using Xunit;
 
-    public class DocumentTypeSynchronizerTest : TestBase
+    public class DocumentTypeSynchronizerTest
     {
         [Theory]
         [AutoData]

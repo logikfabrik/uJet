@@ -82,7 +82,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Mappings
         [InlineData(true, UIHints.RelatedLinks, typeof(RelatedLinks))]
 
         // ReSharper disable once InconsistentNaming
-        public void CanGetDefaultDataTypeDefinitionByUIHint(bool enablePropertyValueConverters, string uiHint, Type fromType)
+        public void CanGetDefinitionByUIHintAndFromType(bool enablePropertyValueConverters, string uiHint, Type fromType)
         {
             var defaultDataTypeDefinition = Enum.Parse(typeof(DefaultDataTypeDefinition), uiHint);
 
@@ -102,8 +102,8 @@ namespace Logikfabrik.Umbraco.Jet.Test.Mappings
         }
 
         [Theory]
-        [ClassData(typeof(CanGetDefaultDataTypeDefinitionByTypeThroughBuiltInDataTypeDefinitionMappingsClassData))]
-        public void CanGetDefaultDataTypeDefinitionByTypeThroughBuiltInDataTypeDefinitionMappings(IDataTypeDefinitionMapping mapping)
+        [ClassData(typeof(CanGetDefinitionByFromTypeClassData))]
+        public void CanGetDefinitionByFromType(IDataTypeDefinitionMapping mapping)
         {
             var mocker = new AutoMocker();
 
@@ -123,13 +123,13 @@ namespace Logikfabrik.Umbraco.Jet.Test.Mappings
             }
         }
 
-        private class CanGetDefaultDataTypeDefinitionByTypeThroughBuiltInDataTypeDefinitionMappingsClassData : IEnumerable<object[]>
+        private class CanGetDefinitionByFromTypeClassData : IEnumerable<object[]>
         {
             public IEnumerator<object[]> GetEnumerator()
             {
                 BuiltInDataTypeDefinitionMappingsRegistrar.RegisterAll();
 
-                return DataTypeDefinitionMappings.Mappings.Values.Select(mapping => new[] { mapping}).GetEnumerator();
+                return DataTypeDefinitionMappings.Mappings.Values.Select(mapping => new[] { mapping }).GetEnumerator();
             }
 
             IEnumerator IEnumerable.GetEnumerator()

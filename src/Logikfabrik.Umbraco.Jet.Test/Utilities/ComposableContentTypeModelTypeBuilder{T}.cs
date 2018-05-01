@@ -1,4 +1,8 @@
-﻿namespace Logikfabrik.Umbraco.Jet.Test.Utilities
+﻿// <copyright file="ComposableContentTypeModelTypeBuilder{T}.cs" company="Logikfabrik">
+//   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
+// </copyright>
+
+namespace Logikfabrik.Umbraco.Jet.Test.Utilities
 {
     using System;
     using System.Linq;

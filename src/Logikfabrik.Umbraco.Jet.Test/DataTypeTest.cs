@@ -12,7 +12,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
     using Utilities;
     using Xunit;
 
-    public class DataTypeTest : TestBase
+    public class DataTypeTest
     {
         [Theory]
         [AutoData]

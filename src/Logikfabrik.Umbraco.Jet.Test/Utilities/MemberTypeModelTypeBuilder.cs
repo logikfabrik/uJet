@@ -1,4 +1,8 @@
-﻿namespace Logikfabrik.Umbraco.Jet.Test.Utilities
+﻿// <copyright file="MemberTypeModelTypeBuilder.cs" company="Logikfabrik">
+//   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
+// </copyright>
+
+namespace Logikfabrik.Umbraco.Jet.Test.Utilities
 {
     public class MemberTypeModelTypeBuilder : ContentTypeModelTypeBuilder<MemberTypeAttribute>
     {

@@ -2,10 +2,9 @@
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
-using System;
-
 namespace Logikfabrik.Umbraco.Jet.Web.Mvc
 {
+    using System;
     using System.Web.Mvc;
     using Configuration;
     using global::Umbraco.Core;

@@ -266,12 +266,12 @@
     <Compile Include="ContentTypeSynchronizer{TModel,TModelAttribute,TContentType}.cs" />
     <Compile Include="ContentTypeModelValidator{TModel,TModelAttribute}.cs" />
     <Compile Include="ContentTypeModel{T}.cs" />
-    <Compile Include="DataTypeFinder.cs" />
+    <Compile Include="DataTypeDefinitionFinder.cs" />
     <Compile Include="DataTypeValidator.cs" />
     <Compile Include="Data\ITypeRepository.cs" />
     <Compile Include="Data\TypeRepository.cs" />
     <Compile Include="IAssemblyLoader.cs" />
-    <Compile Include="IContentTypeModelFinder.cs" />
+    <Compile Include="IContentTypeModelFinder{TModel,TModelAttribute,TContentType}.cs" />
     <Compile Include="IDataType.cs" />
     <Compile Include="AliasAttribute.cs" />
     <Compile Include="ITypeModelFinder.cs" />

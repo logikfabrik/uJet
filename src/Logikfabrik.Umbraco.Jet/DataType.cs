@@ -11,12 +11,14 @@ namespace Logikfabrik.Umbraco.Jet
     /// <summary>
     /// The <see cref="DataType" /> class.
     /// </summary>
+    // ReSharper disable once InheritdocConsiderUsage
     public class DataType : TypeModel<DataTypeAttribute>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DataType" /> class.
         /// </summary>
         /// <param name="modelType">The model type.</param>
+        // ReSharper disable once InheritdocConsiderUsage
         public DataType(Type modelType)
             : base(modelType)
         {

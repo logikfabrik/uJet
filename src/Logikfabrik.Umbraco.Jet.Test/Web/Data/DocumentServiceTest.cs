@@ -14,7 +14,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
     using Utilities;
     using Xunit;
 
-    public class DocumentServiceTest : TestBase
+    public class DocumentServiceTest
     {
         [Theory]
         [AutoData]

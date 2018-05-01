@@ -44,7 +44,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoFixture, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoFixture.4.2.0\lib\net452\AutoFixture.dll</HintPath>
+      <HintPath>..\packages\AutoFixture.4.2.1\lib\net452\AutoFixture.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoFixture.AutoMoq, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoFixture.AutoMoq.4.2.1\lib\net452\AutoFixture.AutoMoq.dll</HintPath>
     </Reference>
     <Reference Include="AutoFixture.Xunit2, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoFixture.Xunit2.4.2.0\lib\net452\AutoFixture.Xunit2.dll</HintPath>
@@ -281,6 +284,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\JetConfigurationManagerTest.cs" />
+    <Compile Include="DataTypeDefinitionFinderTest.cs" />
     <Compile Include="DataTypeTest.cs" />
     <Compile Include="Data\ContentTypeRepositoryTest.cs" />
     <Compile Include="Data\DataTypeRepositoryTest.cs" />
@@ -304,7 +308,9 @@
     <Compile Include="Models\IDocumentTypeB.cs" />
     <Compile Include="Models\MediaType.cs" />
     <Compile Include="Models\MemberType.cs" />
-    <Compile Include="TestBase.cs" />
+    <Compile Include="SpecimenBuilders\Builders.cs" />
+    <Compile Include="SpecimenBuilders\CustomAutoDataAttribute.cs" />
+    <Compile Include="SpecimenBuilders\DataTypeDefinitionSpecimenBuilder.cs" />
     <Compile Include="TypeModelComparerTest.cs" />
     <Compile Include="TypeResolverTest.cs" />
     <Compile Include="Utilities\ComposableContentTypeModelTypeBuilder{T}.cs" />
