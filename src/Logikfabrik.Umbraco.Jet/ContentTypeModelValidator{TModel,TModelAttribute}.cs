@@ -36,6 +36,7 @@ namespace Logikfabrik.Umbraco.Jet
 
             foreach (var model in models)
             {
+                // ReSharper disable once PossibleUnintendedLinearSearchInSet
                 if (set.Contains(model.Alias, StringComparer.InvariantCultureIgnoreCase))
                 {
                     var conflictingTypes = models.Where(m => m.Alias.Equals(model.Alias, StringComparison.InvariantCultureIgnoreCase)).Select(m => m.ModelType.Name);
@@ -47,7 +48,7 @@ namespace Logikfabrik.Umbraco.Jet
             }
         }
 
-        private static void ValidatePropertiesById(TModel[] models)
+        private static void ValidatePropertiesById(IEnumerable<TModel> models)
         {
             foreach (var model in models)
             {
@@ -55,7 +56,7 @@ namespace Logikfabrik.Umbraco.Jet
             }
         }
 
-        private static void ValidatePropertiesByAlias(TModel[] models)
+        private static void ValidatePropertiesByAlias(IEnumerable<TModel> models)
         {
             foreach (var model in models)
             {
@@ -69,6 +70,7 @@ namespace Logikfabrik.Umbraco.Jet
 
             foreach (var property in model.Properties)
             {
+                // ReSharper disable once PossibleUnintendedLinearSearchInSet
                 if (set.Contains(property.Alias, StringComparer.InvariantCultureIgnoreCase))
                 {
                     var conflictingProperties = model.Properties.Where(m => m.Alias.Equals(property.Alias, StringComparison.InvariantCultureIgnoreCase)).Select(m => m.Name);

@@ -284,6 +284,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\JetConfigurationManagerTest.cs" />
+    <Compile Include="ContentTypeModelValidatorTest.cs" />
     <Compile Include="DataTypeDefinitionFinderTest.cs" />
     <Compile Include="DataTypeTest.cs" />
     <Compile Include="DataTypeValidatorTest.cs" />
