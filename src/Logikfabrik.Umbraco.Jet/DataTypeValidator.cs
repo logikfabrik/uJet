@@ -7,22 +7,18 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using EnsureThat;
 
     /// <summary>
     /// The <see cref="DataTypeValidator" /> class.
     /// </summary>
+    // ReSharper disable once InheritdocConsiderUsage
     public class DataTypeValidator : TypeModelValidator<DataType, DataTypeAttribute>
     {
-        /// <summary>
-        /// Validates the specified models.
-        /// </summary>
-        /// <param name="models">The models.</param>
+        /// <inheritdoc />
         public override void Validate(DataType[] models)
         {
-            if (models == null)
-            {
-                throw new ArgumentNullException(nameof(models));
-            }
+            EnsureArg.IsNotNull(models);
 
             ValidateById(models);
             ValidateByName(models);
@@ -34,6 +30,7 @@ namespace Logikfabrik.Umbraco.Jet
 
             foreach (var model in models)
             {
+                // ReSharper disable once PossibleUnintendedLinearSearchInSet
                 if (set.Contains(model.Name, StringComparer.InvariantCultureIgnoreCase))
                 {
                     var conflictingTypes = models.Where(m => m.Name.Equals(model.Name, StringComparison.InvariantCultureIgnoreCase)).Select(m => m.ModelType.Name);

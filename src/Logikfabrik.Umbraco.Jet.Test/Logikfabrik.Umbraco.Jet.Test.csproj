@@ -286,6 +286,7 @@
     <Compile Include="Configuration\JetConfigurationManagerTest.cs" />
     <Compile Include="DataTypeDefinitionFinderTest.cs" />
     <Compile Include="DataTypeTest.cs" />
+    <Compile Include="DataTypeValidatorTest.cs" />
     <Compile Include="Data\ContentTypeRepositoryTest.cs" />
     <Compile Include="Data\DataTypeRepositoryTest.cs" />
     <Compile Include="Data\TypeRepositoryTest.cs" />
@@ -308,7 +309,6 @@
     <Compile Include="Models\IDocumentTypeB.cs" />
     <Compile Include="Models\MediaType.cs" />
     <Compile Include="Models\MemberType.cs" />
-    <Compile Include="SpecimenBuilders\Builders.cs" />
     <Compile Include="SpecimenBuilders\CustomAutoDataAttribute.cs" />
     <Compile Include="SpecimenBuilders\DataTypeDefinitionSpecimenBuilder.cs" />
     <Compile Include="TypeModelComparerTest.cs" />
