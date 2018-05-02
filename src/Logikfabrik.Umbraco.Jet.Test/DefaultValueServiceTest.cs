@@ -5,24 +5,21 @@
 namespace Logikfabrik.Umbraco.Jet.Test
 {
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Reflection.Emit;
-    using AutoFixture.Xunit2;
     using Logikfabrik.Umbraco.Jet.Extensions;
     using Moq;
     using Moq.AutoMock;
+    using SpecimenBuilders;
     using Utilities;
     using Xunit;
 
     public class DefaultValueServiceTest
     {
         [Theory]
-        [InlineAutoData(typeof(string), "abc123")]
-        [InlineAutoData(typeof(int), "1")]
-        [InlineAutoData(typeof(float), "1.1")]
-        [InlineAutoData(typeof(decimal), "1.1")]
-        [InlineAutoData(typeof(bool), "true")]
-        [InlineAutoData(typeof(DateTime), "2016-01-01T09:30:00Z")]
+        [ClassAutoData(typeof(CanSetPropertyDefaultValueClassData))]
         public void CanSetPropertyDefaultValueForDocumentType(Type propertyType, string propertyDefaultValue, string propertyName, string typeName, string name)
         {
             var typeBuilder = new DocumentTypeModelTypeBuilder(typeName, name).GetTypeBuilder();
@@ -54,12 +51,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         }
 
         [Theory]
-        [InlineAutoData(typeof(string), "abc123")]
-        [InlineAutoData(typeof(int), "1")]
-        [InlineAutoData(typeof(float), "1.1")]
-        [InlineAutoData(typeof(decimal), "1.1")]
-        [InlineAutoData(typeof(bool), "true")]
-        [InlineAutoData(typeof(DateTime), "2016-01-01T09:30:00Z")]
+        [ClassAutoData(typeof(CanSetPropertyDefaultValueClassData))]
         public void CanSetPropertyDefaultValueForMediaType(Type propertyType, string propertyDefaultValue, string propertyName, string typeName, string name)
         {
             var typeBuilder = new MediaTypeModelTypeBuilder(typeName, name).GetTypeBuilder();
@@ -91,12 +83,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         }
 
         [Theory]
-        [InlineAutoData(typeof(string), "abc123")]
-        [InlineAutoData(typeof(int), "1")]
-        [InlineAutoData(typeof(float), "1.1")]
-        [InlineAutoData(typeof(decimal), "1.1")]
-        [InlineAutoData(typeof(bool), "true")]
-        [InlineAutoData(typeof(DateTime), "2016-01-01T09:30:00Z")]
+        [ClassAutoData(typeof(CanSetPropertyDefaultValueClassData))]
         public void CanSetPropertyDefaultValueForMemberType(Type propertyType, string propertyDefaultValue, string propertyName, string typeName, string name)
         {
             var typeBuilder = new MemberTypeModelTypeBuilder(typeName, name).GetTypeBuilder();
@@ -125,6 +112,29 @@ namespace Logikfabrik.Umbraco.Jet.Test
             defaultValueService.SetDefaultValues(contentMock.Object);
 
             contentMock.Verify(m => m.SetValue(propertyName.Alias(), It.Is<object>(value => value.ToString() == new DefaultValueAttribute(propertyType, propertyDefaultValue).Value.ToString())), Times.Once);
+        }
+
+        private class CanSetPropertyDefaultValueClassData : IEnumerable<object[]>
+        {
+            private readonly IEnumerable<object[]> _data = new[]
+            {
+                new object[] { typeof(string), "abc123" },
+                new object[] { typeof(int), "1" },
+                new object[] { typeof(float), "1.1" },
+                new object[] { typeof(decimal), "1.1" },
+                new object[] { typeof(bool), "true" },
+                new object[] { typeof(DateTime), "2016-01-01T09:30:00Z" }
+            };
+
+            public IEnumerator<object[]> GetEnumerator()
+            {
+                return _data.GetEnumerator();
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
         }
     }
 }
