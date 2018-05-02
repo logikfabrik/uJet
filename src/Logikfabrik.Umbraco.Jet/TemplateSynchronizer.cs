@@ -9,6 +9,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
+    using EnsureThat;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
 
@@ -30,13 +31,14 @@ namespace Logikfabrik.Umbraco.Jet
             IFileService fileService,
             ITemplateService templateService)
         {
-            _fileService = fileService ?? throw new ArgumentNullException(nameof(fileService));
-            _templateService = templateService ?? throw new ArgumentNullException(nameof(templateService));
+            EnsureArg.IsNotNull(fileService);
+            EnsureArg.IsNotNull(templateService);
+
+            _fileService = fileService;
+            _templateService = templateService;
         }
 
-        /// <summary>
-        /// Synchronizes this instance.
-        /// </summary>
+        /// <inheritdoc />
         public void Run()
         {
             AddNewTemplates();
@@ -50,11 +52,6 @@ namespace Logikfabrik.Umbraco.Jet
         /// <returns>The template layout, without extension (.cshtml).</returns>
         internal string GetLayout(ITemplate template)
         {
-            if (template == null)
-            {
-                throw new ArgumentNullException(nameof(template));
-            }
-
             if (string.IsNullOrWhiteSpace(template.Content))
             {
                 return null;
@@ -91,11 +88,6 @@ namespace Logikfabrik.Umbraco.Jet
         /// <returns>The templates to add.</returns>
         internal IEnumerable<ITemplate> GetTemplatesToAdd(IEnumerable<string> templatePaths)
         {
-            if (templatePaths == null)
-            {
-                throw new ArgumentNullException(nameof(templatePaths));
-            }
-
             var templates = templatePaths.Select(_templateService.GetTemplate);
 
             return templates;
@@ -118,16 +110,6 @@ namespace Logikfabrik.Umbraco.Jet
 
         private ITemplate GetMasterTemplate(IEnumerable<ITemplate> templates, ITemplate template)
         {
-            if (templates == null)
-            {
-                throw new ArgumentNullException(nameof(templates));
-            }
-
-            if (template == null)
-            {
-                throw new ArgumentNullException(nameof(template));
-            }
-
             var layout = GetLayout(template);
 
             /*
@@ -139,11 +121,6 @@ namespace Logikfabrik.Umbraco.Jet
 
         private IEnumerable<ITemplate> GetTemplatesToUpdate(IEnumerable<ITemplate> templates)
         {
-            if (templates == null)
-            {
-                throw new ArgumentNullException(nameof(templates));
-            }
-
             /*
              * It's possible a template is changed through VS or the file system, changing the layout assignment.
              * This has nothing to do with whether the template is new or not; if the layout is changed Umbraco

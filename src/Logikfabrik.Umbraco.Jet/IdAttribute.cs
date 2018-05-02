@@ -5,22 +5,22 @@
 namespace Logikfabrik.Umbraco.Jet
 {
     using System;
+    using EnsureThat;
 
     /// <summary>
     /// The <see cref="IdAttribute" /> class.
     /// </summary>
+    // ReSharper disable once InheritdocConsiderUsage
     public class IdAttribute : Attribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="IdAttribute" /> class.
         /// </summary>
         /// <param name="id">The identifier.</param>
+        // ReSharper disable once InheritdocConsiderUsage
         public IdAttribute(string id)
         {
-            if (string.IsNullOrWhiteSpace(id))
-            {
-                throw new ArgumentException("ID cannot be null or white space.", nameof(id));
-            }
+            EnsureArg.IsNotNullOrWhiteSpace(id);
 
             if (Guid.TryParse(id, out var result))
             {
@@ -31,6 +31,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// Initializes a new instance of the <see cref="IdAttribute" /> class.
         /// </summary>
+        // ReSharper disable once InheritdocConsiderUsage
         protected IdAttribute()
         {
         }

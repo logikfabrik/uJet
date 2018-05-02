@@ -8,12 +8,14 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using EnsureThat;
     using Extensions;
     using global::Umbraco.Core.Models;
 
     /// <summary>
     /// The <see cref="TemplateService" /> class.
     /// </summary>
+    // ReSharper disable once InheritdocConsiderUsage
     public class TemplateService : ITemplateService
     {
         private static ITemplateService _instance;
@@ -31,25 +33,13 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         public static ITemplateService Instance => _instance ?? (_instance = new TemplateService());
 
-        /// <summary>
-        /// Gets the template paths for templates in the views folder.
-        /// </summary>
-        /// <value>
-        /// The template paths.
-        /// </value>
+        /// <inheritdoc />
         public IEnumerable<string> TemplatePaths { get; }
 
-        /// <summary>
-        /// Gets the template content.
-        /// </summary>
-        /// <param name="templatePath">The template path.</param>
-        /// <returns>The template content.</returns>
+        /// <inheritdoc />
         public string GetContent(string templatePath)
         {
-            if (string.IsNullOrWhiteSpace(templatePath))
-            {
-                throw new ArgumentException("Template path cannot be null or white space.", nameof(templatePath));
-            }
+            EnsureArg.IsNotNullOrWhiteSpace(templatePath);
 
             using (var reader = new StreamReader(templatePath))
             {
@@ -57,17 +47,10 @@ namespace Logikfabrik.Umbraco.Jet
             }
         }
 
-        /// <summary>
-        /// Gets the template.
-        /// </summary>
-        /// <param name="templatePath">The template path.</param>
-        /// <returns>The template.</returns>
+        /// <inheritdoc />
         public ITemplate GetTemplate(string templatePath)
         {
-            if (string.IsNullOrWhiteSpace(templatePath))
-            {
-                throw new ArgumentException("Template path cannot be null or white space.", nameof(templatePath));
-            }
+            EnsureArg.IsNotNullOrWhiteSpace(templatePath);
 
             var name = Path.GetFileNameWithoutExtension(templatePath);
 

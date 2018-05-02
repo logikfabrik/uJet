@@ -1,4 +1,8 @@
-﻿namespace Logikfabrik.Umbraco.Jet
+﻿// <copyright file="IDataTypeDefinitionFinder.cs" company="Logikfabrik">
+//   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
+// </copyright>
+
+namespace Logikfabrik.Umbraco.Jet
 {
     using global::Umbraco.Core.Models;
 

@@ -1,4 +1,8 @@
-﻿namespace Logikfabrik.Umbraco.Jet.Test.Utilities
+﻿// <copyright file="ModelTypeBuilder{T}.cs" company="Logikfabrik">
+//   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
+// </copyright>
+
+namespace Logikfabrik.Umbraco.Jet.Test.Utilities
 {
     using System;
     using System.Linq;
@@ -40,10 +44,7 @@
             return GetTypeBuilder(typeAttributes).CreateType();
         }
 
-        protected static string GetPropertyName<T>(Expression<Func<T>> expression)
-        {
-            return ((MemberExpression)expression.Body).Member.Name;
-        }
+        protected static string GetPropertyName<T>(Expression<Func<T>> expression) => ((MemberExpression)expression.Body).Member.Name;
 
         protected virtual object[] GetAttributeConstructorArguments()
         {

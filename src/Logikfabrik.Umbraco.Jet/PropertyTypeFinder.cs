@@ -26,8 +26,11 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="typeRepository">The type repository.</param>
         public PropertyTypeFinder(ILogService logService, ITypeRepository typeRepository)
         {
-            _logService = logService ?? throw new ArgumentNullException(nameof(logService));
-            _typeRepository = typeRepository ?? throw new ArgumentNullException(nameof(typeRepository));
+            EnsureArg.IsNotNull(logService);
+            EnsureArg.IsNotNull(typeRepository);
+
+            _logService = logService;
+            _typeRepository = typeRepository;
             _comparer = new EntityTypeComparer<global::Umbraco.Core.Models.PropertyType>();
         }
 
