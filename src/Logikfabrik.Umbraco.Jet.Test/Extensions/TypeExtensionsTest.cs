@@ -4,20 +4,19 @@
 
 namespace Logikfabrik.Umbraco.Jet.Test.Extensions
 {
-    using System;
-    using AutoFixture.Xunit2;
     using Jet.Extensions;
     using Shouldly;
+    using SpecimenBuilders;
     using Utilities;
     using Xunit;
 
     public class TypeExtensionsTest
     {
         [Theory]
-        [AutoData]
-        public void IsDocumentType(string typeName, string name)
+        [CustomAutoData]
+        public void IsDocumentType(DocumentTypeModelTypeBuilder builder)
         {
-            var modelType = new DocumentTypeModelTypeBuilder(typeName, name).CreateType();
+            var modelType = builder.CreateType();
 
             modelType.IsModelType<DocumentTypeAttribute>().ShouldBeTrue();
         }
@@ -29,10 +28,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Extensions
         }
 
         [Theory]
-        [AutoData]
-        public void IsMediaType(string typeName, string name)
+        [CustomAutoData]
+        public void IsMediaType(MediaTypeModelTypeBuilder builder)
         {
-            var modelType = new MediaTypeModelTypeBuilder(typeName, name).CreateType();
+            var modelType = builder.CreateType();
 
             modelType.IsModelType<MediaTypeAttribute>().ShouldBeTrue();
         }
@@ -44,10 +43,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Extensions
         }
 
         [Theory]
-        [AutoData]
-        public void IsMemberType(string typeName, string name)
+        [CustomAutoData]
+        public void IsMemberType(MemberTypeModelTypeBuilder builder)
         {
-            var modelType = new MemberTypeModelTypeBuilder(typeName, name).CreateType();
+            var modelType = builder.CreateType();
 
             modelType.IsModelType<MemberTypeAttribute>().ShouldBeTrue();
         }
@@ -59,10 +58,10 @@ namespace Logikfabrik.Umbraco.Jet.Test.Extensions
         }
 
         [Theory]
-        [AutoData]
-        public void IsDataType(string typeName, Type type, string editor)
+        [CustomAutoData]
+        public void IsDataType(DataTypeModelTypeBuilder builder)
         {
-            var modelType = new DataTypeModelTypeBuilder(typeName, type, editor).CreateType();
+            var modelType = builder.CreateType();
 
             modelType.IsModelType<DataTypeAttribute>().ShouldBeTrue();
         }

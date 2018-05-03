@@ -20,9 +20,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
     {
         [Theory]
         [ClassAutoData(typeof(CanSetPropertyDefaultValueClassData))]
-        public void CanSetPropertyDefaultValueForDocumentType(Type propertyType, string propertyDefaultValue, string propertyName, string typeName, string name)
+        public void CanSetPropertyDefaultValueForDocumentType(Type propertyType, string propertyDefaultValue, string propertyName, DocumentTypeModelTypeBuilder builder)
         {
-            var typeBuilder = new DocumentTypeModelTypeBuilder(typeName, name).GetTypeBuilder();
+            var typeBuilder = builder.GetTypeBuilder();
 
             // ReSharper disable once AssignNullToNotNullAttribute
             typeBuilder.AddPublicProperty(propertyName, propertyType, new[] { new CustomAttributeBuilder(typeof(DefaultValueAttribute).GetConstructor(new[] { typeof(Type), typeof(string) }), new object[] { propertyType, propertyDefaultValue }) });
@@ -52,9 +52,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
         [Theory]
         [ClassAutoData(typeof(CanSetPropertyDefaultValueClassData))]
-        public void CanSetPropertyDefaultValueForMediaType(Type propertyType, string propertyDefaultValue, string propertyName, string typeName, string name)
+        public void CanSetPropertyDefaultValueForMediaType(Type propertyType, string propertyDefaultValue, string propertyName, MediaTypeModelTypeBuilder builder)
         {
-            var typeBuilder = new MediaTypeModelTypeBuilder(typeName, name).GetTypeBuilder();
+            var typeBuilder = builder.GetTypeBuilder();
 
             // ReSharper disable once AssignNullToNotNullAttribute
             typeBuilder.AddPublicProperty(propertyName, propertyType, new[] { new CustomAttributeBuilder(typeof(DefaultValueAttribute).GetConstructor(new[] { typeof(Type), typeof(string) }), new object[] { propertyType, propertyDefaultValue }) });
@@ -84,9 +84,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
         [Theory]
         [ClassAutoData(typeof(CanSetPropertyDefaultValueClassData))]
-        public void CanSetPropertyDefaultValueForMemberType(Type propertyType, string propertyDefaultValue, string propertyName, string typeName, string name)
+        public void CanSetPropertyDefaultValueForMemberType(Type propertyType, string propertyDefaultValue, string propertyName, MemberTypeModelTypeBuilder builder)
         {
-            var typeBuilder = new MemberTypeModelTypeBuilder(typeName, name).GetTypeBuilder();
+            var typeBuilder = builder.GetTypeBuilder();
 
             // ReSharper disable once AssignNullToNotNullAttribute
             typeBuilder.AddPublicProperty(propertyName, propertyType, new[] { new CustomAttributeBuilder(typeof(DefaultValueAttribute).GetConstructor(new[] { typeof(Type), typeof(string) }), new object[] { propertyType, propertyDefaultValue }) });
@@ -116,19 +116,14 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
         private class CanSetPropertyDefaultValueClassData : IEnumerable<object[]>
         {
-            private readonly IEnumerable<object[]> _data = new[]
-            {
-                new object[] { typeof(string), "abc123" },
-                new object[] { typeof(int), "1" },
-                new object[] { typeof(float), "1.1" },
-                new object[] { typeof(decimal), "1.1" },
-                new object[] { typeof(bool), "true" },
-                new object[] { typeof(DateTime), "2016-01-01T09:30:00Z" }
-            };
-
             public IEnumerator<object[]> GetEnumerator()
             {
-                return _data.GetEnumerator();
+                yield return new object[] { typeof(string), "abc123" };
+                yield return new object[] { typeof(int), "1" };
+                yield return new object[] { typeof(float), "1.1" };
+                yield return new object[] { typeof(decimal), "1.1" };
+                yield return new object[] { typeof(bool), "true" };
+                yield return new object[] { typeof(DateTime), "2016-01-01T09:30:00Z" };
             }
 
             IEnumerator IEnumerable.GetEnumerator()
