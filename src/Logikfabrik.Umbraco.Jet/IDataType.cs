@@ -17,6 +17,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The pre-values.
         /// </value>
+        // ReSharper disable once UnusedMember.Global
         Dictionary<string, string> PreValues { get; }
     }
 }

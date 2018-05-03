@@ -15,6 +15,7 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
         /// <summary>
         /// Do not scan or synchronize any model types.
         /// </summary>
+        // ReSharper disable once UnusedMember.Global
         None = 0,
 
         /// <summary>

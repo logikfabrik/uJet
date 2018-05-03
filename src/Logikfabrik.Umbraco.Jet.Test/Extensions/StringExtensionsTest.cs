@@ -4,7 +4,6 @@
 
 namespace Logikfabrik.Umbraco.Jet.Test.Extensions
 {
-    using AutoFixture.Xunit2;
     using Jet.Extensions;
     using Shouldly;
     using Xunit;

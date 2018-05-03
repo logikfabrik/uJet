@@ -1,4 +1,8 @@
-﻿namespace Logikfabrik.Umbraco.Jet.Test.SpecimenBuilders
+﻿// <copyright file="MediaTypeSpecimenBuilder.cs" company="Logikfabrik">
+//   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
+// </copyright>
+
+namespace Logikfabrik.Umbraco.Jet.Test.SpecimenBuilders
 {
     using AutoFixture;
     using AutoFixture.Kernel;

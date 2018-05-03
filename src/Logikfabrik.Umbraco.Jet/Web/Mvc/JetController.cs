@@ -31,6 +31,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// Redirects to the current page.
         /// </summary>
         /// <returns>A redirect result.</returns>
+        // ReSharper disable once UnusedMember.Global
         protected RedirectResult RedirectToPage()
         {
             return RedirectToPage(GetCurrentPageId());
@@ -41,6 +42,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// </summary>
         /// <param name="query">The query.</param>
         /// <returns>A redirect result.</returns>
+        // ReSharper disable once UnusedMember.Global
         protected RedirectResult RedirectToPage(object query)
         {
             return RedirectToPage(GetCurrentPageId(), query);

@@ -18,6 +18,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc.Html
         /// <param name="urlHelper">The URL helper.</param>
         /// <param name="id">The identifier.</param>
         /// <returns>An URL.</returns>
+        // ReSharper disable once UnusedMember.Global
         public static string Url(this UrlHelper urlHelper, int id)
         {
             return UrlUtility.GetUrl(id);
@@ -30,6 +31,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc.Html
         /// <param name="id">The identifier.</param>
         /// <param name="query">The query.</param>
         /// <returns>An URL.</returns>
+        // ReSharper disable once UnusedMember.Global
         public static string Url(this UrlHelper urlHelper, int id, object query)
         {
             return UrlUtility.GetUrl(id, query);
@@ -41,6 +43,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc.Html
         /// <param name="urlHelper">The URL helper.</param>
         /// <param name="url">The URL.</param>
         /// <returns>An URL.</returns>
+        // ReSharper disable once UnusedMember.Global
         public static string Url(this UrlHelper urlHelper, string url)
         {
             return UrlUtility.GetUrl(url);
@@ -53,6 +56,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc.Html
         /// <param name="url">The URL.</param>
         /// <param name="query">The query.</param>
         /// <returns>An URL.</returns>
+        // ReSharper disable once UnusedMember.Global
         public static string Url(this UrlHelper urlHelper, string url, object query)
         {
             return UrlUtility.GetUrl(url, query);

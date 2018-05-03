@@ -25,7 +25,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Mappings
 
             DataTypeDefinitionMappings.Mappings.Add(type, mappingMock.Object);
 
-            DataTypeDefinitionMappings.Mappings.TryGetValue(type, out var mapping).ShouldBeTrue();
+            DataTypeDefinitionMappings.Mappings.TryGetValue(type, out _).ShouldBeTrue();
         }
 
         [Fact]

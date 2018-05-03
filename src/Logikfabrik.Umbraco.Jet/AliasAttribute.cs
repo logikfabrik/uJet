@@ -21,6 +21,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="alias">The alias.</param>
         // ReSharper disable once InheritdocConsiderUsage
+        // ReSharper disable once UnusedMember.Global
         public AliasAttribute(string alias)
         {
             EnsureArg.IsNotNullOrWhiteSpace(alias);
