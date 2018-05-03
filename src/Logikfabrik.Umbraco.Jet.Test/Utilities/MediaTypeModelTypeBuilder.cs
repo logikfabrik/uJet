@@ -4,6 +4,8 @@
 
 namespace Logikfabrik.Umbraco.Jet.Test.Utilities
 {
+    using System;
+
     public class MediaTypeModelTypeBuilder : ComposableContentTypeModelTypeBuilder<MediaTypeAttribute>
     {
         public MediaTypeModelTypeBuilder(string typeName, string name)
@@ -11,7 +13,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Utilities
         {
         }
 
-        public MediaTypeModelTypeBuilder(string typeName, string id, string name)
+        public MediaTypeModelTypeBuilder(string typeName, Guid id, string name)
             : base(typeName, id, name)
         {
         }

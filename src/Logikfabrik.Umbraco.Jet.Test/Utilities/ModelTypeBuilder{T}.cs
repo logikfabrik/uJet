@@ -13,24 +13,28 @@ namespace Logikfabrik.Umbraco.Jet.Test.Utilities
     public abstract class ModelTypeBuilder<T>
         where T : TypeModelAttribute
     {
-        private readonly string _typeName;
         private readonly object[] _arguments;
 
         protected ModelTypeBuilder(string typeName)
         {
-            _typeName = typeName;
+            TypeName = typeName;
             _arguments = new object[] { };
         }
 
-        protected ModelTypeBuilder(string typeName, string id)
+        protected ModelTypeBuilder(string typeName, Guid id)
         {
-            _typeName = typeName;
-            _arguments = new object[] { id };
+            TypeName = typeName;
+            Id = id;
+            _arguments = new object[] { id.ToString() };
         }
+
+        public string TypeName { get; }
+
+        public Guid Id { get; }
 
         public TypeBuilder GetTypeBuilder(TypeAttributes? typeAttributes = null)
         {
-            var typeBuilder = TypeUtility.GetTypeBuilder(_typeName, TypeUtility.GetTypeAttributes(typeAttributes));
+            var typeBuilder = TypeUtility.GetTypeBuilder(TypeName, TypeUtility.GetTypeAttributes(typeAttributes));
 
             var attibuteBuilder = GetAttributeBuilder();
 

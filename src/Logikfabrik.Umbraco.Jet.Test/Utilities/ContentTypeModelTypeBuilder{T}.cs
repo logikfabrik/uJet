@@ -4,24 +4,25 @@
 
 namespace Logikfabrik.Umbraco.Jet.Test.Utilities
 {
+    using System;
     using System.Linq;
 
     public abstract class ContentTypeModelTypeBuilder<T> : ModelTypeBuilder<T>
         where T : ContentTypeModelAttribute
     {
-        private readonly string _name;
-
         protected ContentTypeModelTypeBuilder(string typeName, string name)
             : base(typeName)
         {
-            _name = name;
+            Name = name;
         }
 
-        protected ContentTypeModelTypeBuilder(string typeName, string id, string name)
+        protected ContentTypeModelTypeBuilder(string typeName, Guid id, string name)
             : base(typeName, id)
         {
-            _name = name;
+            Name = name;
         }
+
+        public string Name { get; }
 
         public string Description { get; set; }
 
@@ -33,7 +34,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Utilities
 
         protected override object[] GetAttributeConstructorArguments()
         {
-            return base.GetAttributeConstructorArguments().Concat(new[] { _name }).ToArray();
+            return base.GetAttributeConstructorArguments().Concat(new[] { Name }).ToArray();
         }
 
         protected override string[] GetAttributePropertyNames()

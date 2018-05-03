@@ -16,8 +16,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [AutoData]
         public void CanFindConflictById(string typeNameX, string typeNameY, Guid id, string name)
         {
-            var modelX = new DocumentType(new DocumentTypeModelTypeBuilder(typeNameX, id.ToString(), name).CreateType());
-            var modelY = new DocumentType(new DocumentTypeModelTypeBuilder(typeNameY, id.ToString(), name).CreateType());
+            var modelX = new DocumentType(new DocumentTypeModelTypeBuilder(typeNameX, id, name).CreateType());
+            var modelY = new DocumentType(new DocumentTypeModelTypeBuilder(typeNameY, id, name).CreateType());
 
             var contentTypeModelValidator = new ContentTypeModelValidator<DocumentType, DocumentTypeAttribute>();
 

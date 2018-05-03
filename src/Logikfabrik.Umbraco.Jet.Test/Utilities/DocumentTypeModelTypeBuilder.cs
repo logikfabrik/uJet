@@ -4,6 +4,7 @@
 
 namespace Logikfabrik.Umbraco.Jet.Test.Utilities
 {
+    using System;
     using System.Linq;
 
     public class DocumentTypeModelTypeBuilder : ComposableContentTypeModelTypeBuilder<DocumentTypeAttribute>
@@ -13,7 +14,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Utilities
         {
         }
 
-        public DocumentTypeModelTypeBuilder(string typeName, string id, string name)
+        public DocumentTypeModelTypeBuilder(string typeName, Guid id, string name)
             : base(typeName, id, name)
         {
         }

@@ -20,7 +20,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanFindById(string typeName, Guid id, Type type, string editor, IDataTypeDefinition[] definitions)
         {
-            var modelType = new DataTypeModelTypeBuilder(typeName, id.ToString(), type, editor).CreateType();
+            var modelType = new DataTypeModelTypeBuilder(typeName, id, type, editor).CreateType();
 
             var model = new Jet.DataType(modelType);
 

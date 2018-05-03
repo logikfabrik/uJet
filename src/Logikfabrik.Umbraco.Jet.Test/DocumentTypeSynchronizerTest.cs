@@ -57,7 +57,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [AutoData]
         public void CanCreateModelWithId(string typeName, Guid id, string name)
         {
-            var modelType = new DocumentTypeModelTypeBuilder(typeName, id.ToString(), name).CreateType();
+            var modelType = new DocumentTypeModelTypeBuilder(typeName, id, name).CreateType();
 
             var model = new DocumentType(modelType);
 
@@ -132,7 +132,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [AutoData]
         public void CanUpdateModelWithId(string typeName, Guid id, string name)
         {
-            var modelType = new DocumentTypeModelTypeBuilder(typeName, id.ToString(), name).CreateType();
+            var modelType = new DocumentTypeModelTypeBuilder(typeName, id, name).CreateType();
 
             var model = new DocumentType(modelType);
 

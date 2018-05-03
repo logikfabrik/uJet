@@ -8,16 +8,17 @@ namespace Logikfabrik.Umbraco.Jet.Test
     using System.Linq;
     using AutoFixture.Xunit2;
     using Shouldly;
+    using SpecimenBuilders;
     using Utilities;
     using Xunit;
 
     public class MemberTypeTest
     {
         [Theory]
-        [AutoData]
-        public void CanGetTypeFromAttribute(string typeName, string name)
+        [CustomAutoData]
+        public void CanGetTypeFromAttribute(MemberTypeModelTypeBuilder builder)
         {
-            var modelType = new MemberTypeModelTypeBuilder(typeName, name).CreateType();
+            var modelType = builder.CreateType();
 
             var model = new MemberType(modelType);
 
@@ -28,7 +29,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [AutoData]
         public void CanGetIdFromAttribute(string typeName, Guid id, string name)
         {
-            var modelType = new MemberTypeModelTypeBuilder(typeName, id.ToString(), name).CreateType();
+            var modelType = new MemberTypeModelTypeBuilder(typeName, id, name).CreateType();
 
             var model = new MemberType(modelType);
 
@@ -36,21 +37,23 @@ namespace Logikfabrik.Umbraco.Jet.Test
         }
 
         [Theory]
-        [AutoData]
-        public void CanGetNameFromAttribute(string typeName, string name)
+        [CustomAutoData]
+        public void CanGetNameFromAttribute(MemberTypeModelTypeBuilder builder)
         {
-            var modelType = new MemberTypeModelTypeBuilder(typeName, name).CreateType();
+            var modelType = builder.CreateType();
 
             var model = new MemberType(modelType);
 
-            model.Name.ShouldBe(name);
+            model.Name.ShouldBe(builder.Name);
         }
 
         [Theory]
-        [AutoData]
-        public void CanGetDescriptionFromAttribute(string typeName, string name, string description)
+        [CustomAutoData]
+        public void CanGetDescriptionFromAttribute(MemberTypeModelTypeBuilder builder, string description)
         {
-            var modelType = new MemberTypeModelTypeBuilder(typeName, name) { Description = description }.CreateType();
+            builder.Description = description;
+
+            var modelType = builder.CreateType();
 
             var model = new MemberType(modelType);
 
@@ -58,10 +61,12 @@ namespace Logikfabrik.Umbraco.Jet.Test
         }
 
         [Theory]
-        [AutoData]
-        public void CanGetIconFromAttribute(string typeName, string name, string icon)
+        [CustomAutoData]
+        public void CanGetIconFromAttribute(MemberTypeModelTypeBuilder builder, string icon)
         {
-            var modelType = new MemberTypeModelTypeBuilder(typeName, name) { Icon = icon }.CreateType();
+            builder.Icon = icon;
+
+            var modelType = builder.CreateType();
 
             var model = new MemberType(modelType);
 
@@ -69,10 +74,12 @@ namespace Logikfabrik.Umbraco.Jet.Test
         }
 
         [Theory]
-        [AutoData]
-        public void CanGetIsContainerFromAttribute(string typeName, string name, bool isContainer)
+        [CustomAutoData]
+        public void CanGetIsContainerFromAttribute(MemberTypeModelTypeBuilder builder, bool isContainer)
         {
-            var modelType = new MemberTypeModelTypeBuilder(typeName, name) { IsContainer = isContainer }.CreateType();
+            builder.IsContainer = isContainer;
+
+            var modelType = builder.CreateType();
 
             var model = new MemberType(modelType);
 
@@ -80,10 +87,12 @@ namespace Logikfabrik.Umbraco.Jet.Test
         }
 
         [Theory]
-        [AutoData]
-        public void CanGetAliasFromAttribute(string typeName, string name, string alias)
+        [CustomAutoData]
+        public void CanGetAliasFromAttribute(MemberTypeModelTypeBuilder builder, string alias)
         {
-            var modelType = new MemberTypeModelTypeBuilder(typeName, name) { Alias = alias }.CreateType();
+            builder.Alias = alias;
+
+            var modelType = builder.CreateType();
 
             var model = new MemberType(modelType);
 
@@ -91,26 +100,22 @@ namespace Logikfabrik.Umbraco.Jet.Test
         }
 
         [Theory]
-        [AutoData]
-        public void CanGetProperties(string typeName, string name)
+        [CustomAutoData]
+        public void CanGetProperties(MemberType model)
         {
-            var modelType = new MemberTypeModelTypeBuilder(typeName, name).CreateType();
-
-            var model = new MemberType(modelType);
-
             model.Properties.ShouldNotBeNull();
         }
 
         [Theory]
-        [InlineAutoData(typeof(string))]
-        [InlineAutoData(typeof(int))]
-        [InlineAutoData(typeof(decimal))]
-        [InlineAutoData(typeof(float))]
-        [InlineAutoData(typeof(DateTime))]
-        [InlineAutoData(typeof(bool))]
-        public void CanGetPublicProperty(Type propertyType, string propertyName, string typeName, string name)
+        [CustomInlineAutoData(typeof(string))]
+        [CustomInlineAutoData(typeof(int))]
+        [CustomInlineAutoData(typeof(decimal))]
+        [CustomInlineAutoData(typeof(float))]
+        [CustomInlineAutoData(typeof(DateTime))]
+        [CustomInlineAutoData(typeof(bool))]
+        public void CanGetPublicProperty(Type propertyType, string propertyName, MemberTypeModelTypeBuilder builder)
         {
-            var typeBuilder = new MemberTypeModelTypeBuilder(typeName, name).GetTypeBuilder();
+            var typeBuilder = builder.GetTypeBuilder();
 
             typeBuilder.AddPublicProperty(propertyName, propertyType);
 
@@ -124,15 +129,15 @@ namespace Logikfabrik.Umbraco.Jet.Test
         }
 
         [Theory]
-        [InlineAutoData(typeof(string))]
-        [InlineAutoData(typeof(int))]
-        [InlineAutoData(typeof(decimal))]
-        [InlineAutoData(typeof(float))]
-        [InlineAutoData(typeof(DateTime))]
-        [InlineAutoData(typeof(bool))]
-        public void CanNotGetPrivateProperty(Type propertyType, string propertyName, string typeName, string name)
+        [CustomInlineAutoData(typeof(string))]
+        [CustomInlineAutoData(typeof(int))]
+        [CustomInlineAutoData(typeof(decimal))]
+        [CustomInlineAutoData(typeof(float))]
+        [CustomInlineAutoData(typeof(DateTime))]
+        [CustomInlineAutoData(typeof(bool))]
+        public void CanNotGetPrivateProperty(Type propertyType, string propertyName, MemberTypeModelTypeBuilder builder)
         {
-            var typeBuilder = new MemberTypeModelTypeBuilder(typeName, name).GetTypeBuilder();
+            var typeBuilder = builder.GetTypeBuilder();
 
             typeBuilder.AddPrivateProperty(propertyName, propertyType);
 
@@ -146,15 +151,15 @@ namespace Logikfabrik.Umbraco.Jet.Test
         }
 
         [Theory]
-        [InlineAutoData(typeof(string))]
-        [InlineAutoData(typeof(int))]
-        [InlineAutoData(typeof(decimal))]
-        [InlineAutoData(typeof(float))]
-        [InlineAutoData(typeof(DateTime))]
-        [InlineAutoData(typeof(bool))]
-        public void CanNotGetPublicReadOnlyProperty(Type propertyType, string propertyName, string typeName, string name)
+        [CustomInlineAutoData(typeof(string))]
+        [CustomInlineAutoData(typeof(int))]
+        [CustomInlineAutoData(typeof(decimal))]
+        [CustomInlineAutoData(typeof(float))]
+        [CustomInlineAutoData(typeof(DateTime))]
+        [CustomInlineAutoData(typeof(bool))]
+        public void CanNotGetPublicReadOnlyProperty(Type propertyType, string propertyName, MemberTypeModelTypeBuilder builder)
         {
-            var typeBuilder = new MemberTypeModelTypeBuilder(typeName, name).GetTypeBuilder();
+            var typeBuilder = builder.GetTypeBuilder();
 
             typeBuilder.AddPublicReadOnlyProperty(propertyName, propertyType);
 
@@ -168,15 +173,15 @@ namespace Logikfabrik.Umbraco.Jet.Test
         }
 
         [Theory]
-        [InlineAutoData(typeof(string))]
-        [InlineAutoData(typeof(int))]
-        [InlineAutoData(typeof(decimal))]
-        [InlineAutoData(typeof(float))]
-        [InlineAutoData(typeof(DateTime))]
-        [InlineAutoData(typeof(bool))]
-        public void CanNotGetPublicWriteOnlyProperty(Type propertyType, string propertyName, string typeName, string name)
+        [CustomInlineAutoData(typeof(string))]
+        [CustomInlineAutoData(typeof(int))]
+        [CustomInlineAutoData(typeof(decimal))]
+        [CustomInlineAutoData(typeof(float))]
+        [CustomInlineAutoData(typeof(DateTime))]
+        [CustomInlineAutoData(typeof(bool))]
+        public void CanNotGetPublicWriteOnlyProperty(Type propertyType, string propertyName, MemberTypeModelTypeBuilder builder)
         {
-            var typeBuilder = new MemberTypeModelTypeBuilder(typeName, name).GetTypeBuilder();
+            var typeBuilder = builder.GetTypeBuilder();
 
             typeBuilder.AddPublicWriteOnlyProperty(propertyName, propertyType);
 

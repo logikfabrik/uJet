@@ -9,26 +9,27 @@ namespace Logikfabrik.Umbraco.Jet.Test.Utilities
 
     public class DataTypeModelTypeBuilder : ModelTypeBuilder<DataTypeAttribute>
     {
-        private readonly Type _type;
-        private readonly string _editor;
-
         public DataTypeModelTypeBuilder(string typeName, Type type, string editor)
             : base(typeName)
         {
-            _type = type;
-            _editor = editor;
+            Type = type;
+            Editor = editor;
         }
 
-        public DataTypeModelTypeBuilder(string typeName, string id, Type type, string editor)
+        public DataTypeModelTypeBuilder(string typeName, Guid id, Type type, string editor)
             : base(typeName, id)
         {
-            _type = type;
-            _editor = editor;
+            Type = type;
+            Editor = editor;
         }
+
+        public Type Type { get; }
+
+        public string Editor { get; }
 
         protected override object[] GetAttributeConstructorArguments()
         {
-            return base.GetAttributeConstructorArguments().Concat(new object[] { _type, _editor }).ToArray();
+            return base.GetAttributeConstructorArguments().Concat(new object[] { Type, Editor }).ToArray();
         }
 
         protected override string[] GetAttributePropertyNames()

@@ -4,6 +4,8 @@
 
 namespace Logikfabrik.Umbraco.Jet.Test.Utilities
 {
+    using System;
+
     public class MemberTypeModelTypeBuilder : ContentTypeModelTypeBuilder<MemberTypeAttribute>
     {
         public MemberTypeModelTypeBuilder(string typeName, string name)
@@ -11,7 +13,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Utilities
         {
         }
 
-        public MemberTypeModelTypeBuilder(string typeName, string id, string name)
+        public MemberTypeModelTypeBuilder(string typeName, Guid id, string name)
             : base(typeName, id, name)
         {
         }

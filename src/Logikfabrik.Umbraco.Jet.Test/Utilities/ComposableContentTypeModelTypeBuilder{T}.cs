@@ -15,7 +15,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Utilities
         {
         }
 
-        protected ComposableContentTypeModelTypeBuilder(string typeName, string id, string name)
+        protected ComposableContentTypeModelTypeBuilder(string typeName, Guid id, string name)
             : base(typeName, id, name)
         {
         }

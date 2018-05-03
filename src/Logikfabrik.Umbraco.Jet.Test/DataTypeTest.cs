@@ -9,16 +9,17 @@ namespace Logikfabrik.Umbraco.Jet.Test
     using System.Linq;
     using AutoFixture.Xunit2;
     using Shouldly;
+    using SpecimenBuilders;
     using Utilities;
     using Xunit;
 
     public class DataTypeTest
     {
         [Theory]
-        [AutoData]
-        public void CanGetTypeFromAttribute(string typeName, Type type, string editor)
+        [CustomAutoData]
+        public void CanGetTypeFromAttribute(DataTypeModelTypeBuilder builder)
         {
-            var modelType = new DataTypeModelTypeBuilder(typeName, type, editor).CreateType();
+            var modelType = builder.CreateType();
 
             var model = new DataType(modelType);
 
@@ -29,7 +30,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [AutoData]
         public void CanGetIdFromAttribute(string typeName, Guid id, Type type, string editor)
         {
-            var modelType = new DataTypeModelTypeBuilder(typeName, id.ToString(), type, editor).CreateType();
+            var modelType = new DataTypeModelTypeBuilder(typeName, id, type, editor).CreateType();
 
             var model = new DataType(modelType);
 
@@ -37,32 +38,32 @@ namespace Logikfabrik.Umbraco.Jet.Test
         }
 
         [Theory]
-        [AutoData]
-        public void CanGetNameFromAttribute(string typeName, Type type, string editor)
+        [CustomAutoData]
+        public void CanGetNameFromAttribute(DataTypeModelTypeBuilder builder)
         {
-            var modelType = new DataTypeModelTypeBuilder(typeName, type, editor).CreateType();
+            var modelType = builder.CreateType();
 
             var model = new DataType(modelType);
 
-            model.Name.ShouldBe(modelType.Name);
+            model.Name.ShouldBe(builder.TypeName);
         }
 
         [Theory]
-        [AutoData]
-        public void CanGetEditorFromAttribute(string typeName, Type type, string editor)
+        [CustomAutoData]
+        public void CanGetEditorFromAttribute(DataTypeModelTypeBuilder builder)
         {
-            var modelType = new DataTypeModelTypeBuilder(typeName, type, editor).CreateType();
+            var modelType = builder.CreateType();
 
             var model = new DataType(modelType);
 
-            model.Editor.ShouldBe(editor);
+            model.Editor.ShouldBe(builder.Editor);
         }
 
         [Theory]
-        [AutoData]
-        public void CanGetPreValuesFromAttribute(string typeName, Type type, string editor)
+        [CustomAutoData]
+        public void CanGetPreValuesFromAttribute(DataTypeModelTypeBuilder builder)
         {
-            var typeBuilder = new DataTypeModelTypeBuilder(typeName, type, editor).GetTypeBuilder();
+            var typeBuilder = builder.GetTypeBuilder();
 
             typeBuilder.AddPublicReadOnlyProperty("PreValues", typeof(IDictionary<string, string>));
 
@@ -73,13 +74,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         }
 
         [Theory]
-        [AutoData]
-        public void CanNotGetPreValuesFromAttribute(string typeName, Type type, string editor)
+        [CustomAutoData]
+        public void CanNotGetPreValuesFromAttribute(DataType model)
         {
-            var modelType = new DataTypeModelTypeBuilder(typeName, type, editor).CreateType();
-
-            var model = new DataType(modelType);
-
             model.PreValues.Any().ShouldBeFalse();
         }
     }

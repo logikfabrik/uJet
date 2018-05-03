@@ -8,7 +8,6 @@ namespace Logikfabrik.Umbraco.Jet.Test.SpecimenBuilders
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using AutoFixture.Xunit2;
     using Xunit;
     using Xunit.Sdk;
 
@@ -18,7 +17,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.SpecimenBuilders
         public ClassAutoDataAttribute(Type @class)
         {
             ClassDataAttribute = new ClassDataAttribute(@class);
-            AutoDataAttribute = new AutoDataAttribute();
+            AutoDataAttribute = new CustomAutoDataAttribute();
         }
 
         public DataAttribute ClassDataAttribute { get; }
