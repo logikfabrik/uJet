@@ -5,306 +5,369 @@
 namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
-    using AutoFixture.Xunit2;
     using global::Umbraco.Core.Models;
     using Jet.Web.Data;
-    using Moq;
+    using Moq.AutoMock;
     using Shouldly;
+    using SpecimenBuilders;
     using Utilities;
     using Xunit;
 
     public class DocumentServiceTest
     {
         [Theory]
-        [AutoData]
-        public void CanGetDocumentIdByConvention(int id)
+        [CustomAutoData]
+        public void CanGetContentIdByConvention(int id, DocumentTypeModelTypeBuilder builder)
         {
-            var publishedContentMock = new Mock<IPublishedContent>();
+            var typeBuilder = builder.GetTypeBuilder();
 
-            publishedContentMock.Setup(m => m.Id).Returns(id);
-            publishedContentMock.Setup(m => m.Properties).Returns(new IPublishedProperty[] { });
+            typeBuilder.AddPublicProperty("Id", id.GetType());
 
-            var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
+            var mocker = new AutoMocker();
 
-            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
+            var contentMock = mocker.GetMock<IPublishedContent>();
 
-            var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
+            contentMock.Setup(m => m.Id).Returns(id);
 
-            document.Id.ShouldBe(id);
+            var umbracoHelperWrapperMock = mocker.GetMock<IUmbracoHelperWrapper>();
+
+            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(contentMock.Object);
+
+            var service = mocker.CreateInstance<DocumentService>();
+
+            var document = service.GetContent(id, typeBuilder.CreateType());
+
+            document.GetPropertyValue("Id").ShouldBe(id);
         }
 
         [Theory]
-        [AutoData]
-        public void CanGetDocumentUrlByConvention(int id, Uri url)
+        [CustomAutoData]
+        public void CanGetContentUrlByConvention(int id, string url, DocumentTypeModelTypeBuilder builder)
         {
-            var publishedContentMock = new Mock<IPublishedContent>();
+            var typeBuilder = builder.GetTypeBuilder();
 
-            publishedContentMock.Setup(m => m.Url).Returns(url.ToString);
-            publishedContentMock.Setup(m => m.Properties).Returns(new IPublishedProperty[] { });
+            typeBuilder.AddPublicProperty("Url", url.GetType());
 
-            var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
+            var mocker = new AutoMocker();
 
-            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
+            var contentMock = mocker.GetMock<IPublishedContent>();
 
-            var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
+            contentMock.Setup(m => m.Url).Returns(url);
 
-            document.Url.ShouldBe(url.ToString());
+            var umbracoHelperWrapperMock = mocker.GetMock<IUmbracoHelperWrapper>();
+
+            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(contentMock.Object);
+
+            var service = mocker.CreateInstance<DocumentService>();
+
+            var document = service.GetContent(id, typeBuilder.CreateType());
+
+            document.GetPropertyValue("Url").ShouldBe(url);
         }
 
         [Theory]
-        [AutoData]
-        public void CanGetDocumentNameByConvention(int id, string name)
+        [CustomAutoData]
+        public void CanGetContentNameByConvention(int id, string name, DocumentTypeModelTypeBuilder builder)
         {
-            var publishedContentMock = new Mock<IPublishedContent>();
+            var typeBuilder = builder.GetTypeBuilder();
 
-            publishedContentMock.Setup(m => m.Name).Returns(name);
-            publishedContentMock.Setup(m => m.Properties).Returns(new IPublishedProperty[] { });
+            typeBuilder.AddPublicProperty("Name", name.GetType());
 
-            var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
+            var mocker = new AutoMocker();
 
-            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
+            var contentMock = mocker.GetMock<IPublishedContent>();
 
-            var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
+            contentMock.Setup(m => m.Name).Returns(name);
 
-            document.Name.ShouldBe(name);
-        }
+            var umbracoHelperWrapperMock = mocker.GetMock<IUmbracoHelperWrapper>();
 
-        [Fact]
-        public void CanGetDocumentCreateDateByConvention()
-        {
-            const int id = 123;
-            var createDate = new DateTime(2015, 1, 1);
+            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(contentMock.Object);
 
-            var publishedContentMock = new Mock<IPublishedContent>();
+            var service = mocker.CreateInstance<DocumentService>();
 
-            publishedContentMock.Setup(m => m.CreateDate).Returns(createDate);
-            publishedContentMock.Setup(m => m.Properties).Returns(new IPublishedProperty[] { });
+            var document = service.GetContent(id, typeBuilder.CreateType());
 
-            var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
-
-            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
-
-            var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
-
-            document.CreateDate.ShouldBe(createDate);
-        }
-
-        [Fact]
-        public void CanGetDocumentUpdateDateByConvention()
-        {
-            const int id = 123;
-            var updateDate = new DateTime(2015, 1, 1);
-
-            var publishedContentMock = new Mock<IPublishedContent>();
-
-            publishedContentMock.Setup(m => m.UpdateDate).Returns(updateDate);
-            publishedContentMock.Setup(m => m.Properties).Returns(new IPublishedProperty[] { });
-
-            var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
-
-            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
-
-            var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
-
-            document.UpdateDate.ShouldBe(updateDate);
-        }
-
-        [Fact]
-        public void CanNotGetDocumentForInvalidDocumentType()
-        {
-            var type = TypeUtility.GetTypeBuilder("MyType", TypeUtility.GetTypeAttributes()).CreateType();
-
-            var contentMock = new Mock<IPublishedContent>();
-
-            var service = new DocumentService(new Mock<IUmbracoHelperWrapper>().Object);
-
-            Assert.Throws<ArgumentException>(() => service.GetDocument(contentMock.Object, type));
+            document.GetPropertyValue("Name").ShouldBe(name);
         }
 
         [Theory]
-        [AutoData]
-        public void CanGetDocumentForValidDocumentType(string typeName, string name)
+        [CustomAutoData]
+        public void CanGetContentCreateDateByConvention(int id, DateTime createDate, DocumentTypeModelTypeBuilder builder)
         {
-            var type = new DocumentTypeModelTypeBuilder(typeName, name).CreateType();
+            var typeBuilder = builder.GetTypeBuilder();
 
-            var contentMock = new Mock<IPublishedContent>();
+            typeBuilder.AddPublicProperty("CreateDate", createDate.GetType());
 
-            contentMock.Setup(m => m.Properties).Returns(new List<IPublishedProperty>());
+            var mocker = new AutoMocker();
 
-            var service = new DocumentService(new Mock<IUmbracoHelperWrapper>().Object);
+            var contentMock = mocker.GetMock<IPublishedContent>();
 
-            var document = service.GetDocument(contentMock.Object, type);
+            contentMock.Setup(m => m.CreateDate).Returns(createDate);
+
+            var umbracoHelperWrapperMock = mocker.GetMock<IUmbracoHelperWrapper>();
+
+            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(contentMock.Object);
+
+            var service = mocker.CreateInstance<DocumentService>();
+
+            var document = service.GetContent(id, typeBuilder.CreateType());
+
+            document.GetPropertyValue("CreateDate").ShouldBe(createDate);
+        }
+
+        [Theory]
+        [CustomAutoData]
+        public void CanGetContentUpdateDateByConvention(int id, DateTime updateDate, DocumentTypeModelTypeBuilder builder)
+        {
+            var typeBuilder = builder.GetTypeBuilder();
+
+            typeBuilder.AddPublicProperty("UpdateDate", updateDate.GetType());
+
+            var mocker = new AutoMocker();
+
+            var contentMock = mocker.GetMock<IPublishedContent>();
+
+            contentMock.Setup(m => m.UpdateDate).Returns(updateDate);
+
+            var umbracoHelperWrapperMock = mocker.GetMock<IUmbracoHelperWrapper>();
+
+            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(contentMock.Object);
+
+            var service = mocker.CreateInstance<DocumentService>();
+
+            var document = service.GetContent(id, typeBuilder.CreateType());
+
+            document.GetPropertyValue("UpdateDate").ShouldBe(updateDate);
+        }
+
+        [Theory]
+        [CustomAutoData]
+        public void CanGetContentCreatorIdByConvention(int id, int creatorId, DocumentTypeModelTypeBuilder builder)
+        {
+            var typeBuilder = builder.GetTypeBuilder();
+
+            typeBuilder.AddPublicProperty("CreatorId", creatorId.GetType());
+
+            var mocker = new AutoMocker();
+
+            var contentMock = mocker.GetMock<IPublishedContent>();
+
+            contentMock.Setup(m => m.CreatorId).Returns(creatorId);
+
+            var umbracoHelperWrapperMock = mocker.GetMock<IUmbracoHelperWrapper>();
+
+            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(contentMock.Object);
+
+            var service = mocker.CreateInstance<DocumentService>();
+
+            var document = service.GetContent(id, typeBuilder.CreateType());
+
+            document.GetPropertyValue("CreatorId").ShouldBe(creatorId);
+        }
+
+        [Theory]
+        [CustomAutoData]
+        public void CanGetContentCreatorNameByConvention(int id, string creatorName, DocumentTypeModelTypeBuilder builder)
+        {
+            var typeBuilder = builder.GetTypeBuilder();
+
+            typeBuilder.AddPublicProperty("CreatorName", creatorName.GetType());
+
+            var mocker = new AutoMocker();
+
+            var contentMock = mocker.GetMock<IPublishedContent>();
+
+            contentMock.Setup(m => m.CreatorName).Returns(creatorName);
+
+            var umbracoHelperWrapperMock = mocker.GetMock<IUmbracoHelperWrapper>();
+
+            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(contentMock.Object);
+
+            var service = mocker.CreateInstance<DocumentService>();
+
+            var document = service.GetContent(id, typeBuilder.CreateType());
+
+            document.GetPropertyValue("CreatorName").ShouldBe(creatorName);
+        }
+
+        [Theory]
+        [CustomAutoData]
+        public void CanGetContentWriterIdByConvention(int id, int writerId, DocumentTypeModelTypeBuilder builder)
+        {
+            var typeBuilder = builder.GetTypeBuilder();
+
+            typeBuilder.AddPublicProperty("WriterId", writerId.GetType());
+
+            var mocker = new AutoMocker();
+
+            var contentMock = mocker.GetMock<IPublishedContent>();
+
+            contentMock.Setup(m => m.WriterId).Returns(writerId);
+
+            var umbracoHelperWrapperMock = mocker.GetMock<IUmbracoHelperWrapper>();
+
+            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(contentMock.Object);
+
+            var service = mocker.CreateInstance<DocumentService>();
+
+            var document = service.GetContent(id, typeBuilder.CreateType());
+
+            document.GetPropertyValue("WriterId").ShouldBe(writerId);
+        }
+
+        [Theory]
+        [CustomAutoData]
+        public void CanGetContentWriterNameByConvention(int id, string writerName, DocumentTypeModelTypeBuilder builder)
+        {
+            var typeBuilder = builder.GetTypeBuilder();
+
+            typeBuilder.AddPublicProperty("WriterName", writerName.GetType());
+
+            var mocker = new AutoMocker();
+
+            var contentMock = mocker.GetMock<IPublishedContent>();
+
+            contentMock.Setup(m => m.WriterName).Returns(writerName);
+
+            var umbracoHelperWrapperMock = mocker.GetMock<IUmbracoHelperWrapper>();
+
+            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(contentMock.Object);
+
+            var service = mocker.CreateInstance<DocumentService>();
+
+            var document = service.GetContent(id, typeBuilder.CreateType());
+
+            document.GetPropertyValue("WriterName").ShouldBe(writerName);
+        }
+
+        [Theory]
+        [CustomAutoData]
+        public void CanGetContentDocumentTypeIdByConvention(int id, int documentTypeId, DocumentTypeModelTypeBuilder builder)
+        {
+            var typeBuilder = builder.GetTypeBuilder();
+
+            typeBuilder.AddPublicProperty("DocumentTypeId", documentTypeId.GetType());
+
+            var mocker = new AutoMocker();
+
+            var contentMock = mocker.GetMock<IPublishedContent>();
+
+            contentMock.Setup(m => m.DocumentTypeId).Returns(documentTypeId);
+
+            var umbracoHelperWrapperMock = mocker.GetMock<IUmbracoHelperWrapper>();
+
+            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(contentMock.Object);
+
+            var service = mocker.CreateInstance<DocumentService>();
+
+            var document = service.GetContent(id, typeBuilder.CreateType());
+
+            document.GetPropertyValue("DocumentTypeId").ShouldBe(documentTypeId);
+        }
+
+        [Theory]
+        [CustomAutoData]
+        public void CanGetContentDocumentTypeAliasByConvention(int id, string documentTypeAlias, DocumentTypeModelTypeBuilder builder)
+        {
+            var typeBuilder = builder.GetTypeBuilder();
+
+            typeBuilder.AddPublicProperty("DocumentTypeAlias", documentTypeAlias.GetType());
+
+            var mocker = new AutoMocker();
+
+            var contentMock = mocker.GetMock<IPublishedContent>();
+
+            contentMock.Setup(m => m.DocumentTypeAlias).Returns(documentTypeAlias);
+
+            var umbracoHelperWrapperMock = mocker.GetMock<IUmbracoHelperWrapper>();
+
+            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(contentMock.Object);
+
+            var service = mocker.CreateInstance<DocumentService>();
+
+            var document = service.GetContent(id, typeBuilder.CreateType());
+
+            document.GetPropertyValue("DocumentTypeAlias").ShouldBe(documentTypeAlias);
+        }
+
+        [Fact]
+        public void CanNotGetContentForInvalidType()
+        {
+            var mocker = new AutoMocker();
+
+            var content = mocker.Get<IPublishedContent>();
+
+            var service = mocker.CreateInstance<DocumentService>();
+
+            Assert.Throws<ArgumentException>(() => service.GetContent(content, typeof(object)));
+        }
+
+        [Theory]
+        [CustomAutoData]
+        public void CanGetContentForValidType(DocumentTypeModelTypeBuilder builder)
+        {
+            var mocker = new AutoMocker();
+
+            var content = mocker.Get<IPublishedContent>();
+
+            var service = mocker.CreateInstance<DocumentService>();
+
+            var document = service.GetContent(content, builder.CreateType());
 
             document.ShouldNotBeNull();
         }
 
-        [Fact]
-        public void CanGetDocumentForDocumentTypeWithStringProperty()
+        [Theory]
+        [ClassAutoData(typeof(CanGetContentForTypeWithPropertyClassData))]
+        public void CanGetContentForTypeWithProperty(Type propertyType, object propertyValue, string propertyName, int id, DocumentTypeModelTypeBuilder builder)
         {
-            const int id = 123;
-            const string stringPropertyName = "stringProperty";
-            const string stringPropertyValue = "StringProperty";
+            var typeBuilder = builder.GetTypeBuilder();
 
-            var publishedContentMock = new Mock<IPublishedContent>();
+            typeBuilder.AddPublicProperty(propertyName, propertyType);
 
-            publishedContentMock.Setup(m => m.Properties).Returns(() =>
+            var mocker = new AutoMocker();
+
+            var contentMock = mocker.GetMock<IPublishedContent>();
+
+            contentMock.Setup(m => m.Properties).Returns(() =>
             {
-                var property = new Mock<IPublishedProperty>();
+                var property = mocker.GetMock<IPublishedProperty>();
 
-                property.Setup(m => m.PropertyTypeAlias).Returns(stringPropertyName);
-                property.Setup(m => m.Value).Returns(stringPropertyValue);
+                property.Setup(m => m.PropertyTypeAlias).Returns(propertyName);
+                property.Setup(m => m.Value).Returns(propertyValue);
 
                 return new[] { property.Object };
             });
 
-            var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
+            var umbracoHelperWrapperMock = mocker.GetMock<IUmbracoHelperWrapper>();
 
-            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
+            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(contentMock.Object);
 
-            var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
+            var service = mocker.CreateInstance<DocumentService>();
 
-            document.StringProperty.ShouldBe(stringPropertyValue);
+            var document = service.GetContent(id, typeBuilder.CreateType());
+
+            document.GetPropertyValue(propertyName).ShouldBe(propertyValue);
         }
 
-        [Fact]
-        public void CanGetDocumentForDocumentTypeWithIntegerProperty()
+        private class CanGetContentForTypeWithPropertyClassData : IEnumerable<object[]>
         {
-            const int id = 123;
-            const string integerPropertyName = "integerProperty";
-            const int integerPropertyValue = 7;
-
-            var publishedContentMock = new Mock<IPublishedContent>();
-
-            publishedContentMock.Setup(m => m.Properties).Returns(() =>
+            public IEnumerator<object[]> GetEnumerator()
             {
-                var property = new Mock<IPublishedProperty>();
+                yield return new object[] { typeof(string), "abc123" };
+                yield return new object[] { typeof(int), 1 };
+                yield return new object[] { typeof(float), 1.1f };
+                yield return new object[] { typeof(decimal), 1.1m };
+                yield return new object[] { typeof(bool), true };
+                yield return new object[] { typeof(DateTime), DateTime.Now };
+            }
 
-                property.Setup(m => m.PropertyTypeAlias).Returns(integerPropertyName);
-                property.Setup(m => m.Value).Returns(integerPropertyValue);
-
-                return new[] { property.Object };
-            });
-
-            var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
-
-            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
-
-            var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
-
-            document.IntegerProperty.ShouldBe(integerPropertyValue);
-        }
-
-        [Fact]
-        public void CanGetDocumentForDocumentTypeWithFloatingBinaryPointProperty()
-        {
-            const int id = 123;
-            const string floatingBinaryPointPropertyName = "FloatingBinaryPointProperty";
-            const float floatingBinaryPointPropertyValue = 2.2f;
-
-            var publishedContentMock = new Mock<IPublishedContent>();
-
-            publishedContentMock.Setup(m => m.Properties).Returns(() =>
+            IEnumerator IEnumerable.GetEnumerator()
             {
-                var property = new Mock<IPublishedProperty>();
-
-                property.Setup(m => m.PropertyTypeAlias).Returns(floatingBinaryPointPropertyName);
-                property.Setup(m => m.Value).Returns(floatingBinaryPointPropertyValue);
-
-                return new[] { property.Object };
-            });
-
-            var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
-
-            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
-
-            var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
-
-            document.FloatingBinaryPointProperty.ShouldBe(floatingBinaryPointPropertyValue);
-        }
-
-        [Fact]
-        public void CanGetDocumentForDocumentTypeWithFloatingDecimalPointProperty()
-        {
-            const int id = 123;
-            const string floatingDecimalPointPropertyName = "FloatingDecimalPointProperty";
-            const decimal floatingDecimalPointPropertyValue = 2.2m;
-
-            var publishedContentMock = new Mock<IPublishedContent>();
-
-            publishedContentMock.Setup(m => m.Properties).Returns(() =>
-            {
-                var property = new Mock<IPublishedProperty>();
-
-                property.Setup(m => m.PropertyTypeAlias).Returns(floatingDecimalPointPropertyName);
-                property.Setup(m => m.Value).Returns(floatingDecimalPointPropertyValue);
-
-                return new[] { property.Object };
-            });
-
-            var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
-
-            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
-
-            var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
-
-            document.FloatingDecimalPointProperty.ShouldBe(floatingDecimalPointPropertyValue);
-        }
-
-        [Fact]
-        public void CanGetDocumentForDocumentTypeWithBooleanProperty()
-        {
-            const int id = 123;
-            const string booleanPropertyName = "BooleanProperty";
-            const bool booleanPropertyValue = true;
-
-            var publishedContentMock = new Mock<IPublishedContent>();
-
-            publishedContentMock.Setup(m => m.Properties).Returns(() =>
-            {
-                var property = new Mock<IPublishedProperty>();
-
-                property.Setup(m => m.PropertyTypeAlias).Returns(booleanPropertyName);
-                property.Setup(m => m.Value).Returns(booleanPropertyValue);
-
-                return new[] { property.Object };
-            });
-
-            var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
-
-            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
-
-            var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
-
-            document.BooleanProperty.ShouldBe(booleanPropertyValue);
-        }
-
-        [Fact]
-        public void CanGetDocumentForDocumentTypeWithDateTimeProperty()
-        {
-            const int id = 123;
-            const string dateTimePropertyName = "DateTimeProperty";
-            var dateTimePropertyValue = DateTime.Now;
-
-            var publishedContentMock = new Mock<IPublishedContent>();
-
-            publishedContentMock.Setup(m => m.Properties).Returns(() =>
-            {
-                var property = new Mock<IPublishedProperty>();
-
-                property.Setup(m => m.PropertyTypeAlias).Returns(dateTimePropertyName);
-                property.Setup(m => m.Value).Returns(dateTimePropertyValue);
-
-                return new[] { property.Object };
-            });
-
-            var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
-
-            umbracoHelperWrapperMock.Setup(m => m.TypedDocument(id)).Returns(publishedContentMock.Object);
-
-            var document = new DocumentService(umbracoHelperWrapperMock.Object).GetDocument<Models.DocumentType>(id);
-
-            document.DateTimeProperty.ShouldBe(dateTimePropertyValue);
+                return GetEnumerator();
+            }
         }
     }
 }

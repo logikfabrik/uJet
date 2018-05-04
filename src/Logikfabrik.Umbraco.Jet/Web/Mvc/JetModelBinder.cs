@@ -60,7 +60,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
             }
 
             return controllerContext.RouteData.DataTokens[RouteDataTokenKey] is IRenderModel renderModel
-                ? new DocumentService().GetDocument(renderModel.Content, bindingContext.ModelType)
+                ? new DocumentService().GetContent(renderModel.Content, bindingContext.ModelType)
                 : base.BindModel(controllerContext, bindingContext);
         }
 

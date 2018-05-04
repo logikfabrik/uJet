@@ -321,6 +321,7 @@
     <Compile Include="SpecimenBuilders\MediaTypeSpecimenBuilder.cs" />
     <Compile Include="SpecimenBuilders\MemberTypeModelTypeBuilderSpecimenBuilder.cs" />
     <Compile Include="SpecimenBuilders\MemberTypeSpecimenBuilder.cs" />
+    <Compile Include="SpecimenBuilders\ObjectExtensions.cs" />
     <Compile Include="SpecimenBuilders\SpecimenBuilder{T}.cs" />
     <Compile Include="TypeModelComparerTest.cs" />
     <Compile Include="TypeResolverTest.cs" />

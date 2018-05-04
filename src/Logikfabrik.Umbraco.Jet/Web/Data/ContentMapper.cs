@@ -56,23 +56,11 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
             }
         }
 
-        /// <summary>
-        /// Gets a property converter.
-        /// </summary>
-        /// <param name="uiHint">The UI hint.</param>
-        /// <param name="from">The <see cref="Type" /> to convert from.</param>
-        /// <param name="to">The <see cref="Type" /> to convert to.</param>
-        /// <returns>A converter.</returns>
         private static IPropertyValueConverter GetPropertyConverter(string uiHint, Type from, Type to)
         {
             return PropertyValueConverters.GetConverter(uiHint, from, to);
         }
 
-        /// <summary>
-        /// Gets the UI hint for the specified property.
-        /// </summary>
-        /// <param name="property">The property to get the UI hint for.</param>
-        /// <returns>The UI hint.</returns>
         // ReSharper disable once InconsistentNaming
         private static string GetPropertyUIHint(MemberInfo property)
         {
