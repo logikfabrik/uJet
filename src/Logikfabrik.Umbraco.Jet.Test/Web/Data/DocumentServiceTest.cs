@@ -37,9 +37,9 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var service = mocker.CreateInstance<DocumentService>();
 
-            var document = service.GetContent(id, typeBuilder.CreateType());
+            var content = service.GetContent(id, typeBuilder.CreateType());
 
-            document.GetPropertyValue("Id").ShouldBe(id);
+            content.GetPropertyValue("Id").ShouldBe(id);
         }
 
         [Theory]
@@ -62,9 +62,9 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var service = mocker.CreateInstance<DocumentService>();
 
-            var document = service.GetContent(id, typeBuilder.CreateType());
+            var content = service.GetContent(id, typeBuilder.CreateType());
 
-            document.GetPropertyValue("Url").ShouldBe(url);
+            content.GetPropertyValue("Url").ShouldBe(url);
         }
 
         [Theory]
@@ -87,9 +87,9 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var service = mocker.CreateInstance<DocumentService>();
 
-            var document = service.GetContent(id, typeBuilder.CreateType());
+            var content = service.GetContent(id, typeBuilder.CreateType());
 
-            document.GetPropertyValue("Name").ShouldBe(name);
+            content.GetPropertyValue("Name").ShouldBe(name);
         }
 
         [Theory]
@@ -112,9 +112,9 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var service = mocker.CreateInstance<DocumentService>();
 
-            var document = service.GetContent(id, typeBuilder.CreateType());
+            var content = service.GetContent(id, typeBuilder.CreateType());
 
-            document.GetPropertyValue("CreateDate").ShouldBe(createDate);
+            content.GetPropertyValue("CreateDate").ShouldBe(createDate);
         }
 
         [Theory]
@@ -137,9 +137,9 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var service = mocker.CreateInstance<DocumentService>();
 
-            var document = service.GetContent(id, typeBuilder.CreateType());
+            var content = service.GetContent(id, typeBuilder.CreateType());
 
-            document.GetPropertyValue("UpdateDate").ShouldBe(updateDate);
+            content.GetPropertyValue("UpdateDate").ShouldBe(updateDate);
         }
 
         [Theory]
@@ -162,9 +162,9 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var service = mocker.CreateInstance<DocumentService>();
 
-            var document = service.GetContent(id, typeBuilder.CreateType());
+            var content = service.GetContent(id, typeBuilder.CreateType());
 
-            document.GetPropertyValue("CreatorId").ShouldBe(creatorId);
+            content.GetPropertyValue("CreatorId").ShouldBe(creatorId);
         }
 
         [Theory]
@@ -187,9 +187,9 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var service = mocker.CreateInstance<DocumentService>();
 
-            var document = service.GetContent(id, typeBuilder.CreateType());
+            var content = service.GetContent(id, typeBuilder.CreateType());
 
-            document.GetPropertyValue("CreatorName").ShouldBe(creatorName);
+            content.GetPropertyValue("CreatorName").ShouldBe(creatorName);
         }
 
         [Theory]
@@ -212,9 +212,9 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var service = mocker.CreateInstance<DocumentService>();
 
-            var document = service.GetContent(id, typeBuilder.CreateType());
+            var content = service.GetContent(id, typeBuilder.CreateType());
 
-            document.GetPropertyValue("WriterId").ShouldBe(writerId);
+            content.GetPropertyValue("WriterId").ShouldBe(writerId);
         }
 
         [Theory]
@@ -237,9 +237,9 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var service = mocker.CreateInstance<DocumentService>();
 
-            var document = service.GetContent(id, typeBuilder.CreateType());
+            var content = service.GetContent(id, typeBuilder.CreateType());
 
-            document.GetPropertyValue("WriterName").ShouldBe(writerName);
+            content.GetPropertyValue("WriterName").ShouldBe(writerName);
         }
 
         [Theory]
@@ -262,9 +262,9 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var service = mocker.CreateInstance<DocumentService>();
 
-            var document = service.GetContent(id, typeBuilder.CreateType());
+            var content = service.GetContent(id, typeBuilder.CreateType());
 
-            document.GetPropertyValue("DocumentTypeId").ShouldBe(documentTypeId);
+            content.GetPropertyValue("DocumentTypeId").ShouldBe(documentTypeId);
         }
 
         [Theory]
@@ -287,9 +287,9 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var service = mocker.CreateInstance<DocumentService>();
 
-            var document = service.GetContent(id, typeBuilder.CreateType());
+            var content = service.GetContent(id, typeBuilder.CreateType());
 
-            document.GetPropertyValue("DocumentTypeAlias").ShouldBe(documentTypeAlias);
+            content.GetPropertyValue("DocumentTypeAlias").ShouldBe(documentTypeAlias);
         }
 
         [Fact]
@@ -297,11 +297,9 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
         {
             var mocker = new AutoMocker();
 
-            var content = mocker.Get<IPublishedContent>();
-
             var service = mocker.CreateInstance<DocumentService>();
 
-            Assert.Throws<ArgumentException>(() => service.GetContent(content, typeof(object)));
+            Assert.Throws<ArgumentException>(() => service.GetContent(mocker.Get<IPublishedContent>(), typeof(object)));
         }
 
         [Theory]
@@ -310,13 +308,11 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
         {
             var mocker = new AutoMocker();
 
-            var content = mocker.Get<IPublishedContent>();
-
             var service = mocker.CreateInstance<DocumentService>();
 
-            var document = service.GetContent(content, builder.CreateType());
+            var content = service.GetContent(mocker.Get<IPublishedContent>(), builder.CreateType());
 
-            document.ShouldNotBeNull();
+            content.ShouldNotBeNull();
         }
 
         [Theory]
@@ -347,9 +343,9 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var service = mocker.CreateInstance<DocumentService>();
 
-            var document = service.GetContent(id, typeBuilder.CreateType());
+            var content = service.GetContent(id, typeBuilder.CreateType());
 
-            document.GetPropertyValue(propertyName).ShouldBe(propertyValue);
+            content.GetPropertyValue(propertyName).ShouldBe(propertyValue);
         }
 
         private class CanGetContentForTypeWithPropertyClassData : IEnumerable<object[]>

@@ -12,19 +12,16 @@ namespace Logikfabrik.Umbraco.Jet.Test
     using Jet.Data;
     using Moq;
     using Moq.AutoMock;
+    using SpecimenBuilders;
     using Utilities;
     using Xunit;
 
     public class DocumentTypeSynchronizerTest
     {
         [Theory]
-        [AutoData]
-        public void CanCreateModelWithoutId(string typeName, string name)
+        [CustomAutoData]
+        public void CanCreateModelWithoutId(DocumentType model)
         {
-            var modelType = new DocumentTypeModelTypeBuilder(typeName, name).CreateType();
-
-            var model = new DocumentType(modelType);
-
             var mocker = new AutoMocker();
 
             var documentTypeSynchronizer = mocker.CreateInstance<DocumentTypeSynchronizer>();
@@ -94,13 +91,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         }
 
         [Theory]
-        [AutoData]
-        public void CanUpdateModelWithoutId(string typeName, string name)
+        [CustomAutoData]
+        public void CanUpdateModelWithoutId(DocumentType model)
         {
-            var modelType = new DocumentTypeModelTypeBuilder(typeName, name).CreateType();
-
-            var model = new DocumentType(modelType);
-
             var mocker = new AutoMocker();
 
             var documentTypeSynchronizer = mocker.CreateInstance<DocumentTypeSynchronizer>();

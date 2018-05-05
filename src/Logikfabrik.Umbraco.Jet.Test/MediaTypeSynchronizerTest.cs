@@ -12,19 +12,16 @@ namespace Logikfabrik.Umbraco.Jet.Test
     using Jet.Data;
     using Moq;
     using Moq.AutoMock;
+    using SpecimenBuilders;
     using Utilities;
     using Xunit;
 
     public class MediaTypeSynchronizerTest
     {
         [Theory]
-        [AutoData]
-        public void CanCreateModelWithoutId(string typeName, string name)
+        [CustomAutoData]
+        public void CanCreateModelWithoutId(Jet.MediaType model)
         {
-            var modelType = new MediaTypeModelTypeBuilder(typeName, name).CreateType();
-
-            var model = new Jet.MediaType(modelType);
-
             var mocker = new AutoMocker();
 
             var mediaTypeSynchronizer = mocker.CreateInstance<MediaTypeSynchronizer>();
@@ -94,13 +91,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         }
 
         [Theory]
-        [AutoData]
-        public void CanUpdateModelWithoutId(string typeName, string name)
+        [CustomAutoData]
+        public void CanUpdateModelWithoutId(Jet.MediaType model)
         {
-            var modelType = new MediaTypeModelTypeBuilder(typeName, name).CreateType();
-
-            var model = new Jet.MediaType(modelType);
-
             var mocker = new AutoMocker();
 
             var mediaTypeSynchronizer = mocker.CreateInstance<MediaTypeSynchronizer>();

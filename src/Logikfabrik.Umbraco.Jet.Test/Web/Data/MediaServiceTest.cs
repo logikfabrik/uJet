@@ -5,311 +5,315 @@
 namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
-    using AutoFixture.Xunit2;
     using global::Umbraco.Core.Models;
     using Jet.Web.Data;
-    using Moq;
+    using Moq.AutoMock;
     using Shouldly;
+    using SpecimenBuilders;
     using Utilities;
     using Xunit;
 
     public class MediaServiceTest
     {
-        [Fact]
-        public void CanGetMediaIdByConvention()
+        [Theory]
+        [CustomAutoData]
+        public void CanGetContentIdByConvention(int id, MediaTypeModelTypeBuilder builder)
         {
-            const int id = 123;
+            var typeBuilder = builder.GetTypeBuilder();
 
-            var publishedContentMock = new Mock<IPublishedContent>();
+            typeBuilder.AddPublicProperty("Id", id.GetType());
 
-            publishedContentMock.Setup(m => m.Id).Returns(id);
-            publishedContentMock.Setup(m => m.Properties).Returns(new IPublishedProperty[] { });
+            var mocker = new AutoMocker();
 
-            var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
+            var contentMock = mocker.GetMock<IPublishedContent>();
 
-            umbracoHelperWrapperMock.Setup(m => m.TypedMedia(id)).Returns(publishedContentMock.Object);
+            contentMock.Setup(m => m.Id).Returns(id);
 
-            var media = new MediaService(umbracoHelperWrapperMock.Object).GetMedia<Models.MediaType>(id);
+            var umbracoHelperWrapperMock = mocker.GetMock<IUmbracoHelperWrapper>();
 
-            media.Id.ShouldBe(id);
-        }
+            umbracoHelperWrapperMock.Setup(m => m.TypedMedia(id)).Returns(contentMock.Object);
 
-        [Fact]
-        public void CanGetMediaUrlByConvention()
-        {
-            const int id = 123;
-            const string url = "/umbraco/jet";
+            var service = mocker.CreateInstance<MediaService>();
 
-            var publishedContentMock = new Mock<IPublishedContent>();
+            var content = service.GetContent(id, typeBuilder.CreateType());
 
-            publishedContentMock.Setup(m => m.Url).Returns(url);
-            publishedContentMock.Setup(m => m.Properties).Returns(new IPublishedProperty[] { });
-
-            var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
-
-            umbracoHelperWrapperMock.Setup(m => m.TypedMedia(id)).Returns(publishedContentMock.Object);
-
-            var media = new MediaService(umbracoHelperWrapperMock.Object).GetMedia<Models.MediaType>(id);
-
-            media.Url.ShouldBe(url);
-        }
-
-        [Fact]
-        public void CanGetMediaNameByConvention()
-        {
-            const int id = 123;
-            const string name = "Umbraco Jet";
-
-            var publishedContentMock = new Mock<IPublishedContent>();
-
-            publishedContentMock.Setup(m => m.Name).Returns(name);
-            publishedContentMock.Setup(m => m.Properties).Returns(new IPublishedProperty[] { });
-
-            var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
-
-            umbracoHelperWrapperMock.Setup(m => m.TypedMedia(id)).Returns(publishedContentMock.Object);
-
-            var media = new MediaService(umbracoHelperWrapperMock.Object).GetMedia<Models.MediaType>(id);
-
-            media.Name.ShouldBe(name);
-        }
-
-        [Fact]
-        public void CanGetMediaCreateDateByConvention()
-        {
-            const int id = 123;
-            var createDate = new DateTime(2015, 1, 1);
-
-            var publishedContentMock = new Mock<IPublishedContent>();
-
-            publishedContentMock.Setup(m => m.CreateDate).Returns(createDate);
-            publishedContentMock.Setup(m => m.Properties).Returns(new IPublishedProperty[] { });
-
-            var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
-
-            umbracoHelperWrapperMock.Setup(m => m.TypedMedia(id)).Returns(publishedContentMock.Object);
-
-            var media = new MediaService(umbracoHelperWrapperMock.Object).GetMedia<Models.MediaType>(id);
-
-            media.CreateDate.ShouldBe(createDate);
-        }
-
-        [Fact]
-        public void CanGetMediaUpdateDateByConvention()
-        {
-            const int id = 123;
-            var updateDate = new DateTime(2015, 1, 1);
-
-            var publishedContentMock = new Mock<IPublishedContent>();
-
-            publishedContentMock.Setup(m => m.UpdateDate).Returns(updateDate);
-            publishedContentMock.Setup(m => m.Properties).Returns(new IPublishedProperty[] { });
-
-            var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
-
-            umbracoHelperWrapperMock.Setup(m => m.TypedMedia(id)).Returns(publishedContentMock.Object);
-
-            var media = new MediaService(umbracoHelperWrapperMock.Object).GetMedia<Models.MediaType>(id);
-
-            media.UpdateDate.ShouldBe(updateDate);
-        }
-
-        [Fact]
-        public void CanNotGetMediaForInvalidMediaType()
-        {
-            var type = TypeUtility.GetTypeBuilder("MyType", TypeUtility.GetTypeAttributes()).CreateType();
-
-            var contentMock = new Mock<IPublishedContent>();
-
-            var service = new MediaService(new Mock<IUmbracoHelperWrapper>().Object);
-
-            Assert.Throws<ArgumentException>(() => service.GetMedia(contentMock.Object, type));
+            content.GetPropertyValue("Id").ShouldBe(id);
         }
 
         [Theory]
-        [AutoData]
-        public void CanGetMediaForValidMediaType(string typeName, string name)
+        [CustomAutoData]
+        public void CanGetContentUrlByConvention(int id, string url, MediaTypeModelTypeBuilder builder)
         {
-            var modelType = new MediaTypeModelTypeBuilder(typeName, name).CreateType();
+            var typeBuilder = builder.GetTypeBuilder();
 
-            var contentMock = new Mock<IPublishedContent>();
+            typeBuilder.AddPublicProperty("Url", url.GetType());
 
-            contentMock.Setup(m => m.Properties).Returns(new List<IPublishedProperty>());
+            var mocker = new AutoMocker();
 
-            var service = new MediaService(new Mock<IUmbracoHelperWrapper>().Object);
+            var contentMock = mocker.GetMock<IPublishedContent>();
 
-            var media = service.GetMedia(contentMock.Object, modelType);
+            contentMock.Setup(m => m.Url).Returns(url);
 
-            media.ShouldNotBeNull();
+            var umbracoHelperWrapperMock = mocker.GetMock<IUmbracoHelperWrapper>();
+
+            umbracoHelperWrapperMock.Setup(m => m.TypedMedia(id)).Returns(contentMock.Object);
+
+            var service = mocker.CreateInstance<MediaService>();
+
+            var content = service.GetContent(id, typeBuilder.CreateType());
+
+            content.GetPropertyValue("Url").ShouldBe(url);
+        }
+
+        [Theory]
+        [CustomAutoData]
+        public void CanGetContentNameByConvention(int id, string name, MediaTypeModelTypeBuilder builder)
+        {
+            var typeBuilder = builder.GetTypeBuilder();
+
+            typeBuilder.AddPublicProperty("Name", name.GetType());
+
+            var mocker = new AutoMocker();
+
+            var contentMock = mocker.GetMock<IPublishedContent>();
+
+            contentMock.Setup(m => m.Name).Returns(name);
+
+            var umbracoHelperWrapperMock = mocker.GetMock<IUmbracoHelperWrapper>();
+
+            umbracoHelperWrapperMock.Setup(m => m.TypedMedia(id)).Returns(contentMock.Object);
+
+            var service = mocker.CreateInstance<MediaService>();
+
+            var content = service.GetContent(id, typeBuilder.CreateType());
+
+            content.GetPropertyValue("Name").ShouldBe(name);
+        }
+
+        [Theory]
+        [CustomAutoData]
+        public void CanGetContentCreateDateByConvention(int id, DateTime createDate, MediaTypeModelTypeBuilder builder)
+        {
+            var typeBuilder = builder.GetTypeBuilder();
+
+            typeBuilder.AddPublicProperty("CreateDate", createDate.GetType());
+
+            var mocker = new AutoMocker();
+
+            var contentMock = mocker.GetMock<IPublishedContent>();
+
+            contentMock.Setup(m => m.CreateDate).Returns(createDate);
+
+            var umbracoHelperWrapperMock = mocker.GetMock<IUmbracoHelperWrapper>();
+
+            umbracoHelperWrapperMock.Setup(m => m.TypedMedia(id)).Returns(contentMock.Object);
+
+            var service = mocker.CreateInstance<MediaService>();
+
+            var content = service.GetContent(id, typeBuilder.CreateType());
+
+            content.GetPropertyValue("CreateDate").ShouldBe(createDate);
+        }
+
+        [Theory]
+        [CustomAutoData]
+        public void CanGetContentUpdateDateByConvention(int id, DateTime updateDate, MediaTypeModelTypeBuilder builder)
+        {
+            var typeBuilder = builder.GetTypeBuilder();
+
+            typeBuilder.AddPublicProperty("UpdateDate", updateDate.GetType());
+
+            var mocker = new AutoMocker();
+
+            var contentMock = mocker.GetMock<IPublishedContent>();
+
+            contentMock.Setup(m => m.UpdateDate).Returns(updateDate);
+
+            var umbracoHelperWrapperMock = mocker.GetMock<IUmbracoHelperWrapper>();
+
+            umbracoHelperWrapperMock.Setup(m => m.TypedMedia(id)).Returns(contentMock.Object);
+
+            var service = mocker.CreateInstance<MediaService>();
+
+            var content = service.GetContent(id, typeBuilder.CreateType());
+
+            content.GetPropertyValue("UpdateDate").ShouldBe(updateDate);
+        }
+
+        [Theory]
+        [CustomAutoData]
+        public void CanGetContentCreatorIdByConvention(int id, int creatorId, MediaTypeModelTypeBuilder builder)
+        {
+            var typeBuilder = builder.GetTypeBuilder();
+
+            typeBuilder.AddPublicProperty("CreatorId", creatorId.GetType());
+
+            var mocker = new AutoMocker();
+
+            var contentMock = mocker.GetMock<IPublishedContent>();
+
+            contentMock.Setup(m => m.CreatorId).Returns(creatorId);
+
+            var umbracoHelperWrapperMock = mocker.GetMock<IUmbracoHelperWrapper>();
+
+            umbracoHelperWrapperMock.Setup(m => m.TypedMedia(id)).Returns(contentMock.Object);
+
+            var service = mocker.CreateInstance<MediaService>();
+
+            var content = service.GetContent(id, typeBuilder.CreateType());
+
+            content.GetPropertyValue("CreatorId").ShouldBe(creatorId);
+        }
+
+        [Theory]
+        [CustomAutoData]
+        public void CanGetContentCreatorNameByConvention(int id, string creatorName, MediaTypeModelTypeBuilder builder)
+        {
+            var typeBuilder = builder.GetTypeBuilder();
+
+            typeBuilder.AddPublicProperty("CreatorName", creatorName.GetType());
+
+            var mocker = new AutoMocker();
+
+            var contentMock = mocker.GetMock<IPublishedContent>();
+
+            contentMock.Setup(m => m.CreatorName).Returns(creatorName);
+
+            var umbracoHelperWrapperMock = mocker.GetMock<IUmbracoHelperWrapper>();
+
+            umbracoHelperWrapperMock.Setup(m => m.TypedMedia(id)).Returns(contentMock.Object);
+
+            var service = mocker.CreateInstance<MediaService>();
+
+            var content = service.GetContent(id, typeBuilder.CreateType());
+
+            content.GetPropertyValue("CreatorName").ShouldBe(creatorName);
+        }
+
+        [Theory]
+        [CustomAutoData]
+        public void CanGetContentWriterIdByConvention(int id, int writerId, MediaTypeModelTypeBuilder builder)
+        {
+            var typeBuilder = builder.GetTypeBuilder();
+
+            typeBuilder.AddPublicProperty("WriterId", writerId.GetType());
+
+            var mocker = new AutoMocker();
+
+            var contentMock = mocker.GetMock<IPublishedContent>();
+
+            contentMock.Setup(m => m.WriterId).Returns(writerId);
+
+            var umbracoHelperWrapperMock = mocker.GetMock<IUmbracoHelperWrapper>();
+
+            umbracoHelperWrapperMock.Setup(m => m.TypedMedia(id)).Returns(contentMock.Object);
+
+            var service = mocker.CreateInstance<MediaService>();
+
+            var content = service.GetContent(id, typeBuilder.CreateType());
+
+            content.GetPropertyValue("WriterId").ShouldBe(writerId);
+        }
+
+        [Theory]
+        [CustomAutoData]
+        public void CanGetContentWriterNameByConvention(int id, string writerName, MediaTypeModelTypeBuilder builder)
+        {
+            var typeBuilder = builder.GetTypeBuilder();
+
+            typeBuilder.AddPublicProperty("WriterName", writerName.GetType());
+
+            var mocker = new AutoMocker();
+
+            var contentMock = mocker.GetMock<IPublishedContent>();
+
+            contentMock.Setup(m => m.WriterName).Returns(writerName);
+
+            var umbracoHelperWrapperMock = mocker.GetMock<IUmbracoHelperWrapper>();
+
+            umbracoHelperWrapperMock.Setup(m => m.TypedMedia(id)).Returns(contentMock.Object);
+
+            var service = mocker.CreateInstance<MediaService>();
+
+            var content = service.GetContent(id, typeBuilder.CreateType());
+
+            content.GetPropertyValue("WriterName").ShouldBe(writerName);
         }
 
         [Fact]
-        public void CanGetMediaForMediaTypeWithStringProperty()
+        public void CanNotGetContentForInvalidType()
         {
-            const int id = 123;
-            const string stringPropertyName = "stringProperty";
-            const string stringPropertyValue = "StringProperty";
+            var mocker = new AutoMocker();
 
-            var publishedContentMock = new Mock<IPublishedContent>();
+            var service = mocker.CreateInstance<MediaService>();
 
-            publishedContentMock.Setup(m => m.Properties).Returns(() =>
+            Assert.Throws<ArgumentException>(() => service.GetContent(mocker.Get<IPublishedContent>(), typeof(object)));
+        }
+
+        [Theory]
+        [CustomAutoData]
+        public void CanGetContentForValidType(MediaTypeModelTypeBuilder builder)
+        {
+            var mocker = new AutoMocker();
+
+            var service = mocker.CreateInstance<MediaService>();
+
+            var content = service.GetContent(mocker.Get<IPublishedContent>(), builder.CreateType());
+
+            content.ShouldNotBeNull();
+        }
+
+        [Theory]
+        [ClassAutoData(typeof(CanGetContentForTypeWithPropertyClassData))]
+        public void CanGetContentForTypeWithProperty(Type propertyType, object propertyValue, string propertyName, int id, MediaTypeModelTypeBuilder builder)
+        {
+            var typeBuilder = builder.GetTypeBuilder();
+
+            typeBuilder.AddPublicProperty(propertyName, propertyType);
+
+            var mocker = new AutoMocker();
+
+            var contentMock = mocker.GetMock<IPublishedContent>();
+
+            contentMock.Setup(m => m.Properties).Returns(() =>
             {
-                var property = new Mock<IPublishedProperty>();
+                var property = mocker.GetMock<IPublishedProperty>();
 
-                property.Setup(m => m.PropertyTypeAlias).Returns(stringPropertyName);
-                property.Setup(m => m.Value).Returns(stringPropertyValue);
+                property.Setup(m => m.PropertyTypeAlias).Returns(propertyName);
+                property.Setup(m => m.Value).Returns(propertyValue);
 
                 return new[] { property.Object };
             });
 
-            var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
+            var umbracoHelperWrapperMock = mocker.GetMock<IUmbracoHelperWrapper>();
 
-            umbracoHelperWrapperMock.Setup(m => m.TypedMedia(id)).Returns(publishedContentMock.Object);
+            umbracoHelperWrapperMock.Setup(m => m.TypedMedia(id)).Returns(contentMock.Object);
 
-            var media = new MediaService(umbracoHelperWrapperMock.Object).GetMedia<Models.MediaType>(id);
+            var service = mocker.CreateInstance<MediaService>();
 
-            media.StringProperty.ShouldBe(stringPropertyValue);
+            var content = service.GetContent(id, typeBuilder.CreateType());
+
+            content.GetPropertyValue(propertyName).ShouldBe(propertyValue);
         }
 
-        [Fact]
-        public void CanGetMediaForMediaTypeWithIntegerProperty()
+        private class CanGetContentForTypeWithPropertyClassData : IEnumerable<object[]>
         {
-            const int id = 123;
-            const string integerPropertyName = "integerProperty";
-            const int integerPropertyValue = 7;
-
-            var publishedContentMock = new Mock<IPublishedContent>();
-
-            publishedContentMock.Setup(m => m.Properties).Returns(() =>
+            public IEnumerator<object[]> GetEnumerator()
             {
-                var property = new Mock<IPublishedProperty>();
+                yield return new object[] { typeof(string), "abc123" };
+                yield return new object[] { typeof(int), 1 };
+                yield return new object[] { typeof(float), 1.1f };
+                yield return new object[] { typeof(decimal), 1.1m };
+                yield return new object[] { typeof(bool), true };
+                yield return new object[] { typeof(DateTime), DateTime.Now };
+            }
 
-                property.Setup(m => m.PropertyTypeAlias).Returns(integerPropertyName);
-                property.Setup(m => m.Value).Returns(integerPropertyValue);
-
-                return new[] { property.Object };
-            });
-
-            var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
-
-            umbracoHelperWrapperMock.Setup(m => m.TypedMedia(id)).Returns(publishedContentMock.Object);
-
-            var media = new MediaService(umbracoHelperWrapperMock.Object).GetMedia<Models.MediaType>(id);
-
-            media.IntegerProperty.ShouldBe(integerPropertyValue);
-        }
-
-        [Fact]
-        public void CanGetMediaForMediaTypeWithFloatingBinaryPointProperty()
-        {
-            const int id = 123;
-            const string floatingBinaryPointPropertyName = "FloatingBinaryPointProperty";
-            const float floatingBinaryPointPropertyValue = 2.2f;
-
-            var publishedContentMock = new Mock<IPublishedContent>();
-
-            publishedContentMock.Setup(m => m.Properties).Returns(() =>
+            IEnumerator IEnumerable.GetEnumerator()
             {
-                var property = new Mock<IPublishedProperty>();
-
-                property.Setup(m => m.PropertyTypeAlias).Returns(floatingBinaryPointPropertyName);
-                property.Setup(m => m.Value).Returns(floatingBinaryPointPropertyValue);
-
-                return new[] { property.Object };
-            });
-
-            var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
-
-            umbracoHelperWrapperMock.Setup(m => m.TypedMedia(id)).Returns(publishedContentMock.Object);
-
-            var media = new MediaService(umbracoHelperWrapperMock.Object).GetMedia<Models.MediaType>(id);
-
-            media.FloatingBinaryPointProperty.ShouldBe(floatingBinaryPointPropertyValue);
-        }
-
-        [Fact]
-        public void CanGetMediaForMediaTypeWithFloatingDecimalPointProperty()
-        {
-            const int id = 123;
-            const string floatingDecimalPointPropertyName = "FloatingDecimalPointProperty";
-            const decimal floatingDecimalPointPropertyValue = 2.2m;
-
-            var publishedContentMock = new Mock<IPublishedContent>();
-
-            publishedContentMock.Setup(m => m.Properties).Returns(() =>
-            {
-                var property = new Mock<IPublishedProperty>();
-
-                property.Setup(m => m.PropertyTypeAlias).Returns(floatingDecimalPointPropertyName);
-                property.Setup(m => m.Value).Returns(floatingDecimalPointPropertyValue);
-
-                return new[] { property.Object };
-            });
-
-            var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
-
-            umbracoHelperWrapperMock.Setup(m => m.TypedMedia(id)).Returns(publishedContentMock.Object);
-
-            var media = new MediaService(umbracoHelperWrapperMock.Object).GetMedia<Models.MediaType>(id);
-
-            media.FloatingDecimalPointProperty.ShouldBe(floatingDecimalPointPropertyValue);
-        }
-
-        [Fact]
-        public void CanGetMediaForMediaTypeWithBooleanProperty()
-        {
-            const int id = 123;
-            const string booleanPropertyName = "BooleanProperty";
-            const bool booleanPropertyValue = true;
-
-            var publishedContentMock = new Mock<IPublishedContent>();
-
-            publishedContentMock.Setup(m => m.Properties).Returns(() =>
-            {
-                var property = new Mock<IPublishedProperty>();
-
-                property.Setup(m => m.PropertyTypeAlias).Returns(booleanPropertyName);
-                property.Setup(m => m.Value).Returns(booleanPropertyValue);
-
-                return new[] { property.Object };
-            });
-
-            var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
-
-            umbracoHelperWrapperMock.Setup(m => m.TypedMedia(id)).Returns(publishedContentMock.Object);
-
-            var media = new MediaService(umbracoHelperWrapperMock.Object).GetMedia<Models.MediaType>(id);
-
-            media.BooleanProperty.ShouldBe(booleanPropertyValue);
-        }
-
-        [Fact]
-        public void CanGetMediaForMediaTypeWithDateTimeProperty()
-        {
-            const int id = 123;
-            const string dateTimePropertyName = "DateTimeProperty";
-            var dateTimePropertyValue = DateTime.Now;
-
-            var publishedContentMock = new Mock<IPublishedContent>();
-
-            publishedContentMock.Setup(m => m.Properties).Returns(() =>
-            {
-                var property = new Mock<IPublishedProperty>();
-
-                property.Setup(m => m.PropertyTypeAlias).Returns(dateTimePropertyName);
-                property.Setup(m => m.Value).Returns(dateTimePropertyValue);
-
-                return new[] { property.Object };
-            });
-
-            var umbracoHelperWrapperMock = new Mock<IUmbracoHelperWrapper>();
-
-            umbracoHelperWrapperMock.Setup(m => m.TypedMedia(id)).Returns(publishedContentMock.Object);
-
-            var media = new MediaService(umbracoHelperWrapperMock.Object).GetMedia<Models.MediaType>(id);
-
-            media.DateTimeProperty.ShouldBe(dateTimePropertyValue);
+                return GetEnumerator();
+            }
         }
     }
 }
