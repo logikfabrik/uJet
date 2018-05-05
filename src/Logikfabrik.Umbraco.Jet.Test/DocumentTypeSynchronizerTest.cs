@@ -6,7 +6,6 @@ namespace Logikfabrik.Umbraco.Jet.Test
 {
     using System;
     using System.Collections.Generic;
-    using AutoFixture.Xunit2;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
     using Jet.Data;

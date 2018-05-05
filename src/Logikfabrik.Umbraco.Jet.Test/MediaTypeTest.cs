@@ -6,7 +6,6 @@ namespace Logikfabrik.Umbraco.Jet.Test
 {
     using System;
     using System.Linq;
-    using AutoFixture.Xunit2;
     using Shouldly;
     using SpecimenBuilders;
     using Utilities;

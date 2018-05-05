@@ -33,6 +33,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="id">The identifier.</param>
         /// <param name="name">The name.</param>
         // ReSharper disable once InheritdocConsiderUsage
+        // ReSharper disable once UnusedMember.Global
         public MediaTypeAttribute(string id, string name)
             : base(id, name)
         {

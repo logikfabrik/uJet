@@ -17,15 +17,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
     public abstract class ContentService<TModelAttribute>
         where TModelAttribute : ContentTypeModelAttribute
     {
-        private readonly ContentMapper _contentMapper;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ContentService{TModelAttribute}" /> class.
-        /// </summary>
-        protected ContentService()
-        {
-            _contentMapper = new ContentMapper();
-        }
+        private readonly ContentMapper _contentMapper = new ContentMapper();
 
         /// <summary>
         /// Gets a model for the content with the specified identifier.

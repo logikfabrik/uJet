@@ -19,6 +19,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
         /// </summary>
         /// <typeparam name="T">The <see cref="Type" /> to register the specified property value converter for.</typeparam>
         /// <param name="propertyValueConverter">The property value converter to register.</param>
+        // ReSharper disable once UnusedMember.Global
         public static void Register<T>(IPropertyValueConverter propertyValueConverter)
         {
             EnsureArg.IsNotNull(propertyValueConverter);
