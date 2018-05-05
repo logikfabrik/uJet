@@ -6,14 +6,14 @@ namespace Logikfabrik.Umbraco.Jet.Test
 {
     using System;
     using System.Reflection.Emit;
-    using AutoFixture.Xunit2;
+    using SpecimenBuilders;
     using Utilities;
     using Xunit;
 
     public class ContentTypeModelValidatorTest
     {
         [Theory]
-        [AutoData]
+        [CustomAutoData]
         public void CanFindConflictById(string typeNameX, string typeNameY, Guid id, string name)
         {
             var modelX = new DocumentType(new DocumentTypeModelTypeBuilder(typeNameX, id, name).CreateType());
@@ -25,7 +25,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         }
 
         [Theory]
-        [AutoData]
+        [CustomAutoData]
         public void CanFindConflictByAlias(string typeName, string name)
         {
             var modelX = new DocumentType(new DocumentTypeModelTypeBuilder(typeName, name).CreateType());
@@ -37,7 +37,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         }
 
         [Theory]
-        [AutoData]
+        [CustomAutoData]
         public void CanFindConflictByPropertyId(string typeName, string name, Guid propertyId, Type propertyTypeX, string propertyNameX, Type propertyTypeY, string propertyNameY)
         {
             var typeBuilder = new DocumentTypeModelTypeBuilder(typeName, name).GetTypeBuilder();
@@ -55,7 +55,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         }
 
         [Theory]
-        [AutoData]
+        [CustomAutoData]
         public void CanFindConflictByPropertyAlias(string typeName, string name, string propertyAlias, Type propertyTypeX, string propertyNameX, Type propertyTypeY, string propertyNameY)
         {
             var typeBuilder = new DocumentTypeModelTypeBuilder(typeName, name).GetTypeBuilder();

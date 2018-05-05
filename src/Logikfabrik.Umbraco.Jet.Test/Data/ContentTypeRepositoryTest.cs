@@ -5,19 +5,19 @@
 namespace Logikfabrik.Umbraco.Jet.Test.Data
 {
     using System;
-    using AutoFixture.Xunit2;
     using global::Umbraco.Core.Persistence;
     using global::Umbraco.Core.Persistence.SqlSyntax;
     using Jet.Data;
     using Moq;
     using Moq.AutoMock;
     using Shouldly;
+    using SpecimenBuilders;
     using Xunit;
 
     public class ContentTypeRepositoryTest
     {
         [Theory]
-        [AutoData]
+        [CustomAutoData]
         public void CanGetContentTypeModelId(int contentTypeId)
         {
             var mocker = new AutoMocker();
@@ -34,7 +34,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Data
         }
 
         [Theory]
-        [AutoData]
+        [CustomAutoData]
         public void CanGetContentTypeModelIdFromCache(int contentTypeId)
         {
             var mocker = new AutoMocker();
@@ -54,7 +54,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Data
         }
 
         [Theory]
-        [AutoData]
+        [CustomAutoData]
         public void CanGetPropertyTypeModelId(int propertyTypeId)
         {
             var mocker = new AutoMocker();
@@ -71,7 +71,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Data
         }
 
         [Theory]
-        [AutoData]
+        [CustomAutoData]
         public void CanGetPropertyTypeModelIdFromCache(int propertyTypeId)
         {
             var mocker = new AutoMocker();
@@ -91,7 +91,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Data
         }
 
         [Theory]
-        [AutoData]
+        [CustomAutoData]
         public void CanGetContentTypeId(Guid id, int contentTypeId)
         {
             var mocker = new AutoMocker();
@@ -108,7 +108,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Data
         }
 
         [Theory]
-        [AutoData]
+        [CustomAutoData]
         public void CanGetContentTypeIdFromCache(Guid id, int contentTypeId)
         {
             var mocker = new AutoMocker();
@@ -128,7 +128,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Data
         }
 
         [Theory]
-        [AutoData]
+        [CustomAutoData]
         public void CanGetPropertyTypeId(Guid id, int propertyTypeId)
         {
             var mocker = new AutoMocker();
@@ -145,7 +145,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Data
         }
 
         [Theory]
-        [AutoData]
+        [CustomAutoData]
         public void CanGetPropertyTypeIdFromCache(Guid id, int propertyTypeId)
         {
             var mocker = new AutoMocker();
@@ -165,7 +165,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Data
         }
 
         [Theory]
-        [AutoData]
+        [CustomAutoData]
         public void CanSetContentTypeId(Guid id, int contentTypeId)
         {
             var mocker = new AutoMocker();
@@ -180,7 +180,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Data
         }
 
         [Theory]
-        [AutoData]
+        [CustomAutoData]
         public void CanSetPropertyTypeId(Guid id, int propertyTypeId)
         {
             var mocker = new AutoMocker();

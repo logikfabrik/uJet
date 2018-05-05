@@ -303,13 +303,6 @@
     <Compile Include="MediaTypeSynchronizerTest.cs" />
     <Compile Include="MemberTypeSynchronizerTest.cs" />
     <Compile Include="MemberTypeTest.cs" />
-    <Compile Include="Models\CompositionDocumentTypeA.cs" />
-    <Compile Include="Models\CompositionDocumentTypeB.cs" />
-    <Compile Include="Models\ContentType.cs" />
-    <Compile Include="Models\DocumentType.cs" />
-    <Compile Include="Models\IDocumentTypeB.cs" />
-    <Compile Include="Models\MediaType.cs" />
-    <Compile Include="Models\MemberType.cs" />
     <Compile Include="SpecimenBuilders\ClassAutoDataAttribute.cs" />
     <Compile Include="SpecimenBuilders\CustomAutoDataAttribute.cs" />
     <Compile Include="SpecimenBuilders\CustomInlineAutoDataAttribute.cs" />
@@ -333,7 +326,6 @@
     <Compile Include="Utilities\MemberTypeModelTypeBuilder.cs" />
     <Compile Include="Utilities\ModelTypeBuilder{T}.cs" />
     <Compile Include="Utilities\TypeBuilderExtensions.cs" />
-    <Compile Include="Utilities\TypeUtility.cs" />
     <Compile Include="Web\Data\Converters\FloatingDecimalPointPropertyValueConverterTest.cs" />
     <Compile Include="Web\Data\Converters\FloatingBinaryPointPropertyValueConverterTest.cs" />
     <Compile Include="Web\Data\Converters\HtmlStringPropertyValueConverterTest.cs" />

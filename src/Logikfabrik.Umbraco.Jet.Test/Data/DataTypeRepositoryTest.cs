@@ -5,19 +5,19 @@
 namespace Logikfabrik.Umbraco.Jet.Test.Data
 {
     using System;
-    using AutoFixture.Xunit2;
     using global::Umbraco.Core.Persistence;
     using global::Umbraco.Core.Persistence.SqlSyntax;
     using Jet.Data;
     using Moq;
     using Moq.AutoMock;
     using Shouldly;
+    using SpecimenBuilders;
     using Xunit;
 
     public class DataTypeRepositoryTest
     {
         [Theory]
-        [AutoData]
+        [CustomAutoData]
         public void CanGetDefinitionTypeModelId(int definitionId)
         {
             var mocker = new AutoMocker();
@@ -34,7 +34,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Data
         }
 
         [Theory]
-        [AutoData]
+        [CustomAutoData]
         public void CanGetDefinitionTypeModelIdFromCache(int definitionId)
         {
             var mocker = new AutoMocker();
@@ -54,7 +54,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Data
         }
 
         [Theory]
-        [AutoData]
+        [CustomAutoData]
         public void CanGetDefinitionId(Guid id, int definitionId)
         {
             var mocker = new AutoMocker();
@@ -71,7 +71,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Data
         }
 
         [Theory]
-        [AutoData]
+        [CustomAutoData]
         public void CanGetDefinitionIdFromCache(Guid id, int definitionId)
         {
             var mocker = new AutoMocker();
@@ -91,7 +91,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Data
         }
 
         [Theory]
-        [AutoData]
+        [CustomAutoData]
         public void CanSetDefinitionId(Guid id, int definitionId)
         {
             var mocker = new AutoMocker();

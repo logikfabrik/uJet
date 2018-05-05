@@ -5,16 +5,16 @@
 namespace Logikfabrik.Umbraco.Jet.Test.Mappings
 {
     using System;
-    using AutoFixture.Xunit2;
     using Jet.Mappings;
     using Moq.AutoMock;
     using Shouldly;
+    using SpecimenBuilders;
     using Xunit;
 
     public class DataTypeDefinitionMappingsTest : IDisposable
     {
         [Theory]
-        [AutoData]
+        [CustomAutoData]
         public void CanAddDataTypeDefinitionMapping(Type type)
         {
             var mocker = new AutoMocker();
@@ -29,7 +29,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Mappings
         }
 
         [Theory]
-        [AutoData]
+        [CustomAutoData]
         public void CanRemoveDataTypeDefinitionMapping(Type type)
         {
             var mocker = new AutoMocker();

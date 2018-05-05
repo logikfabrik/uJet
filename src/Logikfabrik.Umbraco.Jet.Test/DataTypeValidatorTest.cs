@@ -5,14 +5,14 @@
 namespace Logikfabrik.Umbraco.Jet.Test
 {
     using System;
-    using AutoFixture.Xunit2;
+    using SpecimenBuilders;
     using Utilities;
     using Xunit;
 
     public class DataTypeValidatorTest
     {
         [Theory]
-        [AutoData]
+        [CustomAutoData]
         public void CanFindConflictById(string typeNameX, string typeNameY, Guid id, Type type, string editor)
         {
             var modelX = new DataType(new DataTypeModelTypeBuilder(typeNameX, id, type, editor).CreateType());
@@ -24,7 +24,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         }
 
         [Theory]
-        [AutoData]
+        [CustomAutoData]
         public void CanFindConflictByName(string typeName, Type type, string editor)
         {
             var modelX = new DataType(new DataTypeModelTypeBuilder(typeName, type, editor).CreateType());

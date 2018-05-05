@@ -26,7 +26,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         }
 
         [Theory]
-        [AutoData]
+        [CustomAutoData]
         public void CanGetIdFromAttribute(string typeName, Guid id, string name)
         {
             var modelType = new MemberTypeModelTypeBuilder(typeName, id, name).CreateType();

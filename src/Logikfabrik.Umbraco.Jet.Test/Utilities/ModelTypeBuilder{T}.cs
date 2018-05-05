@@ -34,7 +34,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Utilities
 
         public TypeBuilder GetTypeBuilder(TypeAttributes? typeAttributes = null)
         {
-            var typeBuilder = TypeUtility.GetTypeBuilder(TypeName, TypeUtility.GetTypeAttributes(typeAttributes));
+            var typeBuilder = GetTypeBuilder(TypeName, GetTypeAttributes(typeAttributes));
 
             var attibuteBuilder = GetAttributeBuilder();
 
@@ -57,6 +57,15 @@ namespace Logikfabrik.Umbraco.Jet.Test.Utilities
 
         protected abstract string[] GetAttributePropertyNames();
 
+        private static TypeBuilder GetTypeBuilder(string typeName, TypeAttributes typeAttributes)
+        {
+            var assemblyName = new AssemblyName("Logikfabrik.Umbraco.Jet.Test.Types");
+            var assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
+            var typeBuilder = assemblyBuilder.DefineDynamicModule(assemblyName.Name).DefineType(typeName, typeAttributes);
+
+            return typeBuilder;
+        }
+
         private CustomAttributeBuilder GetAttributeBuilder()
         {
             var attributeType = typeof(T);
@@ -76,6 +85,26 @@ namespace Logikfabrik.Umbraco.Jet.Test.Utilities
             var attributeBuilder = new CustomAttributeBuilder(constructor, attributeConstructorArguments, attributeProperties, attributePropertyValues);
 
             return attributeBuilder;
+        }
+
+        private static TypeAttributes GetTypeAttributes(TypeAttributes? typeAttributes = null)
+        {
+            if (!typeAttributes.HasValue)
+            {
+                typeAttributes = TypeAttributes.Class | TypeAttributes.Public;
+            }
+
+            if (!typeAttributes.Value.HasFlag(TypeAttributes.Class))
+            {
+                typeAttributes = typeAttributes | TypeAttributes.Class;
+            }
+
+            if (!typeAttributes.Value.HasFlag(TypeAttributes.Public))
+            {
+                typeAttributes = typeAttributes | TypeAttributes.Public;
+            }
+
+            return typeAttributes.Value;
         }
     }
 }
