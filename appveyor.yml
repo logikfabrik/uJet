@@ -1,19 +1,31 @@
+environment:
+  sonar_login:
+    secure: zXKDaehuDI1dgVRtI/qkA7YJwNLBBPTUJiBVpDZnJq4FvUr1SFgaPcQU9+EPmU1R
 version: 5.0.0.{build}
-branches:
-  only:
-    - master
-    - dev
 skip_tags: true
-image: Visual Studio 2017
+skip_commits:
+  files:
+    - CHANGELOG.MD
+    - LICENSE
+    - README.MD
+os: Visual Studio 2015
+platform: Any CPU
+configuration: Release
 assembly_info:
   patch: true
   file: AssemblyInfo.*
-  assembly_version: "{version}"
-  assembly_file_version: "{version}"
-platform: Any CPU
-configuration: Release
+  assembly_version: $(appveyor_build_version)
+  assembly_file_version: $(appveyor_build_version)
+  assembly_informational_version: $(appveyor_build_version)
 before_build:
 - nuget restore src/Logikfabrik.Umbraco.Jet.sln
+build_script:
+  - choco install msbuild-sonarqube-runner --version 4.0.0 -y
+  - SonarQube.Scanner.MSBuild.exe begin /k:"ujet" /o:"logikfabrik-github" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="%sonar_login%" /d:sonar.projectBaseDir="src" /d:sonar.cs.opencover.reportsPaths="results.xml" /v:%appveyor_build_version%
+  - msbuild src\Logikfabrik.Umbraco.Jet.sln /p:Configuration=%configuration% /p:WarningLevel=1 -verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+  - choco install "opencover.portable" -y
+  - OpenCover.Console.exe "-register:user" "-target:powershell.exe" "-targetargs:-File C:\projects\ujet\xunit.ps1"
+  - SonarQube.Scanner.MSBuild.exe end /d:sonar.login="%sonar_login%"
 build:
   project: src/Logikfabrik.Umbraco.Jet.sln
   publish_nuget: true
