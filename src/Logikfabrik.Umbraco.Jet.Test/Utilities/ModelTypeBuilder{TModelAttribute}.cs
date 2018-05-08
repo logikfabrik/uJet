@@ -78,6 +78,8 @@ namespace Logikfabrik.Umbraco.Jet.Test.Utilities
             }
 
             constructorGenerator.Emit(OpCodes.Ldarg_0);
+
+            // ReSharper disable once AssignNullToNotNullAttribute
             constructorGenerator.Emit(OpCodes.Call, typeof(object).GetConstructor(Type.EmptyTypes));
             constructorGenerator.Emit(OpCodes.Ret);
 
@@ -135,6 +137,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Utilities
                 propertyBuilder.SetGetMethod(getMethodBuilder);
             }
 
+            // ReSharper disable once InvertIf
             if (accessor.HasFlag(Accessor.Set))
             {
                 var setMethodBuilder = GetPropertySetter(typeBuilder, fieldBuilder, propertyAttributes, name, type);

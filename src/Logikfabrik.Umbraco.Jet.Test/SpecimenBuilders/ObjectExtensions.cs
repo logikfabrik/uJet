@@ -9,13 +9,5 @@
             // ReSharper disable once PossibleNullReferenceException
             return type.GetProperty(name).GetValue(obj);
         }
-
-        public static void SetPropertyValue(this object obj, string name, object value)
-        {
-            var type = obj.GetType();
-
-            // ReSharper disable once PossibleNullReferenceException
-            type.GetProperty(name).SetValue(obj, value);
-        }
     }
 }
