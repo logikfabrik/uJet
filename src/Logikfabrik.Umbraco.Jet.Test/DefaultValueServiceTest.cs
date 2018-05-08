@@ -20,14 +20,14 @@ namespace Logikfabrik.Umbraco.Jet.Test
     {
         [Theory]
         [ClassAutoData(typeof(CanSetPropertyDefaultValueClassData))]
-        public void CanSetPropertyDefaultValueForDocumentType(Type propertyType, string propertyDefaultValue, string propertyName, DocumentTypeModelTypeBuilder builder)
+        public void CanSetPropertyDefaultValueForDocumentType(Type propertyType, string propertyDefaultValue, string propertyName, string typeName, string name)
         {
-            var typeBuilder = builder.GetTypeBuilder();
+            var builder = new DocumentTypeModelTypeBuilder(typeName, name);
 
             // ReSharper disable once AssignNullToNotNullAttribute
-            typeBuilder.AddPublicProperty(propertyName, propertyType, new[] { new CustomAttributeBuilder(typeof(DefaultValueAttribute).GetConstructor(new[] { typeof(Type), typeof(string) }), new object[] { propertyType, propertyDefaultValue }) });
+            builder.AddProperty(Scope.Public, Accessor.GetSet, propertyName, propertyType, new[] { new CustomAttributeBuilder(typeof(DefaultValueAttribute).GetConstructor(new[] { typeof(Type), typeof(string) }), new object[] { propertyType, propertyDefaultValue }) });
 
-            var modelType = typeBuilder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new DocumentType(modelType);
 
@@ -54,12 +54,10 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [ClassAutoData(typeof(CanSetPropertyDefaultValueClassData))]
         public void CanSetPropertyDefaultValueForMediaType(Type propertyType, string propertyDefaultValue, string propertyName, MediaTypeModelTypeBuilder builder)
         {
-            var typeBuilder = builder.GetTypeBuilder();
-
             // ReSharper disable once AssignNullToNotNullAttribute
-            typeBuilder.AddPublicProperty(propertyName, propertyType, new[] { new CustomAttributeBuilder(typeof(DefaultValueAttribute).GetConstructor(new[] { typeof(Type), typeof(string) }), new object[] { propertyType, propertyDefaultValue }) });
+            builder.AddProperty(Scope.Public, Accessor.GetSet, propertyName, propertyType, new[] { new CustomAttributeBuilder(typeof(DefaultValueAttribute).GetConstructor(new[] { typeof(Type), typeof(string) }), new object[] { propertyType, propertyDefaultValue }) });
 
-            var modelType = typeBuilder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new MediaType(modelType);
 
@@ -86,12 +84,10 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [ClassAutoData(typeof(CanSetPropertyDefaultValueClassData))]
         public void CanSetPropertyDefaultValueForMemberType(Type propertyType, string propertyDefaultValue, string propertyName, MemberTypeModelTypeBuilder builder)
         {
-            var typeBuilder = builder.GetTypeBuilder();
-
             // ReSharper disable once AssignNullToNotNullAttribute
-            typeBuilder.AddPublicProperty(propertyName, propertyType, new[] { new CustomAttributeBuilder(typeof(DefaultValueAttribute).GetConstructor(new[] { typeof(Type), typeof(string) }), new object[] { propertyType, propertyDefaultValue }) });
+            builder.AddProperty(Scope.Public, Accessor.GetSet, propertyName, propertyType, new[] { new CustomAttributeBuilder(typeof(DefaultValueAttribute).GetConstructor(new[] { typeof(Type), typeof(string) }), new object[] { propertyType, propertyDefaultValue }) });
 
-            var modelType = typeBuilder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new MemberType(modelType);
 

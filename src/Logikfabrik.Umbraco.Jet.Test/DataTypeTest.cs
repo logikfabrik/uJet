@@ -18,7 +18,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanGetTypeFromAttribute(DataTypeModelTypeBuilder builder)
         {
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new DataType(modelType);
 
@@ -29,7 +29,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanGetIdFromAttribute(string typeName, Guid id, Type type, string editor)
         {
-            var modelType = new DataTypeModelTypeBuilder(typeName, id, type, editor).CreateType();
+            var modelType = new DataTypeModelTypeBuilder(typeName, id, type, editor).Create(Scope.Public);
 
             var model = new DataType(modelType);
 
@@ -40,7 +40,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanGetNameFromAttribute(DataTypeModelTypeBuilder builder)
         {
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new DataType(modelType);
 
@@ -51,7 +51,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanGetEditorFromAttribute(DataTypeModelTypeBuilder builder)
         {
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new DataType(modelType);
 
@@ -62,14 +62,13 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanGetPreValuesFromAttribute(DataTypeModelTypeBuilder builder)
         {
-            var typeBuilder = builder.GetTypeBuilder();
+            builder.AddProperty(Scope.Public, Accessor.Get, "PreValues", typeof(Dictionary<string, string>));
 
-            typeBuilder.AddPublicReadOnlyProperty("PreValues", typeof(IDictionary<string, string>));
+            var modelType = builder.Create(Scope.Public);
 
-            var modelType = typeBuilder.CreateType();
+            var model = new DataType(modelType);
 
-            // TODO: Add default value for property.
-            throw new NotImplementedException();
+            model.PreValues.ShouldNotBeNull();
         }
 
         [Theory]

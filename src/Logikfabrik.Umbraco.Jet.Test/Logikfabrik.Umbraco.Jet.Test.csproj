@@ -322,9 +322,12 @@
     <Compile Include="Utilities\ContentTypeModelTypeBuilder{T}.cs" />
     <Compile Include="Utilities\DataTypeModelTypeBuilder.cs" />
     <Compile Include="Utilities\DocumentTypeModelTypeBuilder.cs" />
+    <Compile Include="Utilities\Accessor.cs" />
     <Compile Include="Utilities\MediaTypeModelTypeBuilder.cs" />
     <Compile Include="Utilities\MemberTypeModelTypeBuilder.cs" />
-    <Compile Include="Utilities\ModelTypeBuilder{T}.cs" />
+    <Compile Include="Utilities\ModelTypeBuilderExtensions.cs" />
+    <Compile Include="Utilities\ModelTypeBuilder{TModelAttribute}.cs" />
+    <Compile Include="Utilities\Scope.cs" />
     <Compile Include="Utilities\TypeBuilderExtensions.cs" />
     <Compile Include="Web\Data\Converters\FloatingDecimalPointPropertyValueConverterTest.cs" />
     <Compile Include="Web\Data\Converters\FloatingBinaryPointPropertyValueConverterTest.cs" />

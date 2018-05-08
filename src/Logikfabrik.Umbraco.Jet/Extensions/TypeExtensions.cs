@@ -47,12 +47,7 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
         /// </returns>
         private static bool IsValid(Type modelType)
         {
-            if (modelType == null)
-            {
-                return false;
-            }
-
-            if (modelType.IsAbstract)
+            if (modelType == null || modelType.IsAbstract)
             {
                 return false;
             }

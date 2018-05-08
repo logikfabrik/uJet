@@ -32,12 +32,12 @@ namespace Logikfabrik.Umbraco.Jet.Test.Utilities
 
         public string Alias { get; set; }
 
-        protected override object[] GetAttributeConstructorArguments()
+        protected override object[] GetModelAttributeConstructorArguments()
         {
-            return base.GetAttributeConstructorArguments().Concat(new[] { Name }).ToArray();
+            return base.GetModelAttributeConstructorArguments().Concat(new[] { Name }).ToArray();
         }
 
-        protected override string[] GetAttributePropertyNames()
+        protected override string[] GetModelAttributePropertyNames()
         {
             return new[]
             {

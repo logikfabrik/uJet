@@ -17,7 +17,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanGetTypeFromAttribute(DocumentTypeModelTypeBuilder builder)
         {
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new DocumentType(modelType);
 
@@ -28,7 +28,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanGetIdFromAttribute(string typeName, Guid id, string name)
         {
-            var modelType = new DocumentTypeModelTypeBuilder(typeName, id, name).CreateType();
+            var modelType = new DocumentTypeModelTypeBuilder(typeName, id, name).Create(Scope.Public);
 
             var model = new DocumentType(modelType);
 
@@ -39,7 +39,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanGetNameFromAttribute(DocumentTypeModelTypeBuilder builder)
         {
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new DocumentType(modelType);
 
@@ -52,7 +52,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             builder.Description = description;
 
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new DocumentType(modelType);
 
@@ -65,7 +65,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             builder.Icon = icon;
 
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new DocumentType(modelType);
 
@@ -78,7 +78,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             builder.IsContainer = isContainer;
 
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new DocumentType(modelType);
 
@@ -91,7 +91,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             builder.Alias = alias;
 
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new DocumentType(modelType);
 
@@ -104,7 +104,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             builder.Thumbnail = thumbnail;
 
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new DocumentType(modelType);
 
@@ -117,7 +117,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             builder.AllowedAsRoot = allowedAsRoot;
 
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new DocumentType(modelType);
 
@@ -130,7 +130,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             builder.AllowedChildNodeTypes = allowedChildNodeTypes;
 
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new DocumentType(modelType);
 
@@ -143,7 +143,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             builder.CompositionNodeTypes = compositionNodeTypes;
 
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new DocumentType(modelType);
 
@@ -156,7 +156,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             builder.DefaultTemplate = defaultTemplate;
 
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new DocumentType(modelType);
 
@@ -169,7 +169,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             builder.Templates = templates;
 
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new DocumentType(modelType);
 
@@ -192,11 +192,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomInlineAutoData(typeof(bool))]
         public void CanGetPublicProperty(Type propertyType, string propertyName, DocumentTypeModelTypeBuilder builder)
         {
-            var typeBuilder = builder.GetTypeBuilder();
+            builder.AddProperty(Scope.Public, Accessor.GetSet, propertyName, propertyType);
 
-            typeBuilder.AddPublicProperty(propertyName, propertyType);
-
-            var modelType = typeBuilder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new DocumentType(modelType);
 
@@ -214,11 +212,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomInlineAutoData(typeof(bool))]
         public void CanNotGetPrivateProperty(Type propertyType, string propertyName, DocumentTypeModelTypeBuilder builder)
         {
-            var typeBuilder = builder.GetTypeBuilder();
+            builder.AddProperty(Scope.Private, Accessor.GetSet, propertyName, propertyType);
 
-            typeBuilder.AddPrivateProperty(propertyName, propertyType);
-
-            var modelType = typeBuilder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new DocumentType(modelType);
 
@@ -236,11 +232,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomInlineAutoData(typeof(bool))]
         public void CanNotGetPublicReadOnlyProperty(Type propertyType, string propertyName, DocumentTypeModelTypeBuilder builder)
         {
-            var typeBuilder = builder.GetTypeBuilder();
+            builder.AddProperty(Scope.Public, Accessor.Get, propertyName, propertyType);
 
-            typeBuilder.AddPublicReadOnlyProperty(propertyName, propertyType);
-
-            var modelType = typeBuilder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new DocumentType(modelType);
 
@@ -258,11 +252,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomInlineAutoData(typeof(bool))]
         public void CanNotGetPublicWriteOnlyProperty(Type propertyType, string propertyName, DocumentTypeModelTypeBuilder builder)
         {
-            var typeBuilder = builder.GetTypeBuilder();
+            builder.AddProperty(Scope.Public, Accessor.Set, propertyName, propertyType);
 
-            typeBuilder.AddPublicWriteOnlyProperty(propertyName, propertyType);
-
-            var modelType = typeBuilder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new DocumentType(modelType);
 

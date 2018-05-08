@@ -27,12 +27,12 @@ namespace Logikfabrik.Umbraco.Jet.Test.Utilities
 
         public string Editor { get; }
 
-        protected override object[] GetAttributeConstructorArguments()
+        protected override object[] GetModelAttributeConstructorArguments()
         {
-            return base.GetAttributeConstructorArguments().Concat(new object[] { Type, Editor }).ToArray();
+            return base.GetModelAttributeConstructorArguments().Concat(new object[] { Type, Editor }).ToArray();
         }
 
-        protected override string[] GetAttributePropertyNames()
+        protected override string[] GetModelAttributePropertyNames()
         {
             return new string[] { };
         }

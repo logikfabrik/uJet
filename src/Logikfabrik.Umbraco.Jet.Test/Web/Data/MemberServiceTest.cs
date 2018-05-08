@@ -21,9 +21,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
         [CustomAutoData]
         public void CanGetContentIdByConvention(int id, MemberTypeModelTypeBuilder builder)
         {
-            var typeBuilder = builder.GetTypeBuilder();
-
-            typeBuilder.AddPublicProperty("Id", id.GetType());
+            builder.AddProperty(Scope.Public, Accessor.GetSet, "Id", id.GetType());
 
             var mocker = new AutoMocker();
 
@@ -37,7 +35,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var service = mocker.CreateInstance<MemberService>();
 
-            var content = service.GetContent(id, typeBuilder.CreateType());
+            var content = service.GetContent(id, builder.Create(Scope.Public));
 
             content.GetPropertyValue("Id").ShouldBe(id);
         }
@@ -46,9 +44,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
         [CustomAutoData]
         public void CanGetContentUrlByConvention(int id, string url, MemberTypeModelTypeBuilder builder)
         {
-            var typeBuilder = builder.GetTypeBuilder();
-
-            typeBuilder.AddPublicProperty("Url", url.GetType());
+            builder.AddProperty(Scope.Public, Accessor.GetSet, "Url", url.GetType());
 
             var mocker = new AutoMocker();
 
@@ -62,7 +58,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var service = mocker.CreateInstance<MemberService>();
 
-            var content = service.GetContent(id, typeBuilder.CreateType());
+            var content = service.GetContent(id, builder.Create(Scope.Public));
 
             content.GetPropertyValue("Url").ShouldBe(url);
         }
@@ -71,9 +67,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
         [CustomAutoData]
         public void CanGetContentNameByConvention(int id, string name, MemberTypeModelTypeBuilder builder)
         {
-            var typeBuilder = builder.GetTypeBuilder();
-
-            typeBuilder.AddPublicProperty("Name", name.GetType());
+            builder.AddProperty(Scope.Public, Accessor.GetSet, "Name", name.GetType());
 
             var mocker = new AutoMocker();
 
@@ -87,7 +81,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var service = mocker.CreateInstance<MemberService>();
 
-            var content = service.GetContent(id, typeBuilder.CreateType());
+            var content = service.GetContent(id, builder.Create(Scope.Public));
 
             content.GetPropertyValue("Name").ShouldBe(name);
         }
@@ -96,9 +90,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
         [CustomAutoData]
         public void CanGetContentCreateDateByConvention(int id, DateTime createDate, MemberTypeModelTypeBuilder builder)
         {
-            var typeBuilder = builder.GetTypeBuilder();
-
-            typeBuilder.AddPublicProperty("CreateDate", createDate.GetType());
+            builder.AddProperty(Scope.Public, Accessor.GetSet, "CreateDate", createDate.GetType());
 
             var mocker = new AutoMocker();
 
@@ -112,7 +104,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var service = mocker.CreateInstance<MemberService>();
 
-            var content = service.GetContent(id, typeBuilder.CreateType());
+            var content = service.GetContent(id, builder.Create(Scope.Public));
 
             content.GetPropertyValue("CreateDate").ShouldBe(createDate);
         }
@@ -121,9 +113,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
         [CustomAutoData]
         public void CanGetContentUpdateDateByConvention(int id, DateTime updateDate, MemberTypeModelTypeBuilder builder)
         {
-            var typeBuilder = builder.GetTypeBuilder();
-
-            typeBuilder.AddPublicProperty("UpdateDate", updateDate.GetType());
+            builder.AddProperty(Scope.Public, Accessor.GetSet, "UpdateDate", updateDate.GetType());
 
             var mocker = new AutoMocker();
 
@@ -137,7 +127,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var service = mocker.CreateInstance<MemberService>();
 
-            var content = service.GetContent(id, typeBuilder.CreateType());
+            var content = service.GetContent(id, builder.Create(Scope.Public));
 
             content.GetPropertyValue("UpdateDate").ShouldBe(updateDate);
         }
@@ -146,9 +136,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
         [CustomAutoData]
         public void CanGetContentCreatorIdByConvention(int id, int creatorId, MemberTypeModelTypeBuilder builder)
         {
-            var typeBuilder = builder.GetTypeBuilder();
-
-            typeBuilder.AddPublicProperty("CreatorId", creatorId.GetType());
+            builder.AddProperty(Scope.Public, Accessor.GetSet, "CreatorId", creatorId.GetType());
 
             var mocker = new AutoMocker();
 
@@ -162,7 +150,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var service = mocker.CreateInstance<MemberService>();
 
-            var content = service.GetContent(id, typeBuilder.CreateType());
+            var content = service.GetContent(id, builder.Create(Scope.Public));
 
             content.GetPropertyValue("CreatorId").ShouldBe(creatorId);
         }
@@ -171,9 +159,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
         [CustomAutoData]
         public void CanGetContentCreatorNameByConvention(int id, string creatorName, MemberTypeModelTypeBuilder builder)
         {
-            var typeBuilder = builder.GetTypeBuilder();
-
-            typeBuilder.AddPublicProperty("CreatorName", creatorName.GetType());
+            builder.AddProperty(Scope.Public, Accessor.GetSet, "CreatorName", creatorName.GetType());
 
             var mocker = new AutoMocker();
 
@@ -187,7 +173,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var service = mocker.CreateInstance<MemberService>();
 
-            var content = service.GetContent(id, typeBuilder.CreateType());
+            var content = service.GetContent(id, builder.Create(Scope.Public));
 
             content.GetPropertyValue("CreatorName").ShouldBe(creatorName);
         }
@@ -196,9 +182,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
         [CustomAutoData]
         public void CanGetContentWriterIdByConvention(int id, int writerId, MemberTypeModelTypeBuilder builder)
         {
-            var typeBuilder = builder.GetTypeBuilder();
-
-            typeBuilder.AddPublicProperty("WriterId", writerId.GetType());
+            builder.AddProperty(Scope.Public, Accessor.GetSet, "WriterId", writerId.GetType());
 
             var mocker = new AutoMocker();
 
@@ -212,7 +196,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var service = mocker.CreateInstance<MemberService>();
 
-            var content = service.GetContent(id, typeBuilder.CreateType());
+            var content = service.GetContent(id, builder.Create(Scope.Public));
 
             content.GetPropertyValue("WriterId").ShouldBe(writerId);
         }
@@ -221,9 +205,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
         [CustomAutoData]
         public void CanGetContentWriterNameByConvention(int id, string writerName, MemberTypeModelTypeBuilder builder)
         {
-            var typeBuilder = builder.GetTypeBuilder();
-
-            typeBuilder.AddPublicProperty("WriterName", writerName.GetType());
+            builder.AddProperty(Scope.Public, Accessor.GetSet, "WriterName", writerName.GetType());
 
             var mocker = new AutoMocker();
 
@@ -237,7 +219,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var service = mocker.CreateInstance<MemberService>();
 
-            var content = service.GetContent(id, typeBuilder.CreateType());
+            var content = service.GetContent(id, builder.Create(Scope.Public));
 
             content.GetPropertyValue("WriterName").ShouldBe(writerName);
         }
@@ -260,7 +242,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var service = mocker.CreateInstance<MemberService>();
 
-            var content = service.GetContent(mocker.Get<IPublishedContent>(), builder.CreateType());
+            var content = service.GetContent(mocker.Get<IPublishedContent>(), builder.Create(Scope.Public));
 
             content.ShouldNotBeNull();
         }
@@ -269,9 +251,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
         [ClassAutoData(typeof(CanGetContentForTypeWithPropertyClassData))]
         public void CanGetContentForTypeWithProperty(Type propertyType, object propertyValue, string propertyName, int id, MemberTypeModelTypeBuilder builder)
         {
-            var typeBuilder = builder.GetTypeBuilder();
-
-            typeBuilder.AddPublicProperty(propertyName, propertyType);
+            builder.AddProperty(Scope.Public, Accessor.GetSet, propertyName, propertyType);
 
             var mocker = new AutoMocker();
 
@@ -293,7 +273,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
 
             var service = mocker.CreateInstance<MemberService>();
 
-            var content = service.GetContent(id, typeBuilder.CreateType());
+            var content = service.GetContent(id, builder.Create(Scope.Public));
 
             content.GetPropertyValue(propertyName).ShouldBe(propertyValue);
         }

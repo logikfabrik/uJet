@@ -20,7 +20,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanFindById(string typeName, Guid id, Type type, string editor, IDataTypeDefinition[] definitions)
         {
-            var modelType = new DataTypeModelTypeBuilder(typeName, id, type, editor).CreateType();
+            var modelType = new DataTypeModelTypeBuilder(typeName, id, type, editor).Create(Scope.Public);
 
             var model = new Jet.DataType(modelType);
 
@@ -39,7 +39,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanFindByName(Type type, string editor, IDataTypeDefinition[] definitions)
         {
-            var modelType = new DataTypeModelTypeBuilder(definitions.First().Name, type, editor).CreateType();
+            var modelType = new DataTypeModelTypeBuilder(definitions.First().Name, type, editor).Create(Scope.Public);
 
             var model = new Jet.DataType(modelType);
 

@@ -12,7 +12,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.SpecimenBuilders
     {
         protected override DataType Create(ISpecimenContext context)
         {
-            return new DataType(context.Create<DataTypeModelTypeBuilder>().CreateType());
+            return new DataType(context.Create<DataTypeModelTypeBuilder>().Create(Scope.Public));
         }
     }
 }

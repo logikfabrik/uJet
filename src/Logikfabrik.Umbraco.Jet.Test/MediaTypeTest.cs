@@ -17,7 +17,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanGetTypeFromAttribute(MediaTypeModelTypeBuilder builder)
         {
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new MediaType(modelType);
 
@@ -28,7 +28,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanGetIdFromAttribute(string typeName, Guid id, string name)
         {
-            var modelType = new MediaTypeModelTypeBuilder(typeName, id, name).CreateType();
+            var modelType = new MediaTypeModelTypeBuilder(typeName, id, name).Create(Scope.Public);
 
             var model = new MediaType(modelType);
 
@@ -39,7 +39,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanGetNameFromAttribute(MediaTypeModelTypeBuilder builder)
         {
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new MediaType(modelType);
 
@@ -52,7 +52,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             builder.Description = description;
 
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new MediaType(modelType);
 
@@ -65,7 +65,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             builder.Icon = icon;
 
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new MediaType(modelType);
 
@@ -78,7 +78,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             builder.IsContainer = isContainer;
 
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new MediaType(modelType);
 
@@ -91,7 +91,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             builder.Alias = alias;
 
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new MediaType(modelType);
 
@@ -104,7 +104,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             builder.Thumbnail = thumbnail;
 
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new MediaType(modelType);
 
@@ -117,7 +117,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             builder.AllowedAsRoot = allowedAsRoot;
 
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new MediaType(modelType);
 
@@ -130,7 +130,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             builder.AllowedChildNodeTypes = allowedChildNodeTypes;
 
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new MediaType(modelType);
 
@@ -143,7 +143,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             builder.CompositionNodeTypes = compositionNodeTypes;
 
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new MediaType(modelType);
 
@@ -166,11 +166,11 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomInlineAutoData(typeof(bool))]
         public void CanGetPublicProperty(Type propertyType, string propertyName, MediaTypeModelTypeBuilder builder)
         {
-            var typeBuilder = builder.GetTypeBuilder();
+            var typeBuilder = builder;
 
-            typeBuilder.AddPublicProperty(propertyName, propertyType);
+            typeBuilder.AddProperty(Scope.Public, Accessor.GetSet, propertyName, propertyType);
 
-            var modelType = typeBuilder.CreateType();
+            var modelType = typeBuilder.Create(Scope.Public);
 
             var model = new MediaType(modelType);
 
@@ -188,11 +188,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomInlineAutoData(typeof(bool))]
         public void CanNotGetPrivateProperty(Type propertyType, string propertyName, MediaTypeModelTypeBuilder builder)
         {
-            var typeBuilder = builder.GetTypeBuilder();
+            builder.AddProperty(Scope.Private, Accessor.GetSet, propertyName, propertyType);
 
-            typeBuilder.AddPrivateProperty(propertyName, propertyType);
-
-            var modelType = typeBuilder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new MediaType(modelType);
 
@@ -210,11 +208,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomInlineAutoData(typeof(bool))]
         public void CanNotGetPublicReadOnlyProperty(Type propertyType, string propertyName, MediaTypeModelTypeBuilder builder)
         {
-            var typeBuilder = builder.GetTypeBuilder();
+            builder.AddProperty(Scope.Public, Accessor.Get, propertyName, propertyType);
 
-            typeBuilder.AddPublicReadOnlyProperty(propertyName, propertyType);
-
-            var modelType = typeBuilder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new MediaType(modelType);
 
@@ -232,11 +228,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomInlineAutoData(typeof(bool))]
         public void CanNotGetPublicWriteOnlyProperty(Type propertyType, string propertyName, MediaTypeModelTypeBuilder builder)
         {
-            var typeBuilder = builder.GetTypeBuilder();
+            builder.AddProperty(Scope.Public, Accessor.Set, propertyName, propertyType);
 
-            typeBuilder.AddPublicWriteOnlyProperty(propertyName, propertyType);
-
-            var modelType = typeBuilder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var model = new MediaType(modelType);
 

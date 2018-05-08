@@ -23,9 +23,9 @@ namespace Logikfabrik.Umbraco.Jet.Test.Utilities
 
         public string DefaultTemplate { get; set; }
 
-        protected override string[] GetAttributePropertyNames()
+        protected override string[] GetModelAttributePropertyNames()
         {
-            return base.GetAttributePropertyNames().Concat(new[]
+            return base.GetModelAttributePropertyNames().Concat(new[]
             {
                 GetPropertyName(() => Templates),
                 GetPropertyName(() => DefaultTemplate)

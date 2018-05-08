@@ -15,7 +15,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanCompareDocumentTypesAsEqual(DocumentTypeModelTypeBuilder builder)
         {
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var modelX = new DocumentType(modelType);
             var modelY = new DocumentType(modelType);
@@ -29,8 +29,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanNotCompareDocumentTypesAsEqual(DocumentTypeModelTypeBuilder builder)
         {
-            var modelTypeX = builder.CreateType();
-            var modelTypeY = builder.CreateType();
+            var modelTypeX = builder.Create(Scope.Public);
+            var modelTypeY = builder.Create(Scope.Public);
 
             var modelX = new DocumentType(modelTypeX);
             var modelY = new DocumentType(modelTypeY);
@@ -44,7 +44,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanCompareMediaTypesAsEqual(MediaTypeModelTypeBuilder builder)
         {
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var modelX = new MediaType(modelType);
             var modelY = new MediaType(modelType);
@@ -58,8 +58,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanNotCompareMediaTypesAsEqual(MediaTypeModelTypeBuilder builder)
         {
-            var modelTypeX = builder.CreateType();
-            var modelTypeY = builder.CreateType();
+            var modelTypeX = builder.Create(Scope.Public);
+            var modelTypeY = builder.Create(Scope.Public);
 
             var modelX = new MediaType(modelTypeX);
             var modelY = new MediaType(modelTypeY);
@@ -73,7 +73,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanCompareMemberTypesAsEqual(MemberTypeModelTypeBuilder builder)
         {
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var modelX = new MemberType(modelType);
             var modelY = new MemberType(modelType);
@@ -87,8 +87,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanNotCompareMemberTypesAsEqual(MemberTypeModelTypeBuilder builder)
         {
-            var modelTypeX = builder.CreateType();
-            var modelTypeY = builder.CreateType();
+            var modelTypeX = builder.Create(Scope.Public);
+            var modelTypeY = builder.Create(Scope.Public);
 
             var modelX = new MemberType(modelTypeX);
             var modelY = new MemberType(modelTypeY);
@@ -102,7 +102,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanCompareDataTypesAsEqual(DataTypeModelTypeBuilder builder)
         {
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var modelX = new DataType(modelType);
             var modelY = new DataType(modelType);
@@ -116,8 +116,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanNotCompareDataTypesAsEqual(DataTypeModelTypeBuilder builder)
         {
-            var modelTypeX = builder.CreateType();
-            var modelTypeY = builder.CreateType();
+            var modelTypeX = builder.Create(Scope.Public);
+            var modelTypeY = builder.Create(Scope.Public);
 
             var modelX = new DataType(modelTypeX);
             var modelY = new DataType(modelTypeY);

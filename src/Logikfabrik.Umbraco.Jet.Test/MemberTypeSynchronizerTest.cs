@@ -53,7 +53,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanCreateModelWithId(string typeName, Guid id, string name)
         {
-            var modelType = new MemberTypeModelTypeBuilder(typeName, id, name).CreateType();
+            var modelType = new MemberTypeModelTypeBuilder(typeName, id, name).Create(Scope.Public);
 
             var model = new Jet.MemberType(modelType);
 
@@ -124,7 +124,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanUpdateModelWithId(string typeName, Guid id, string name)
         {
-            var modelType = new MemberTypeModelTypeBuilder(typeName, id, name).CreateType();
+            var modelType = new MemberTypeModelTypeBuilder(typeName, id, name).Create(Scope.Public);
 
             var model = new Jet.MemberType(modelType);
 

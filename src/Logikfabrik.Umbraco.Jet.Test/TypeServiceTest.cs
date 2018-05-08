@@ -5,7 +5,6 @@
 namespace Logikfabrik.Umbraco.Jet.Test
 {
     using System.Linq;
-    using System.Reflection;
     using Moq.AutoMock;
     using Shouldly;
     using SpecimenBuilders;
@@ -18,7 +17,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanGetDocumentTypes(DocumentTypeModelTypeBuilder builder)
         {
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var mocker = new AutoMocker();
 
@@ -35,7 +34,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanNotGetAbstractDocumentTypes(DocumentTypeModelTypeBuilder builder)
         {
-            var modelType = builder.CreateType(TypeAttributes.Abstract);
+            builder.IsAbstractType = true;
+
+            var modelType = builder.Create(Scope.Public);
 
             var mocker = new AutoMocker();
 
@@ -52,11 +53,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanNotGetDocumentTypesWithoutPublicDefaultConstructor(DocumentTypeModelTypeBuilder builder)
         {
-            var typeBuilder = builder.GetTypeBuilder();
-
-            typeBuilder.DefineDefaultConstructor(MethodAttributes.Private);
-
-            var modelType = typeBuilder.CreateType();
+            var modelType = builder.Create(Scope.Private);
 
             var mocker = new AutoMocker();
 
@@ -73,7 +70,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanGetMediaTypes(MediaTypeModelTypeBuilder builder)
         {
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var mocker = new AutoMocker();
 
@@ -90,7 +87,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanNotGetAbstractMediaTypes(MediaTypeModelTypeBuilder builder)
         {
-            var modelType = builder.CreateType(TypeAttributes.Abstract);
+            builder.IsAbstractType = true;
+
+            var modelType = builder.Create(Scope.Public);
 
             var mocker = new AutoMocker();
 
@@ -107,11 +106,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanNotGetMediaTypesWithoutPublicDefaultConstructor(MediaTypeModelTypeBuilder builder)
         {
-            var typeBuilder = builder.GetTypeBuilder();
-
-            typeBuilder.DefineDefaultConstructor(MethodAttributes.Private);
-
-            var modelType = typeBuilder.CreateType();
+            var modelType = builder.Create(Scope.Private);
 
             var mocker = new AutoMocker();
 
@@ -128,7 +123,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanGetMemberTypes(MemberTypeModelTypeBuilder builder)
         {
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var mocker = new AutoMocker();
 
@@ -145,7 +140,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanNotGetAbstractMemberTypes(MemberTypeModelTypeBuilder builder)
         {
-            var modelType = builder.CreateType(TypeAttributes.Abstract);
+            builder.IsAbstractType = true;
+
+            var modelType = builder.Create(Scope.Public);
 
             var mocker = new AutoMocker();
 
@@ -162,11 +159,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanNotGetMemberTypesWithoutPublicDefaultConstructor(MemberTypeModelTypeBuilder builder)
         {
-            var typeBuilder = builder.GetTypeBuilder();
-
-            typeBuilder.DefineDefaultConstructor(MethodAttributes.Private);
-
-            var modelType = typeBuilder.CreateType();
+            var modelType = builder.Create(Scope.Private);
 
             var mocker = new AutoMocker();
 
@@ -183,7 +176,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanGetDataTypes(DataTypeModelTypeBuilder builder)
         {
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             var mocker = new AutoMocker();
 
@@ -200,7 +193,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanNotGetAbstractDataTypes(DataTypeModelTypeBuilder builder)
         {
-            var modelType = builder.CreateType(TypeAttributes.Abstract);
+            builder.IsAbstractType = true;
+
+            var modelType = builder.Create(Scope.Public);
 
             var mocker = new AutoMocker();
 
@@ -217,11 +212,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanNotGetDataTypesWithoutPublicDefaultConstructor(DataTypeModelTypeBuilder builder)
         {
-            var typeBuilder = builder.GetTypeBuilder();
-
-            typeBuilder.DefineDefaultConstructor(MethodAttributes.Private);
-
-            var modelType = typeBuilder.CreateType();
+            var modelType = builder.Create(Scope.Private);
 
             var mocker = new AutoMocker();
 

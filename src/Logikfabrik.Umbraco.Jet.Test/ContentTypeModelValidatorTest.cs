@@ -16,8 +16,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanFindConflictById(string typeNameX, string typeNameY, Guid id, string name)
         {
-            var modelX = new DocumentType(new DocumentTypeModelTypeBuilder(typeNameX, id, name).CreateType());
-            var modelY = new DocumentType(new DocumentTypeModelTypeBuilder(typeNameY, id, name).CreateType());
+            var modelX = new DocumentType(new DocumentTypeModelTypeBuilder(typeNameX, id, name).Create(Scope.Public));
+            var modelY = new DocumentType(new DocumentTypeModelTypeBuilder(typeNameY, id, name).Create(Scope.Public));
 
             var contentTypeModelValidator = new ContentTypeModelValidator<DocumentType, DocumentTypeAttribute>();
 
@@ -28,8 +28,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanFindConflictByAlias(string typeName, string name)
         {
-            var modelX = new DocumentType(new DocumentTypeModelTypeBuilder(typeName, name).CreateType());
-            var modelY = new DocumentType(new DocumentTypeModelTypeBuilder(typeName, name).CreateType());
+            var modelX = new DocumentType(new DocumentTypeModelTypeBuilder(typeName, name).Create(Scope.Public));
+            var modelY = new DocumentType(new DocumentTypeModelTypeBuilder(typeName, name).Create(Scope.Public));
 
             var contentTypeModelValidator = new ContentTypeModelValidator<DocumentType, DocumentTypeAttribute>();
 
@@ -38,16 +38,14 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
         [Theory]
         [CustomAutoData]
-        public void CanFindConflictByPropertyId(string typeName, string name, Guid propertyId, Type propertyTypeX, string propertyNameX, Type propertyTypeY, string propertyNameY)
+        public void CanFindConflictByPropertyId(DocumentTypeModelTypeBuilder builder, Guid propertyId, string propertyNameX, Type propertyTypeX, string propertyNameY, Type propertyTypeY)
         {
-            var typeBuilder = new DocumentTypeModelTypeBuilder(typeName, name).GetTypeBuilder();
-
             // ReSharper disable AssignNullToNotNullAttribute
-            typeBuilder.AddPublicProperty(propertyNameX, propertyTypeX, new[] { new CustomAttributeBuilder(typeof(IdAttribute).GetConstructor(new[] { typeof(string) }), new object[] { propertyId.ToString() }) });
-            typeBuilder.AddPublicProperty(propertyNameY, propertyTypeY, new[] { new CustomAttributeBuilder(typeof(IdAttribute).GetConstructor(new[] { typeof(string) }), new object[] { propertyId.ToString() }) });
+            builder.AddProperty(Scope.Public, Accessor.GetSet, propertyNameX, propertyTypeX, new[] { new CustomAttributeBuilder(typeof(IdAttribute).GetConstructor(new[] { typeof(string) }), new object[] { propertyId.ToString() }) });
+            builder.AddProperty(Scope.Public, Accessor.GetSet, propertyNameY, propertyTypeY, new[] { new CustomAttributeBuilder(typeof(IdAttribute).GetConstructor(new[] { typeof(string) }), new object[] { propertyId.ToString() }) });
 
             // ReSharper restore AssignNullToNotNullAttribute
-            var model = new DocumentType(typeBuilder.CreateType());
+            var model = new DocumentType(builder.Create(Scope.Public));
 
             var contentTypeModelValidator = new ContentTypeModelValidator<DocumentType, DocumentTypeAttribute>();
 
@@ -56,16 +54,14 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
         [Theory]
         [CustomAutoData]
-        public void CanFindConflictByPropertyAlias(string typeName, string name, string propertyAlias, Type propertyTypeX, string propertyNameX, Type propertyTypeY, string propertyNameY)
+        public void CanFindConflictByPropertyAlias(DocumentTypeModelTypeBuilder builder, string propertyAlias, string propertyNameX, Type propertyTypeX, string propertyNameY, Type propertyTypeY)
         {
-            var typeBuilder = new DocumentTypeModelTypeBuilder(typeName, name).GetTypeBuilder();
-
             // ReSharper disable AssignNullToNotNullAttribute
-            typeBuilder.AddPublicProperty(propertyNameX, propertyTypeX, new[] { new CustomAttributeBuilder(typeof(AliasAttribute).GetConstructor(new[] { typeof(string) }), new object[] { propertyAlias }) });
-            typeBuilder.AddPublicProperty(propertyNameY, propertyTypeY, new[] { new CustomAttributeBuilder(typeof(AliasAttribute).GetConstructor(new[] { typeof(string) }), new object[] { propertyAlias }) });
+            builder.AddProperty(Scope.Public, Accessor.GetSet, propertyNameX, propertyTypeX, new[] { new CustomAttributeBuilder(typeof(AliasAttribute).GetConstructor(new[] { typeof(string) }), new object[] { propertyAlias }) });
+            builder.AddProperty(Scope.Public, Accessor.GetSet, propertyNameY, propertyTypeY, new[] { new CustomAttributeBuilder(typeof(AliasAttribute).GetConstructor(new[] { typeof(string) }), new object[] { propertyAlias }) });
 
             // ReSharper restore AssignNullToNotNullAttribute
-            var model = new DocumentType(typeBuilder.CreateType());
+            var model = new DocumentType(builder.Create(Scope.Public));
 
             var contentTypeModelValidator = new ContentTypeModelValidator<DocumentType, DocumentTypeAttribute>();
 

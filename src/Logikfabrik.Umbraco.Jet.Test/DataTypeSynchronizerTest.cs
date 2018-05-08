@@ -53,7 +53,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanCreateModelWithId(string typeName, Guid id, Type type, string editor)
         {
-            var modelType = new DataTypeModelTypeBuilder(typeName, id, type, editor).CreateType();
+            var modelType = new DataTypeModelTypeBuilder(typeName, id, type, editor).Create(Scope.Public);
 
             var model = new Jet.DataType(modelType);
 
@@ -122,7 +122,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanUpdateModelWithId(string typeName, Guid id, Type type, string editor, IDataTypeDefinition dataTypeDefinition)
         {
-            var modelType = new DataTypeModelTypeBuilder(typeName, id, type, editor).CreateType();
+            var modelType = new DataTypeModelTypeBuilder(typeName, id, type, editor).Create(Scope.Public);
 
             var model = new Jet.DataType(modelType);
 

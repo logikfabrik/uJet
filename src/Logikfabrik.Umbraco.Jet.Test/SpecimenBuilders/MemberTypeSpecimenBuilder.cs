@@ -12,7 +12,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.SpecimenBuilders
     {
         protected override MemberType Create(ISpecimenContext context)
         {
-            return new MemberType(context.Create<MemberTypeModelTypeBuilder>().CreateType());
+            return new MemberType(context.Create<MemberTypeModelTypeBuilder>().Create(Scope.Public));
         }
     }
 }

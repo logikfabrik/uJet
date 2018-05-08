@@ -16,7 +16,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Extensions
         [CustomAutoData]
         public void IsDocumentType(DocumentTypeModelTypeBuilder builder)
         {
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             modelType.IsModelType<DocumentTypeAttribute>().ShouldBeTrue();
         }
@@ -31,7 +31,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Extensions
         [CustomAutoData]
         public void IsMediaType(MediaTypeModelTypeBuilder builder)
         {
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             modelType.IsModelType<MediaTypeAttribute>().ShouldBeTrue();
         }
@@ -46,7 +46,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Extensions
         [CustomAutoData]
         public void IsMemberType(MemberTypeModelTypeBuilder builder)
         {
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             modelType.IsModelType<MemberTypeAttribute>().ShouldBeTrue();
         }
@@ -61,7 +61,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Extensions
         [CustomAutoData]
         public void IsDataType(DataTypeModelTypeBuilder builder)
         {
-            var modelType = builder.CreateType();
+            var modelType = builder.Create(Scope.Public);
 
             modelType.IsModelType<DataTypeAttribute>().ShouldBeTrue();
         }

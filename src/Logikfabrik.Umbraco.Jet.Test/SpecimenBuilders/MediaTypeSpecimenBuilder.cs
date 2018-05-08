@@ -12,7 +12,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.SpecimenBuilders
     {
         protected override MediaType Create(ISpecimenContext context)
         {
-            return new MediaType(context.Create<MediaTypeModelTypeBuilder>().CreateType());
+            return new MediaType(context.Create<MediaTypeModelTypeBuilder>().Create(Scope.Public));
         }
     }
 }

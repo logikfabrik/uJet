@@ -1,14 +1,13 @@
 ## Unreleased
 
 ## 4.2.0.0
-
 * 2017-08-08 Fixed an issue with redundant NuGet dependencies.
 * 2017-08-07 Fixed an issue with data type pre-values getting cleared on synchronization.
 * 2017-06-09 Compiled using Umbraco 7.6.0 binaries.
 * 2017-06-09 Added support for `ContentPicker2`, `MediaPicker2`, `MemberPicker2`, and `RelatedLinks2`.
 * 2016-12-29 Added logging to `PropertyTypeFinder`.
 * 2016-12-29 Replaced extension methods for logging with service implementation, `LogService`.
-* 2015-12-28 Compiled using Umbraco 7.5.6 binaries.
+* 2016-12-28 Compiled using Umbraco 7.5.6 binaries.
 
 ## 4.1.0.0
 * 2016-10-17 Added attribute `AliasAttribute`.

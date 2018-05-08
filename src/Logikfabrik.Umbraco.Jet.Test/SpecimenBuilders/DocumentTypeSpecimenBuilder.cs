@@ -12,7 +12,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.SpecimenBuilders
     {
         protected override DocumentType Create(ISpecimenContext context)
         {
-            return new DocumentType(context.Create<DocumentTypeModelTypeBuilder>().CreateType());
+            return new DocumentType(context.Create<DocumentTypeModelTypeBuilder>().Create(Scope.Public));
         }
     }
 }
