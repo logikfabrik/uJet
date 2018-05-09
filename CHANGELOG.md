@@ -1,4 +1,10 @@
-## Unreleased
+## 5.0.0.0 UNRELEASED
+* Compiled using Umbraco 7.10.2 binaries.
+* Added explicit dependency in the NuGet specification for `System.ValueTuple` (inherited from `UmbracoCms.Core`).
+* Rewrote guards using added dependency `Ensure.That`. Restricted to dated version due to NuGet target (.NET Framework 4.5).
+* Added support for user-defined UI hints.
+* Added `UIHints` with Umbraco default data type definitions by name, for consistency.
+* Removed singleton implementations where possible to improve testability.
 
 ## 4.2.0.0
 * 2017-08-08 Fixed an issue with redundant NuGet dependencies.
