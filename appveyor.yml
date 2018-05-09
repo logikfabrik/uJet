@@ -8,7 +8,7 @@ skip_commits:
     - CHANGELOG.MD
     - LICENSE
     - README.MD
-os: Visual Studio 2015
+os: Visual Studio 2017
 platform: Any CPU
 configuration: Release
 assembly_info:
