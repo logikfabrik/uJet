@@ -253,32 +253,52 @@
   <ItemGroup>
     <Compile Include="ApplicationHandler.cs" />
     <Compile Include="ComposableContentTypeAttribute.cs" />
-    <Compile Include="ComposableContentTypeSynchronizer{TModel,TModelAttribute,TContentType}.cs" />
-    <Compile Include="ComposableContentTypeModel{T}.cs" />
+    <Compile Include="ComposableContentTypeSynchronizer{TModel,TModelAttribute,TContentType}.cs">
+      <SonarQubeExclude>true</SonarQubeExclude>
+    </Compile>
+    <Compile Include="ComposableContentTypeModel{T}.cs">
+      <SonarQubeExclude>true</SonarQubeExclude>
+    </Compile>
     <Compile Include="Configuration\JetAssemblyElement.cs" />
     <Compile Include="Configuration\JetAssemblyElementCollection.cs" />
     <Compile Include="Configuration\JetConfigurationManager.cs" />
     <Compile Include="Configuration\JetSection.cs" />
     <Compile Include="Configuration\SynchronizationMode.cs" />
-    <Compile Include="EntityTypeComparer{TEntityType}.cs" />
+    <Compile Include="EntityTypeComparer{TEntityType}.cs">
+      <SonarQubeExclude>true</SonarQubeExclude>
+    </Compile>
     <Compile Include="ContentTypeModelAttribute.cs" />
-    <Compile Include="ContentTypeModelFinder{TModel,TModelAttribute,TContentType}.cs" />
-    <Compile Include="ContentTypeSynchronizer{TModel,TModelAttribute,TContentType}.cs" />
-    <Compile Include="ContentTypeModelValidator{TModel,TModelAttribute}.cs" />
-    <Compile Include="ContentTypeModel{T}.cs" />
+    <Compile Include="ContentTypeModelFinder{TModel,TModelAttribute,TContentType}.cs">
+      <SonarQubeExclude>true</SonarQubeExclude>
+    </Compile>
+    <Compile Include="ContentTypeSynchronizer{TModel,TModelAttribute,TContentType}.cs">
+      <SonarQubeExclude>true</SonarQubeExclude>
+    </Compile>
+    <Compile Include="ContentTypeModelValidator{TModel,TModelAttribute}.cs">
+      <SonarQubeExclude>true</SonarQubeExclude>
+    </Compile>
+    <Compile Include="ContentTypeModel{T}.cs">
+      <SonarQubeExclude>true</SonarQubeExclude>
+    </Compile>
     <Compile Include="DataTypeDefinitionFinder.cs" />
     <Compile Include="DataTypeValidator.cs" />
     <Compile Include="Data\ITypeRepository.cs" />
     <Compile Include="Data\TypeRepository.cs" />
     <Compile Include="IAssemblyLoader.cs" />
-    <Compile Include="IContentTypeModelFinder{TModel,TModelAttribute,TContentType}.cs" />
+    <Compile Include="IContentTypeModelFinder{TModel,TModelAttribute,TContentType}.cs">
+      <SonarQubeExclude>true</SonarQubeExclude>
+    </Compile>
     <Compile Include="IDataType.cs" />
     <Compile Include="AliasAttribute.cs" />
     <Compile Include="IDataTypeDefinitionFinder.cs" />
-    <Compile Include="ITypeModelFinder{TModel,TModelAttribute}.cs" />
+    <Compile Include="ITypeModelFinder{TModel,TModelAttribute}.cs">
+      <SonarQubeExclude>true</SonarQubeExclude>
+    </Compile>
     <Compile Include="Logging\ILogService.cs" />
     <Compile Include="ITypeResolver.cs" />
-    <Compile Include="ContentTypeFinder{TModel,TModelAttribute,TContentType}.cs" />
+    <Compile Include="ContentTypeFinder{TModel,TModelAttribute,TContentType}.cs">
+      <SonarQubeExclude>true</SonarQubeExclude>
+    </Compile>
     <Compile Include="Logging\LogEntry.cs" />
     <Compile Include="Logging\LogEntryType.cs" />
     <Compile Include="Logging\LogService.cs" />
@@ -289,10 +309,18 @@
     <Compile Include="Mappings\IDataTypeDefinitionService.cs" />
     <Compile Include="PropertyTypeFinder.cs" />
     <Compile Include="AssemblyLoader.cs" />
-    <Compile Include="TypeModelComparer{TModel,TModelAttribute}.cs" />
-    <Compile Include="TypeModelFinder{TModel,TModelAttribute}.cs" />
-    <Compile Include="TypeModelValidator{TModel,TModelAttribute}.cs" />
-    <Compile Include="TypeModel{T}.cs" />
+    <Compile Include="TypeModelComparer{TModel,TModelAttribute}.cs">
+      <SonarQubeExclude>true</SonarQubeExclude>
+    </Compile>
+    <Compile Include="TypeModelFinder{TModel,TModelAttribute}.cs">
+      <SonarQubeExclude>true</SonarQubeExclude>
+    </Compile>
+    <Compile Include="TypeModelValidator{TModel,TModelAttribute}.cs">
+      <SonarQubeExclude>true</SonarQubeExclude>
+    </Compile>
+    <Compile Include="TypeModel{T}.cs">
+      <SonarQubeExclude>true</SonarQubeExclude>
+    </Compile>
     <Compile Include="TypeModelAttribute.cs" />
     <Compile Include="PropertyType.cs" />
     <Compile Include="DataType.cs" />
@@ -313,7 +341,9 @@
     <Compile Include="MemberTypeSynchronizer.cs" />
     <Compile Include="TypeResolver.cs" />
     <Compile Include="Web\Data\ContentMapper.cs" />
-    <Compile Include="Web\Data\ContentService{TModelAttribute}.cs" />
+    <Compile Include="Web\Data\ContentService{TModelAttribute}.cs">
+      <SonarQubeExclude>true</SonarQubeExclude>
+    </Compile>
     <Compile Include="Web\Data\Converters\FloatingBinaryPointPropertyValueConverter.cs" />
     <Compile Include="Web\Data\Converters\FloatingDecimalPointPropertyValueConverter.cs" />
     <Compile Include="Web\Data\Converters\HtmlStringPropertyValueConverter.cs" />
