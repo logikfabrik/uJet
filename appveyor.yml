@@ -33,3 +33,6 @@ build:
   verbosity: minimal
 nuget:
   disable_publish_on_pr: true
+test:
+  assemblies:
+    - '**\*.Test.dll'
