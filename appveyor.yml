@@ -26,13 +26,6 @@ build_script:
   - choco install "opencover.portable" -y
   - OpenCover.Console.exe "-register:user" "-target:powershell.exe" "-targetargs:-File C:\projects\ujet\xunit.ps1"
   - SonarQube.Scanner.MSBuild.exe end /d:sonar.login="%sonar_login%"
-build:
-  project: src/Logikfabrik.Umbraco.Jet.sln
-  publish_nuget: true
-  publish_nuget_symbols: true
-  verbosity: minimal
-nuget:
-  disable_publish_on_pr: true
 test:
   assemblies:
     - '**\*.Test.dll'
