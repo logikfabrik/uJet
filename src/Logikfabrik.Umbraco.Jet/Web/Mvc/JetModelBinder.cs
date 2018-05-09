@@ -41,7 +41,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// <param name="typeService">The type service.</param>
         public JetModelBinder(ITypeService typeService)
         {
-            EnsureArg.IsNotNull(typeService);
+            Ensure.That(typeService).IsNotNull();
 
             _typeService = typeService;
         }

@@ -22,7 +22,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <inheritdoc />
         public override void Validate(TModel[] models)
         {
-            EnsureArg.IsNotNull(models);
+            Ensure.That(models).IsNotNull();
 
             ValidateById(models);
             ValidateByAlias(models);

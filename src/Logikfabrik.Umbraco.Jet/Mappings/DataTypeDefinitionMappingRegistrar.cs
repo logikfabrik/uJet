@@ -31,8 +31,8 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// <param name="dataTypeDefinitionMapping">The data type definition mapping.</param>
         public static void Register(Type type, IDataTypeDefinitionMapping dataTypeDefinitionMapping)
         {
-            EnsureArg.IsNotNull(type);
-            EnsureArg.IsNotNull(dataTypeDefinitionMapping);
+            Ensure.That(type).IsNotNull();
+            Ensure.That(dataTypeDefinitionMapping).IsNotNull();
 
             if (DataTypeDefinitionMappings.Mappings.ContainsKey(type))
             {

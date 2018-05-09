@@ -99,7 +99,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// </returns>
         protected bool IsValidProperty(PropertyInfo property)
         {
-            EnsureArg.IsNotNull(property);
+            Ensure.That(property).IsNotNull();
 
             if (!property.CanRead || !property.CanWrite)
             {

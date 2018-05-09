@@ -34,10 +34,10 @@ namespace Logikfabrik.Umbraco.Jet
             IContentTypeModelFinder<MediaType, MediaTypeAttribute, IMediaType> mediaTypeModelFinder,
             IContentTypeModelFinder<MemberType, MemberTypeAttribute, IMemberType> memberTypeModelFinder)
         {
-            EnsureArg.IsNotNull(typeResolver);
-            EnsureArg.IsNotNull(documentTypeModelFinder);
-            EnsureArg.IsNotNull(mediaTypeModelFinder);
-            EnsureArg.IsNotNull(memberTypeModelFinder);
+            Ensure.That(typeResolver).IsNotNull();
+            Ensure.That(documentTypeModelFinder).IsNotNull();
+            Ensure.That(mediaTypeModelFinder).IsNotNull();
+            Ensure.That(memberTypeModelFinder).IsNotNull();
 
             _typeResolver = typeResolver;
             _documentTypeModelFinder = documentTypeModelFinder;
@@ -51,7 +51,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="content">The content to set default values for.</param>
         public void SetDefaultValues(IEnumerable<IContent> content)
         {
-            EnsureArg.IsNotNull(content);
+            Ensure.That(content).IsNotNull();
 
             foreach (var c in content)
             {
@@ -65,7 +65,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="content">The content to set default values for.</param>
         public void SetDefaultValues(IContent content)
         {
-            EnsureArg.IsNotNull(content);
+            Ensure.That(content).IsNotNull();
 
             var model = _documentTypeModelFinder.Find(content.ContentType, _typeResolver.DocumentTypes.ToArray()).SingleOrDefault();
 
@@ -83,7 +83,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="content">The content to set default values for.</param>
         public void SetDefaultValues(IEnumerable<IMedia> content)
         {
-            EnsureArg.IsNotNull(content);
+            Ensure.That(content).IsNotNull();
 
             foreach (var c in content)
             {
@@ -97,7 +97,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="content">The content to set default values for.</param>
         public void SetDefaultValues(IMedia content)
         {
-            EnsureArg.IsNotNull(content);
+            Ensure.That(content).IsNotNull();
 
             var model = _mediaTypeModelFinder.Find(content.ContentType, _typeResolver.MediaTypes.ToArray()).SingleOrDefault();
 
@@ -115,7 +115,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="content">The content to set default values for.</param>
         public void SetDefaultValues(IEnumerable<IMember> content)
         {
-            EnsureArg.IsNotNull(content);
+            Ensure.That(content).IsNotNull();
 
             foreach (var c in content)
             {
@@ -129,7 +129,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="content">The content to set default values for.</param>
         public void SetDefaultValues(IMember content)
         {
-            EnsureArg.IsNotNull(content);
+            Ensure.That(content).IsNotNull();
 
             var model = _memberTypeModelFinder.Find(content.ContentType, _typeResolver.MemberTypes.ToArray()).SingleOrDefault();
 

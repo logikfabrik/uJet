@@ -26,8 +26,8 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="typeRepository">The type repository.</param>
         public PropertyTypeFinder(ILogService logService, ITypeRepository typeRepository)
         {
-            EnsureArg.IsNotNull(logService);
-            EnsureArg.IsNotNull(typeRepository);
+            Ensure.That(logService).IsNotNull();
+            Ensure.That(typeRepository).IsNotNull();
 
             _logService = logService;
             _typeRepository = typeRepository;
@@ -42,8 +42,8 @@ namespace Logikfabrik.Umbraco.Jet
         /// <returns>The found property types.</returns>
         public global::Umbraco.Core.Models.PropertyType[] Find(PropertyType modelNeedle, global::Umbraco.Core.Models.PropertyType[] propertyTypesHaystack)
         {
-            EnsureArg.IsNotNull(modelNeedle);
-            EnsureArg.IsNotNull(propertyTypesHaystack);
+            Ensure.That(modelNeedle).IsNotNull();
+            Ensure.That(propertyTypesHaystack).IsNotNull();
 
             _logService.Log<PropertyTypeFinder>(new LogEntry(LogEntryType.Debug, $"Find property types matching {modelNeedle.Name} ({modelNeedle.Alias})."));
 

@@ -18,7 +18,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <inheritdoc />
         public override void Validate(DataType[] models)
         {
-            EnsureArg.IsNotNull(models);
+            Ensure.That(models).IsNotNull();
 
             ValidateById(models);
             ValidateByName(models);

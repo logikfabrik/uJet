@@ -24,7 +24,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="property">The property.</param>
         public PropertyType(PropertyInfo property)
         {
-            EnsureArg.IsNotNull(property);
+            Ensure.That(property).IsNotNull();
 
             Type = property.PropertyType;
             Id = property.GetCustomAttribute<IdAttribute>()?.Id;

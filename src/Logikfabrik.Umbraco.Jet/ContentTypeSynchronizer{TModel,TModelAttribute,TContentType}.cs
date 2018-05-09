@@ -22,7 +22,7 @@ namespace Logikfabrik.Umbraco.Jet
     public abstract class ContentTypeSynchronizer<TModel, TModelAttribute, TContentType> : ISynchronizer
         where TModel : ContentTypeModel<TModelAttribute>
         where TModelAttribute : ContentTypeModelAttribute
-        where TContentType : IContentTypeBase
+        where TContentType : class, IContentTypeBase
     {
         private readonly ITypeRepository _typeRepository;
         private readonly IDataTypeDefinitionService _dataTypeDefinitionService;
@@ -37,9 +37,9 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="dataTypeDefinitionService">The data type definition service.</param>
         protected ContentTypeSynchronizer(ILogService logService, ITypeRepository typeRepository, IDataTypeDefinitionService dataTypeDefinitionService)
         {
-            EnsureArg.IsNotNull(logService);
-            EnsureArg.IsNotNull(typeRepository);
-            EnsureArg.IsNotNull(dataTypeDefinitionService);
+            Ensure.That(logService).IsNotNull();
+            Ensure.That(typeRepository).IsNotNull();
+            Ensure.That(dataTypeDefinitionService).IsNotNull();
 
             _typeRepository = typeRepository;
             _dataTypeDefinitionService = dataTypeDefinitionService;

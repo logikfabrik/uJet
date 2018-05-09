@@ -28,7 +28,8 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         public T GetContent<T>(int id)
             where T : class, new()
         {
-            EnsureArg.IsTrue(typeof(T).IsModelType<TModelAttribute>(), nameof(T));
+            // TODO: Add unit test.
+            Ensure.That(() => typeof(T).IsModelType<TModelAttribute>(), nameof(T)).IsTrue();
 
             return GetMappedContent<T>(GetContent(id));
         }
@@ -42,8 +43,9 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         public T GetContent<T>(IPublishedContent content)
             where T : class, new()
         {
-            EnsureArg.IsTrue(typeof(T).IsModelType<TModelAttribute>(), nameof(T));
-            EnsureArg.IsNotNull(content);
+            // TODO: Add unit test.
+            Ensure.That(() => typeof(T).IsModelType<TModelAttribute>(), nameof(T)).IsTrue();
+            Ensure.That(content).IsNotNull();
 
             return GetMappedContent<T>(content);
         }
@@ -56,8 +58,8 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// <returns>A model for the content with the specified identifier.</returns>
         public object GetContent(int id, Type contentModelType)
         {
-            EnsureArg.IsNotNull(contentModelType);
-            EnsureArg.IsTrue(contentModelType.IsModelType<TModelAttribute>(), nameof(contentModelType));
+            Ensure.That(contentModelType).IsNotNull();
+            Ensure.That(() => contentModelType.IsModelType<TModelAttribute>(), nameof(contentModelType)).IsTrue();
 
             return GetMappedContent(GetContent(id), contentModelType);
         }
@@ -70,9 +72,9 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// <returns>A model for the specified content.</returns>
         public object GetContent(IPublishedContent content, Type contentModelType)
         {
-            EnsureArg.IsNotNull(content);
-            EnsureArg.IsNotNull(contentModelType);
-            EnsureArg.IsTrue(contentModelType.IsModelType<TModelAttribute>(), nameof(contentModelType));
+            Ensure.That(content).IsNotNull();
+            Ensure.That(contentModelType).IsNotNull();
+            Ensure.That(() => contentModelType.IsModelType<TModelAttribute>(), nameof(contentModelType)).IsTrue();
 
             return GetMappedContent(content, contentModelType);
         }

@@ -39,7 +39,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <inheritdoc />
         public string GetContent(string templatePath)
         {
-            EnsureArg.IsNotNullOrWhiteSpace(templatePath);
+            Ensure.That(templatePath).IsNotNullOrWhiteSpace();
 
             using (var reader = new StreamReader(templatePath))
             {
@@ -50,7 +50,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <inheritdoc />
         public ITemplate GetTemplate(string templatePath)
         {
-            EnsureArg.IsNotNullOrWhiteSpace(templatePath);
+            Ensure.That(templatePath).IsNotNullOrWhiteSpace();
 
             var name = Path.GetFileNameWithoutExtension(templatePath);
 

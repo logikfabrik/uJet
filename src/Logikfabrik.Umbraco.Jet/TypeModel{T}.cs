@@ -22,8 +22,8 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="modelType">The model type.</param>
         protected TypeModel(Type modelType)
         {
-            EnsureArg.IsNotNull(modelType);
-            EnsureArg.IsTrue(modelType.IsModelType<T>(), nameof(modelType));
+            Ensure.That(modelType).IsNotNull();
+            Ensure.That(() => modelType.IsModelType<T>(), nameof(modelType)).IsTrue();
 
             ModelType = modelType;
             Attribute = modelType.GetCustomAttribute<T>(false);

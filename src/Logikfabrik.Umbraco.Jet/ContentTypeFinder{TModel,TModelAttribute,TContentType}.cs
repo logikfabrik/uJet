@@ -20,7 +20,7 @@ namespace Logikfabrik.Umbraco.Jet
     public class ContentTypeFinder<TModel, TModelAttribute, TContentType>
         where TModel : ContentTypeModel<TModelAttribute>
         where TModelAttribute : ContentTypeModelAttribute
-        where TContentType : IContentTypeBase
+        where TContentType : class, IContentTypeBase
     {
         private readonly ILogService _logService;
         private readonly ITypeRepository _typeRepository;
@@ -33,8 +33,8 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="typeRepository">The type repository.</param>
         public ContentTypeFinder(ILogService logService, ITypeRepository typeRepository)
         {
-            EnsureArg.IsNotNull(logService);
-            EnsureArg.IsNotNull(typeRepository);
+            Ensure.That(logService).IsNotNull();
+            Ensure.That(typeRepository).IsNotNull();
 
             _logService = logService;
             _typeRepository = typeRepository;
@@ -50,9 +50,9 @@ namespace Logikfabrik.Umbraco.Jet
         /// <returns>The content types found.</returns>
         public TContentType[] Find(Type[] modelTypeNeedles, TModel[] modelsHaystack, TContentType[] contentTypesHaystack)
         {
-            EnsureArg.IsNotNull(modelTypeNeedles);
-            EnsureArg.IsNotNull(modelsHaystack);
-            EnsureArg.IsNotNull(contentTypesHaystack);
+            Ensure.That(modelTypeNeedles).IsNotNull();
+            Ensure.That(modelsHaystack).IsNotNull();
+            Ensure.That(contentTypesHaystack).IsNotNull();
 
             return modelTypeNeedles.SelectMany(needle => Find(needle, modelsHaystack, contentTypesHaystack)).Distinct(_comparer).ToArray();
         }
@@ -66,9 +66,9 @@ namespace Logikfabrik.Umbraco.Jet
         /// <returns>The content types found.</returns>
         public TContentType[] Find(Type modelTypeNeedle, TModel[] modelsHaystack, TContentType[] contentTypesHaystack)
         {
-            EnsureArg.IsNotNull(modelTypeNeedle);
-            EnsureArg.IsNotNull(modelsHaystack);
-            EnsureArg.IsNotNull(contentTypesHaystack);
+            Ensure.That(modelTypeNeedle).IsNotNull();
+            Ensure.That(modelsHaystack).IsNotNull();
+            Ensure.That(contentTypesHaystack).IsNotNull();
 
             var modelNeedles = new ContentTypeModelFinder<TModel, TModelAttribute, TContentType>(_logService, _typeRepository).Find(modelTypeNeedle, modelsHaystack);
 
@@ -84,9 +84,9 @@ namespace Logikfabrik.Umbraco.Jet
         /// <returns>The content types found.</returns>
         public TContentType[] FindAll(Type[] modelTypeNeedles, TModel[] modelsHaystack, TContentType[] contentTypesHaystack)
         {
-            EnsureArg.IsNotNull(modelTypeNeedles);
-            EnsureArg.IsNotNull(modelsHaystack);
-            EnsureArg.IsNotNull(contentTypesHaystack);
+            Ensure.That(modelTypeNeedles).IsNotNull();
+            Ensure.That(modelsHaystack).IsNotNull();
+            Ensure.That(contentTypesHaystack).IsNotNull();
 
             return modelTypeNeedles.SelectMany(needle => FindAll(needle, modelsHaystack, contentTypesHaystack)).Distinct(_comparer).ToArray();
         }
@@ -100,9 +100,9 @@ namespace Logikfabrik.Umbraco.Jet
         /// <returns>The content types found.</returns>
         public TContentType[] FindAll(Type modelTypeNeedle, TModel[] modelsHaystack, TContentType[] contentTypesHaystack)
         {
-            EnsureArg.IsNotNull(modelTypeNeedle);
-            EnsureArg.IsNotNull(modelsHaystack);
-            EnsureArg.IsNotNull(contentTypesHaystack);
+            Ensure.That(modelTypeNeedle).IsNotNull();
+            Ensure.That(modelsHaystack).IsNotNull();
+            Ensure.That(contentTypesHaystack).IsNotNull();
 
             var modelNeedles = new ContentTypeModelFinder<TModel, TModelAttribute, TContentType>(_logService, _typeRepository).FindAll(modelTypeNeedle, modelsHaystack);
 
@@ -117,8 +117,8 @@ namespace Logikfabrik.Umbraco.Jet
         /// <returns>The content types found.</returns>
         public TContentType[] Find(TModel[] modelNeedles, TContentType[] contentTypesHaystack)
         {
-            EnsureArg.IsNotNull(modelNeedles);
-            EnsureArg.IsNotNull(contentTypesHaystack);
+            Ensure.That(modelNeedles).IsNotNull();
+            Ensure.That(contentTypesHaystack).IsNotNull();
 
             return modelNeedles.SelectMany(needle => Find(needle, contentTypesHaystack)).Distinct(_comparer).ToArray();
         }
@@ -132,8 +132,8 @@ namespace Logikfabrik.Umbraco.Jet
         /// <remarks>A content type is a match if a model needle's ID can be mapped to the ID of the content type, or if a model needle and the content type has the same alias.</remarks>
         public TContentType[] Find(TModel modelNeedle, TContentType[] contentTypesHaystack)
         {
-            EnsureArg.IsNotNull(modelNeedle);
-            EnsureArg.IsNotNull(contentTypesHaystack);
+            Ensure.That(modelNeedle).IsNotNull();
+            Ensure.That(contentTypesHaystack).IsNotNull();
 
             // ReSharper disable once InvertIf
             if (modelNeedle.Id.HasValue)

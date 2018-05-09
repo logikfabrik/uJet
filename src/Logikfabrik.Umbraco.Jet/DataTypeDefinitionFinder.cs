@@ -24,7 +24,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="typeRepository">The type repository.</param>
         public DataTypeDefinitionFinder(ITypeRepository typeRepository)
         {
-            EnsureArg.IsNotNull(typeRepository);
+            Ensure.That(typeRepository).IsNotNull();
 
             _typeRepository = typeRepository;
             _comparer = new EntityTypeComparer<IDataTypeDefinition>();
@@ -33,8 +33,8 @@ namespace Logikfabrik.Umbraco.Jet
         /// <inheritdoc />
         public IDataTypeDefinition[] Find(DataType modelNeedle, IDataTypeDefinition[] dataTypeDefinitionsHaystack)
         {
-            EnsureArg.IsNotNull(modelNeedle);
-            EnsureArg.IsNotNull(dataTypeDefinitionsHaystack);
+            Ensure.That(modelNeedle).IsNotNull();
+            Ensure.That(dataTypeDefinitionsHaystack).IsNotNull();
 
             // ReSharper disable once InvertIf
             if (modelNeedle.Id.HasValue)

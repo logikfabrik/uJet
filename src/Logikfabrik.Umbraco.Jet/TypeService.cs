@@ -33,8 +33,8 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="assemblyLoader">The assembly loader.</param>
         public TypeService(ILogService logService, IAssemblyLoader assemblyLoader)
         {
-            EnsureArg.IsNotNull(logService);
-            EnsureArg.IsNotNull(assemblyLoader);
+            Ensure.That(logService).IsNotNull();
+            Ensure.That(assemblyLoader).IsNotNull();
 
             _logService = logService;
             _types = new Lazy<Type[]>(() => GetTypes(assemblyLoader.GetAssemblies()));

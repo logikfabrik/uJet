@@ -31,7 +31,7 @@ namespace Logikfabrik.Umbraco.Jet.Logging
         /// <param name="exception">The exception.</param>
         public LogEntry(LogEntryType type, string message, Exception exception)
         {
-            EnsureArg.IsNotNullOrWhiteSpace(message);
+            Ensure.That(message).IsNotNullOrWhiteSpace();
 
             Type = type;
             Message = message;

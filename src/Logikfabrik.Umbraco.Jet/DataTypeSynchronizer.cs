@@ -37,10 +37,10 @@ namespace Logikfabrik.Umbraco.Jet
             ITypeResolver typeResolver,
             ITypeRepository typeRepository)
         {
-            EnsureArg.IsNotNull(dataTypeService);
-            EnsureArg.IsNotNull(dataTypeDefinitionFinder);
-            EnsureArg.IsNotNull(typeResolver);
-            EnsureArg.IsNotNull(typeRepository);
+            Ensure.That(dataTypeService).IsNotNull();
+            Ensure.That(dataTypeDefinitionFinder).IsNotNull();
+            Ensure.That(typeResolver).IsNotNull();
+            Ensure.That(typeRepository).IsNotNull();
 
             _dataTypeService = dataTypeService;
             _dataTypeDefinitionFinder = dataTypeDefinitionFinder;

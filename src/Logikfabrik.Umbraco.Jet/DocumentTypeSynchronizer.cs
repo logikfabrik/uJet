@@ -33,6 +33,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="typeResolver">The type resolver.</param>
         /// <param name="contentTypeService">The content type service.</param>
         /// <param name="fileService">The file service.</param>
+        /// <param name="dataTypeDefinitionService">The data type definition service.</param>
         // ReSharper disable once InheritdocConsiderUsage
         public DocumentTypeSynchronizer(
             ILogService logService,
@@ -43,9 +44,9 @@ namespace Logikfabrik.Umbraco.Jet
             IDataTypeDefinitionService dataTypeDefinitionService)
             : base(logService, typeRepository, dataTypeDefinitionService)
         {
-            EnsureArg.IsNotNull(typeResolver);
-            EnsureArg.IsNotNull(contentTypeService);
-            EnsureArg.IsNotNull(fileService);
+            Ensure.That(typeResolver).IsNotNull();
+            Ensure.That(contentTypeService).IsNotNull();
+            Ensure.That(fileService).IsNotNull();
 
             _contentTypeService = contentTypeService;
             _fileService = fileService;

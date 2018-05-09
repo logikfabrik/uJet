@@ -31,8 +31,8 @@ namespace Logikfabrik.Umbraco.Jet
             IFileService fileService,
             ITemplateService templateService)
         {
-            EnsureArg.IsNotNull(fileService);
-            EnsureArg.IsNotNull(templateService);
+            Ensure.That(fileService).IsNotNull();
+            Ensure.That(templateService).IsNotNull();
 
             _fileService = fileService;
             _templateService = templateService;

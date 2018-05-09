@@ -19,7 +19,7 @@ namespace Logikfabrik.Umbraco.Jet
         // ReSharper disable once InheritdocConsiderUsage
         protected ContentTypeModelAttribute(string name)
         {
-            EnsureArg.IsNotNullOrWhiteSpace(name);
+            Ensure.That(name).IsNotNullOrWhiteSpace();
 
             Name = name;
         }
@@ -33,7 +33,7 @@ namespace Logikfabrik.Umbraco.Jet
         protected ContentTypeModelAttribute(string id, string name)
             : base(id)
         {
-            EnsureArg.IsNotNullOrWhiteSpace(name);
+            Ensure.That(name).IsNotNullOrWhiteSpace();
 
             Name = name;
         }

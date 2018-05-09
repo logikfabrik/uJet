@@ -29,9 +29,9 @@ namespace Logikfabrik.Umbraco.Jet
         /// <inheritdoc />
         public TModel[] Find(Type modelTypeNeedle, TModel[] modelsHaystack)
         {
-            EnsureArg.IsNotNull(modelTypeNeedle);
-            EnsureArg.IsTrue(modelTypeNeedle.IsModelType<TModelAttribute>(), nameof(modelTypeNeedle));
-            EnsureArg.IsNotNull(modelsHaystack);
+            Ensure.That(modelTypeNeedle).IsNotNull();
+            Ensure.That(() => modelTypeNeedle.IsModelType<TModelAttribute>(), nameof(modelTypeNeedle)).IsTrue();
+            Ensure.That(modelsHaystack).IsNotNull();
 
             return modelsHaystack.Where(model => model.ModelType == modelTypeNeedle).Distinct(Comparer).ToArray();
         }
@@ -39,8 +39,8 @@ namespace Logikfabrik.Umbraco.Jet
         /// <inheritdoc />
         public TModel[] FindAll(Type modelTypeNeedle, TModel[] modelsHaystack)
         {
-            EnsureArg.IsNotNull(modelTypeNeedle);
-            EnsureArg.IsNotNull(modelsHaystack);
+            Ensure.That(modelTypeNeedle).IsNotNull();
+            Ensure.That(modelsHaystack).IsNotNull();
 
             return modelsHaystack.Where(model => modelTypeNeedle.IsAssignableFrom(model.ModelType)).Distinct(Comparer).ToArray();
         }

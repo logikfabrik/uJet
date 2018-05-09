@@ -17,8 +17,8 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
         /// <inheritdoc />
         public bool CanConvertValue(string uiHint, Type from, Type to)
         {
-            EnsureArg.IsNotNull(from);
-            EnsureArg.IsNotNull(to);
+            Ensure.That(from).IsNotNull();
+            Ensure.That(to).IsNotNull();
 
             return typeof(IHtmlString).IsAssignableFrom(from) && to == typeof(string);
         }

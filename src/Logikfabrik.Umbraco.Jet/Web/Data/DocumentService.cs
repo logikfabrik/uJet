@@ -32,7 +32,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         // ReSharper disable once InheritdocConsiderUsage
         public DocumentService(IUmbracoHelperWrapper umbracoHelperWrapper)
         {
-            EnsureArg.IsNotNull(umbracoHelperWrapper);
+            Ensure.That(umbracoHelperWrapper).IsNotNull();
 
             _umbracoHelperWrapper = umbracoHelperWrapper;
         }

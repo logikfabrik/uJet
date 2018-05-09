@@ -21,7 +21,7 @@ namespace Logikfabrik.Umbraco.Jet
     public class ContentTypeModelFinder<TModel, TModelAttribute, TContentType> : TypeModelFinder<TModel, TModelAttribute>, IContentTypeModelFinder<TModel, TModelAttribute, TContentType>
         where TModel : ContentTypeModel<TModelAttribute>
         where TModelAttribute : ContentTypeModelAttribute
-        where TContentType : IContentTypeBase
+        where TContentType : class, IContentTypeBase
     {
         private readonly ILogService _logService;
         private readonly ITypeRepository _typeRepository;
@@ -34,8 +34,8 @@ namespace Logikfabrik.Umbraco.Jet
         // ReSharper disable once InheritdocConsiderUsage
         public ContentTypeModelFinder(ILogService logService, ITypeRepository typeRepository)
         {
-            EnsureArg.IsNotNull(logService);
-            EnsureArg.IsNotNull(typeRepository);
+            Ensure.That(logService).IsNotNull();
+            Ensure.That(typeRepository).IsNotNull();
 
             _logService = logService;
             _typeRepository = typeRepository;
@@ -44,8 +44,8 @@ namespace Logikfabrik.Umbraco.Jet
         /// <inheritdoc />
         public TModel[] Find(TContentType contentTypeNeedle, TModel[] modelsHaystack)
         {
-            EnsureArg.IsNotNull(contentTypeNeedle);
-            EnsureArg.IsNotNull(modelsHaystack);
+            Ensure.That(contentTypeNeedle).IsNotNull();
+            Ensure.That(modelsHaystack).IsNotNull();
 
             _logService.Log<ContentTypeModelFinder<TModel, TModelAttribute, TContentType>>(new LogEntry(LogEntryType.Debug, $"Find content type models matching {contentTypeNeedle.Name} ({contentTypeNeedle.Alias})."));
 

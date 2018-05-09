@@ -25,8 +25,8 @@ namespace Logikfabrik.Umbraco.Jet
         // ReSharper disable once InheritdocConsiderUsage
         public DataTypeAttribute(Type type, string editor)
         {
-            EnsureArg.IsNotNull(type);
-            EnsureArg.IsNotNullOrWhiteSpace(editor);
+            Ensure.That(type).IsNotNull();
+            Ensure.That(editor).IsNotNullOrWhiteSpace();
 
             Type = type;
             Editor = editor;
@@ -42,8 +42,8 @@ namespace Logikfabrik.Umbraco.Jet
         public DataTypeAttribute(string id, Type type, string editor)
             : base(id)
         {
-            EnsureArg.IsNotNull(type);
-            EnsureArg.IsNotNullOrWhiteSpace(editor);
+            Ensure.That(type).IsNotNull();
+            Ensure.That(editor).IsNotNullOrWhiteSpace();
 
             Type = type;
             Editor = editor;

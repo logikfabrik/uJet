@@ -28,9 +28,9 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <param name="syntaxProvider">The syntax provider.</param>
         public DatabaseWrapper(Database database, ILogger logger, ISqlSyntaxProvider syntaxProvider)
         {
-            EnsureArg.IsNotNull(database);
-            EnsureArg.IsNotNull(logger);
-            EnsureArg.IsNotNull(syntaxProvider);
+            Ensure.That(database).IsNotNull();
+            Ensure.That(logger).IsNotNull();
+            Ensure.That(syntaxProvider).IsNotNull();
 
             _databaseSchemaHelper = new DatabaseSchemaHelper(database, logger, syntaxProvider);
             _database = database;
@@ -43,7 +43,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <inheritdoc />
         public T Get<T>(object primaryKey)
         {
-            EnsureArg.IsNotNull(primaryKey);
+            Ensure.That(primaryKey).IsNotNull();
 
             return _database.SingleOrDefault<T>(primaryKey);
         }
@@ -52,7 +52,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         public T Get<T>(Sql sql)
             where T : class
         {
-            EnsureArg.IsNotNull(sql);
+            Ensure.That(sql).IsNotNull();
 
             return _database.FirstOrDefault<T>(sql);
         }
@@ -61,8 +61,8 @@ namespace Logikfabrik.Umbraco.Jet.Data
         public void Insert<T>(T obj, object primaryKey)
             where T : class
         {
-            EnsureArg.IsNotNull(obj);
-            EnsureArg.IsNotNull(primaryKey);
+            Ensure.That(obj).IsNotNull();
+            Ensure.That(primaryKey).IsNotNull();
 
             if (!_database.Exists<T>(primaryKey))
             {
@@ -85,7 +85,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <inheritdoc />
         public bool TableExists(Type type)
         {
-            EnsureArg.IsNotNull(type);
+            Ensure.That(type).IsNotNull();
 
             var tableName = GetTableName(type);
 
@@ -107,7 +107,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <inheritdoc />
         public void CreateTable(Type type)
         {
-            EnsureArg.IsNotNull(type);
+            Ensure.That(type).IsNotNull();
 
             if (TableExists(type))
             {

@@ -20,7 +20,7 @@ namespace Logikfabrik.Umbraco.Jet
         // ReSharper disable once InheritdocConsiderUsage
         protected TypeModelAttribute(string id)
         {
-            EnsureArg.IsNotNullOrWhiteSpace(id);
+            Ensure.That(id).IsNotNullOrWhiteSpace();
 
             if (Guid.TryParse(id, out var result))
             {

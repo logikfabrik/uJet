@@ -23,8 +23,8 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// <param name="propertyValue">The property value.</param>
         public void MapProperty(object model, string propertyName, object propertyValue)
         {
-            EnsureArg.IsNotNull(model);
-            EnsureArg.IsNotNullOrWhiteSpace(propertyName);
+            Ensure.That(model).IsNotNull();
+            Ensure.That(propertyName).IsNotNullOrWhiteSpace();
 
             var property = model.GetType().GetProperty(propertyName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
 

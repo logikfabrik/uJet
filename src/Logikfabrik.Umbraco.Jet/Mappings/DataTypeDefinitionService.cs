@@ -29,7 +29,7 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         /// <param name="enablePropertyValueConverters">Whether to enable property value converters.</param>
         public DataTypeDefinitionService(IDataTypeService dataTypeService, bool enablePropertyValueConverters)
         {
-            EnsureArg.IsNotNull(dataTypeService);
+            Ensure.That(dataTypeService).IsNotNull();
 
             _dataTypeService = dataTypeService;
             _hints = GetDefaultDataTypeHints(enablePropertyValueConverters);

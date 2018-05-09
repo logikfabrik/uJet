@@ -42,11 +42,11 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
             ITypeResolver typeResolver,
             ITypeRepository typeRepository)
         {
-            EnsureArg.IsNotNull(logService);
-            EnsureArg.IsNotNull(contentTypeService);
-            EnsureArg.IsNotNull(fileService);
-            EnsureArg.IsNotNull(typeResolver);
-            EnsureArg.IsNotNull(typeRepository);
+            Ensure.That(logService).IsNotNull();
+            Ensure.That(contentTypeService).IsNotNull();
+            Ensure.That(fileService).IsNotNull();
+            Ensure.That(typeResolver).IsNotNull();
+            Ensure.That(typeRepository).IsNotNull();
 
             _contentTypeService = contentTypeService;
             _fileService = fileService;

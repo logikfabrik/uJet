@@ -26,7 +26,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="typeService">The type service.</param>
         public TypeResolver(ITypeService typeService)
         {
-            EnsureArg.IsNotNull(typeService);
+            Ensure.That(typeService).IsNotNull();
 
             _documentTypes = new Lazy<IEnumerable<DocumentType>>(() => typeService.DocumentTypes.Select(type => new DocumentType(type)).ToArray());
             _mediaTypes = new Lazy<IEnumerable<MediaType>>(() => typeService.MediaTypes.Select(type => new MediaType(type)).ToArray());

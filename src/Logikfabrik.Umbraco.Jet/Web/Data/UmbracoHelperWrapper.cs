@@ -31,7 +31,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// <param name="umbracoHelper">The Umbraco helper.</param>
         public UmbracoHelperWrapper(UmbracoHelper umbracoHelper)
         {
-            EnsureArg.IsNotNull(umbracoHelper);
+            Ensure.That(umbracoHelper).IsNotNull();
 
             _umbracoHelper = umbracoHelper;
         }

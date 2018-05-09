@@ -25,8 +25,8 @@ namespace Logikfabrik.Umbraco.Jet.Data
             IContentTypeRepository contentTypeRepository,
             IDataTypeRepository dataTypeRepository)
         {
-            EnsureArg.IsNotNull(contentTypeRepository);
-            EnsureArg.IsNotNull(dataTypeRepository);
+            Ensure.That(contentTypeRepository).IsNotNull();
+            Ensure.That(dataTypeRepository).IsNotNull();
 
             _contentTypeRepository = contentTypeRepository;
             _dataTypeRepository = dataTypeRepository;

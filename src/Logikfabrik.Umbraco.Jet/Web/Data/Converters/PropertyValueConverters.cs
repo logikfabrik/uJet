@@ -28,8 +28,8 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
         /// <returns>A converter that can convert from and to the specified types.</returns>
         internal static IPropertyValueConverter GetConverter(string uiHint, Type from, Type to)
         {
-            EnsureArg.IsNotNull(from);
-            EnsureArg.IsNotNull(to);
+            Ensure.That(from).IsNotNull();
+            Ensure.That(to).IsNotNull();
 
             return !Converters.TryGetValue(to, out var converters)
                 ? null

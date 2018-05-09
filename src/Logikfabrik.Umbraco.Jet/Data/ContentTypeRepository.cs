@@ -26,7 +26,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <param name="databaseWrapper">The database wrapper.</param>
         public ContentTypeRepository(IDatabaseWrapper databaseWrapper)
         {
-            EnsureArg.IsNotNull(databaseWrapper);
+            Ensure.That(databaseWrapper).IsNotNull();
 
             _databaseWrapper = databaseWrapper;
             _contentTypeId = new HashSet<Tuple<Guid, int>>();

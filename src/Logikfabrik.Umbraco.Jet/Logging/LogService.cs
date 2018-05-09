@@ -28,7 +28,7 @@ namespace Logikfabrik.Umbraco.Jet.Logging
         /// <inheritdoc />
         public void Log<T>(LogEntry entry)
         {
-            EnsureArg.IsNotNull(entry);
+            Ensure.That(entry).IsNotNull();
 
             var logger = _logger.Value;
 

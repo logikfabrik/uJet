@@ -26,8 +26,8 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="assemblyNames">The assembly names.</param>
         public AssemblyLoader(AppDomain appDomain, IEnumerable<string> assemblyNames)
         {
-            EnsureArg.IsNotNull(appDomain);
-            EnsureArg.IsNotNull(assemblyNames);
+            Ensure.That(appDomain).IsNotNull();
+            Ensure.That(assemblyNames).IsNotNull();
 
             _appDomain = appDomain;
             _assemblyNames = assemblyNames;

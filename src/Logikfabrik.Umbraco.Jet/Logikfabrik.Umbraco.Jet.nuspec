@@ -15,7 +15,9 @@
     <copyright>Copyright (c) 2016-2018</copyright>
     <tags>Umbraco, Jet, MVC, Code First, uJet</tags>
     <dependencies>
-      <dependency id="UmbracoCms.Core" version="[7.10.2,8.0]" />
+      <dependency id="UmbracoCms.Core" version="[7.10.2, 8.0.0)" />
+      <dependency id="Ensure.That" version="[4.0.0, 5.0.0)" />
+      <dependency id="System.ValueTuple" version="[4.4.0, 5.0.0)" />
     </dependencies>
   </metadata>
 </package>

@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Logikfabrik.Umbraco.Jet</RootNamespace>
     <AssemblyName>Logikfabrik.Umbraco.Jet</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -38,7 +38,7 @@
     <DocumentationFile>bin\Release\Logikfabrik.Umbraco.Jet.XML</DocumentationFile>
     <CodeAnalysisRuleSet>..\Logikfabrik.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
-    <LangVersion>6</LangVersion>
+    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper, Version=3.3.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
@@ -65,8 +65,8 @@
     <Reference Include="controls, Version=1.0.6673.23519, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\UmbracoCms.Core.7.10.2\lib\net45\controls.dll</HintPath>
     </Reference>
-    <Reference Include="Ensure.That, Version=7.2.1.70, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ensure.That.7.2.1\lib\net451\Ensure.That.dll</HintPath>
+    <Reference Include="EnsureThat, Version=4.0.0.26, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ensure.That.4.0.0\lib\net45\EnsureThat.dll</HintPath>
     </Reference>
     <Reference Include="Examine, Version=0.1.89.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Examine.0.1.89\lib\net45\Examine.dll</HintPath>
@@ -367,7 +367,9 @@
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="stylecop.json" />
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Logikfabrik.Umbraco.Jet.nuspec" />
     <None Include="packages.config">
       <SubType>Designer</SubType>

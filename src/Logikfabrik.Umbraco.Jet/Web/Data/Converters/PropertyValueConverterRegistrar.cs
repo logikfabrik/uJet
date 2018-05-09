@@ -22,7 +22,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
         // ReSharper disable once UnusedMember.Global
         public static void Register<T>(IPropertyValueConverter propertyValueConverter)
         {
-            EnsureArg.IsNotNull(propertyValueConverter);
+            Ensure.That(propertyValueConverter).IsNotNull();
 
             var type = typeof(T);
             var registry = PropertyValueConverters.Converters;
