@@ -57,16 +57,17 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
 
             if (!_hints.TryGetValue(defaultDataTypeDefinition, out var type))
             {
-                // Find data type definition by name.
+                // Find data type definition by name (UI hint).
                 return GetDefinition(uiHint);
             }
 
             if (type == fromType || GetNullableType(type) == fromType)
             {
+                // The UI hint and from type matches a default data type defintion. Get the matching data type definition.
                 return GetDefinition(defaultDataTypeDefinition);
             }
 
-            return null;
+            throw new InvalidOperationException($"Type conflict for property. Property type '{fromType}' does not match type '{type}' required for UI hint '{uiHint}'.");
         }
 
         private static IDictionary<DefaultDataTypeDefinition, Type> GetDefaultDataTypeHints(bool enablePropertyValueConverters)

@@ -5,7 +5,9 @@
 namespace Logikfabrik.Umbraco.Jet.Test
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
     using System.Linq;
+    using System.Reflection.Emit;
     using Shouldly;
     using SpecimenBuilders;
     using Utilities;
@@ -158,12 +160,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         }
 
         [Theory]
-        [CustomInlineAutoData(typeof(string))]
-        [CustomInlineAutoData(typeof(int))]
-        [CustomInlineAutoData(typeof(decimal))]
-        [CustomInlineAutoData(typeof(float))]
-        [CustomInlineAutoData(typeof(DateTime))]
-        [CustomInlineAutoData(typeof(bool))]
+        [ClassAutoData(typeof(ModelPropertyClassData))]
         public void CanGetPublicProperty(Type propertyType, string propertyName, MediaTypeModelTypeBuilder builder)
         {
             var typeBuilder = builder;
@@ -180,12 +177,23 @@ namespace Logikfabrik.Umbraco.Jet.Test
         }
 
         [Theory]
-        [CustomInlineAutoData(typeof(string))]
-        [CustomInlineAutoData(typeof(int))]
-        [CustomInlineAutoData(typeof(decimal))]
-        [CustomInlineAutoData(typeof(float))]
-        [CustomInlineAutoData(typeof(DateTime))]
-        [CustomInlineAutoData(typeof(bool))]
+        [ClassAutoData(typeof(ModelPropertyClassData))]
+        public void CanNotGetPublicPropertyWithScaffoldingDisabled(Type propertyType, string propertyName, MediaTypeModelTypeBuilder builder)
+        {
+            // ReSharper disable once AssignNullToNotNullAttribute
+            builder.AddProperty(Scope.Public, Accessor.GetSet, propertyName, propertyType, new[] { new CustomAttributeBuilder(typeof(ScaffoldColumnAttribute).GetConstructor(new[] { typeof(bool) }), new object[] { false }) });
+
+            var modelType = builder.Create(Scope.Public);
+
+            var model = new MediaType(modelType);
+
+            var property = model.Properties.SingleOrDefault(p => p.Name == propertyName);
+
+            property.ShouldBeNull();
+        }
+
+        [Theory]
+        [ClassAutoData(typeof(ModelPropertyClassData))]
         public void CanNotGetPrivateProperty(Type propertyType, string propertyName, MediaTypeModelTypeBuilder builder)
         {
             builder.AddProperty(Scope.Private, Accessor.GetSet, propertyName, propertyType);
@@ -200,12 +208,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         }
 
         [Theory]
-        [CustomInlineAutoData(typeof(string))]
-        [CustomInlineAutoData(typeof(int))]
-        [CustomInlineAutoData(typeof(decimal))]
-        [CustomInlineAutoData(typeof(float))]
-        [CustomInlineAutoData(typeof(DateTime))]
-        [CustomInlineAutoData(typeof(bool))]
+        [ClassAutoData(typeof(ModelPropertyClassData))]
         public void CanNotGetPublicReadOnlyProperty(Type propertyType, string propertyName, MediaTypeModelTypeBuilder builder)
         {
             builder.AddProperty(Scope.Public, Accessor.Get, propertyName, propertyType);
@@ -220,12 +223,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         }
 
         [Theory]
-        [CustomInlineAutoData(typeof(string))]
-        [CustomInlineAutoData(typeof(int))]
-        [CustomInlineAutoData(typeof(decimal))]
-        [CustomInlineAutoData(typeof(float))]
-        [CustomInlineAutoData(typeof(DateTime))]
-        [CustomInlineAutoData(typeof(bool))]
+        [ClassAutoData(typeof(ModelPropertyClassData))]
         public void CanNotGetPublicWriteOnlyProperty(Type propertyType, string propertyName, MediaTypeModelTypeBuilder builder)
         {
             builder.AddProperty(Scope.Public, Accessor.Set, propertyName, propertyType);

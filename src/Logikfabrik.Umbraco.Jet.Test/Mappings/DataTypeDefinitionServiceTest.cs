@@ -102,6 +102,41 @@ namespace Logikfabrik.Umbraco.Jet.Test.Mappings
         }
 
         [Theory]
+        [InlineData(true, UIHints.CheckboxList, typeof(string))]
+        [InlineData(true, UIHints.DropdownMultiple, typeof(string))]
+        [InlineData(true, UIHints.Tags, typeof(string))]
+        [InlineData(true, UIHints.ContentPicker, typeof(int))]
+        [InlineData(true, UIHints.ContentPicker, typeof(int?))]
+        [InlineData(true, UIHints.MediaPicker, typeof(string))]
+        [InlineData(true, UIHints.MultipleMediaPicker, typeof(string))]
+        [InlineData(true, UIHints.RelatedLinks, typeof(string))]
+        [InlineData(false, UIHints.CheckboxList, typeof(IEnumerable<string>))]
+        [InlineData(false, UIHints.DropdownMultiple, typeof(IEnumerable<string>))]
+        [InlineData(false, UIHints.Tags, typeof(IEnumerable<string>))]
+        [InlineData(false, UIHints.ContentPicker, typeof(IPublishedContent))]
+        [InlineData(false, UIHints.MediaPicker, typeof(IPublishedContent))]
+        [InlineData(false, UIHints.MultipleMediaPicker, typeof(IEnumerable<IPublishedContent>))]
+        [InlineData(false, UIHints.RelatedLinks, typeof(RelatedLinks))]
+
+        // ReSharper disable once InconsistentNaming
+        public void CanNotGetDefinitionByUIHintAndFromType(bool enablePropertyValueConverters, string uiHint, Type fromType)
+        {
+            var defaultDataTypeDefinition = Enum.Parse(typeof(DefaultDataTypeDefinition), uiHint);
+
+            var mocker = new AutoMocker();
+
+            var dataTypeDefinition = mocker.Get<IDataTypeDefinition>();
+
+            var dataTypeServiceMock = mocker.GetMock<IDataTypeService>();
+
+            dataTypeServiceMock.Setup(m => m.GetDataTypeDefinitionById((int)defaultDataTypeDefinition)).Returns(dataTypeDefinition);
+
+            var dataTypeDefinitionService = new DataTypeDefinitionService(dataTypeServiceMock.Object, enablePropertyValueConverters);
+
+            Assert.Throws<InvalidOperationException>(() => dataTypeDefinitionService.GetDefinition(uiHint, fromType));
+        }
+
+        [Theory]
         [ClassData(typeof(CanGetDefinitionByFromTypeClassData))]
         public void CanGetDefinitionByFromType(IDataTypeDefinitionMapping mapping)
         {

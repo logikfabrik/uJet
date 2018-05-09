@@ -41,7 +41,7 @@ namespace Logikfabrik.Umbraco.Jet
                 {
                     var conflictingTypes = models.Where(m => m.Alias.Equals(model.Alias, StringComparison.InvariantCultureIgnoreCase)).Select(m => m.ModelType.Name);
 
-                    throw new InvalidOperationException($"Alias conflict for types {string.Join(", ", conflictingTypes)}. Alias {model.Alias} is already in use.");
+                    throw new InvalidOperationException($"Alias conflict for types '{string.Join("', '", conflictingTypes)}'. Alias '{model.Alias}' is already in use.");
                 }
 
                 set.Add(model.Alias);
@@ -75,7 +75,7 @@ namespace Logikfabrik.Umbraco.Jet
                 {
                     var conflictingProperties = model.Properties.Where(m => m.Alias.Equals(property.Alias, StringComparison.InvariantCultureIgnoreCase)).Select(m => m.Name);
 
-                    throw new InvalidOperationException($"Alias conflict for properties {string.Join(", ", conflictingProperties)}. Alias {property.Alias} is already in use.");
+                    throw new InvalidOperationException($"Alias conflict for properties '{string.Join("', '", conflictingProperties)}'. Alias '{property.Alias}' is already in use.");
                 }
 
                 set.Add(property.Alias);
@@ -97,7 +97,7 @@ namespace Logikfabrik.Umbraco.Jet
                 {
                     var conflictingProperties = model.Properties.Where(m => m.Id.HasValue && m.Id.Value == property.Id.Value).Select(m => m.Name);
 
-                    throw new InvalidOperationException($"ID conflict for properties {string.Join(", ", conflictingProperties)}. ID {property.Id.Value} is already in use.");
+                    throw new InvalidOperationException($"ID conflict for properties '{string.Join("', '", conflictingProperties)}'. ID '{property.Id.Value}' is already in use.");
                 }
 
                 set.Add(property.Id.Value);

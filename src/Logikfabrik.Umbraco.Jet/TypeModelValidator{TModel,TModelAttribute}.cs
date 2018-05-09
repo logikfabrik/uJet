@@ -42,7 +42,7 @@ namespace Logikfabrik.Umbraco.Jet
                 {
                     var conflictingTypes = models.Where(m => m.Id.HasValue && m.Id.Value == model.Id.Value).Select(m => m.ModelType.Name);
 
-                    throw new InvalidOperationException($"ID conflict for types {string.Join(", ", conflictingTypes)}. ID {model.Id.Value} is already in use.");
+                    throw new InvalidOperationException($"ID conflict for types '{string.Join("', '", conflictingTypes)}'. ID '{model.Id.Value}' is already in use.");
                 }
 
                 set.Add(model.Id.Value);

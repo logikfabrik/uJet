@@ -35,7 +35,7 @@ namespace Logikfabrik.Umbraco.Jet
                 {
                     var conflictingTypes = models.Where(m => m.Name.Equals(model.Name, StringComparison.InvariantCultureIgnoreCase)).Select(m => m.ModelType.Name);
 
-                    throw new InvalidOperationException($"Name conflict for types {string.Join(", ", conflictingTypes)}. Name {model.Name} is already in use.");
+                    throw new InvalidOperationException($"Name conflict for types '{string.Join("', '", conflictingTypes)}. Name '{model.Name}' is already in use.");
                 }
 
                 set.Add(model.Name);

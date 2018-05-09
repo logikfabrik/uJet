@@ -303,6 +303,7 @@
     <Compile Include="MediaTypeSynchronizerTest.cs" />
     <Compile Include="MemberTypeSynchronizerTest.cs" />
     <Compile Include="MemberTypeTest.cs" />
+    <Compile Include="ModelPropertyClassData.cs" />
     <Compile Include="SpecimenBuilders\ClassAutoDataAttribute.cs" />
     <Compile Include="SpecimenBuilders\CustomAutoDataAttribute.cs" />
     <Compile Include="SpecimenBuilders\CustomInlineAutoDataAttribute.cs" />
