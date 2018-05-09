@@ -8,15 +8,15 @@ namespace Logikfabrik.Umbraco.Jet.Test.Mappings
     using Jet.Mappings;
     using Moq.AutoMock;
     using Shouldly;
-    using SpecimenBuilders;
     using Xunit;
 
     public class DataTypeDefinitionMappingsTest : IDisposable
     {
-        [Theory]
-        [CustomAutoData]
-        public void CanAddDataTypeDefinitionMapping(Type type)
+        [Fact]
+        public void CanAddDataTypeDefinitionMapping()
         {
+            var type = typeof(object);
+
             var mocker = new AutoMocker();
 
             var mappingMock = mocker.GetMock<IDataTypeDefinitionMapping>();
@@ -28,10 +28,11 @@ namespace Logikfabrik.Umbraco.Jet.Test.Mappings
             DataTypeDefinitionMappings.Mappings.TryGetValue(type, out _).ShouldBeTrue();
         }
 
-        [Theory]
-        [CustomAutoData]
-        public void CanRemoveDataTypeDefinitionMapping(Type type)
+        [Fact]
+        public void CanRemoveDataTypeDefinitionMapping()
         {
+            var type = typeof(object);
+
             var mocker = new AutoMocker();
 
             var mappingMock = mocker.GetMock<IDataTypeDefinitionMapping>();
