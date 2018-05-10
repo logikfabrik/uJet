@@ -24,14 +24,14 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// </summary>
         private const string RouteDataTokenKey = "umbraco";
 
-        private readonly ITypeService _typeService;
+        private readonly IModelTypeService _typeService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="JetModelBinder" /> class.
         /// </summary>
         // ReSharper disable once InheritdocConsiderUsage
         public JetModelBinder()
-            : this(new TypeService(new LogService(), new AssemblyLoader(AppDomain.CurrentDomain, JetConfigurationManager.Assemblies)))
+            : this(new ModelTypeService(new LogService(), new AssemblyLoader(AppDomain.CurrentDomain, JetConfigurationManager.Assemblies)))
         {
         }
 
@@ -39,7 +39,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// Initializes a new instance of the <see cref="JetModelBinder" /> class.
         /// </summary>
         /// <param name="typeService">The type service.</param>
-        public JetModelBinder(ITypeService typeService)
+        public JetModelBinder(IModelTypeService typeService)
         {
             Ensure.That(typeService).IsNotNull();
 

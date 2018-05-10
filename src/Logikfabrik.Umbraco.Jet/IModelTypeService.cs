@@ -1,4 +1,4 @@
-﻿// <copyright file="ITypeService.cs" company="Logikfabrik">
+﻿// <copyright file="IModelTypeService.cs" company="Logikfabrik">
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -8,9 +8,9 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Collections.Generic;
 
     /// <summary>
-    /// The <see cref="ITypeService" /> interface.
+    /// The <see cref="IModelTypeService" /> interface.
     /// </summary>
-    public interface ITypeService
+    public interface IModelTypeService
     {
         /// <summary>
         /// Gets the document type model types.

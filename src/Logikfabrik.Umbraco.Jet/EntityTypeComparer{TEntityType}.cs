@@ -7,7 +7,6 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Collections.Generic;
     using global::Umbraco.Core.Models.EntityBase;
 
-    /// <inheritdoc />
     public class EntityTypeComparer<TEntityType> : IEqualityComparer<TEntityType>
         where TEntityType : IEntity
     {

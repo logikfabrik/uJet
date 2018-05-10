@@ -18,7 +18,7 @@ namespace Logikfabrik.Umbraco.Jet
     /// <typeparam name="TModelTypeAttribute">The model type attribute type.</typeparam>
     /// <typeparam name="TContentType">The content type.</typeparam>
     // ReSharper disable once InheritdocConsiderUsage
-    public class ContentTypeModelFinder<TModel, TModelTypeAttribute, TContentType> : TypeModelFinder<TModel, TModelTypeAttribute>, IContentTypeModelFinder<TModel, TModelTypeAttribute, TContentType>
+    public class ContentTypeModelFinder<TModel, TModelTypeAttribute, TContentType> : ModelFinder<TModel, TModelTypeAttribute>, IContentTypeModelFinder<TModel, TModelTypeAttribute, TContentType>
         where TModel : ContentTypeModel<TModelTypeAttribute>
         where TModelTypeAttribute : ContentTypeModelTypeAttribute
         where TContentType : class, IContentTypeBase

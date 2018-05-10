@@ -25,7 +25,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var mediaTypeSynchronizer = mocker.CreateInstance<MediaTypeSynchronizer>();
 
-            var typeResolverMock = mocker.GetMock<ITypeResolver>();
+            var typeResolverMock = mocker.GetMock<IModelService>();
 
             typeResolverMock
                 .Setup(m => m.MediaTypes)
@@ -61,7 +61,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var mediaTypeSynchronizer = mocker.CreateInstance<MediaTypeSynchronizer>();
 
-            var typeResolverMock = mocker.GetMock<ITypeResolver>();
+            var typeResolverMock = mocker.GetMock<IModelService>();
 
             typeResolverMock
                 .Setup(m => m.MediaTypes)
@@ -97,7 +97,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var mediaTypeSynchronizer = mocker.CreateInstance<MediaTypeSynchronizer>();
 
-            var typeResolverMock = mocker.GetMock<ITypeResolver>();
+            var typeResolverMock = mocker.GetMock<IModelService>();
 
             typeResolverMock
                 .Setup(m => m.MediaTypes)
@@ -132,7 +132,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var mediaTypeSynchronizer = mocker.CreateInstance<MediaTypeSynchronizer>();
 
-            var typeResolverMock = mocker.GetMock<ITypeResolver>();
+            var typeResolverMock = mocker.GetMock<IModelService>();
 
             typeResolverMock
                 .Setup(m => m.MediaTypes)

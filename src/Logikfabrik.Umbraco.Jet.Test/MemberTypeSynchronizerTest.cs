@@ -25,7 +25,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var memberTypeSynchronizer = mocker.CreateInstance<MemberTypeSynchronizer>();
 
-            var typeResolverMock = mocker.GetMock<ITypeResolver>();
+            var typeResolverMock = mocker.GetMock<IModelService>();
 
             typeResolverMock
                 .Setup(m => m.MemberTypes)
@@ -61,7 +61,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var memberTypeSynchronizer = mocker.CreateInstance<MemberTypeSynchronizer>();
 
-            var typeResolverMock = mocker.GetMock<ITypeResolver>();
+            var typeResolverMock = mocker.GetMock<IModelService>();
 
             typeResolverMock
                 .Setup(m => m.MemberTypes)
@@ -97,7 +97,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var memberTypeSynchronizer = mocker.CreateInstance<MemberTypeSynchronizer>();
 
-            var typeResolverMock = mocker.GetMock<ITypeResolver>();
+            var typeResolverMock = mocker.GetMock<IModelService>();
 
             typeResolverMock
                 .Setup(m => m.MemberTypes)
@@ -132,7 +132,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var memberTypeSynchronizer = mocker.CreateInstance<MemberTypeSynchronizer>();
 
-            var typeResolverMock = mocker.GetMock<ITypeResolver>();
+            var typeResolverMock = mocker.GetMock<IModelService>();
 
             typeResolverMock
                 .Setup(m => m.MemberTypes)

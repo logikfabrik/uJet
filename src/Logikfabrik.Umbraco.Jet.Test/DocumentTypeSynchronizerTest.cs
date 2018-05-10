@@ -25,7 +25,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var documentTypeSynchronizer = mocker.CreateInstance<DocumentTypeSynchronizer>();
 
-            var typeResolverMock = mocker.GetMock<ITypeResolver>();
+            var typeResolverMock = mocker.GetMock<IModelService>();
 
             typeResolverMock
                 .Setup(m => m.DocumentTypes)
@@ -61,7 +61,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var documentTypeSynchronizer = mocker.CreateInstance<DocumentTypeSynchronizer>();
 
-            var typeResolverMock = mocker.GetMock<ITypeResolver>();
+            var typeResolverMock = mocker.GetMock<IModelService>();
 
             typeResolverMock
                 .Setup(m => m.DocumentTypes)
@@ -97,7 +97,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var documentTypeSynchronizer = mocker.CreateInstance<DocumentTypeSynchronizer>();
 
-            var typeResolverMock = mocker.GetMock<ITypeResolver>();
+            var typeResolverMock = mocker.GetMock<IModelService>();
 
             typeResolverMock
                 .Setup(m => m.DocumentTypes)
@@ -132,7 +132,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var documentTypeSynchronizer = mocker.CreateInstance<DocumentTypeSynchronizer>();
 
-            var typeResolverMock = mocker.GetMock<ITypeResolver>();
+            var typeResolverMock = mocker.GetMock<IModelService>();
 
             typeResolverMock
                 .Setup(m => m.DocumentTypes)

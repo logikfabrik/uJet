@@ -1,4 +1,4 @@
-﻿// <copyright file="ITypeModelFinder{TModel,TModelAttribute}.cs" company="Logikfabrik">
+﻿// <copyright file="IModelFinder{TModel,TModelTypeAttribute}.cs" company="Logikfabrik">
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -6,7 +6,12 @@ namespace Logikfabrik.Umbraco.Jet
 {
     using System;
 
-    public interface ITypeModelFinder<TModel, TModelAttribute>
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="TModel">The model type.</typeparam>
+    /// <typeparam name="TModelAttribute">The model type attribute type.</typeparam>
+    public interface IModelFinder<TModel, TModelAttribute>
         where TModel : Model<TModelAttribute>
         where TModelAttribute : ModelTypeAttribute
     {

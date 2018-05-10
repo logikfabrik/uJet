@@ -38,7 +38,7 @@ namespace Logikfabrik.Umbraco.Jet
         public DocumentTypeSynchronizer(
             ILogService logService,
             ITypeRepository typeRepository,
-            ITypeResolver typeResolver,
+            IModelService typeResolver,
             IContentTypeService contentTypeService,
             IFileService fileService,
             IDataTypeDefinitionService dataTypeDefinitionService)

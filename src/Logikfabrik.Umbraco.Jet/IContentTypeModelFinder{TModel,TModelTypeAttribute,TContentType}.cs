@@ -1,4 +1,4 @@
-﻿// <copyright file="IContentTypeModelFinder{TModel,TModelAttribute,TContentType}.cs" company="Logikfabrik">
+﻿// <copyright file="IContentTypeModelFinder{TModel,TModelTypeAttribute,TContentType}.cs" company="Logikfabrik">
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -6,9 +6,9 @@ namespace Logikfabrik.Umbraco.Jet
 {
     using global::Umbraco.Core.Models;
 
-    public interface IContentTypeModelFinder<TModel, TModelAttribute, in TContentType> : ITypeModelFinder<TModel, TModelAttribute>
-        where TModel : ContentTypeModel<TModelAttribute>
-        where TModelAttribute : ContentTypeModelTypeAttribute
+    public interface IContentTypeModelFinder<TModel, TModelTypeAttribute, in TContentType> : IModelFinder<TModel, TModelTypeAttribute>
+        where TModel : ContentTypeModel<TModelTypeAttribute>
+        where TModelTypeAttribute : ContentTypeModelTypeAttribute
         where TContentType : IContentTypeBase
     {
         /// <summary>

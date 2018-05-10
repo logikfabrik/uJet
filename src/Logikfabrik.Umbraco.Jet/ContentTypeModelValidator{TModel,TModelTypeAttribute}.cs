@@ -15,7 +15,7 @@ namespace Logikfabrik.Umbraco.Jet
     /// <typeparam name="TModel">The model type.</typeparam>
     /// <typeparam name="TModelTypeAttribute">The model type attribute type.</typeparam>
     // ReSharper disable once InheritdocConsiderUsage
-    public class ContentTypeModelValidator<TModel, TModelTypeAttribute> : TypeModelValidator<TModel, TModelTypeAttribute>
+    public class ContentTypeModelValidator<TModel, TModelTypeAttribute> : ModelValidator<TModel, TModelTypeAttribute>
         where TModel : ContentTypeModel<TModelTypeAttribute>
         where TModelTypeAttribute : ContentTypeModelTypeAttribute
     {

@@ -20,7 +20,7 @@ namespace Logikfabrik.Umbraco.Jet
     public abstract class ContentTypeModel<TModelTypeAttribute> : Model<TModelTypeAttribute>
         where TModelTypeAttribute : ContentTypeModelTypeAttribute
     {
-        private readonly Lazy<IEnumerable<PropertyType>> _properties;
+        private readonly Lazy<IEnumerable<PropertyTypeModel>> _properties;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentTypeModel{TModelTypeAttribute}" /> class.
@@ -30,7 +30,7 @@ namespace Logikfabrik.Umbraco.Jet
         protected ContentTypeModel(Type modelType)
             : base(modelType)
         {
-            _properties = new Lazy<IEnumerable<PropertyType>>(GetProperties);
+            _properties = new Lazy<IEnumerable<PropertyTypeModel>>(GetProperties);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The properties.
         /// </value>
-        public IEnumerable<PropertyType> Properties => _properties.Value;
+        public IEnumerable<PropertyTypeModel> Properties => _properties.Value;
 
         /// <summary>
         /// Gets the description.
@@ -85,9 +85,9 @@ namespace Logikfabrik.Umbraco.Jet
         /// Gets the properties.
         /// </summary>
         /// <returns>The properties.</returns>
-        protected virtual IEnumerable<PropertyType> GetProperties()
+        protected virtual IEnumerable<PropertyTypeModel> GetProperties()
         {
-            return ModelType.GetProperties().Where(IsValidProperty).Select(property => new PropertyType(property));
+            return ModelType.GetProperties().Where(IsValidProperty).Select(property => new PropertyTypeModel(property));
         }
 
         /// <summary>

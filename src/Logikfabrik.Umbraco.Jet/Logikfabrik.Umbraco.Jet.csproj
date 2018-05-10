@@ -285,17 +285,17 @@
     <Compile Include="Data\ITypeRepository.cs" />
     <Compile Include="Data\TypeRepository.cs" />
     <Compile Include="IAssemblyLoader.cs" />
-    <Compile Include="IContentTypeModelFinder{TModel,TModelAttribute,TContentType}.cs">
+    <Compile Include="IContentTypeModelFinder{TModel,TModelTypeAttribute,TContentType}.cs">
       <SonarQubeExclude>true</SonarQubeExclude>
     </Compile>
     <Compile Include="IDataType.cs" />
     <Compile Include="AliasAttribute.cs" />
     <Compile Include="IDataTypeDefinitionFinder.cs" />
-    <Compile Include="ITypeModelFinder{TModel,TModelAttribute}.cs">
+    <Compile Include="IModelFinder{TModel,TModelTypeAttribute}.cs">
       <SonarQubeExclude>true</SonarQubeExclude>
     </Compile>
     <Compile Include="Logging\ILogService.cs" />
-    <Compile Include="ITypeResolver.cs" />
+    <Compile Include="IModelService.cs" />
     <Compile Include="ContentTypeFinder{TModel,TModelTypeAttribute,TContentType}.cs">
       <SonarQubeExclude>true</SonarQubeExclude>
     </Compile>
@@ -309,20 +309,20 @@
     <Compile Include="Mappings\IDataTypeDefinitionService.cs" />
     <Compile Include="PropertyTypeFinder.cs" />
     <Compile Include="AssemblyLoader.cs" />
-    <Compile Include="TypeModelComparer{TModel,TModelAttribute}.cs">
+    <Compile Include="ModelComparer{TModel,TModelTypeAttribute}.cs">
       <SonarQubeExclude>true</SonarQubeExclude>
     </Compile>
-    <Compile Include="TypeModelFinder{TModel,TModelAttribute}.cs">
+    <Compile Include="ModelFinder{TModel,TModelTypeAttribute}.cs">
       <SonarQubeExclude>true</SonarQubeExclude>
     </Compile>
-    <Compile Include="TypeModelValidator{TModel,TModelAttribute}.cs">
+    <Compile Include="ModelValidator{TModel,TModelTypeAttribute}.cs">
       <SonarQubeExclude>true</SonarQubeExclude>
     </Compile>
     <Compile Include="Model{TModelTypeAttribute}.cs">
       <SonarQubeExclude>true</SonarQubeExclude>
     </Compile>
     <Compile Include="ModelTypeAttribute.cs" />
-    <Compile Include="PropertyType.cs" />
+    <Compile Include="PropertyTypeModel.cs" />
     <Compile Include="DataType.cs" />
     <Compile Include="DataTypeAttribute.cs" />
     <Compile Include="DataTypeSynchronizer.cs" />
@@ -339,7 +339,7 @@
     <Compile Include="MemberType.cs" />
     <Compile Include="MemberTypeAttribute.cs" />
     <Compile Include="MemberTypeSynchronizer.cs" />
-    <Compile Include="TypeResolver.cs" />
+    <Compile Include="ModelService.cs" />
     <Compile Include="Web\Data\ContentMapper.cs" />
     <Compile Include="Web\Data\ContentService{TModelAttribute}.cs">
       <SonarQubeExclude>true</SonarQubeExclude>
@@ -363,7 +363,7 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="ISynchronizer.cs" />
-    <Compile Include="ITypeService.cs" />
+    <Compile Include="IModelTypeService.cs" />
     <Compile Include="JetApplicationHandler.cs" />
     <Compile Include="Mappings\BooleanDataTypeDefinitionMapping.cs" />
     <Compile Include="Mappings\DefaultDataTypeDefinition.cs" />
@@ -380,7 +380,7 @@
     <Compile Include="MediaTypeAttribute.cs" />
     <Compile Include="MediaTypeSynchronizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TypeService.cs" />
+    <Compile Include="ModelTypeService.cs" />
     <Compile Include="Web\Mvc\Html\UrlHelperExtensions.cs" />
     <Compile Include="ITemplateService.cs" />
     <Compile Include="Web\Mvc\JetController.cs" />

@@ -22,7 +22,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     {
         private readonly IContentTypeService _contentTypeService;
         private readonly IFileService _fileService;
-        private readonly ITypeResolver _typeResolver;
+        private readonly IModelService _typeResolver;
         private readonly ContentTypeFinder<DocumentType, DocumentTypeAttribute, IContentType> _documentTypeFinder;
 
         private ITemplate _previewTemplate;
@@ -39,7 +39,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
             ILogService logService,
             IContentTypeService contentTypeService,
             IFileService fileService,
-            ITypeResolver typeResolver,
+            IModelService typeResolver,
             ITypeRepository typeRepository)
         {
             Ensure.That(logService).IsNotNull();

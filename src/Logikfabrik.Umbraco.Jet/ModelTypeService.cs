@@ -14,10 +14,10 @@ namespace Logikfabrik.Umbraco.Jet
     using Logging;
 
     /// <summary>
-    /// The <see cref="TypeService" /> class. Scans assemblies for types annotated using the <see cref="DocumentTypeAttribute" />, <see cref="MediaTypeAttribute" />, <see cref="MemberTypeAttribute" />, and <see cref="DataTypeAttribute" />.
+    /// The <see cref="ModelTypeService" /> class. Scans assemblies for types annotated using the <see cref="DocumentTypeAttribute" />, <see cref="MediaTypeAttribute" />, <see cref="MemberTypeAttribute" />, and <see cref="DataTypeAttribute" />.
     /// </summary>
     // ReSharper disable once InheritdocConsiderUsage
-    public class TypeService : ITypeService
+    public class ModelTypeService : IModelTypeService
     {
         private readonly ILogService _logService;
         private readonly Lazy<IEnumerable<Type>> _documentTypes;
@@ -27,11 +27,11 @@ namespace Logikfabrik.Umbraco.Jet
         private readonly Lazy<Type[]> _types;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TypeService" /> class.
+        /// Initializes a new instance of the <see cref="ModelTypeService" /> class.
         /// </summary>
         /// <param name="logService">The log service.</param>
         /// <param name="assemblyLoader">The assembly loader.</param>
-        public TypeService(ILogService logService, IAssemblyLoader assemblyLoader)
+        public ModelTypeService(ILogService logService, IAssemblyLoader assemblyLoader)
         {
             Ensure.That(logService).IsNotNull();
             Ensure.That(assemblyLoader).IsNotNull();
@@ -58,7 +58,7 @@ namespace Logikfabrik.Umbraco.Jet
 
         private IEnumerable<Type> GetTypesByAttribute(Func<Type, bool> predicate)
         {
-            _logService.Log<TypeService>(new LogEntry(LogEntryType.Debug, "Getting types by attribute."));
+            _logService.Log<ModelTypeService>(new LogEntry(LogEntryType.Debug, "Getting types by attribute."));
 
             var watch = Stopwatch.StartNew();
 
@@ -66,14 +66,14 @@ namespace Logikfabrik.Umbraco.Jet
 
             watch.Stop();
 
-            _logService.Log<TypeService>(new LogEntry(LogEntryType.Debug, $"Got {types.Length} types by attribute in {watch.ElapsedMilliseconds} ms."));
+            _logService.Log<ModelTypeService>(new LogEntry(LogEntryType.Debug, $"Got {types.Length} types by attribute in {watch.ElapsedMilliseconds} ms."));
 
             return Array.AsReadOnly(types);
         }
 
         private Type[] GetTypes(IEnumerable<Assembly> assemblies)
         {
-            _logService.Log<TypeService>(new LogEntry(LogEntryType.Debug, "Getting types from assemblies."));
+            _logService.Log<ModelTypeService>(new LogEntry(LogEntryType.Debug, "Getting types from assemblies."));
 
             var watch = Stopwatch.StartNew();
 
@@ -86,7 +86,7 @@ namespace Logikfabrik.Umbraco.Jet
 
             watch.Stop();
 
-            _logService.Log<TypeService>(new LogEntry(LogEntryType.Debug, $"Got {types.Count} types in {watch.ElapsedMilliseconds} ms from assemblies."));
+            _logService.Log<ModelTypeService>(new LogEntry(LogEntryType.Debug, $"Got {types.Count} types in {watch.ElapsedMilliseconds} ms from assemblies."));
 
             return types.ToArray();
         }
@@ -95,7 +95,7 @@ namespace Logikfabrik.Umbraco.Jet
         {
             try
             {
-                _logService.Log<TypeService>(new LogEntry(LogEntryType.Debug, $"Getting types from assembly {assembly.FullName}."));
+                _logService.Log<ModelTypeService>(new LogEntry(LogEntryType.Debug, $"Getting types from assembly '{assembly.FullName}'."));
 
                 var watch = Stopwatch.StartNew();
 
@@ -103,19 +103,19 @@ namespace Logikfabrik.Umbraco.Jet
 
                 watch.Stop();
 
-                _logService.Log<TypeService>(new LogEntry(LogEntryType.Debug, $"Got {types.Length} types from assembly {assembly.FullName} in {watch.ElapsedMilliseconds} ms."));
+                _logService.Log<ModelTypeService>(new LogEntry(LogEntryType.Debug, $"Got {types.Length} types from assembly '{assembly.FullName}' in {watch.ElapsedMilliseconds} ms."));
 
                 return types;
             }
             catch (ReflectionTypeLoadException ex)
             {
-                _logService.Log<TypeService>(new LogEntry(LogEntryType.Error, $"An exception was thrown when getting types from assembly {assembly.FullName}.", ex));
+                _logService.Log<ModelTypeService>(new LogEntry(LogEntryType.Error, $"An exception was thrown when getting types from assembly '{assembly.FullName}'.", ex));
 
                 return new Type[] { };
             }
             catch (Exception ex)
             {
-                _logService.Log<TypeService>(new LogEntry(LogEntryType.Error, $"An exception was thrown when getting types from assembly {assembly.FullName}.", ex));
+                _logService.Log<ModelTypeService>(new LogEntry(LogEntryType.Error, $"An exception was thrown when getting types from assembly '{assembly.FullName}'.", ex));
 
                 throw;
             }

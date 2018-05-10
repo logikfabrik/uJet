@@ -34,7 +34,7 @@ namespace Logikfabrik.Umbraco.Jet
         public MediaTypeSynchronizer(
             ILogService logService,
             ITypeRepository typeRepository,
-            ITypeResolver typeResolver,
+            IModelService typeResolver,
             IContentTypeService contentTypeService,
             IDataTypeDefinitionService dataTypeDefinitionService)
             : base(logService, typeRepository, dataTypeDefinitionService)

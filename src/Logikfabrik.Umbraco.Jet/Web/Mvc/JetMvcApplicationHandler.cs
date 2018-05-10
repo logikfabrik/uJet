@@ -61,7 +61,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
                         new LogService(),
                         ApplicationContext.Current.Services.ContentTypeService,
                         ApplicationContext.Current.Services.FileService,
-                        new TypeResolver(new TypeService(new LogService(), new AssemblyLoader(AppDomain.CurrentDomain, JetConfigurationManager.Assemblies))),
+                        new ModelService(new ModelTypeService(new LogService(), new AssemblyLoader(AppDomain.CurrentDomain, JetConfigurationManager.Assemblies))),
                         typeRepository).Run();
                 }
 

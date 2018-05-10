@@ -21,7 +21,7 @@ namespace Logikfabrik.Umbraco.Jet
     {
         private readonly IDataTypeService _dataTypeService;
         private readonly IDataTypeDefinitionFinder _dataTypeDefinitionFinder;
-        private readonly ITypeResolver _typeResolver;
+        private readonly IModelService _typeResolver;
         private readonly ITypeRepository _typeRepository;
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace Logikfabrik.Umbraco.Jet
         public DataTypeSynchronizer(
             IDataTypeService dataTypeService,
             IDataTypeDefinitionFinder dataTypeDefinitionFinder,
-            ITypeResolver typeResolver,
+            IModelService typeResolver,
             ITypeRepository typeRepository)
         {
             Ensure.That(dataTypeService).IsNotNull();

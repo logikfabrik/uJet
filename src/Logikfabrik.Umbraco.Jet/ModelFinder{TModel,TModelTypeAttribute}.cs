@@ -1,4 +1,4 @@
-﻿// <copyright file="TypeModelFinder{TModel,TModelAttribute}.cs" company="Logikfabrik">
+﻿// <copyright file="ModelFinder{TModel,TModelTypeAttribute}.cs" company="Logikfabrik">
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -10,13 +10,13 @@ namespace Logikfabrik.Umbraco.Jet
     using Extensions;
 
     /// <summary>
-    /// The <see cref="TypeModelFinder{TModel,TModelAttribute}" /> class. Class for finding models by model type.
+    /// The <see cref="ModelFinder{TModel,TModelTypeAttribute}" /> class. Class for finding models by model type.
     /// </summary>
     /// <typeparam name="TModel">The model type.</typeparam>
-    /// <typeparam name="TModelAttribute">The model attribute type.</typeparam>
-    public class TypeModelFinder<TModel, TModelAttribute> : ITypeModelFinder<TModel, TModelAttribute>
-        where TModel : Model<TModelAttribute>
-        where TModelAttribute : ModelTypeAttribute
+    /// <typeparam name="TModelTypeAttribute">The model type attribute type.</typeparam>
+    public class ModelFinder<TModel, TModelTypeAttribute> : IModelFinder<TModel, TModelTypeAttribute>
+        where TModel : Model<TModelTypeAttribute>
+        where TModelTypeAttribute : ModelTypeAttribute
     {
         /// <summary>
         /// Gets the comparer.
@@ -24,13 +24,13 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The comparer.
         /// </value>
-        protected TypeModelComparer<TModel, TModelAttribute> Comparer { get; } = new TypeModelComparer<TModel, TModelAttribute>();
+        protected ModelComparer<TModel, TModelTypeAttribute> Comparer { get; } = new ModelComparer<TModel, TModelTypeAttribute>();
 
         /// <inheritdoc />
         public TModel[] Find(Type modelTypeNeedle, TModel[] modelsHaystack)
         {
             Ensure.That(modelTypeNeedle).IsNotNull();
-            Ensure.That(() => modelTypeNeedle.IsModelType<TModelAttribute>(), nameof(modelTypeNeedle)).IsTrue();
+            Ensure.That(() => modelTypeNeedle.IsModelType<TModelTypeAttribute>(), nameof(modelTypeNeedle)).IsTrue();
             Ensure.That(modelsHaystack).IsNotNull();
 
             return modelsHaystack.Where(model => model.ModelType == modelTypeNeedle).Distinct(Comparer).ToArray();

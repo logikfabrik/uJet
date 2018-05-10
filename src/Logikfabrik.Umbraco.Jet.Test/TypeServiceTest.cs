@@ -25,7 +25,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             assemblyLoader.Setup(m => m.GetAssemblies()).Returns(new[] { modelType.Assembly });
 
-            var typeService = mocker.CreateInstance<TypeService>();
+            var typeService = mocker.CreateInstance<ModelTypeService>();
 
             typeService.DocumentTypes.Count().ShouldBe(1);
         }
@@ -44,7 +44,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             assemblyLoader.Setup(m => m.GetAssemblies()).Returns(new[] { modelType.Assembly });
 
-            var typeService = mocker.CreateInstance<TypeService>();
+            var typeService = mocker.CreateInstance<ModelTypeService>();
 
             typeService.DocumentTypes.Any().ShouldBeFalse();
         }
@@ -61,7 +61,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             assemblyLoader.Setup(m => m.GetAssemblies()).Returns(new[] { modelType.Assembly });
 
-            var typeService = mocker.CreateInstance<TypeService>();
+            var typeService = mocker.CreateInstance<ModelTypeService>();
 
             typeService.DocumentTypes.Any().ShouldBeFalse();
         }
@@ -78,7 +78,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             assemblyLoader.Setup(m => m.GetAssemblies()).Returns(new[] { modelType.Assembly });
 
-            var typeService = mocker.CreateInstance<TypeService>();
+            var typeService = mocker.CreateInstance<ModelTypeService>();
 
             typeService.MediaTypes.Count().ShouldBe(1);
         }
@@ -97,7 +97,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             assemblyLoader.Setup(m => m.GetAssemblies()).Returns(new[] { modelType.Assembly });
 
-            var typeService = mocker.CreateInstance<TypeService>();
+            var typeService = mocker.CreateInstance<ModelTypeService>();
 
             typeService.MediaTypes.Any().ShouldBeFalse();
         }
@@ -114,7 +114,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             assemblyLoader.Setup(m => m.GetAssemblies()).Returns(new[] { modelType.Assembly });
 
-            var typeService = mocker.CreateInstance<TypeService>();
+            var typeService = mocker.CreateInstance<ModelTypeService>();
 
             typeService.MediaTypes.Any().ShouldBeFalse();
         }
@@ -131,7 +131,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             assemblyLoader.Setup(m => m.GetAssemblies()).Returns(new[] { modelType.Assembly });
 
-            var typeService = mocker.CreateInstance<TypeService>();
+            var typeService = mocker.CreateInstance<ModelTypeService>();
 
             typeService.MemberTypes.Count().ShouldBe(1);
         }
@@ -150,7 +150,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             assemblyLoader.Setup(m => m.GetAssemblies()).Returns(new[] { modelType.Assembly });
 
-            var typeService = mocker.CreateInstance<TypeService>();
+            var typeService = mocker.CreateInstance<ModelTypeService>();
 
             typeService.MemberTypes.Any().ShouldBeFalse();
         }
@@ -167,7 +167,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             assemblyLoader.Setup(m => m.GetAssemblies()).Returns(new[] { modelType.Assembly });
 
-            var typeService = mocker.CreateInstance<TypeService>();
+            var typeService = mocker.CreateInstance<ModelTypeService>();
 
             typeService.MemberTypes.Any().ShouldBeFalse();
         }
@@ -184,7 +184,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             assemblyLoader.Setup(m => m.GetAssemblies()).Returns(new[] { modelType.Assembly });
 
-            var typeService = mocker.CreateInstance<TypeService>();
+            var typeService = mocker.CreateInstance<ModelTypeService>();
 
             typeService.DataTypes.Count().ShouldBe(1);
         }
@@ -203,7 +203,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             assemblyLoader.Setup(m => m.GetAssemblies()).Returns(new[] { modelType.Assembly });
 
-            var typeService = mocker.CreateInstance<TypeService>();
+            var typeService = mocker.CreateInstance<ModelTypeService>();
 
             typeService.DataTypes.Any().ShouldBeFalse();
         }
@@ -220,7 +220,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             assemblyLoader.Setup(m => m.GetAssemblies()).Returns(new[] { modelType.Assembly });
 
-            var typeService = mocker.CreateInstance<TypeService>();
+            var typeService = mocker.CreateInstance<ModelTypeService>();
 
             typeService.DataTypes.Any().ShouldBeFalse();
         }

@@ -32,7 +32,7 @@ namespace Logikfabrik.Umbraco.Jet
         public MemberTypeSynchronizer(
             ILogService logService,
             IMemberTypeService memberTypeService,
-            ITypeResolver typeResolver,
+            IModelService typeResolver,
             ITypeRepository typeRepository,
             IDataTypeDefinitionService dataTypeDefinitionService)
             : base(logService, typeRepository, dataTypeDefinitionService)

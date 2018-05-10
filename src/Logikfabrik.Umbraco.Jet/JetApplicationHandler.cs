@@ -49,7 +49,7 @@ namespace Logikfabrik.Umbraco.Jet
 
                 logService.Log<JetApplicationHandler>(new LogEntry(LogEntryType.Information, "Begin synchronizing types."));
 
-                var typeResolver = new TypeResolver(new TypeService(logService, new AssemblyLoader(AppDomain.CurrentDomain, JetConfigurationManager.Assemblies)));
+                var typeResolver = new ModelService(new ModelTypeService(logService, new AssemblyLoader(AppDomain.CurrentDomain, JetConfigurationManager.Assemblies)));
                 var typeRepository = new TypeRepository(new ContentTypeRepository(new DatabaseWrapper(ApplicationContext.Current.DatabaseContext.Database, ResolverBase<LoggerResolver>.Current.Logger, ApplicationContext.Current.DatabaseContext.SqlSyntax)), new DataTypeRepository(new DatabaseWrapper(ApplicationContext.Current.DatabaseContext.Database, ResolverBase<LoggerResolver>.Current.Logger, ApplicationContext.Current.DatabaseContext.SqlSyntax)));
                 var dataTypeDefinitionService = new DataTypeDefinitionService(applicationContext.Services.DataTypeService, UmbracoConfig.For.UmbracoSettings().Content.EnablePropertyValueConverters);
 

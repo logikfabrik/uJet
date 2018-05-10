@@ -1,4 +1,4 @@
-﻿// <copyright file="TypeModelValidator{TModel,TModelAttribute}.cs" company="Logikfabrik">
+﻿// <copyright file="ModelValidator{TModel,TModelTypeAttribute}.cs" company="Logikfabrik">
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -9,13 +9,13 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Linq;
 
     /// <summary>
-    /// The <see cref="TypeModelValidator{TModel,TModelAttribute}" /> class.
+    /// The <see cref="ModelValidator{TModel,TModelTypeAttribute}" /> class.
     /// </summary>
-    /// <typeparam name="TModel">The <see cref="Model{T}"/> type.</typeparam>
-    /// <typeparam name="TModelAttribute">The <see cref="ModelTypeAttribute"/> type.</typeparam>
-    public abstract class TypeModelValidator<TModel, TModelAttribute>
-        where TModel : Model<TModelAttribute>
-        where TModelAttribute : ModelTypeAttribute
+    /// <typeparam name="TModel">The model type.</typeparam>
+    /// <typeparam name="TModelTypeAttribute">The model type attribute type.</typeparam>
+    public abstract class ModelValidator<TModel, TModelTypeAttribute>
+        where TModel : Model<TModelTypeAttribute>
+        where TModelTypeAttribute : ModelTypeAttribute
     {
         /// <summary>
         /// Validates the specified models.

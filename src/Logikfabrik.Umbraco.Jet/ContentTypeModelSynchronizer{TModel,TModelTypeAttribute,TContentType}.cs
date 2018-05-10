@@ -142,7 +142,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="contentType">The content type to save.</param>
         protected abstract void SaveContentType(TContentType contentType);
 
-        private void CreatePropertyType(PropertyType model, TContentType contentType)
+        private void CreatePropertyType(PropertyTypeModel model, TContentType contentType)
         {
             var definition = GetDataTypeDefinition(model);
 
@@ -170,7 +170,7 @@ namespace Logikfabrik.Umbraco.Jet
             }
         }
 
-        private void UpdatePropertyType(TContentType contentType, global::Umbraco.Core.Models.PropertyType propertyType, PropertyType model)
+        private void UpdatePropertyType(TContentType contentType, global::Umbraco.Core.Models.PropertyType propertyType, PropertyTypeModel model)
         {
             if (!contentType.PropertyGroups.Contains(model.PropertyGroup) || (contentType.PropertyGroups.Contains(model.PropertyGroup) && !contentType.PropertyGroups[model.PropertyGroup].PropertyTypes.Contains(model.Alias)))
             {
@@ -193,7 +193,7 @@ namespace Logikfabrik.Umbraco.Jet
             propertyType.DataTypeDefinitionId = definition.Id;
         }
 
-        private IDataTypeDefinition GetDataTypeDefinition(PropertyType model)
+        private IDataTypeDefinition GetDataTypeDefinition(PropertyTypeModel model)
         {
             var definition = _dataTypeDefinitionService.GetDefinition(model.UIHint, model.Type);
 
@@ -280,7 +280,7 @@ namespace Logikfabrik.Umbraco.Jet
             }
         }
 
-        private void SynchronizePropertyType(TContentType contentType, PropertyType model)
+        private void SynchronizePropertyType(TContentType contentType, PropertyTypeModel model)
         {
             var propertyType = _propertyTypeFinder.Find(model, contentType.PropertyTypes.ToArray()).SingleOrDefault();
 

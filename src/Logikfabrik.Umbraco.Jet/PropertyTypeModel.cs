@@ -1,4 +1,4 @@
-﻿// <copyright file="PropertyType.cs" company="Logikfabrik">
+﻿// <copyright file="PropertyTypeModel.cs" company="Logikfabrik">
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -12,17 +12,17 @@ namespace Logikfabrik.Umbraco.Jet
     using Extensions;
 
     /// <summary>
-    /// The <see cref="PropertyType" /> class.
+    /// The <see cref="PropertyTypeModel" /> class.
     /// </summary>
-    public class PropertyType
+    public class PropertyTypeModel
     {
         private readonly bool _hasDefaultValue;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyType" /> class.
+        /// Initializes a new instance of the <see cref="PropertyTypeModel" /> class.
         /// </summary>
         /// <param name="property">The property.</param>
-        public PropertyType(PropertyInfo property)
+        public PropertyTypeModel(PropertyInfo property)
         {
             Ensure.That(property).IsNotNull();
 

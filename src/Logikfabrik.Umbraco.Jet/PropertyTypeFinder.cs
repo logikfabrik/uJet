@@ -40,7 +40,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="modelNeedle">The model to find the property types for.</param>
         /// <param name="propertyTypesHaystack">The haystack of property types.</param>
         /// <returns>The found property types.</returns>
-        public global::Umbraco.Core.Models.PropertyType[] Find(PropertyType modelNeedle, global::Umbraco.Core.Models.PropertyType[] propertyTypesHaystack)
+        public global::Umbraco.Core.Models.PropertyType[] Find(PropertyTypeModel modelNeedle, global::Umbraco.Core.Models.PropertyType[] propertyTypesHaystack)
         {
             Ensure.That(modelNeedle).IsNotNull();
             Ensure.That(propertyTypesHaystack).IsNotNull();

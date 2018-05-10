@@ -15,9 +15,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             var mocker = new AutoMocker();
 
-            var typeResolver = mocker.CreateInstance<TypeResolver>();
+            var typeResolver = mocker.CreateInstance<ModelService>();
 
-            var typeServiceMock = mocker.GetMock<ITypeService>();
+            var typeServiceMock = mocker.GetMock<IModelTypeService>();
 
             var _ = typeResolver.DocumentTypes;
 
@@ -29,9 +29,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             var mocker = new AutoMocker();
 
-            var typeResolver = mocker.CreateInstance<TypeResolver>();
+            var typeResolver = mocker.CreateInstance<ModelService>();
 
-            var typeServiceMock = mocker.GetMock<ITypeService>();
+            var typeServiceMock = mocker.GetMock<IModelTypeService>();
 
             var _ = typeResolver.MediaTypes;
 
@@ -43,9 +43,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             var mocker = new AutoMocker();
 
-            var typeResolver = mocker.CreateInstance<TypeResolver>();
+            var typeResolver = mocker.CreateInstance<ModelService>();
 
-            var typeServiceMock = mocker.GetMock<ITypeService>();
+            var typeServiceMock = mocker.GetMock<IModelTypeService>();
 
             var _ = typeResolver.MemberTypes;
 
@@ -57,9 +57,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             var mocker = new AutoMocker();
 
-            var typeResolver = mocker.CreateInstance<TypeResolver>();
+            var typeResolver = mocker.CreateInstance<ModelService>();
 
-            var typeServiceMock = mocker.GetMock<ITypeService>();
+            var typeServiceMock = mocker.GetMock<IModelTypeService>();
 
             var _ = typeResolver.DataTypes;
 

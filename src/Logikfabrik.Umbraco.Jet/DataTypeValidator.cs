@@ -13,7 +13,7 @@ namespace Logikfabrik.Umbraco.Jet
     /// The <see cref="DataTypeValidator" /> class.
     /// </summary>
     // ReSharper disable once InheritdocConsiderUsage
-    public class DataTypeValidator : TypeModelValidator<DataType, DataTypeAttribute>
+    public class DataTypeValidator : ModelValidator<DataType, DataTypeAttribute>
     {
         /// <inheritdoc />
         public override void Validate(DataType[] models)

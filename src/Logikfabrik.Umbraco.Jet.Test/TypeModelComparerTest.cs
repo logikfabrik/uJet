@@ -20,7 +20,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var modelX = new DocumentType(modelType);
             var modelY = new DocumentType(modelType);
 
-            var comparer = new TypeModelComparer<DocumentType, DocumentTypeAttribute>();
+            var comparer = new ModelComparer<DocumentType, DocumentTypeAttribute>();
 
             comparer.Equals(modelX, modelY).ShouldBeTrue();
         }
@@ -35,7 +35,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var modelX = new DocumentType(modelTypeX);
             var modelY = new DocumentType(modelTypeY);
 
-            var comparer = new TypeModelComparer<DocumentType, DocumentTypeAttribute>();
+            var comparer = new ModelComparer<DocumentType, DocumentTypeAttribute>();
 
             comparer.Equals(modelX, modelY).ShouldBeFalse();
         }
@@ -49,7 +49,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var modelX = new MediaType(modelType);
             var modelY = new MediaType(modelType);
 
-            var comparer = new TypeModelComparer<MediaType, MediaTypeAttribute>();
+            var comparer = new ModelComparer<MediaType, MediaTypeAttribute>();
 
             comparer.Equals(modelX, modelY).ShouldBeTrue();
         }
@@ -64,7 +64,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var modelX = new MediaType(modelTypeX);
             var modelY = new MediaType(modelTypeY);
 
-            var comparer = new TypeModelComparer<MediaType, MediaTypeAttribute>();
+            var comparer = new ModelComparer<MediaType, MediaTypeAttribute>();
 
             comparer.Equals(modelX, modelY).ShouldBeFalse();
         }
@@ -78,7 +78,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var modelX = new MemberType(modelType);
             var modelY = new MemberType(modelType);
 
-            var comparer = new TypeModelComparer<MemberType, MemberTypeAttribute>();
+            var comparer = new ModelComparer<MemberType, MemberTypeAttribute>();
 
             comparer.Equals(modelX, modelY).ShouldBeTrue();
         }
@@ -93,7 +93,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var modelX = new MemberType(modelTypeX);
             var modelY = new MemberType(modelTypeY);
 
-            var comparer = new TypeModelComparer<MemberType, MemberTypeAttribute>();
+            var comparer = new ModelComparer<MemberType, MemberTypeAttribute>();
 
             comparer.Equals(modelX, modelY).ShouldBeFalse();
         }
@@ -107,7 +107,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var modelX = new DataType(modelType);
             var modelY = new DataType(modelType);
 
-            var comparer = new TypeModelComparer<DataType, DataTypeAttribute>();
+            var comparer = new ModelComparer<DataType, DataTypeAttribute>();
 
             comparer.Equals(modelX, modelY).ShouldBeTrue();
         }
@@ -122,7 +122,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var modelX = new DataType(modelTypeX);
             var modelY = new DataType(modelTypeY);
 
-            var comparer = new TypeModelComparer<DataType, DataTypeAttribute>();
+            var comparer = new ModelComparer<DataType, DataTypeAttribute>();
 
             comparer.Equals(modelX, modelY).ShouldBeFalse();
         }

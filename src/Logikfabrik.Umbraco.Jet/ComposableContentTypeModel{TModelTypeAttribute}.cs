@@ -70,7 +70,7 @@ namespace Logikfabrik.Umbraco.Jet
         public Type ParentNodeType { get; }
 
         /// <inheritdoc />
-        protected override IEnumerable<PropertyType> GetProperties()
+        protected override IEnumerable<PropertyTypeModel> GetProperties()
         {
             /*
              * Only include public instance properties declared for the model type in question. The type hierarchy
@@ -79,7 +79,7 @@ namespace Logikfabrik.Umbraco.Jet
              */
             var properties = GetInheritance()[ModelType].SelectMany(type => type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly));
 
-            return properties.Where(IsValidProperty).Select(property => new PropertyType(property));
+            return properties.Where(IsValidProperty).Select(property => new PropertyTypeModel(property));
         }
 
         private Type GetParentNodeType()
