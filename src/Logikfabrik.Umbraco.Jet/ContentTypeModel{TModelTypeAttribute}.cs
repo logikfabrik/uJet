@@ -99,6 +99,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// </returns>
         protected bool IsValidProperty(PropertyInfo property)
         {
+            // TODO: Break out to separate class.
             Ensure.That(property).IsNotNull();
 
             if (!property.CanRead || !property.CanWrite)

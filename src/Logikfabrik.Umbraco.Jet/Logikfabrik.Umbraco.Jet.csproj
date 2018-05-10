@@ -253,7 +253,7 @@
   <ItemGroup>
     <Compile Include="ApplicationHandler.cs" />
     <Compile Include="ComposableContentTypeModelTypeAttribute.cs" />
-    <Compile Include="ComposableContentTypeSynchronizer{TModel,TModelAttribute,TContentType}.cs">
+    <Compile Include="ComposableContentTypeModelSynchronizer{TModel,TModelTypeAttribute,TContentType}.cs">
       <SonarQubeExclude>true</SonarQubeExclude>
     </Compile>
     <Compile Include="ComposableContentTypeModel{TModelTypeAttribute}.cs">
@@ -268,13 +268,13 @@
       <SonarQubeExclude>true</SonarQubeExclude>
     </Compile>
     <Compile Include="ContentTypeModelTypeAttribute.cs" />
-    <Compile Include="ContentTypeModelFinder{TModel,TModelAttribute,TContentType}.cs">
+    <Compile Include="ContentTypeModelFinder{TModel,TModelTypeAttribute,TContentType}.cs">
       <SonarQubeExclude>true</SonarQubeExclude>
     </Compile>
-    <Compile Include="ContentTypeSynchronizer{TModel,TModelAttribute,TContentType}.cs">
+    <Compile Include="ContentTypeModelSynchronizer{TModel,TModelTypeAttribute,TContentType}.cs">
       <SonarQubeExclude>true</SonarQubeExclude>
     </Compile>
-    <Compile Include="ContentTypeModelValidator{TModel,TModelAttribute}.cs">
+    <Compile Include="ContentTypeModelValidator{TModel,TModelTypeAttribute}.cs">
       <SonarQubeExclude>true</SonarQubeExclude>
     </Compile>
     <Compile Include="ContentTypeModel{TModelTypeAttribute}.cs">
@@ -296,7 +296,7 @@
     </Compile>
     <Compile Include="Logging\ILogService.cs" />
     <Compile Include="ITypeResolver.cs" />
-    <Compile Include="ContentTypeFinder{TModel,TModelAttribute,TContentType}.cs">
+    <Compile Include="ContentTypeFinder{TModel,TModelTypeAttribute,TContentType}.cs">
       <SonarQubeExclude>true</SonarQubeExclude>
     </Compile>
     <Compile Include="Logging\LogEntry.cs" />

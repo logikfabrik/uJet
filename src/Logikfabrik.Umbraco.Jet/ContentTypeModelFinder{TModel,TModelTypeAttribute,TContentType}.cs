@@ -1,4 +1,4 @@
-﻿// <copyright file="ContentTypeModelFinder{TModel,TModelAttribute,TContentType}.cs" company="Logikfabrik">
+﻿// <copyright file="ContentTypeModelFinder{TModel,TModelTypeAttribute,TContentType}.cs" company="Logikfabrik">
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -12,22 +12,22 @@ namespace Logikfabrik.Umbraco.Jet
     using Logging;
 
     /// <summary>
-    /// The <see cref="ContentTypeModelFinder{TModel, TModelAttribute, TContentType}" /> class.
+    /// The <see cref="ContentTypeModelFinder{TModel, TModelTypeAttribute, TContentType}" /> class. Class for finding content type models.
     /// </summary>
     /// <typeparam name="TModel">The model type.</typeparam>
-    /// <typeparam name="TModelAttribute">The model attribute type.</typeparam>
+    /// <typeparam name="TModelTypeAttribute">The model type attribute type.</typeparam>
     /// <typeparam name="TContentType">The content type.</typeparam>
     // ReSharper disable once InheritdocConsiderUsage
-    public class ContentTypeModelFinder<TModel, TModelAttribute, TContentType> : TypeModelFinder<TModel, TModelAttribute>, IContentTypeModelFinder<TModel, TModelAttribute, TContentType>
-        where TModel : ContentTypeModel<TModelAttribute>
-        where TModelAttribute : ContentTypeModelTypeAttribute
+    public class ContentTypeModelFinder<TModel, TModelTypeAttribute, TContentType> : TypeModelFinder<TModel, TModelTypeAttribute>, IContentTypeModelFinder<TModel, TModelTypeAttribute, TContentType>
+        where TModel : ContentTypeModel<TModelTypeAttribute>
+        where TModelTypeAttribute : ContentTypeModelTypeAttribute
         where TContentType : class, IContentTypeBase
     {
         private readonly ILogService _logService;
         private readonly ITypeRepository _typeRepository;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContentTypeModelFinder{TModel, TModelAttribute, TContentType}" /> class.
+        /// Initializes a new instance of the <see cref="ContentTypeModelFinder{TModel, TModelTypeAttribute, TContentType}" /> class.
         /// </summary>
         /// <param name="logService">The log service,</param>
         /// <param name="typeRepository">The type repository.</param>
@@ -47,7 +47,7 @@ namespace Logikfabrik.Umbraco.Jet
             Ensure.That(contentTypeNeedle).IsNotNull();
             Ensure.That(modelsHaystack).IsNotNull();
 
-            _logService.Log<ContentTypeModelFinder<TModel, TModelAttribute, TContentType>>(new LogEntry(LogEntryType.Debug, $"Find content type models matching {contentTypeNeedle.Name} ({contentTypeNeedle.Alias})."));
+            _logService.Log<ContentTypeModelFinder<TModel, TModelTypeAttribute, TContentType>>(new LogEntry(LogEntryType.Debug, $"Find content type models matching '{contentTypeNeedle.Name}' ('{contentTypeNeedle.Alias}')."));
 
             TModel[] models;
 
@@ -59,7 +59,7 @@ namespace Logikfabrik.Umbraco.Jet
 
                 if (models.Any())
                 {
-                    _logService.Log<ContentTypeModelFinder<TModel, TModelAttribute, TContentType>>(new LogEntry(LogEntryType.Debug, $"Found {models.Length} content type models matching {contentTypeNeedle.Name} ({contentTypeNeedle.Alias})."));
+                    _logService.Log<ContentTypeModelFinder<TModel, TModelTypeAttribute, TContentType>>(new LogEntry(LogEntryType.Debug, $"Found '{models.Length}' content type models matching '{contentTypeNeedle.Name}' ('{contentTypeNeedle.Alias}')."));
 
                     return models;
                 }
@@ -67,7 +67,7 @@ namespace Logikfabrik.Umbraco.Jet
 
             models = modelsHaystack.Where(model => model.Alias.Equals(contentTypeNeedle.Alias, StringComparison.InvariantCultureIgnoreCase)).ToArray();
 
-            _logService.Log<ContentTypeModelFinder<TModel, TModelAttribute, TContentType>>(new LogEntry(LogEntryType.Debug, $"Found {models.Length} content type models matching {contentTypeNeedle.Name} ({contentTypeNeedle.Alias})."));
+            _logService.Log<ContentTypeModelFinder<TModel, TModelTypeAttribute, TContentType>>(new LogEntry(LogEntryType.Debug, $"Found '{models.Length}' content type models matching '{contentTypeNeedle.Name}' ('{contentTypeNeedle.Alias}')."));
 
             return models;
         }

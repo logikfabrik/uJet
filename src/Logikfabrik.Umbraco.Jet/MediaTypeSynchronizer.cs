@@ -17,7 +17,7 @@ namespace Logikfabrik.Umbraco.Jet
     /// The <see cref="MediaTypeSynchronizer" /> class. Synchronizes model types annotated using the <see cref="MediaTypeAttribute" />.
     /// </summary>
     // ReSharper disable once InheritdocConsiderUsage
-    public class MediaTypeSynchronizer : ComposableContentTypeSynchronizer<MediaType, MediaTypeAttribute, IMediaType>
+    public class MediaTypeSynchronizer : ComposableContentTypeModelSynchronizer<MediaType, MediaTypeAttribute, IMediaType>
     {
         private readonly IContentTypeService _contentTypeService;
         private readonly Lazy<MediaType[]> _mediaTypes;

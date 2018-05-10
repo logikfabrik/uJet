@@ -1,4 +1,4 @@
-﻿// <copyright file="ContentTypeModelValidator{TModel,TModelAttribute}.cs" company="Logikfabrik">
+﻿// <copyright file="ContentTypeModelValidator{TModel,TModelTypeAttribute}.cs" company="Logikfabrik">
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -10,14 +10,14 @@ namespace Logikfabrik.Umbraco.Jet
     using EnsureThat;
 
     /// <summary>
-    /// The <see cref="ContentTypeModelValidator{TModel,TModelAttribute}" /> class.
+    /// The <see cref="ContentTypeModelValidator{TModel,TModelTypeAttribute}" /> class.
     /// </summary>
-    /// <typeparam name="TModel">The <see cref="ContentTypeModel{T}" /> type.</typeparam>
-    /// <typeparam name="TModelAttribute">The <see cref="ContentTypeModelTypeAttribute" /> type.</typeparam>
+    /// <typeparam name="TModel">The model type.</typeparam>
+    /// <typeparam name="TModelTypeAttribute">The model type attribute type.</typeparam>
     // ReSharper disable once InheritdocConsiderUsage
-    public class ContentTypeModelValidator<TModel, TModelAttribute> : TypeModelValidator<TModel, TModelAttribute>
-        where TModel : ContentTypeModel<TModelAttribute>
-        where TModelAttribute : ContentTypeModelTypeAttribute
+    public class ContentTypeModelValidator<TModel, TModelTypeAttribute> : TypeModelValidator<TModel, TModelTypeAttribute>
+        where TModel : ContentTypeModel<TModelTypeAttribute>
+        where TModelTypeAttribute : ContentTypeModelTypeAttribute
     {
         /// <inheritdoc />
         public override void Validate(TModel[] models)

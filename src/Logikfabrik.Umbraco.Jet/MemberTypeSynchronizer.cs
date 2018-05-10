@@ -16,7 +16,7 @@ namespace Logikfabrik.Umbraco.Jet
     /// <summary>
     /// The <see cref="MemberTypeSynchronizer" /> class. Synchronizes model types annotated using the <see cref="MemberTypeAttribute" />.
     /// </summary>
-    public class MemberTypeSynchronizer : ContentTypeSynchronizer<MemberType, MemberTypeAttribute, IMemberType>
+    public class MemberTypeSynchronizer : ContentTypeModelSynchronizer<MemberType, MemberTypeAttribute, IMemberType>
     {
         private readonly IMemberTypeService _memberTypeService;
         private readonly Lazy<MemberType[]> _memberTypes;

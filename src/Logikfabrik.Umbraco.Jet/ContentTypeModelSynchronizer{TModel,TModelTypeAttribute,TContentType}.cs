@@ -1,4 +1,4 @@
-﻿// <copyright file="ContentTypeSynchronizer{TModel,TModelAttribute,TContentType}.cs" company="Logikfabrik">
+﻿// <copyright file="ContentTypeModelSynchronizer{TModel,TModelTypeAttribute,TContentType}.cs" company="Logikfabrik">
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -13,39 +13,46 @@ namespace Logikfabrik.Umbraco.Jet
     using Mappings;
 
     /// <summary>
-    /// The <see cref="ContentTypeSynchronizer{TModel, TModelAttribute, TContentType}" /> class.
+    /// The <see cref="ContentTypeModelSynchronizer{TModel,TModelTypeAttribute,TContentType}" /> class.
     /// </summary>
     /// <typeparam name="TModel">The model type.</typeparam>
-    /// <typeparam name="TModelAttribute">The attribute type.</typeparam>
+    /// <typeparam name="TModelTypeAttribute">The model type attribute type.</typeparam>
     /// <typeparam name="TContentType">The content type.</typeparam>
     // ReSharper disable once InheritdocConsiderUsage
-    public abstract class ContentTypeSynchronizer<TModel, TModelAttribute, TContentType> : ISynchronizer
-        where TModel : ContentTypeModel<TModelAttribute>
-        where TModelAttribute : ContentTypeModelTypeAttribute
+    public abstract class ContentTypeModelSynchronizer<TModel, TModelTypeAttribute, TContentType> : ISynchronizer
+        where TModel : ContentTypeModel<TModelTypeAttribute>
+        where TModelTypeAttribute : ContentTypeModelTypeAttribute
         where TContentType : class, IContentTypeBase
     {
         private readonly ITypeRepository _typeRepository;
         private readonly IDataTypeDefinitionService _dataTypeDefinitionService;
-        private readonly ContentTypeFinder<TModel, TModelAttribute, TContentType> _contentTypeFinder;
         private readonly PropertyTypeFinder _propertyTypeFinder;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContentTypeSynchronizer{TModel, TModelAttribute, TContentType}" /> class.
+        /// Initializes a new instance of the <see cref="ContentTypeModelSynchronizer{TModel,TModelTypeAttribute,TContentType}" /> class.
         /// </summary>
         /// <param name="logService">The log service.</param>
         /// <param name="typeRepository">The type repository.</param>
         /// <param name="dataTypeDefinitionService">The data type definition service.</param>
-        protected ContentTypeSynchronizer(ILogService logService, ITypeRepository typeRepository, IDataTypeDefinitionService dataTypeDefinitionService)
+        protected ContentTypeModelSynchronizer(ILogService logService, ITypeRepository typeRepository, IDataTypeDefinitionService dataTypeDefinitionService)
         {
-            Ensure.That(logService).IsNotNull();
             Ensure.That(typeRepository).IsNotNull();
             Ensure.That(dataTypeDefinitionService).IsNotNull();
 
             _typeRepository = typeRepository;
             _dataTypeDefinitionService = dataTypeDefinitionService;
-            _contentTypeFinder = new ContentTypeFinder<TModel, TModelAttribute, TContentType>(logService, typeRepository);
+            // TODO: Make protected.
+            ContentTypeFinder = new ContentTypeFinder<TModel, TModelTypeAttribute, TContentType>(logService, typeRepository);
             _propertyTypeFinder = new PropertyTypeFinder(logService, typeRepository);
         }
+
+        /// <summary>
+        /// Gets the content type finder.
+        /// </summary>
+        /// <value>
+        /// The content type finder.
+        /// </value>
+        protected ContentTypeFinder<TModel,TModelTypeAttribute,TContentType> ContentTypeFinder { get; }
 
         /// <summary>
         /// Gets the models.
@@ -63,7 +70,7 @@ namespace Logikfabrik.Umbraco.Jet
                 return;
             }
 
-            new ContentTypeModelValidator<TModel, TModelAttribute>().Validate(Models);
+            new ContentTypeModelValidator<TModel, TModelTypeAttribute>().Validate(Models);
 
             // TODO: Optimize. Whe get all contenttypes here, but also in the Synchronize method.
             var contentTypes = GetContentTypes();
@@ -207,7 +214,7 @@ namespace Logikfabrik.Umbraco.Jet
 
         private void Synchronize(TModel model, TContentType[] contentTypes)
         {
-            var contentType = _contentTypeFinder.Find(model, contentTypes).SingleOrDefault();
+            var contentType = ContentTypeFinder.Find(model, contentTypes).SingleOrDefault();
 
             contentType = contentType == null
                 ? CreateContentType(model)

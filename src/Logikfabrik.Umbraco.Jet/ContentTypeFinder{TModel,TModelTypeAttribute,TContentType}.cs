@@ -1,4 +1,4 @@
-﻿// <copyright file="ContentTypeFinder{TModel,TModelAttribute,TContentType}.cs" company="Logikfabrik">
+﻿// <copyright file="ContentTypeFinder{TModel,TModelTypeAttribute,TContentType}.cs" company="Logikfabrik">
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -12,14 +12,14 @@ namespace Logikfabrik.Umbraco.Jet
     using Logging;
 
     /// <summary>
-    /// The <see cref="ContentTypeFinder{TModel, TModelAttribute, TContentType}" /> class. Class for finding content types by model or by model type.
+    /// The <see cref="ContentTypeFinder{TModel, TModelTypeAttribute, TContentType}" /> class. Class for finding Umbraco content types.
     /// </summary>
     /// <typeparam name="TModel">The model type.</typeparam>
-    /// <typeparam name="TModelAttribute">The model attribute type.</typeparam>
+    /// <typeparam name="TModelTypeAttribute">The model type attribute type.</typeparam>
     /// <typeparam name="TContentType">The content type.</typeparam>
-    public class ContentTypeFinder<TModel, TModelAttribute, TContentType>
-        where TModel : ContentTypeModel<TModelAttribute>
-        where TModelAttribute : ContentTypeModelTypeAttribute
+    public class ContentTypeFinder<TModel, TModelTypeAttribute, TContentType>
+        where TModel : ContentTypeModel<TModelTypeAttribute>
+        where TModelTypeAttribute : ContentTypeModelTypeAttribute
         where TContentType : class, IContentTypeBase
     {
         private readonly ILogService _logService;
@@ -27,7 +27,7 @@ namespace Logikfabrik.Umbraco.Jet
         private readonly EntityTypeComparer<TContentType> _comparer;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContentTypeFinder{TModel, TModelAttribute, TContentType}" /> class.
+        /// Initializes a new instance of the <see cref="ContentTypeFinder{TModel, TModelTypeAttribute, TContentType}" /> class.
         /// </summary>
         /// <param name="logService">The log service.</param>
         /// <param name="typeRepository">The type repository.</param>
@@ -70,7 +70,7 @@ namespace Logikfabrik.Umbraco.Jet
             Ensure.That(modelsHaystack).IsNotNull();
             Ensure.That(contentTypesHaystack).IsNotNull();
 
-            var modelNeedles = new ContentTypeModelFinder<TModel, TModelAttribute, TContentType>(_logService, _typeRepository).Find(modelTypeNeedle, modelsHaystack);
+            var modelNeedles = new ContentTypeModelFinder<TModel, TModelTypeAttribute, TContentType>(_logService, _typeRepository).Find(modelTypeNeedle, modelsHaystack);
 
             return Find(modelNeedles, contentTypesHaystack).Distinct(_comparer).ToArray();
         }
@@ -104,7 +104,7 @@ namespace Logikfabrik.Umbraco.Jet
             Ensure.That(modelsHaystack).IsNotNull();
             Ensure.That(contentTypesHaystack).IsNotNull();
 
-            var modelNeedles = new ContentTypeModelFinder<TModel, TModelAttribute, TContentType>(_logService, _typeRepository).FindAll(modelTypeNeedle, modelsHaystack);
+            var modelNeedles = new ContentTypeModelFinder<TModel, TModelTypeAttribute, TContentType>(_logService, _typeRepository).FindAll(modelTypeNeedle, modelsHaystack);
 
             return Find(modelNeedles, contentTypesHaystack).Distinct(_comparer).ToArray();
         }

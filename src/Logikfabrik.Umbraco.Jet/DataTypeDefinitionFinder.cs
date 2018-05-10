@@ -11,7 +11,7 @@ namespace Logikfabrik.Umbraco.Jet
     using global::Umbraco.Core.Models;
 
     /// <summary>
-    /// The <see cref="DataTypeDefinitionFinder" /> class.
+    /// The <see cref="DataTypeDefinitionFinder" /> class. Class for finding Umbraco data type definitions.
     /// </summary>
     public class DataTypeDefinitionFinder : IDataTypeDefinitionFinder
     {

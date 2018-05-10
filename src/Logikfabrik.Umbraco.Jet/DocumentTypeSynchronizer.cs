@@ -19,7 +19,7 @@ namespace Logikfabrik.Umbraco.Jet
     /// The <see cref="DocumentTypeSynchronizer" /> class. Synchronizes model types annotated using the <see cref="DocumentTypeAttribute" />.
     /// </summary>
     // ReSharper disable once InheritdocConsiderUsage
-    public class DocumentTypeSynchronizer : ComposableContentTypeSynchronizer<DocumentType, DocumentTypeAttribute, IContentType>
+    public class DocumentTypeSynchronizer : ComposableContentTypeModelSynchronizer<DocumentType, DocumentTypeAttribute, IContentType>
     {
         private readonly IContentTypeService _contentTypeService;
         private readonly IFileService _fileService;

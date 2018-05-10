@@ -1,4 +1,4 @@
-﻿// <copyright file="ComposableContentTypeSynchronizer{TModel,TModelAttribute,TContentType}.cs" company="Logikfabrik">
+﻿// <copyright file="ComposableContentTypeModelSynchronizer{TModel,TModelTypeAttribute,TContentType}.cs" company="Logikfabrik">
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -13,29 +13,27 @@ namespace Logikfabrik.Umbraco.Jet
     using Mappings;
 
     /// <summary>
-    /// The <see cref="ComposableContentTypeSynchronizer{TModel, TModelAttribute, TContentType}" /> class.
+    /// The <see cref="ComposableContentTypeModelSynchronizer{TModel,TModelTypeAttribute,TContentType}" /> class.
     /// </summary>
     /// <typeparam name="TModel">The model type.</typeparam>
-    /// <typeparam name="TModelAttribute">The model attribute type.</typeparam>
+    /// <typeparam name="TModelTypeAttribute">The model type attribute type.</typeparam>
     /// <typeparam name="TContentType">The content type.</typeparam>
     // ReSharper disable once InheritdocConsiderUsage
-    public abstract class ComposableContentTypeSynchronizer<TModel, TModelAttribute, TContentType> : ContentTypeSynchronizer<TModel, TModelAttribute, TContentType>
-        where TModel : ComposableContentTypeModel<TModelAttribute>
-        where TModelAttribute : ComposableContentTypeModelTypeAttribute
+    public abstract class ComposableContentTypeModelSynchronizer<TModel, TModelTypeAttribute, TContentType> : ContentTypeModelSynchronizer<TModel, TModelTypeAttribute, TContentType>
+        where TModel : ComposableContentTypeModel<TModelTypeAttribute>
+        where TModelTypeAttribute : ComposableContentTypeModelTypeAttribute
         where TContentType : class, IContentTypeBase
     {
-        private readonly ContentTypeFinder<TModel, TModelAttribute, TContentType> _contentTypeFinder;
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="ComposableContentTypeSynchronizer{TModel, TModelAttribute, TContentType}" /> class.
+        /// Initializes a new instance of the <see cref="ComposableContentTypeModelSynchronizer{TModel,TModelTypeAttribute,TContentType}" /> class.
         /// </summary>
         /// <param name="logService">The log service.</param>
         /// <param name="typeRepository">The type repository.</param>
+        /// <param name="dataTypeDefinitionService">The data type definition service.</param>
         // ReSharper disable once InheritdocConsiderUsage
-        protected ComposableContentTypeSynchronizer(ILogService logService, ITypeRepository typeRepository, IDataTypeDefinitionService dataTypeDefinitionService)
+        protected ComposableContentTypeModelSynchronizer(ILogService logService, ITypeRepository typeRepository, IDataTypeDefinitionService dataTypeDefinitionService)
             : base(logService, typeRepository, dataTypeDefinitionService)
         {
-            _contentTypeFinder = new ContentTypeFinder<TModel, TModelAttribute, TContentType>(logService, typeRepository);
         }
 
         /// <inheritdoc />
@@ -83,7 +81,7 @@ namespace Logikfabrik.Umbraco.Jet
             foreach (var model in Models.Where(HasParent))
             {
                 // ReSharper disable once UsePatternMatching
-                var contentType = _contentTypeFinder.Find(model, contentTypes).SingleOrDefault() as IContentTypeComposition;
+                var contentType = ContentTypeFinder.Find(model, contentTypes).SingleOrDefault() as IContentTypeComposition;
 
                 if (contentType == null)
                 {
@@ -91,7 +89,7 @@ namespace Logikfabrik.Umbraco.Jet
                 }
 
                 // ReSharper disable once UsePatternMatching
-                var parentContentType = _contentTypeFinder.Find(model.ParentNodeType, Models, contentTypes).SingleOrDefault() as IContentTypeComposition;
+                var parentContentType = ContentTypeFinder.Find(model.ParentNodeType, Models, contentTypes).SingleOrDefault() as IContentTypeComposition;
 
                 if (parentContentType == null)
                 {
@@ -120,14 +118,14 @@ namespace Logikfabrik.Umbraco.Jet
             foreach (var model in Models.Where(HasComposition))
             {
                 // ReSharper disable once UsePatternMatching
-                var contentType = _contentTypeFinder.Find(model, contentTypes).SingleOrDefault() as IContentTypeComposition;
+                var contentType = ContentTypeFinder.Find(model, contentTypes).SingleOrDefault() as IContentTypeComposition;
 
                 if (contentType == null)
                 {
                     continue;
                 }
 
-                var compositionContentTypes = _contentTypeFinder.Find(model.CompositionNodeTypes, Models, contentTypes).Cast<IContentTypeComposition>().ToList();
+                var compositionContentTypes = ContentTypeFinder.Find(model.CompositionNodeTypes, Models, contentTypes).Cast<IContentTypeComposition>().ToList();
 
                 var aliases = contentType.CompositionAliases().ToArray();
 
@@ -163,7 +161,7 @@ namespace Logikfabrik.Umbraco.Jet
 
             foreach (var model in Models.Where(HasAllowedChildNodeTypes))
             {
-                var contentType = _contentTypeFinder.Find(model, contentTypes).SingleOrDefault();
+                var contentType = ContentTypeFinder.Find(model, contentTypes).SingleOrDefault();
 
                 if (contentType == null)
                 {
@@ -178,7 +176,7 @@ namespace Logikfabrik.Umbraco.Jet
 
         private IEnumerable<ContentTypeSort> GetAllowedChildNodeContentTypes(Type[] allowedChildNodeTypes, TContentType[] contentTypes)
         {
-            var types = _contentTypeFinder.FindAll(allowedChildNodeTypes, Models, contentTypes);
+            var types = ContentTypeFinder.FindAll(allowedChildNodeTypes, Models, contentTypes);
 
             var allowedChildNodeContentTypes = new List<ContentTypeSort>();
 
