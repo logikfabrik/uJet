@@ -1,4 +1,4 @@
-﻿// <copyright file="ContentTypeModelAttribute.cs" company="Logikfabrik">
+﻿// <copyright file="ContentTypeModelTypeAttribute.cs" company="Logikfabrik">
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -7,17 +7,17 @@ namespace Logikfabrik.Umbraco.Jet
     using EnsureThat;
 
     /// <summary>
-    /// The <see cref="ContentTypeModelAttribute" /> class.
+    /// The <see cref="ContentTypeModelTypeAttribute" /> class.
     /// </summary>
     // ReSharper disable once InheritdocConsiderUsage
-    public abstract class ContentTypeModelAttribute : TypeModelAttribute
+    public abstract class ContentTypeModelTypeAttribute : ModelTypeAttribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContentTypeModelAttribute" /> class.
+        /// Initializes a new instance of the <see cref="ContentTypeModelTypeAttribute" /> class.
         /// </summary>
         /// <param name="name">The name.</param>
         // ReSharper disable once InheritdocConsiderUsage
-        protected ContentTypeModelAttribute(string name)
+        protected ContentTypeModelTypeAttribute(string name)
         {
             Ensure.That(name).IsNotNullOrWhiteSpace();
 
@@ -25,12 +25,12 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContentTypeModelAttribute" /> class.
+        /// Initializes a new instance of the <see cref="ContentTypeModelTypeAttribute" /> class.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="name">The name.</param>
         // ReSharper disable once InheritdocConsiderUsage
-        protected ContentTypeModelAttribute(string id, string name)
+        protected ContentTypeModelTypeAttribute(string id, string name)
             : base(id)
         {
             Ensure.That(name).IsNotNullOrWhiteSpace();
@@ -69,10 +69,10 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this instance is a container.
+        /// Gets or sets a value indicating whether content of this type are containers.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if this instance is a container; otherwise, <c>false</c>.
+        ///   <c>true</c> if containers; otherwise, <c>false</c>.
         /// </value>
         public bool IsContainer
         {

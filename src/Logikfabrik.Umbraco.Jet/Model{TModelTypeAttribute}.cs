@@ -1,4 +1,4 @@
-﻿// <copyright file="TypeModel{T}.cs" company="Logikfabrik">
+﻿// <copyright file="Model{TModelTypeAttribute}.cs" company="Logikfabrik">
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -10,23 +10,23 @@ namespace Logikfabrik.Umbraco.Jet
     using Extensions;
 
     /// <summary>
-    /// The <see cref="TypeModel{T}" /> class.
+    /// The <see cref="Model{TModelTypeAttribute}" /> class.
     /// </summary>
-    /// <typeparam name="T">The attribute type.</typeparam>
-    public abstract class TypeModel<T>
-        where T : TypeModelAttribute
+    /// <typeparam name="TModelTypeAttribute">The model type attribute type.</typeparam>
+    public abstract class Model<TModelTypeAttribute>
+        where TModelTypeAttribute : ModelTypeAttribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TypeModel{T}" /> class.
+        /// Initializes a new instance of the <see cref="Model{TModelTypeAttribute}" /> class.
         /// </summary>
         /// <param name="modelType">The model type.</param>
-        protected TypeModel(Type modelType)
+        protected Model(Type modelType)
         {
             Ensure.That(modelType).IsNotNull();
-            Ensure.That(() => modelType.IsModelType<T>(), nameof(modelType)).IsTrue();
+            Ensure.That(() => modelType.IsModelType<TModelTypeAttribute>(), nameof(modelType)).IsTrue();
 
             ModelType = modelType;
-            Attribute = modelType.GetCustomAttribute<T>(false);
+            Attribute = modelType.GetCustomAttribute<TModelTypeAttribute>(false);
         }
 
         /// <summary>
@@ -46,11 +46,11 @@ namespace Logikfabrik.Umbraco.Jet
         public Guid? Id => Attribute.Id;
 
         /// <summary>
-        /// Gets the type model attribute.
+        /// Gets the model type attribute.
         /// </summary>
         /// <value>
-        /// The type model attribute.
+        /// The model type attribute.
         /// </value>
-        protected T Attribute { get; }
+        protected TModelTypeAttribute Attribute { get; }
     }
 }

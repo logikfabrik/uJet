@@ -15,8 +15,8 @@ namespace Logikfabrik.Umbraco.Jet
     /// <typeparam name="TModel">The model type.</typeparam>
     /// <typeparam name="TModelAttribute">The model attribute type.</typeparam>
     public class TypeModelFinder<TModel, TModelAttribute> : ITypeModelFinder<TModel, TModelAttribute>
-        where TModel : TypeModel<TModelAttribute>
-        where TModelAttribute : TypeModelAttribute
+        where TModel : Model<TModelAttribute>
+        where TModelAttribute : ModelTypeAttribute
     {
         /// <summary>
         /// Gets the comparer.

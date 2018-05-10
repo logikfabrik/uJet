@@ -15,13 +15,13 @@ namespace Logikfabrik.Umbraco.Jet.Extensions
         /// <summary>
         /// Determines whether the type is a model type.
         /// </summary>
-        /// <typeparam name="T">The <see cref="TypeModelAttribute" /> type.</typeparam>
+        /// <typeparam name="T">The <see cref="ModelTypeAttribute" /> type.</typeparam>
         /// <param name="modelType">The model type.</param>
         /// <returns>
         ///   <c>true</c> if the type is a model type; otherwise, <c>false</c>.
         /// </returns>
         public static bool IsModelType<T>(this Type modelType)
-            where T : TypeModelAttribute
+            where T : ModelTypeAttribute
         {
             if (modelType == null)
             {

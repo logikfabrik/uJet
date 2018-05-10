@@ -19,7 +19,7 @@ namespace Logikfabrik.Umbraco.Jet
     /// <typeparam name="TContentType">The content type.</typeparam>
     public class ContentTypeFinder<TModel, TModelAttribute, TContentType>
         where TModel : ContentTypeModel<TModelAttribute>
-        where TModelAttribute : ContentTypeModelAttribute
+        where TModelAttribute : ContentTypeModelTypeAttribute
         where TContentType : class, IContentTypeBase
     {
         private readonly ILogService _logService;

@@ -14,7 +14,7 @@ namespace Logikfabrik.Umbraco.Jet
         Inherited = false)]
 
     // ReSharper disable once InheritdocConsiderUsage
-    public class MediaTypeAttribute : ComposableContentTypeAttribute
+    public class MediaTypeAttribute : ComposableContentTypeModelTypeAttribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MediaTypeAttribute" /> class.

@@ -8,7 +8,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Utilities
     using System.Linq;
 
     public abstract class ComposableContentTypeModelTypeBuilder<T> : ContentTypeModelTypeBuilder<T>
-        where T : ComposableContentTypeAttribute
+        where T : ComposableContentTypeModelTypeAttribute
     {
         protected ComposableContentTypeModelTypeBuilder(string typeName, string name)
             : base(typeName, name)

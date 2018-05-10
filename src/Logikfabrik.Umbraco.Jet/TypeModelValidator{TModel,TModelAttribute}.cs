@@ -11,11 +11,11 @@ namespace Logikfabrik.Umbraco.Jet
     /// <summary>
     /// The <see cref="TypeModelValidator{TModel,TModelAttribute}" /> class.
     /// </summary>
-    /// <typeparam name="TModel">The <see cref="TypeModel{T}"/> type.</typeparam>
-    /// <typeparam name="TModelAttribute">The <see cref="TypeModelAttribute"/> type.</typeparam>
+    /// <typeparam name="TModel">The <see cref="Model{T}"/> type.</typeparam>
+    /// <typeparam name="TModelAttribute">The <see cref="ModelTypeAttribute"/> type.</typeparam>
     public abstract class TypeModelValidator<TModel, TModelAttribute>
-        where TModel : TypeModel<TModelAttribute>
-        where TModelAttribute : TypeModelAttribute
+        where TModel : Model<TModelAttribute>
+        where TModelAttribute : ModelTypeAttribute
     {
         /// <summary>
         /// Validates the specified models.

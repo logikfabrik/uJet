@@ -9,7 +9,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Linq;
 
     /// <summary>
-    /// The <see cref="DocumentType" /> class.
+    /// The <see cref="DocumentType" /> class. Model for document types.
     /// </summary>
     // ReSharper disable once InheritdocConsiderUsage
     public class DocumentType : ComposableContentTypeModel<DocumentTypeAttribute>

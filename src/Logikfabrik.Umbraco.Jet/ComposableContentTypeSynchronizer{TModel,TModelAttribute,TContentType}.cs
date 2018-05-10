@@ -21,7 +21,7 @@ namespace Logikfabrik.Umbraco.Jet
     // ReSharper disable once InheritdocConsiderUsage
     public abstract class ComposableContentTypeSynchronizer<TModel, TModelAttribute, TContentType> : ContentTypeSynchronizer<TModel, TModelAttribute, TContentType>
         where TModel : ComposableContentTypeModel<TModelAttribute>
-        where TModelAttribute : ComposableContentTypeAttribute
+        where TModelAttribute : ComposableContentTypeModelTypeAttribute
         where TContentType : class, IContentTypeBase
     {
         private readonly ContentTypeFinder<TModel, TModelAttribute, TContentType> _contentTypeFinder;

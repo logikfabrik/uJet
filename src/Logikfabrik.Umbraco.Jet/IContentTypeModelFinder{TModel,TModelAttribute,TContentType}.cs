@@ -8,7 +8,7 @@ namespace Logikfabrik.Umbraco.Jet
 
     public interface IContentTypeModelFinder<TModel, TModelAttribute, in TContentType> : ITypeModelFinder<TModel, TModelAttribute>
         where TModel : ContentTypeModel<TModelAttribute>
-        where TModelAttribute : ContentTypeModelAttribute
+        where TModelAttribute : ContentTypeModelTypeAttribute
         where TContentType : IContentTypeBase
     {
         /// <summary>

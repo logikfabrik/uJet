@@ -14,7 +14,7 @@ namespace Logikfabrik.Umbraco.Jet
         Inherited = false)]
 
     // ReSharper disable once InheritdocConsiderUsage
-    public class MemberTypeAttribute : ContentTypeModelAttribute
+    public class MemberTypeAttribute : ContentTypeModelTypeAttribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MemberTypeAttribute" /> class.

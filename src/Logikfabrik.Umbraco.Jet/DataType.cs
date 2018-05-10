@@ -9,10 +9,10 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Reflection;
 
     /// <summary>
-    /// The <see cref="DataType" /> class.
+    /// The <see cref="DataType" /> class. Model for data types.
     /// </summary>
     // ReSharper disable once InheritdocConsiderUsage
-    public class DataType : TypeModel<DataTypeAttribute>
+    public class DataType : Model<DataTypeAttribute>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DataType" /> class.

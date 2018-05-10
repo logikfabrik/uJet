@@ -15,7 +15,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
     /// </summary>
     /// <typeparam name="TModelAttribute">The model attribute type.</typeparam>
     public abstract class ContentService<TModelAttribute>
-        where TModelAttribute : ContentTypeModelAttribute
+        where TModelAttribute : ContentTypeModelTypeAttribute
     {
         private readonly ContentMapper _contentMapper = new ContentMapper();
 

@@ -7,8 +7,8 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
 
     public interface ITypeModelFinder<TModel, TModelAttribute>
-        where TModel : TypeModel<TModelAttribute>
-        where TModelAttribute : TypeModelAttribute
+        where TModel : Model<TModelAttribute>
+        where TModelAttribute : ModelTypeAttribute
     {
         /// <summary>
         /// Finds the models with a model type matching the specified model type.

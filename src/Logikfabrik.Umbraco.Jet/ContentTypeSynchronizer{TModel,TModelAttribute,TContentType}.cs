@@ -21,7 +21,7 @@ namespace Logikfabrik.Umbraco.Jet
     // ReSharper disable once InheritdocConsiderUsage
     public abstract class ContentTypeSynchronizer<TModel, TModelAttribute, TContentType> : ISynchronizer
         where TModel : ContentTypeModel<TModelAttribute>
-        where TModelAttribute : ContentTypeModelAttribute
+        where TModelAttribute : ContentTypeModelTypeAttribute
         where TContentType : class, IContentTypeBase
     {
         private readonly ITypeRepository _typeRepository;

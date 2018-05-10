@@ -1,4 +1,4 @@
-﻿// <copyright file="TypeModelAttribute.cs" company="Logikfabrik">
+﻿// <copyright file="ModelTypeAttribute.cs" company="Logikfabrik">
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -8,17 +8,17 @@ namespace Logikfabrik.Umbraco.Jet
     using EnsureThat;
 
     /// <summary>
-    /// The <see cref="TypeModelAttribute" /> class.
+    /// The <see cref="ModelTypeAttribute" /> class.
     /// </summary>
     // ReSharper disable once InheritdocConsiderUsage
-    public abstract class TypeModelAttribute : Attribute
+    public abstract class ModelTypeAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TypeModelAttribute" /> class.
+        /// Initializes a new instance of the <see cref="ModelTypeAttribute" /> class.
         /// </summary>
         /// <param name="id">The identifier.</param>
         // ReSharper disable once InheritdocConsiderUsage
-        protected TypeModelAttribute(string id)
+        protected ModelTypeAttribute(string id)
         {
             Ensure.That(id).IsNotNullOrWhiteSpace();
 
@@ -29,10 +29,10 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TypeModelAttribute" /> class.
+        /// Initializes a new instance of the <see cref="ModelTypeAttribute" /> class.
         /// </summary>
         // ReSharper disable once InheritdocConsiderUsage
-        protected TypeModelAttribute()
+        protected ModelTypeAttribute()
         {
         }
 

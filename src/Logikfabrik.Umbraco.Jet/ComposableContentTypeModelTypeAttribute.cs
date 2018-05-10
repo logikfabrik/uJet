@@ -1,4 +1,4 @@
-﻿// <copyright file="ComposableContentTypeAttribute.cs" company="Logikfabrik">
+﻿// <copyright file="ComposableContentTypeModelTypeAttribute.cs" company="Logikfabrik">
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -7,28 +7,28 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
 
     /// <summary>
-    /// The <see cref="ComposableContentTypeAttribute" /> class.
+    /// The <see cref="ComposableContentTypeModelTypeAttribute" /> class.
     /// </summary>
     // ReSharper disable once InheritdocConsiderUsage
-    public abstract class ComposableContentTypeAttribute : ContentTypeModelAttribute
+    public abstract class ComposableContentTypeModelTypeAttribute : ContentTypeModelTypeAttribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ComposableContentTypeAttribute" /> class.
+        /// Initializes a new instance of the <see cref="ComposableContentTypeModelTypeAttribute" /> class.
         /// </summary>
         /// <param name="name">The name.</param>
         // ReSharper disable once InheritdocConsiderUsage
-        protected ComposableContentTypeAttribute(string name)
+        protected ComposableContentTypeModelTypeAttribute(string name)
             : base(name)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ComposableContentTypeAttribute" /> class.
+        /// Initializes a new instance of the <see cref="ComposableContentTypeModelTypeAttribute" /> class.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="name">The name.</param>
         // ReSharper disable once InheritdocConsiderUsage
-        protected ComposableContentTypeAttribute(string id, string name)
+        protected ComposableContentTypeModelTypeAttribute(string id, string name)
             : base(id, name)
         {
         }

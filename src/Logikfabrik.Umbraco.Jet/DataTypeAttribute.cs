@@ -15,7 +15,7 @@ namespace Logikfabrik.Umbraco.Jet
         Inherited = false)]
 
     // ReSharper disable once InheritdocConsiderUsage
-    public class DataTypeAttribute : TypeModelAttribute
+    public class DataTypeAttribute : ModelTypeAttribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DataTypeAttribute" /> class.
@@ -23,6 +23,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="type">The type.</param>
         /// <param name="editor">The editor.</param>
         // ReSharper disable once InheritdocConsiderUsage
+        // ReSharper disable once UnusedMember.Global
         public DataTypeAttribute(Type type, string editor)
         {
             Ensure.That(type).IsNotNull();
@@ -39,6 +40,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="type">The type.</param>
         /// <param name="editor">The editor.</param>
         // ReSharper disable once InheritdocConsiderUsage
+        // ReSharper disable once UnusedMember.Global
         public DataTypeAttribute(string id, Type type, string editor)
             : base(id)
         {

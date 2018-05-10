@@ -7,7 +7,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
 
     /// <summary>
-    /// The <see cref="MediaType" /> class.
+    /// The <see cref="MediaType" /> class. Model for media types.
     /// </summary>
     // ReSharper disable once InheritdocConsiderUsage
     public class MediaType : ComposableContentTypeModel<MediaTypeAttribute>

@@ -13,11 +13,11 @@ namespace Logikfabrik.Umbraco.Jet
     /// The <see cref="ContentTypeModelValidator{TModel,TModelAttribute}" /> class.
     /// </summary>
     /// <typeparam name="TModel">The <see cref="ContentTypeModel{T}" /> type.</typeparam>
-    /// <typeparam name="TModelAttribute">The <see cref="ContentTypeModelAttribute" /> type.</typeparam>
+    /// <typeparam name="TModelAttribute">The <see cref="ContentTypeModelTypeAttribute" /> type.</typeparam>
     // ReSharper disable once InheritdocConsiderUsage
     public class ContentTypeModelValidator<TModel, TModelAttribute> : TypeModelValidator<TModel, TModelAttribute>
         where TModel : ContentTypeModel<TModelAttribute>
-        where TModelAttribute : ContentTypeModelAttribute
+        where TModelAttribute : ContentTypeModelTypeAttribute
     {
         /// <inheritdoc />
         public override void Validate(TModel[] models)

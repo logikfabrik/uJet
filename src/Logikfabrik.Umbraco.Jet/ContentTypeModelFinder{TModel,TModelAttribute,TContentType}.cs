@@ -20,7 +20,7 @@ namespace Logikfabrik.Umbraco.Jet
     // ReSharper disable once InheritdocConsiderUsage
     public class ContentTypeModelFinder<TModel, TModelAttribute, TContentType> : TypeModelFinder<TModel, TModelAttribute>, IContentTypeModelFinder<TModel, TModelAttribute, TContentType>
         where TModel : ContentTypeModel<TModelAttribute>
-        where TModelAttribute : ContentTypeModelAttribute
+        where TModelAttribute : ContentTypeModelTypeAttribute
         where TContentType : class, IContentTypeBase
     {
         private readonly ILogService _logService;

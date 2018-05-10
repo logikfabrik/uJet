@@ -12,7 +12,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Utilities
     using System.Reflection.Emit;
 
     public abstract class ModelTypeBuilder<TModelAttribute>
-        where TModelAttribute : TypeModelAttribute
+        where TModelAttribute : ModelTypeAttribute
     {
         private readonly object[] _arguments;
         private readonly IList<FieldBuilder> _fieldBuilders;

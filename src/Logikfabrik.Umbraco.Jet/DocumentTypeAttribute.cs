@@ -14,7 +14,7 @@ namespace Logikfabrik.Umbraco.Jet
         Inherited = false)]
 
     // ReSharper disable once InheritdocConsiderUsage
-    public class DocumentTypeAttribute : ComposableContentTypeAttribute
+    public class DocumentTypeAttribute : ComposableContentTypeModelTypeAttribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DocumentTypeAttribute" /> class.

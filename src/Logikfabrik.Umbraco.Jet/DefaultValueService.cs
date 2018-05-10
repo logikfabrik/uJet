@@ -142,7 +142,7 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         private static void SetDefaultValues<T>(IContentBase content, ContentTypeModel<T> model)
-            where T : ContentTypeModelAttribute
+            where T : ContentTypeModelTypeAttribute
         {
             foreach (var property in model.Properties)
             {

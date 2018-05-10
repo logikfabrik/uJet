@@ -1,4 +1,4 @@
-﻿// <copyright file="ContentTypeModel{T}.cs" company="Logikfabrik">
+﻿// <copyright file="ContentTypeModel{TModelTypeAttribute}.cs" company="Logikfabrik">
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -13,17 +13,17 @@ namespace Logikfabrik.Umbraco.Jet
     using Extensions;
 
     /// <summary>
-    /// The <see cref="ContentTypeModel{T}" /> class.
+    /// The <see cref="ContentTypeModel{TModelTypeAttribute}" /> class.
     /// </summary>
-    /// <typeparam name="T">The attribute type.</typeparam>
+    /// <typeparam name="TModelTypeAttribute">The attribute type.</typeparam>
     // ReSharper disable once InheritdocConsiderUsage
-    public abstract class ContentTypeModel<T> : TypeModel<T>
-        where T : ContentTypeModelAttribute
+    public abstract class ContentTypeModel<TModelTypeAttribute> : Model<TModelTypeAttribute>
+        where TModelTypeAttribute : ContentTypeModelTypeAttribute
     {
         private readonly Lazy<IEnumerable<PropertyType>> _properties;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContentTypeModel{T}" /> class.
+        /// Initializes a new instance of the <see cref="ContentTypeModel{TModelTypeAttribute}" /> class.
         /// </summary>
         /// <param name="modelType">The model type.</param>
         // ReSharper disable once InheritdocConsiderUsage
@@ -74,10 +74,10 @@ namespace Logikfabrik.Umbraco.Jet
         public string Icon => Attribute.Icon;
 
         /// <summary>
-        /// Gets a value indicating whether this instance is a container.
+        /// Gets a value indicating whether content of this type are containers.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if this instance is a container; otherwise, <c>false</c>.
+        ///   <c>true</c> if containers; otherwise, <c>false</c>.
         /// </value>
         public bool IsContainer => Attribute.IsContainer;
 

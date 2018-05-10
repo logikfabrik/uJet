@@ -7,7 +7,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
 
     /// <summary>
-    /// The <see cref="MemberType" /> class.
+    /// The <see cref="MemberType" /> class. Model for member types.
     /// </summary>
     // ReSharper disable once InheritdocConsiderUsage
     public class MemberType : ContentTypeModel<MemberTypeAttribute>

@@ -13,8 +13,8 @@ namespace Logikfabrik.Umbraco.Jet
     /// <typeparam name="TModelAttribute">The model attribute type.</typeparam>
     // ReSharper disable once InheritdocConsiderUsage
     public class TypeModelComparer<TModel, TModelAttribute> : IEqualityComparer<TModel>
-        where TModel : TypeModel<TModelAttribute>
-        where TModelAttribute : TypeModelAttribute
+        where TModel : Model<TModelAttribute>
+        where TModelAttribute : ModelTypeAttribute
     {
         /// <inheritdoc />
         public bool Equals(TModel x, TModel y)

@@ -1,4 +1,4 @@
-﻿// <copyright file="ComposableContentTypeModel{T}.cs" company="Logikfabrik">
+﻿// <copyright file="ComposableContentTypeModel{TModelTypeAttribute}.cs" company="Logikfabrik">
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -11,15 +11,15 @@ namespace Logikfabrik.Umbraco.Jet
     using Extensions;
 
     /// <summary>
-    /// The <see cref="ComposableContentTypeModel{T}" /> class.
+    /// The <see cref="ComposableContentTypeModel{TModelTypeAttribute}" /> class.
     /// </summary>
-    /// <typeparam name="T">The attribute type.</typeparam>
+    /// <typeparam name="TModelTypeAttribute">The model type attribute type.</typeparam>
     // ReSharper disable once InheritdocConsiderUsage
-    public abstract class ComposableContentTypeModel<T> : ContentTypeModel<T>
-        where T : ComposableContentTypeAttribute
+    public abstract class ComposableContentTypeModel<TModelTypeAttribute> : ContentTypeModel<TModelTypeAttribute>
+        where TModelTypeAttribute : ComposableContentTypeModelTypeAttribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ComposableContentTypeModel{T}" /> class.
+        /// Initializes a new instance of the <see cref="ComposableContentTypeModel{TModelTypeAttribute}" /> class.
         /// </summary>
         /// <param name="modelType">The model type.</param>
         // ReSharper disable once InheritdocConsiderUsage
@@ -82,17 +82,13 @@ namespace Logikfabrik.Umbraco.Jet
             return properties.Where(IsValidProperty).Select(property => new PropertyType(property));
         }
 
-        /// <summary>
-        /// Gets the parent node type.
-        /// </summary>
-        /// <returns>The parent node type.</returns>
         private Type GetParentNodeType()
         {
             var baseType = ModelType.BaseType;
 
             for (var type = baseType; type != null; type = type.BaseType)
             {
-                if (type.IsModelType<T>())
+                if (type.IsModelType<TModelTypeAttribute>())
                 {
                     return type;
                 }
@@ -101,10 +97,6 @@ namespace Logikfabrik.Umbraco.Jet
             return null;
         }
 
-        /// <summary>
-        /// Gets the inheritance.
-        /// </summary>
-        /// <returns>The inheritance.</returns>
         private IDictionary<Type, IEnumerable<Type>> GetInheritance()
         {
             var inheritance = new Dictionary<Type, IEnumerable<Type>>();
@@ -113,7 +105,7 @@ namespace Logikfabrik.Umbraco.Jet
             // TODO: Rewrite. As soon as another model type is found in the inheritance chain, we should return.
             for (var type = ModelType; type != null; type = type.BaseType)
             {
-                if (type.IsModelType<T>())
+                if (type.IsModelType<TModelTypeAttribute>())
                 {
                     inheritance.Add(type, new List<Type> { type });
                     types = (List<Type>)inheritance[type];
