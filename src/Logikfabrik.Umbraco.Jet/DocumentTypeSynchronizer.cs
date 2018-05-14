@@ -30,7 +30,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="logService">The log service.</param>
         /// <param name="typeRepository">The type repository.</param>
-        /// <param name="typeResolver">The type resolver.</param>
+        /// <param name="modelService">The model service.</param>
         /// <param name="contentTypeService">The content type service.</param>
         /// <param name="fileService">The file service.</param>
         /// <param name="dataTypeDefinitionService">The data type definition service.</param>
@@ -38,19 +38,19 @@ namespace Logikfabrik.Umbraco.Jet
         public DocumentTypeSynchronizer(
             ILogService logService,
             ITypeRepository typeRepository,
-            IModelService typeResolver,
+            IModelService modelService,
             IContentTypeService contentTypeService,
             IFileService fileService,
             IDataTypeDefinitionService dataTypeDefinitionService)
             : base(logService, typeRepository, dataTypeDefinitionService)
         {
-            Ensure.That(typeResolver).IsNotNull();
+            Ensure.That(modelService).IsNotNull();
             Ensure.That(contentTypeService).IsNotNull();
             Ensure.That(fileService).IsNotNull();
 
             _contentTypeService = contentTypeService;
             _fileService = fileService;
-            _documentTypes = new Lazy<DocumentType[]>(() => typeResolver.DocumentTypes.ToArray());
+            _documentTypes = new Lazy<DocumentType[]>(() => modelService.DocumentTypes.ToArray());
         }
 
         /// <inheritdoc />

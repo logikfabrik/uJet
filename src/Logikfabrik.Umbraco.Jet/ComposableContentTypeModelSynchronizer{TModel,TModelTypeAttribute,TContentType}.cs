@@ -98,7 +98,7 @@ namespace Logikfabrik.Umbraco.Jet
 
                 var aliases = contentType.CompositionAliases().ToArray();
 
-                // Inheritance and composition cannot be mixed. Remove all compositions.
+                // Inheritance and composition can not be mixed. Remove all compositions.
                 foreach (var alias in aliases)
                 {
                     contentType.RemoveContentType(alias);

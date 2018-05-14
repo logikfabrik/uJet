@@ -26,22 +26,22 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="logService">The log service.</param>
         /// <param name="memberTypeService">The member type service.</param>
-        /// <param name="typeResolver">The type resolver.</param>
+        /// <param name="modelService">The model service.</param>
         /// <param name="typeRepository">The type repository.</param>
         /// <param name="dataTypeDefinitionService">The data type definition service.</param>
         public MemberTypeSynchronizer(
             ILogService logService,
             IMemberTypeService memberTypeService,
-            IModelService typeResolver,
+            IModelService modelService,
             ITypeRepository typeRepository,
             IDataTypeDefinitionService dataTypeDefinitionService)
             : base(logService, typeRepository, dataTypeDefinitionService)
         {
             Ensure.That(memberTypeService).IsNotNull();
-            Ensure.That(typeResolver).IsNotNull();
+            Ensure.That(modelService).IsNotNull();
 
             _memberTypeService = memberTypeService;
-            _memberTypes = new Lazy<MemberType[]>(() => typeResolver.MemberTypes.ToArray());
+            _memberTypes = new Lazy<MemberType[]>(() => modelService.MemberTypes.ToArray());
         }
 
         /// <inheritdoc />

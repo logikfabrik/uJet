@@ -27,23 +27,23 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="logService">The log service.</param>
         /// <param name="typeRepository">The type repository.</param>
-        /// <param name="typeResolver">The type resolver.</param>
+        /// <param name="modelService">The model service.</param>
         /// <param name="contentTypeService">The content type service.</param>
         /// <param name="dataTypeDefinitionService">The data type definition service.</param>
         // ReSharper disable once InheritdocConsiderUsage
         public MediaTypeSynchronizer(
             ILogService logService,
             ITypeRepository typeRepository,
-            IModelService typeResolver,
+            IModelService modelService,
             IContentTypeService contentTypeService,
             IDataTypeDefinitionService dataTypeDefinitionService)
             : base(logService, typeRepository, dataTypeDefinitionService)
         {
-            Ensure.That(typeResolver).IsNotNull();
+            Ensure.That(modelService).IsNotNull();
             Ensure.That(contentTypeService).IsNotNull();
 
             _contentTypeService = contentTypeService;
-            _mediaTypes = new Lazy<MediaType[]>(() => typeResolver.MediaTypes.ToArray());
+            _mediaTypes = new Lazy<MediaType[]>(() => modelService.MediaTypes.ToArray());
         }
 
         /// <inheritdoc />

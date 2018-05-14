@@ -16,7 +16,7 @@ namespace Logikfabrik.Umbraco.Jet
     /// </summary>
     public class DefaultValueService
     {
-        private readonly IModelService _typeResolver;
+        private readonly IModelService _modelService;
         private readonly IContentTypeModelFinder<DocumentType, DocumentTypeAttribute, IContentType> _documentTypeModelFinder;
         private readonly IContentTypeModelFinder<MediaType, MediaTypeAttribute, IMediaType> _mediaTypeModelFinder;
         private readonly IContentTypeModelFinder<MemberType, MemberTypeAttribute, IMemberType> _memberTypeModelFinder;
@@ -24,22 +24,22 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultValueService" /> class.
         /// </summary>
-        /// <param name="typeResolver">The type resolver.</param>
+        /// <param name="modelService">The model service.</param>
         /// <param name="documentTypeModelFinder">The document type model finder.</param>
         /// <param name="mediaTypeModelFinder">The media type model finder.</param>
         /// <param name="memberTypeModelFinder">The member type model finder.</param>
         public DefaultValueService(
-            IModelService typeResolver,
+            IModelService modelService,
             IContentTypeModelFinder<DocumentType, DocumentTypeAttribute, IContentType> documentTypeModelFinder,
             IContentTypeModelFinder<MediaType, MediaTypeAttribute, IMediaType> mediaTypeModelFinder,
             IContentTypeModelFinder<MemberType, MemberTypeAttribute, IMemberType> memberTypeModelFinder)
         {
-            Ensure.That(typeResolver).IsNotNull();
+            Ensure.That(modelService).IsNotNull();
             Ensure.That(documentTypeModelFinder).IsNotNull();
             Ensure.That(mediaTypeModelFinder).IsNotNull();
             Ensure.That(memberTypeModelFinder).IsNotNull();
 
-            _typeResolver = typeResolver;
+            _modelService = modelService;
             _documentTypeModelFinder = documentTypeModelFinder;
             _mediaTypeModelFinder = mediaTypeModelFinder;
             _memberTypeModelFinder = memberTypeModelFinder;
@@ -67,7 +67,7 @@ namespace Logikfabrik.Umbraco.Jet
         {
             Ensure.That(content).IsNotNull();
 
-            var model = _documentTypeModelFinder.Find(content.ContentType, _typeResolver.DocumentTypes.ToArray()).SingleOrDefault();
+            var model = _documentTypeModelFinder.Find(content.ContentType, _modelService.DocumentTypes.ToArray()).SingleOrDefault();
 
             if (model == null)
             {
@@ -99,7 +99,7 @@ namespace Logikfabrik.Umbraco.Jet
         {
             Ensure.That(content).IsNotNull();
 
-            var model = _mediaTypeModelFinder.Find(content.ContentType, _typeResolver.MediaTypes.ToArray()).SingleOrDefault();
+            var model = _mediaTypeModelFinder.Find(content.ContentType, _modelService.MediaTypes.ToArray()).SingleOrDefault();
 
             if (model == null)
             {
@@ -131,7 +131,7 @@ namespace Logikfabrik.Umbraco.Jet
         {
             Ensure.That(content).IsNotNull();
 
-            var model = _memberTypeModelFinder.Find(content.ContentType, _typeResolver.MemberTypes.ToArray()).SingleOrDefault();
+            var model = _memberTypeModelFinder.Find(content.ContentType, _modelService.MemberTypes.ToArray()).SingleOrDefault();
 
             if (model == null)
             {

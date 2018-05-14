@@ -49,7 +49,7 @@ namespace Logikfabrik.Umbraco.Jet
 
                 logService.Log<JetApplicationHandler>(new LogEntry(LogEntryType.Information, "Begin synchronizing types."));
 
-                var typeResolver = new ModelService(new ModelTypeService(logService, new AssemblyLoader(AppDomain.CurrentDomain, JetConfigurationManager.Assemblies)));
+                var modelService = new ModelService(new ModelTypeService(logService, new AssemblyLoader(AppDomain.CurrentDomain, JetConfigurationManager.Assemblies)));
                 var typeRepository = new TypeRepository(new ContentTypeRepository(new DatabaseWrapper(ApplicationContext.Current.DatabaseContext.Database, ResolverBase<LoggerResolver>.Current.Logger, ApplicationContext.Current.DatabaseContext.SqlSyntax)), new DataTypeRepository(new DatabaseWrapper(ApplicationContext.Current.DatabaseContext.Database, ResolverBase<LoggerResolver>.Current.Logger, ApplicationContext.Current.DatabaseContext.SqlSyntax)));
                 var dataTypeDefinitionService = new DataTypeDefinitionService(applicationContext.Services.DataTypeService, UmbracoConfig.For.UmbracoSettings().Content.EnablePropertyValueConverters);
 
@@ -61,7 +61,7 @@ namespace Logikfabrik.Umbraco.Jet
                     new DataTypeSynchronizer(
                         applicationContext.Services.DataTypeService,
                         new DataTypeDefinitionFinder(typeRepository),
-                        typeResolver,
+                        modelService,
                         typeRepository).Run();
                 }
 
@@ -78,7 +78,7 @@ namespace Logikfabrik.Umbraco.Jet
                     new DocumentTypeSynchronizer(
                         logService,
                         typeRepository,
-                        typeResolver,
+                        modelService,
                         applicationContext.Services.ContentTypeService,
                         applicationContext.Services.FileService,
                         dataTypeDefinitionService).Run();
@@ -91,7 +91,7 @@ namespace Logikfabrik.Umbraco.Jet
                     new MediaTypeSynchronizer(
                         logService,
                         typeRepository,
-                        typeResolver,
+                        modelService,
                         applicationContext.Services.ContentTypeService,
                         dataTypeDefinitionService).Run();
                 }
@@ -103,13 +103,13 @@ namespace Logikfabrik.Umbraco.Jet
                     new MemberTypeSynchronizer(
                         logService,
                         applicationContext.Services.MemberTypeService,
-                        typeResolver,
+                        modelService,
                         typeRepository,
                         dataTypeDefinitionService).Run();
                 }
 
                 var defaultValueService = new DefaultValueService(
-                    typeResolver,
+                    modelService,
                     new ContentTypeModelFinder<DocumentType, DocumentTypeAttribute, IContentType>(logService, typeRepository),
                     new ContentTypeModelFinder<MediaType, MediaTypeAttribute, IMediaType>(logService, typeRepository),
                     new ContentTypeModelFinder<MemberType, MemberTypeAttribute, IMemberType>(logService, typeRepository));

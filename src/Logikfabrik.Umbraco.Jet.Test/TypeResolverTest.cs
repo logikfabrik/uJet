@@ -15,13 +15,13 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             var mocker = new AutoMocker();
 
-            var typeResolver = mocker.CreateInstance<ModelService>();
+            var modelService = mocker.CreateInstance<ModelService>();
 
-            var typeServiceMock = mocker.GetMock<IModelTypeService>();
+            var modelTypeServiceMock = mocker.GetMock<IModelTypeService>();
 
-            var _ = typeResolver.DocumentTypes;
+            var _ = modelService.DocumentTypes;
 
-            typeServiceMock.Verify(m => m.DocumentTypes, Times.Once);
+            modelTypeServiceMock.Verify(m => m.DocumentTypes, Times.Once);
         }
 
         [Fact]
@@ -29,13 +29,13 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             var mocker = new AutoMocker();
 
-            var typeResolver = mocker.CreateInstance<ModelService>();
+            var modelService = mocker.CreateInstance<ModelService>();
 
-            var typeServiceMock = mocker.GetMock<IModelTypeService>();
+            var modelTypeServiceMock = mocker.GetMock<IModelTypeService>();
 
-            var _ = typeResolver.MediaTypes;
+            var _ = modelService.MediaTypes;
 
-            typeServiceMock.Verify(m => m.MediaTypes, Times.Once);
+            modelTypeServiceMock.Verify(m => m.MediaTypes, Times.Once);
         }
 
         [Fact]
@@ -43,13 +43,13 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             var mocker = new AutoMocker();
 
-            var typeResolver = mocker.CreateInstance<ModelService>();
+            var modelService = mocker.CreateInstance<ModelService>();
 
-            var typeServiceMock = mocker.GetMock<IModelTypeService>();
+            var modelTypeServiceMock = mocker.GetMock<IModelTypeService>();
 
-            var _ = typeResolver.MemberTypes;
+            var _ = modelService.MemberTypes;
 
-            typeServiceMock.Verify(m => m.MemberTypes, Times.Once);
+            modelTypeServiceMock.Verify(m => m.MemberTypes, Times.Once);
         }
 
         [Fact]
@@ -57,13 +57,13 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             var mocker = new AutoMocker();
 
-            var typeResolver = mocker.CreateInstance<ModelService>();
+            var modelService = mocker.CreateInstance<ModelService>();
 
-            var typeServiceMock = mocker.GetMock<IModelTypeService>();
+            var modelTypeServiceMock = mocker.GetMock<IModelTypeService>();
 
-            var _ = typeResolver.DataTypes;
+            var _ = modelService.DataTypes;
 
-            typeServiceMock.Verify(m => m.DataTypes, Times.Once);
+            modelTypeServiceMock.Verify(m => m.DataTypes, Times.Once);
         }
     }
 }

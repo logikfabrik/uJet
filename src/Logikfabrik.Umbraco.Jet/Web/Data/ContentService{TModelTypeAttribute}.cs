@@ -1,4 +1,4 @@
-﻿// <copyright file="ContentService{TModelAttribute}.cs" company="Logikfabrik">
+﻿// <copyright file="ContentService{TModelTypeAttribute}.cs" company="Logikfabrik">
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -11,11 +11,11 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
     using global::Umbraco.Core.Models;
 
     /// <summary>
-    /// The <see cref="ContentService{TModelAttribute}" /> class.
+    /// The <see cref="ContentService{TModelTypeAttribute}" /> class.
     /// </summary>
-    /// <typeparam name="TModelAttribute">The model attribute type.</typeparam>
-    public abstract class ContentService<TModelAttribute>
-        where TModelAttribute : ContentTypeModelTypeAttribute
+    /// <typeparam name="TModelTypeAttribute">The model type attribute type.</typeparam>
+    public abstract class ContentService<TModelTypeAttribute>
+        where TModelTypeAttribute : ContentTypeModelTypeAttribute
     {
         private readonly ContentMapper _contentMapper = new ContentMapper();
 
@@ -29,7 +29,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
             where T : class, new()
         {
             // TODO: Add unit test.
-            Ensure.That(() => typeof(T).IsModelType<TModelAttribute>(), nameof(T)).IsTrue();
+            Ensure.That(() => typeof(T).IsModelType<TModelTypeAttribute>(), nameof(T)).IsTrue();
 
             return GetMappedContent<T>(GetContent(id));
         }
@@ -44,7 +44,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
             where T : class, new()
         {
             // TODO: Add unit test.
-            Ensure.That(() => typeof(T).IsModelType<TModelAttribute>(), nameof(T)).IsTrue();
+            Ensure.That(() => typeof(T).IsModelType<TModelTypeAttribute>(), nameof(T)).IsTrue();
             Ensure.That(content).IsNotNull();
 
             return GetMappedContent<T>(content);
@@ -59,7 +59,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         public object GetContent(int id, Type contentModelType)
         {
             Ensure.That(contentModelType).IsNotNull();
-            Ensure.That(() => contentModelType.IsModelType<TModelAttribute>(), nameof(contentModelType)).IsTrue();
+            Ensure.That(() => contentModelType.IsModelType<TModelTypeAttribute>(), nameof(contentModelType)).IsTrue();
 
             return GetMappedContent(GetContent(id), contentModelType);
         }
@@ -74,7 +74,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         {
             Ensure.That(content).IsNotNull();
             Ensure.That(contentModelType).IsNotNull();
-            Ensure.That(() => contentModelType.IsModelType<TModelAttribute>(), nameof(contentModelType)).IsTrue();
+            Ensure.That(() => contentModelType.IsModelType<TModelTypeAttribute>(), nameof(contentModelType)).IsTrue();
 
             return GetMappedContent(content, contentModelType);
         }

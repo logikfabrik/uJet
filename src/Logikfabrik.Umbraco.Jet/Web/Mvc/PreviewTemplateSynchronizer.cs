@@ -22,7 +22,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     {
         private readonly IContentTypeService _contentTypeService;
         private readonly IFileService _fileService;
-        private readonly IModelService _typeResolver;
+        private readonly IModelService _modelService;
         private readonly ContentTypeFinder<DocumentType, DocumentTypeAttribute, IContentType> _documentTypeFinder;
 
         private ITemplate _previewTemplate;
@@ -33,24 +33,24 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// <param name="logService">The log service.</param>
         /// <param name="contentTypeService">The content type service.</param>
         /// <param name="fileService">The file service.</param>
-        /// <param name="typeResolver">The type resolver.</param>
+        /// <param name="modelService">The model service.</param>
         /// <param name="typeRepository">The type repository.</param>
         public PreviewTemplateSynchronizer(
             ILogService logService,
             IContentTypeService contentTypeService,
             IFileService fileService,
-            IModelService typeResolver,
+            IModelService modelService,
             ITypeRepository typeRepository)
         {
             Ensure.That(logService).IsNotNull();
             Ensure.That(contentTypeService).IsNotNull();
             Ensure.That(fileService).IsNotNull();
-            Ensure.That(typeResolver).IsNotNull();
+            Ensure.That(modelService).IsNotNull();
             Ensure.That(typeRepository).IsNotNull();
 
             _contentTypeService = contentTypeService;
             _fileService = fileService;
-            _typeResolver = typeResolver;
+            _modelService = modelService;
             _documentTypeFinder = new ContentTypeFinder<DocumentType, DocumentTypeAttribute, IContentType>(logService, typeRepository);
         }
 
@@ -59,7 +59,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         {
             var documentTypes = _contentTypeService.GetAllContentTypes().ToArray();
 
-            foreach (var model in _typeResolver.DocumentTypes.Where(model => Attribute.IsDefined(model.ModelType, typeof(PreviewTemplateAttribute), false)))
+            foreach (var model in _modelService.DocumentTypes.Where(model => Attribute.IsDefined(model.ModelType, typeof(PreviewTemplateAttribute), false)))
             {
                 var documentType = _documentTypeFinder.Find(model, documentTypes).SingleOrDefault();
 

@@ -25,9 +25,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var dataTypeSynchronizer = mocker.CreateInstance<DataTypeSynchronizer>();
 
-            var typeResolverMock = mocker.GetMock<IModelService>();
+            var modelServiceMock = mocker.GetMock<IModelService>();
 
-            typeResolverMock
+            modelServiceMock
                 .Setup(m => m.DataTypes)
                 .Returns(new[] { model });
 
@@ -61,9 +61,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var dataTypeSynchronizer = mocker.CreateInstance<DataTypeSynchronizer>();
 
-            var typeResolverMock = mocker.GetMock<IModelService>();
+            var modelServiceMock = mocker.GetMock<IModelService>();
 
-            typeResolverMock
+            modelServiceMock
                 .Setup(m => m.DataTypes)
                 .Returns(new[] { model });
 
@@ -97,9 +97,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var dataTypeSynchronizer = mocker.CreateInstance<DataTypeSynchronizer>();
 
-            var typeResolverMock = mocker.GetMock<IModelService>();
+            var modelServiceMock = mocker.GetMock<IModelService>();
 
-            typeResolverMock
+            modelServiceMock
                 .Setup(m => m.DataTypes)
                 .Returns(new[] { model });
 
@@ -130,9 +130,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var dataTypeSynchronizer = mocker.CreateInstance<DataTypeSynchronizer>();
 
-            var typeResolverMock = mocker.GetMock<IModelService>();
+            var modelServiceMock = mocker.GetMock<IModelService>();
 
-            typeResolverMock
+            modelServiceMock
                 .Setup(m => m.DataTypes)
                 .Returns(new[] { model });
 

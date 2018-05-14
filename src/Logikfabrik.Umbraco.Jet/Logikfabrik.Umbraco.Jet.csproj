@@ -341,9 +341,7 @@
     <Compile Include="MemberTypeSynchronizer.cs" />
     <Compile Include="ModelService.cs" />
     <Compile Include="Web\Data\ContentMapper.cs" />
-    <Compile Include="Web\Data\ContentService{TModelAttribute}.cs">
-      <SonarQubeExclude>true</SonarQubeExclude>
-    </Compile>
+    <Compile Include="Web\Data\ContentService{TModelTypeAttribute}.cs" />
     <Compile Include="Web\Data\Converters\FloatingBinaryPointPropertyValueConverter.cs" />
     <Compile Include="Web\Data\Converters\FloatingDecimalPointPropertyValueConverter.cs" />
     <Compile Include="Web\Data\Converters\HtmlStringPropertyValueConverter.cs" />

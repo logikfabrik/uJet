@@ -21,7 +21,7 @@ namespace Logikfabrik.Umbraco.Jet
     {
         private readonly IDataTypeService _dataTypeService;
         private readonly IDataTypeDefinitionFinder _dataTypeDefinitionFinder;
-        private readonly IModelService _typeResolver;
+        private readonly IModelService _modelService;
         private readonly ITypeRepository _typeRepository;
 
         /// <summary>
@@ -29,29 +29,29 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="dataTypeService">The data type service.</param>
         /// <param name="dataTypeDefinitionFinder">The data type definition finder.</param>
-        /// <param name="typeResolver">The type resolver.</param>
+        /// <param name="modelService">The model service.</param>
         /// <param name="typeRepository">The type repository.</param>
         public DataTypeSynchronizer(
             IDataTypeService dataTypeService,
             IDataTypeDefinitionFinder dataTypeDefinitionFinder,
-            IModelService typeResolver,
+            IModelService modelService,
             ITypeRepository typeRepository)
         {
             Ensure.That(dataTypeService).IsNotNull();
             Ensure.That(dataTypeDefinitionFinder).IsNotNull();
-            Ensure.That(typeResolver).IsNotNull();
+            Ensure.That(modelService).IsNotNull();
             Ensure.That(typeRepository).IsNotNull();
 
             _dataTypeService = dataTypeService;
             _dataTypeDefinitionFinder = dataTypeDefinitionFinder;
-            _typeResolver = typeResolver;
+            _modelService = modelService;
             _typeRepository = typeRepository;
         }
 
         /// <inheritdoc />
         public void Run()
         {
-            var models = _typeResolver.DataTypes.ToArray();
+            var models = _modelService.DataTypes.ToArray();
 
             if (!models.Any())
             {

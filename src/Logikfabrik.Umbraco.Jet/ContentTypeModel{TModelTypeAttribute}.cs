@@ -15,7 +15,7 @@ namespace Logikfabrik.Umbraco.Jet
     /// <summary>
     /// The <see cref="ContentTypeModel{TModelTypeAttribute}" /> class.
     /// </summary>
-    /// <typeparam name="TModelTypeAttribute">The attribute type.</typeparam>
+    /// <typeparam name="TModelTypeAttribute">The model type attribute type.</typeparam>
     // ReSharper disable once InheritdocConsiderUsage
     public abstract class ContentTypeModel<TModelTypeAttribute> : Model<TModelTypeAttribute>
         where TModelTypeAttribute : ContentTypeModelTypeAttribute
