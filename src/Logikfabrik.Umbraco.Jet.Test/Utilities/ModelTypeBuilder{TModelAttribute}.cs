@@ -91,12 +91,12 @@ namespace Logikfabrik.Umbraco.Jet.Test.Utilities
             return type;
         }
 
-        public void AddProperty(Scope scope, Accessor accessor, string name, Type type)
+        public void AddProperty(Scope scope, Accessors accessors, string name, Type type)
         {
-            AddProperty(scope, accessor, name, type, null);
+            AddProperty(scope, accessors, name, type, null);
         }
 
-        public void AddProperty(Scope scope, Accessor accessor, string name, Type type, IEnumerable<CustomAttributeBuilder> attributeBuilders)
+        public void AddProperty(Scope scope, Accessors accessors, string name, Type type, IEnumerable<CustomAttributeBuilder> attributeBuilders)
         {
             var propertyAttributes = MethodAttributes.SpecialName | MethodAttributes.HideBySig;
 
@@ -130,7 +130,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Utilities
                 }
             }
 
-            if (accessor.HasFlag(Accessor.Get))
+            if (accessors.HasFlag(Accessors.Get))
             {
                 var getMethodBuilder = GetPropertyGetter(typeBuilder, fieldBuilder, propertyAttributes, name, type);
 
@@ -138,7 +138,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Utilities
             }
 
             // ReSharper disable once InvertIf
-            if (accessor.HasFlag(Accessor.Set))
+            if (accessors.HasFlag(Accessors.Set))
             {
                 var setMethodBuilder = GetPropertySetter(typeBuilder, fieldBuilder, propertyAttributes, name, type);
 

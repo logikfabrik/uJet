@@ -11,13 +11,13 @@ namespace Logikfabrik.Umbraco.Jet.Test.Configuration
     public class JetConfigurationManagerTest
     {
         [Theory]
-        [InlineData(SynchronizationMode.DataTypes)]
-        [InlineData(SynchronizationMode.DocumentTypes)]
-        [InlineData(SynchronizationMode.MediaTypes)]
-        [InlineData(SynchronizationMode.MemberTypes)]
-        public void CanGetDefaultSynchronizationMode(SynchronizationMode synchronizationMode)
+        [InlineData(SynchronizationModes.DataTypes)]
+        [InlineData(SynchronizationModes.DocumentTypes)]
+        [InlineData(SynchronizationModes.MediaTypes)]
+        [InlineData(SynchronizationModes.MemberTypes)]
+        public void CanGetDefaultSynchronizationMode(SynchronizationModes synchronizationModes)
         {
-            JetConfigurationManager.Synchronize.HasFlag(synchronizationMode).ShouldBeTrue();
+            JetConfigurationManager.Synchronize.HasFlag(synchronizationModes).ShouldBeTrue();
         }
     }
 }

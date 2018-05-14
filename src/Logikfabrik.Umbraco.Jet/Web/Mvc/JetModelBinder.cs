@@ -46,8 +46,6 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
 
             var renderModel = controllerContext.GetRenderModel();
 
-            var tmp = _documentService.GetContent(renderModel.Content, bindingContext.ModelType);
-
             return renderModel == null
                 ? base.BindModel(controllerContext, bindingContext)
                 : _documentService.GetContent(renderModel.Content, bindingContext.ModelType);

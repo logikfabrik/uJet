@@ -67,11 +67,11 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
         }
 
         /// <inheritdoc />
-        public void CopyTo(KeyValuePair<Type, IEnumerable<IPropertyValueConverter>>[] array, int index)
+        public void CopyTo(KeyValuePair<Type, IEnumerable<IPropertyValueConverter>>[] array, int arrayIndex)
         {
             var a = _innerDictionary.ToArray();
 
-            a.CopyTo(array, index);
+            a.CopyTo(array, arrayIndex);
         }
 
         /// <inheritdoc />

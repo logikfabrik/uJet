@@ -67,11 +67,11 @@ namespace Logikfabrik.Umbraco.Jet.Mappings
         }
 
         /// <inheritdoc />
-        public void CopyTo(KeyValuePair<Type, IDataTypeDefinitionMapping>[] array, int index)
+        public void CopyTo(KeyValuePair<Type, IDataTypeDefinitionMapping>[] array, int arrayIndex)
         {
             var a = _innerDictionary.ToArray();
 
-            a.CopyTo(array, index);
+            a.CopyTo(array, arrayIndex);
         }
 
         /// <inheritdoc />

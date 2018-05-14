@@ -19,7 +19,7 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
         /// <value>
         /// The synchronization mode.
         /// </value>
-        public static SynchronizationMode Synchronize => Section.Synchronize;
+        public static SynchronizationModes Synchronize => Section.Synchronize;
 
         /// <summary>
         /// Gets the assemblies.
@@ -27,18 +27,16 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
         /// <value>
         /// The assemblies.
         /// </value>
-        public static string[] Assemblies
-        {
-            get { return Section.Assemblies.Cast<JetAssemblyElement>().Select(element => element.Name).ToArray(); }
-        }
+        public static string[] Assemblies => GetAssemblies();
 
-        /// <summary>
-        /// Gets the configuration section.
-        /// </summary>
-        /// <returns>The configuration section.</returns>
         private static JetSection GetSection()
         {
             return System.Configuration.ConfigurationManager.GetSection("logikfabrik.umbraco.jet") as JetSection ?? new JetSection();
+        }
+
+        private static string[] GetAssemblies()
+        {
+            return Section.Assemblies.Cast<JetAssemblyElement>().Select(element => element.Name).ToArray();
         }
     }
 }

@@ -59,7 +59,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
                 var modelService = new ModelService(modelTypeService);
 
                 // Synchronize.
-                if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.DocumentTypes))
+                if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationModes.DocumentTypes))
                 {
                     var typeRepository = new TypeRepository(new ContentTypeRepository(new DatabaseWrapper(ApplicationContext.Current.DatabaseContext.Database, ResolverBase<LoggerResolver>.Current.Logger, ApplicationContext.Current.DatabaseContext.SqlSyntax)), new DataTypeRepository(new DatabaseWrapper(ApplicationContext.Current.DatabaseContext.Database, ResolverBase<LoggerResolver>.Current.Logger, ApplicationContext.Current.DatabaseContext.SqlSyntax)));
 

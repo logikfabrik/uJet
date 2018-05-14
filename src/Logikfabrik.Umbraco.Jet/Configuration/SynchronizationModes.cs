@@ -1,4 +1,4 @@
-﻿// <copyright file="SynchronizationMode.cs" company="Logikfabrik">
+﻿// <copyright file="SynchronizationModes.cs" company="Logikfabrik">
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -7,10 +7,10 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
     using System;
 
     /// <summary>
-    /// The <see cref="SynchronizationMode" /> enumeration.
+    /// The <see cref="SynchronizationModes" /> enumeration.
     /// </summary>
     [Flags]
-    public enum SynchronizationMode
+    public enum SynchronizationModes
     {
         /// <summary>
         /// Do not scan or synchronize any model types.

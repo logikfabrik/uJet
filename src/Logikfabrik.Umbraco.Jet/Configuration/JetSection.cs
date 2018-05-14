@@ -22,9 +22,9 @@ namespace Logikfabrik.Umbraco.Jet.Configuration
             "synchronize",
             DefaultValue = "DocumentTypes,MediaTypes,DataTypes,MemberTypes",
             IsRequired = false)]
-        public SynchronizationMode Synchronize
+        public SynchronizationModes Synchronize
         {
-            get => (SynchronizationMode)this["synchronize"];
+            get => (SynchronizationModes)this["synchronize"];
             set => this["synchronize"] = value;
         }
 

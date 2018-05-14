@@ -54,7 +54,7 @@ namespace Logikfabrik.Umbraco.Jet
                 var dataTypeDefinitionService = new DataTypeDefinitionService(applicationContext.Services.DataTypeService, UmbracoConfig.For.UmbracoSettings().Content.EnablePropertyValueConverters);
 
                 // Synchronize.
-                if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.DataTypes))
+                if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationModes.DataTypes))
                 {
                     logService.Log<JetApplicationHandler>(new LogEntry(LogEntryType.Information, "Data type synchronization enabled. Begin synchronizing data types."));
 
@@ -65,7 +65,7 @@ namespace Logikfabrik.Umbraco.Jet
                         typeRepository).Run();
                 }
 
-                if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.DocumentTypes))
+                if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationModes.DocumentTypes))
                 {
                     logService.Log<JetApplicationHandler>(new LogEntry(LogEntryType.Information, "Document type synchronization enabled. Begin synchronizing templates."));
 
@@ -84,7 +84,7 @@ namespace Logikfabrik.Umbraco.Jet
                         dataTypeDefinitionService).Run();
                 }
 
-                if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.MediaTypes))
+                if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationModes.MediaTypes))
                 {
                     logService.Log<JetApplicationHandler>(new LogEntry(LogEntryType.Information, "Media type synchronization enabled. Begin synchronizing media types."));
 
@@ -96,7 +96,7 @@ namespace Logikfabrik.Umbraco.Jet
                         dataTypeDefinitionService).Run();
                 }
 
-                if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.MemberTypes))
+                if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationModes.MemberTypes))
                 {
                     logService.Log<JetApplicationHandler>(new LogEntry(LogEntryType.Information, "Member type synchronization enabled. Begin synchronizing member types."));
 

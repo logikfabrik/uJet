@@ -41,8 +41,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
         public void CanFindConflictByPropertyId(DocumentTypeModelTypeBuilder builder, Guid propertyId, string propertyNameX, Type propertyTypeX, string propertyNameY, Type propertyTypeY)
         {
             // ReSharper disable AssignNullToNotNullAttribute
-            builder.AddProperty(Scope.Public, Accessor.GetSet, propertyNameX, propertyTypeX, new[] { new CustomAttributeBuilder(typeof(IdAttribute).GetConstructor(new[] { typeof(string) }), new object[] { propertyId.ToString() }) });
-            builder.AddProperty(Scope.Public, Accessor.GetSet, propertyNameY, propertyTypeY, new[] { new CustomAttributeBuilder(typeof(IdAttribute).GetConstructor(new[] { typeof(string) }), new object[] { propertyId.ToString() }) });
+            builder.AddProperty(Scope.Public, Accessors.GetSet, propertyNameX, propertyTypeX, new[] { new CustomAttributeBuilder(typeof(IdAttribute).GetConstructor(new[] { typeof(string) }), new object[] { propertyId.ToString() }) });
+            builder.AddProperty(Scope.Public, Accessors.GetSet, propertyNameY, propertyTypeY, new[] { new CustomAttributeBuilder(typeof(IdAttribute).GetConstructor(new[] { typeof(string) }), new object[] { propertyId.ToString() }) });
 
             // ReSharper restore AssignNullToNotNullAttribute
             var model = new DocumentType(builder.Create(Scope.Public));
@@ -57,8 +57,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
         public void CanFindConflictByPropertyAlias(DocumentTypeModelTypeBuilder builder, string propertyAlias, string propertyNameX, Type propertyTypeX, string propertyNameY, Type propertyTypeY)
         {
             // ReSharper disable AssignNullToNotNullAttribute
-            builder.AddProperty(Scope.Public, Accessor.GetSet, propertyNameX, propertyTypeX, new[] { new CustomAttributeBuilder(typeof(AliasAttribute).GetConstructor(new[] { typeof(string) }), new object[] { propertyAlias }) });
-            builder.AddProperty(Scope.Public, Accessor.GetSet, propertyNameY, propertyTypeY, new[] { new CustomAttributeBuilder(typeof(AliasAttribute).GetConstructor(new[] { typeof(string) }), new object[] { propertyAlias }) });
+            builder.AddProperty(Scope.Public, Accessors.GetSet, propertyNameX, propertyTypeX, new[] { new CustomAttributeBuilder(typeof(AliasAttribute).GetConstructor(new[] { typeof(string) }), new object[] { propertyAlias }) });
+            builder.AddProperty(Scope.Public, Accessors.GetSet, propertyNameY, propertyTypeY, new[] { new CustomAttributeBuilder(typeof(AliasAttribute).GetConstructor(new[] { typeof(string) }), new object[] { propertyAlias }) });
 
             // ReSharper restore AssignNullToNotNullAttribute
             var model = new DocumentType(builder.Create(Scope.Public));

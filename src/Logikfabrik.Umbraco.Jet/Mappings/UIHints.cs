@@ -4,7 +4,7 @@
 
 namespace Logikfabrik.Umbraco.Jet.Mappings
 {
-    public class UIHints
+    public static class UIHints
     {
         public const string ListViewMembers = "ListViewMembers";
 

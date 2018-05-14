@@ -62,7 +62,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [CustomAutoData]
         public void CanGetPreValuesFromAttribute(DataTypeModelTypeBuilder builder)
         {
-            builder.AddProperty(Scope.Public, Accessor.Get, "PreValues", typeof(Dictionary<string, string>));
+            builder.AddProperty(Scope.Public, Accessors.Get, "PreValues", typeof(Dictionary<string, string>));
 
             var modelType = builder.Create(Scope.Public);
 

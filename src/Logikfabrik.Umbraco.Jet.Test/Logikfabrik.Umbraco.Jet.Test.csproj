@@ -323,7 +323,7 @@
     <Compile Include="Utilities\ContentTypeModelTypeBuilder{T}.cs" />
     <Compile Include="Utilities\DataTypeModelTypeBuilder.cs" />
     <Compile Include="Utilities\DocumentTypeModelTypeBuilder.cs" />
-    <Compile Include="Utilities\Accessor.cs" />
+    <Compile Include="Utilities\Accessors.cs" />
     <Compile Include="Utilities\MediaTypeModelTypeBuilder.cs" />
     <Compile Include="Utilities\MemberTypeModelTypeBuilder.cs" />
     <Compile Include="Utilities\ModelTypeBuilder{TModelAttribute}.cs" />

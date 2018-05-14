@@ -263,7 +263,7 @@
     <Compile Include="Configuration\JetAssemblyElementCollection.cs" />
     <Compile Include="Configuration\JetConfigurationManager.cs" />
     <Compile Include="Configuration\JetSection.cs" />
-    <Compile Include="Configuration\SynchronizationMode.cs" />
+    <Compile Include="Configuration\SynchronizationModes.cs" />
     <Compile Include="EntityTypeComparer{TEntityType}.cs">
       <SonarQubeExclude>true</SonarQubeExclude>
     </Compile>

@@ -21,7 +21,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
         [CustomAutoData]
         public void CanGetContentIdByConvention(int id, MediaTypeModelTypeBuilder builder)
         {
-            builder.AddProperty(Scope.Public, Accessor.GetSet, "Id", id.GetType());
+            builder.AddProperty(Scope.Public, Accessors.GetSet, "Id", id.GetType());
 
             var mocker = new AutoMocker();
 
@@ -44,7 +44,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
         [CustomAutoData]
         public void CanGetContentUrlByConvention(int id, string url, MediaTypeModelTypeBuilder builder)
         {
-            builder.AddProperty(Scope.Public, Accessor.GetSet, "Url", url.GetType());
+            builder.AddProperty(Scope.Public, Accessors.GetSet, "Url", url.GetType());
 
             var mocker = new AutoMocker();
 
@@ -67,7 +67,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
         [CustomAutoData]
         public void CanGetContentNameByConvention(int id, string name, MediaTypeModelTypeBuilder builder)
         {
-            builder.AddProperty(Scope.Public, Accessor.GetSet, "Name", name.GetType());
+            builder.AddProperty(Scope.Public, Accessors.GetSet, "Name", name.GetType());
 
             var mocker = new AutoMocker();
 
@@ -90,7 +90,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
         [CustomAutoData]
         public void CanGetContentCreateDateByConvention(int id, DateTime createDate, MediaTypeModelTypeBuilder builder)
         {
-            builder.AddProperty(Scope.Public, Accessor.GetSet, "CreateDate", createDate.GetType());
+            builder.AddProperty(Scope.Public, Accessors.GetSet, "CreateDate", createDate.GetType());
 
             var mocker = new AutoMocker();
 
@@ -113,7 +113,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
         [CustomAutoData]
         public void CanGetContentUpdateDateByConvention(int id, DateTime updateDate, MediaTypeModelTypeBuilder builder)
         {
-            builder.AddProperty(Scope.Public, Accessor.GetSet, "UpdateDate", updateDate.GetType());
+            builder.AddProperty(Scope.Public, Accessors.GetSet, "UpdateDate", updateDate.GetType());
 
             var mocker = new AutoMocker();
 
@@ -136,7 +136,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
         [CustomAutoData]
         public void CanGetContentCreatorIdByConvention(int id, int creatorId, MediaTypeModelTypeBuilder builder)
         {
-            builder.AddProperty(Scope.Public, Accessor.GetSet, "CreatorId", creatorId.GetType());
+            builder.AddProperty(Scope.Public, Accessors.GetSet, "CreatorId", creatorId.GetType());
 
             var mocker = new AutoMocker();
 
@@ -159,7 +159,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
         [CustomAutoData]
         public void CanGetContentCreatorNameByConvention(int id, string creatorName, MediaTypeModelTypeBuilder builder)
         {
-            builder.AddProperty(Scope.Public, Accessor.GetSet, "CreatorName", creatorName.GetType());
+            builder.AddProperty(Scope.Public, Accessors.GetSet, "CreatorName", creatorName.GetType());
 
             var mocker = new AutoMocker();
 
@@ -182,7 +182,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
         [CustomAutoData]
         public void CanGetContentWriterIdByConvention(int id, int writerId, MediaTypeModelTypeBuilder builder)
         {
-            builder.AddProperty(Scope.Public, Accessor.GetSet, "WriterId", writerId.GetType());
+            builder.AddProperty(Scope.Public, Accessors.GetSet, "WriterId", writerId.GetType());
 
             var mocker = new AutoMocker();
 
@@ -205,7 +205,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
         [CustomAutoData]
         public void CanGetContentWriterNameByConvention(int id, string writerName, MediaTypeModelTypeBuilder builder)
         {
-            builder.AddProperty(Scope.Public, Accessor.GetSet, "WriterName", writerName.GetType());
+            builder.AddProperty(Scope.Public, Accessors.GetSet, "WriterName", writerName.GetType());
 
             var mocker = new AutoMocker();
 
@@ -251,7 +251,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Web.Data
         [ClassAutoData(typeof(CanGetContentForTypeWithPropertyClassData))]
         public void CanGetContentForTypeWithProperty(Type propertyType, object propertyValue, string propertyName, int id, MediaTypeModelTypeBuilder builder)
         {
-            builder.AddProperty(Scope.Public, Accessor.GetSet, propertyName, propertyType);
+            builder.AddProperty(Scope.Public, Accessors.GetSet, propertyName, propertyType);
 
             var mocker = new AutoMocker();
 

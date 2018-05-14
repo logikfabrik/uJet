@@ -3,7 +3,7 @@
     using System;
 
     [Flags]
-    public enum Accessor
+    public enum Accessors
     {
         Get = 1,
 
