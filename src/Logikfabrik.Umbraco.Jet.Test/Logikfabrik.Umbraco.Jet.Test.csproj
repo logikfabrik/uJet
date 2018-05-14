@@ -317,8 +317,8 @@
     <Compile Include="SpecimenBuilders\MemberTypeSpecimenBuilder.cs" />
     <Compile Include="SpecimenBuilders\ObjectExtensions.cs" />
     <Compile Include="SpecimenBuilders\SpecimenBuilder{T}.cs" />
-    <Compile Include="TypeModelComparerTest.cs" />
-    <Compile Include="TypeResolverTest.cs" />
+    <Compile Include="ModelComparerTest.cs" />
+    <Compile Include="ModelServiceTest.cs" />
     <Compile Include="Utilities\ComposableContentTypeModelTypeBuilder{T}.cs" />
     <Compile Include="Utilities\ContentTypeModelTypeBuilder{T}.cs" />
     <Compile Include="Utilities\DataTypeModelTypeBuilder.cs" />
@@ -340,7 +340,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TemplateServiceTest.cs" />
     <Compile Include="TemplateSynchronizerTest.cs" />
-    <Compile Include="TypeServiceTest.cs" />
+    <Compile Include="ModelTypeServiceTest.cs" />
+    <Compile Include="Web\Mvc\JetModelBinderTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">

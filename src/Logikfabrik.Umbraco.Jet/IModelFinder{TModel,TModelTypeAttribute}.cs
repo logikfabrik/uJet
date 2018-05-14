@@ -10,10 +10,10 @@ namespace Logikfabrik.Umbraco.Jet
     /// 
     /// </summary>
     /// <typeparam name="TModel">The model type.</typeparam>
-    /// <typeparam name="TModelAttribute">The model type attribute type.</typeparam>
-    public interface IModelFinder<TModel, TModelAttribute>
-        where TModel : Model<TModelAttribute>
-        where TModelAttribute : ModelTypeAttribute
+    /// <typeparam name="TModelTypeAttribute">The model type attribute type.</typeparam>
+    public interface IModelFinder<TModel, TModelTypeAttribute>
+        where TModel : Model<TModelTypeAttribute>
+        where TModelTypeAttribute : ModelTypeAttribute
     {
         /// <summary>
         /// Finds the models with a model type matching the specified model type.

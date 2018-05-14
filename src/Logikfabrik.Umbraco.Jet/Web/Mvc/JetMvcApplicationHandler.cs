@@ -2,6 +2,8 @@
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
+using Logikfabrik.Umbraco.Jet.Web.Data;
+
 namespace Logikfabrik.Umbraco.Jet.Web.Mvc
 {
     using System;
@@ -52,20 +54,24 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
 
             lock (Lock)
             {
+                var logService = new LogService();
+                var modelTypeService = new ModelTypeService(logService, new AssemblyLoader(AppDomain.CurrentDomain, JetConfigurationManager.Assemblies));
+                var modelService = new ModelService(modelTypeService);
+
                 // Synchronize.
                 if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationMode.DocumentTypes))
                 {
                     var typeRepository = new TypeRepository(new ContentTypeRepository(new DatabaseWrapper(ApplicationContext.Current.DatabaseContext.Database, ResolverBase<LoggerResolver>.Current.Logger, ApplicationContext.Current.DatabaseContext.SqlSyntax)), new DataTypeRepository(new DatabaseWrapper(ApplicationContext.Current.DatabaseContext.Database, ResolverBase<LoggerResolver>.Current.Logger, ApplicationContext.Current.DatabaseContext.SqlSyntax)));
 
                     new PreviewTemplateSynchronizer(
-                        new LogService(),
+                        logService,
                         ApplicationContext.Current.Services.ContentTypeService,
                         ApplicationContext.Current.Services.FileService,
-                        new ModelService(new ModelTypeService(new LogService(), new AssemblyLoader(AppDomain.CurrentDomain, JetConfigurationManager.Assemblies))),
+                        modelService,
                         typeRepository).Run();
                 }
 
-                ModelBinders.Binders.DefaultBinder = new JetModelBinder();
+                ModelBinders.Binders.DefaultBinder = new JetModelBinder(new DocumentService(), modelTypeService.DocumentTypes);
 
                 // Adds the Jet view engine. The Jet view engine allows views to be structured using the ASP.NET MVC convention.
                 ViewEngines.Engines.Insert(0, new JetViewEngine());

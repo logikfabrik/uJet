@@ -15,11 +15,6 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     // ReSharper disable once InheritdocConsiderUsage
     public abstract class JetController : Controller, IRenderMvcController
     {
-        /// <summary>
-        /// The route data token key. Key found by examining the Umbraco source code.
-        /// </summary>
-        private const string RouteDataTokenKey = "umbraco";
-
         /// <inheritdoc />
         [ActionName("404")]
         public virtual ActionResult Index(RenderModel model)
@@ -77,12 +72,9 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// <returns>The page identifier.</returns>
         private int GetCurrentPageId()
         {
-            if (ControllerContext.RouteData.DataTokens[RouteDataTokenKey] is RenderModel renderModel)
-            {
-                return renderModel.Content.Id;
-            }
+            var renderModel = ControllerContext.GetRenderModel();
 
-            return -1;
+            return renderModel?.Content?.Id ?? -1;
         }
     }
 }

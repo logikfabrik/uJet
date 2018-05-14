@@ -1,4 +1,4 @@
-﻿// <copyright file="TypeModelComparerTest.cs" company="Logikfabrik">
+﻿// <copyright file="ModelComparerTest.cs" company="Logikfabrik">
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -9,7 +9,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
     using Utilities;
     using Xunit;
 
-    public class TypeModelComparerTest
+    public class ModelComparerTest
     {
         [Theory]
         [CustomAutoData]

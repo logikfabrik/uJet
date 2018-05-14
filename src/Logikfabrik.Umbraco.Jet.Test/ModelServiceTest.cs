@@ -1,4 +1,4 @@
-﻿// <copyright file="TypeResolverTest.cs" company="Logikfabrik">
+﻿// <copyright file="ModelServiceTest.cs" company="Logikfabrik">
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
@@ -8,7 +8,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
     using Moq.AutoMock;
     using Xunit;
 
-    public class TypeResolverTest
+    public class ModelServiceTest
     {
         [Fact]
         public void CanGetDocumentTypes()

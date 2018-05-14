@@ -5,45 +5,35 @@
 namespace Logikfabrik.Umbraco.Jet.Web.Mvc
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
-    using Configuration;
     using Data;
     using EnsureThat;
     using global::Umbraco.Web.Models;
-    using Logging;
 
     /// <summary>
-    /// The <see cref="JetControllerFactory" /> class.
+    /// The <see cref="JetModelBinder" /> class.
     /// </summary>
     // ReSharper disable once InheritdocConsiderUsage
     public class JetModelBinder : DefaultModelBinder
     {
-        /// <summary>
-        /// The route data token key. Key found by examining the Umbraco source code.
-        /// </summary>
-        private const string RouteDataTokenKey = "umbraco";
-
-        private readonly IModelTypeService _typeService;
+        private readonly IContentService _documentService;
+        private readonly IEnumerable<Type> _documentModelTypes;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="JetModelBinder" /> class.
         /// </summary>
+        /// <param name="documentService">The document service.</param>
+        /// <param name="documentModelTypes">The document model types.</param>
         // ReSharper disable once InheritdocConsiderUsage
-        public JetModelBinder()
-            : this(new ModelTypeService(new LogService(), new AssemblyLoader(AppDomain.CurrentDomain, JetConfigurationManager.Assemblies)))
+        public JetModelBinder(IContentService documentService, IEnumerable<Type> documentModelTypes)
         {
-        }
+            Ensure.That(documentService).IsNotNull();
+            Ensure.That(documentModelTypes).IsNotNull();
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="JetModelBinder" /> class.
-        /// </summary>
-        /// <param name="typeService">The type service.</param>
-        public JetModelBinder(IModelTypeService typeService)
-        {
-            Ensure.That(typeService).IsNotNull();
-
-            _typeService = typeService;
+            _documentService = documentService;
+            _documentModelTypes = documentModelTypes;
         }
 
         /// <inheritdoc />
@@ -54,14 +44,13 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
                 return base.BindModel(controllerContext, bindingContext);
             }
 
-            if (!controllerContext.RouteData.DataTokens.ContainsKey(RouteDataTokenKey))
-            {
-                return base.BindModel(controllerContext, bindingContext);
-            }
+            var renderModel = controllerContext.GetRenderModel();
 
-            return controllerContext.RouteData.DataTokens[RouteDataTokenKey] is IRenderModel renderModel
-                ? new DocumentService().GetContent(renderModel.Content, bindingContext.ModelType)
-                : base.BindModel(controllerContext, bindingContext);
+            var tmp = _documentService.GetContent(renderModel.Content, bindingContext.ModelType);
+
+            return renderModel == null
+                ? base.BindModel(controllerContext, bindingContext)
+                : _documentService.GetContent(renderModel.Content, bindingContext.ModelType);
         }
 
         /// <summary>
@@ -73,7 +62,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// </returns>
         private bool ShouldBind(Type modelType)
         {
-            return _typeService.DocumentTypes.Contains(modelType);
+            return _documentModelTypes.Contains(modelType);
         }
     }
 }

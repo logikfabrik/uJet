@@ -350,6 +350,7 @@
     <Compile Include="Web\Data\Converters\PropertyValueConverterRegistrar.cs" />
     <Compile Include="Web\Data\Converters\PropertyValueConverters.cs" />
     <Compile Include="Web\Data\DocumentService.cs" />
+    <Compile Include="Web\Data\IContentService.cs" />
     <Compile Include="Web\Data\IUmbracoHelperWrapper.cs" />
     <Compile Include="Web\Data\MediaService.cs" />
     <Compile Include="Web\Data\MemberService.cs" />
@@ -379,6 +380,7 @@
     <Compile Include="MediaTypeSynchronizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ModelTypeService.cs" />
+    <Compile Include="Web\Mvc\ControllerContextExtensions.cs" />
     <Compile Include="Web\Mvc\Html\UrlHelperExtensions.cs" />
     <Compile Include="ITemplateService.cs" />
     <Compile Include="Web\Mvc\JetController.cs" />
@@ -391,6 +393,7 @@
     <Compile Include="Web\Mvc\PreviewTemplateSynchronizer.cs" />
     <Compile Include="TemplateService.cs" />
     <Compile Include="TemplateSynchronizer.cs" />
+    <Compile Include="Web\Mvc\RouteDataTokenKey.cs" />
     <Compile Include="Web\Mvc\Utilities\UrlUtility.cs" />
   </ItemGroup>
   <ItemGroup>

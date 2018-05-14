@@ -14,17 +14,13 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
     /// The <see cref="ContentService{TModelTypeAttribute}" /> class.
     /// </summary>
     /// <typeparam name="TModelTypeAttribute">The model type attribute type.</typeparam>
-    public abstract class ContentService<TModelTypeAttribute>
+    // ReSharper disable once InheritdocConsiderUsage
+    public abstract class ContentService<TModelTypeAttribute> : IContentService
         where TModelTypeAttribute : ContentTypeModelTypeAttribute
     {
         private readonly ContentMapper _contentMapper = new ContentMapper();
 
-        /// <summary>
-        /// Gets a model for the content with the specified identifier.
-        /// </summary>
-        /// <typeparam name="T">The content model type.</typeparam>
-        /// <param name="id">The content identifier.</param>
-        /// <returns>A model for the content with the specified identifier.</returns>
+        /// <inheritdoc />
         public T GetContent<T>(int id)
             where T : class, new()
         {
@@ -34,12 +30,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
             return GetMappedContent<T>(GetContent(id));
         }
 
-        /// <summary>
-        /// Gets a model for the specified content.
-        /// </summary>
-        /// <typeparam name="T">The content model type.</typeparam>
-        /// <param name="content">The content.</param>
-        /// <returns>A model for the specified content.</returns>
+        /// <inheritdoc />
         public T GetContent<T>(IPublishedContent content)
             where T : class, new()
         {
@@ -50,12 +41,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
             return GetMappedContent<T>(content);
         }
 
-        /// <summary>
-        /// Gets a model for the content with the specified identifier.
-        /// </summary>
-        /// <param name="id">The content identifier.</param>
-        /// <param name="contentModelType">The content model type.</param>
-        /// <returns>A model for the content with the specified identifier.</returns>
+        /// <inheritdoc />
         public object GetContent(int id, Type contentModelType)
         {
             Ensure.That(contentModelType).IsNotNull();
@@ -64,12 +50,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
             return GetMappedContent(GetContent(id), contentModelType);
         }
 
-        /// <summary>
-        /// Gets a model for the specified content.
-        /// </summary>
-        /// <param name="content">The content.</param>
-        /// <param name="contentModelType">The content model type.</param>
-        /// <returns>A model for the specified content.</returns>
+        /// <inheritdoc />
         public object GetContent(IPublishedContent content, Type contentModelType)
         {
             Ensure.That(content).IsNotNull();

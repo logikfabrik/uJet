@@ -16,6 +16,7 @@ namespace Logikfabrik.Umbraco.Jet
     /// <summary>
     /// The <see cref="MemberTypeSynchronizer" /> class. Synchronizes model types annotated using the <see cref="MemberTypeAttribute" />.
     /// </summary>
+    // ReSharper disable once InheritdocConsiderUsage
     public class MemberTypeSynchronizer : ContentTypeModelSynchronizer<MemberType, MemberTypeAttribute, IMemberType>
     {
         private readonly IMemberTypeService _memberTypeService;
@@ -29,6 +30,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="modelService">The model service.</param>
         /// <param name="typeRepository">The type repository.</param>
         /// <param name="dataTypeDefinitionService">The data type definition service.</param>
+        // ReSharper disable once InheritdocConsiderUsage
         public MemberTypeSynchronizer(
             ILogService logService,
             IMemberTypeService memberTypeService,
