@@ -334,6 +334,7 @@
     <Compile Include="Web\Data\DocumentServiceTest.cs" />
     <Compile Include="Web\Data\MediaServiceTest.cs" />
     <Compile Include="Web\Data\MemberServiceTest.cs" />
+    <Compile Include="Web\Mvc\ControllerContextExtensionsTest.cs" />
     <Compile Include="Web\Mvc\JetControllerActionInvokerTest.cs" />
     <Compile Include="Mappings\DataTypeDefinitionMappingsTest.cs" />
     <Compile Include="MediaTypeTest.cs" />

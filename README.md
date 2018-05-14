@@ -1,4 +1,4 @@
-# uJet [![Build status](https://ci.appveyor.com/api/projects/status/2ce4vbe5dexoqey7?svg=true)](https://ci.appveyor.com/project/logikfabrik/ujet) [![Docs status](https://readthedocs.org/projects/pip/badge/)](http://ujet.readthedocs.io/)
+# uJet [![Build status](https://ci.appveyor.com/api/projects/status/2ce4vbe5dexoqey7?svg=true)](https://ci.appveyor.com/project/logikfabrik/ujet) [![Quality Gate](https://sonarcloud.io/api/badges/gate?key=ujet)](https://sonarcloud.io/dashboard?id=ujet) [![Documentation Status](https://readthedocs.org/projects/ujet/badge/?version=master)](http://ujet.readthedocs.io/en/master/?badge=master)
 
 Umbraco Jet (uJet) is a Code First approach to building MVC applications in Umbraco 7. Declare your document, media, member, and data types in code, and have uJet move them into Umbraco for you - simplifying development, deployment and versioning.
 
