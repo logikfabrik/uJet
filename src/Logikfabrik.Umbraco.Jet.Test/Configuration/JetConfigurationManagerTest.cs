@@ -15,9 +15,9 @@ namespace Logikfabrik.Umbraco.Jet.Test.Configuration
         [InlineData(SynchronizationModes.DocumentTypes)]
         [InlineData(SynchronizationModes.MediaTypes)]
         [InlineData(SynchronizationModes.MemberTypes)]
-        public void CanGetDefaultSynchronizationMode(SynchronizationModes synchronizationModes)
+        public void CanGetDefaultSynchronizationMode(SynchronizationModes synchronize)
         {
-            JetConfigurationManager.Synchronize.HasFlag(synchronizationModes).ShouldBeTrue();
+            JetConfigurationManager.Synchronize.HasFlag(synchronize).ShouldBeTrue();
         }
     }
 }

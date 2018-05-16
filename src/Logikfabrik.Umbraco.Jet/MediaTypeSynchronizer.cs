@@ -10,7 +10,6 @@ namespace Logikfabrik.Umbraco.Jet
     using EnsureThat;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
-    using Logging;
     using Mappings;
 
     /// <summary>
@@ -25,22 +24,24 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// Initializes a new instance of the <see cref="MediaTypeSynchronizer" /> class.
         /// </summary>
-        /// <param name="logService">The log service.</param>
-        /// <param name="typeRepository">The type repository.</param>
-        /// <param name="modelService">The model service.</param>
         /// <param name="contentTypeService">The content type service.</param>
+        /// <param name="contentTypeFinder">The content type finder.</param>
+        /// <param name="propertyTypeFinder">The property type finder.</param>
+        /// <param name="modelService">The model service.</param>
         /// <param name="dataTypeDefinitionService">The data type definition service.</param>
+        /// <param name="typeRepository">The type repository.</param>
         // ReSharper disable once InheritdocConsiderUsage
         public MediaTypeSynchronizer(
-            ILogService logService,
-            ITypeRepository typeRepository,
-            IModelService modelService,
             IContentTypeService contentTypeService,
-            IDataTypeDefinitionService dataTypeDefinitionService)
-            : base(logService, typeRepository, dataTypeDefinitionService)
+            IContentTypeFinder<MediaType, MediaTypeAttribute, IMediaType> contentTypeFinder,
+            IPropertyTypeFinder propertyTypeFinder,
+            IModelService modelService,
+            IDataTypeDefinitionService dataTypeDefinitionService,
+            ITypeRepository typeRepository)
+            : base(contentTypeFinder, propertyTypeFinder, dataTypeDefinitionService, typeRepository)
         {
-            Ensure.That(modelService).IsNotNull();
             Ensure.That(contentTypeService).IsNotNull();
+            Ensure.That(modelService).IsNotNull();
 
             _contentTypeService = contentTypeService;
             _mediaTypes = new Lazy<MediaType[]>(() => modelService.MediaTypes.ToArray());

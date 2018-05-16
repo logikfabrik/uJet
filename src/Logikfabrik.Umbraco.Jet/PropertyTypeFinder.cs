@@ -13,7 +13,7 @@ namespace Logikfabrik.Umbraco.Jet
     /// <summary>
     /// The <see cref="PropertyTypeFinder" /> class.
     /// </summary>
-    public class PropertyTypeFinder
+    public class PropertyTypeFinder : IPropertyTypeFinder
     {
         private readonly ILogService _logService;
         private readonly ITypeRepository _typeRepository;
@@ -34,12 +34,7 @@ namespace Logikfabrik.Umbraco.Jet
             _comparer = new EntityTypeComparer<global::Umbraco.Core.Models.PropertyType>();
         }
 
-        /// <summary>
-        /// Finds the property types matching the specified model.
-        /// </summary>
-        /// <param name="modelNeedle">The model to find the property types for.</param>
-        /// <param name="propertyTypesHaystack">The haystack of property types.</param>
-        /// <returns>The found property types.</returns>
+        /// <inheritdoc />
         public global::Umbraco.Core.Models.PropertyType[] Find(PropertyTypeModel modelNeedle, global::Umbraco.Core.Models.PropertyType[] propertyTypesHaystack)
         {
             Ensure.That(modelNeedle).IsNotNull();

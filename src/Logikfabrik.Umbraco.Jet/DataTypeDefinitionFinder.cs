@@ -2,6 +2,8 @@
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
+using Logikfabrik.Umbraco.Jet.Logging;
+
 namespace Logikfabrik.Umbraco.Jet
 {
     using System;
@@ -15,17 +17,21 @@ namespace Logikfabrik.Umbraco.Jet
     /// </summary>
     public class DataTypeDefinitionFinder : IDataTypeDefinitionFinder
     {
+        private readonly ILogService _logService;
         private readonly ITypeRepository _typeRepository;
         private readonly EntityTypeComparer<IDataTypeDefinition> _comparer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataTypeDefinitionFinder" /> class.
         /// </summary>
+        /// <param name="logService">The log service.</param>
         /// <param name="typeRepository">The type repository.</param>
-        public DataTypeDefinitionFinder(ITypeRepository typeRepository)
+        public DataTypeDefinitionFinder(ILogService logService, ITypeRepository typeRepository)
         {
+            Ensure.That(logService).IsNotNull();
             Ensure.That(typeRepository).IsNotNull();
 
+            _logService = logService;
             _typeRepository = typeRepository;
             _comparer = new EntityTypeComparer<IDataTypeDefinition>();
         }

@@ -95,6 +95,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             var mocker = new AutoMocker();
 
+            mocker.Use<IContentTypeFinder<Jet.MediaType, MediaTypeAttribute, IMediaType>>(mocker.CreateInstance<ContentTypeFinder<Jet.MediaType, MediaTypeAttribute, IMediaType>>());
+
             var mediaTypeSynchronizer = mocker.CreateInstance<MediaTypeSynchronizer>();
 
             var modelServiceMock = mocker.GetMock<IModelService>();
@@ -129,6 +131,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var model = new Jet.MediaType(modelType);
 
             var mocker = new AutoMocker();
+
+            mocker.Use<IContentTypeFinder<Jet.MediaType, MediaTypeAttribute, IMediaType>>(mocker.CreateInstance<ContentTypeFinder<Jet.MediaType, MediaTypeAttribute, IMediaType>>());
 
             var mediaTypeSynchronizer = mocker.CreateInstance<MediaTypeSynchronizer>();
 

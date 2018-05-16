@@ -95,6 +95,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             var mocker = new AutoMocker();
 
+            mocker.Use<IContentTypeFinder<Jet.MemberType, MemberTypeAttribute, IMemberType>>(mocker.CreateInstance<ContentTypeFinder<Jet.MemberType, MemberTypeAttribute, IMemberType>>());
+
             var memberTypeSynchronizer = mocker.CreateInstance<MemberTypeSynchronizer>();
 
             var modelServiceMock = mocker.GetMock<IModelService>();
@@ -129,6 +131,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var model = new Jet.MemberType(modelType);
 
             var mocker = new AutoMocker();
+
+            mocker.Use<IContentTypeFinder<Jet.MemberType, MemberTypeAttribute, IMemberType>>(mocker.CreateInstance<ContentTypeFinder<Jet.MemberType, MemberTypeAttribute, IMemberType>>());
 
             var memberTypeSynchronizer = mocker.CreateInstance<MemberTypeSynchronizer>();
 

@@ -9,7 +9,6 @@ namespace Logikfabrik.Umbraco.Jet
     using Data;
     using EnsureThat;
     using global::Umbraco.Core.Models;
-    using Logging;
     using Mappings;
 
     /// <summary>
@@ -24,26 +23,32 @@ namespace Logikfabrik.Umbraco.Jet
         where TModelTypeAttribute : ContentTypeModelTypeAttribute
         where TContentType : class, IContentTypeBase
     {
-        private readonly ITypeRepository _typeRepository;
+        private readonly IPropertyTypeFinder _propertyTypeFinder;
         private readonly IDataTypeDefinitionService _dataTypeDefinitionService;
-        private readonly PropertyTypeFinder _propertyTypeFinder;
+        private readonly ITypeRepository _typeRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentTypeModelSynchronizer{TModel,TModelTypeAttribute,TContentType}" /> class.
         /// </summary>
-        /// <param name="logService">The log service.</param>
-        /// <param name="typeRepository">The type repository.</param>
+        /// <param name="contentTypeFinder">The content type finder.</param>
+        /// <param name="propertyTypeFinder">The property type finder.</param>
         /// <param name="dataTypeDefinitionService">The data type definition service.</param>
-        protected ContentTypeModelSynchronizer(ILogService logService, ITypeRepository typeRepository, IDataTypeDefinitionService dataTypeDefinitionService)
+        /// <param name="typeRepository">The type repository.</param>
+        protected ContentTypeModelSynchronizer(
+            IContentTypeFinder<TModel, TModelTypeAttribute, TContentType> contentTypeFinder,
+            IPropertyTypeFinder propertyTypeFinder,
+            IDataTypeDefinitionService dataTypeDefinitionService,
+            ITypeRepository typeRepository)
         {
-            Ensure.That(typeRepository).IsNotNull();
+            Ensure.That(contentTypeFinder).IsNotNull();
+            Ensure.That(propertyTypeFinder).IsNotNull();
             Ensure.That(dataTypeDefinitionService).IsNotNull();
+            Ensure.That(typeRepository).IsNotNull();
 
-            _typeRepository = typeRepository;
+            ContentTypeFinder = contentTypeFinder;
+            _propertyTypeFinder = propertyTypeFinder;
             _dataTypeDefinitionService = dataTypeDefinitionService;
-            // TODO: Make protected.
-            ContentTypeFinder = new ContentTypeFinder<TModel, TModelTypeAttribute, TContentType>(logService, typeRepository);
-            _propertyTypeFinder = new PropertyTypeFinder(logService, typeRepository);
+            _typeRepository = typeRepository;
         }
 
         /// <summary>
@@ -52,7 +57,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The content type finder.
         /// </value>
-        protected ContentTypeFinder<TModel,TModelTypeAttribute,TContentType> ContentTypeFinder { get; }
+        protected IContentTypeFinder<TModel, TModelTypeAttribute, TContentType> ContentTypeFinder { get; }
 
         /// <summary>
         /// Gets the models.

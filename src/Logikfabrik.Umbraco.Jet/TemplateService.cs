@@ -20,18 +20,10 @@ namespace Logikfabrik.Umbraco.Jet
     {
         private static ITemplateService _instance;
 
-        /// <summary>
-        /// Prevents a default instance of the <see cref="TemplateService" /> class from being created.
-        /// </summary>
-        private TemplateService()
+        public TemplateService()
         {
             TemplatePaths = GetTemplatePaths();
         }
-
-        /// <summary>
-        /// Gets an singleton instance of the template service.
-        /// </summary>
-        public static ITemplateService Instance => _instance ?? (_instance = new TemplateService());
 
         /// <inheritdoc />
         public IEnumerable<string> TemplatePaths { get; }

@@ -95,6 +95,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
         {
             var mocker = new AutoMocker();
 
+            mocker.Use<IContentTypeFinder<DocumentType, DocumentTypeAttribute, IContentType>>(mocker.CreateInstance<ContentTypeFinder<DocumentType, DocumentTypeAttribute, IContentType>>());
+
             var documentTypeSynchronizer = mocker.CreateInstance<DocumentTypeSynchronizer>();
 
             var modelServiceMock = mocker.GetMock<IModelService>();
@@ -129,6 +131,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
             var model = new DocumentType(modelType);
 
             var mocker = new AutoMocker();
+
+            mocker.Use<IContentTypeFinder<DocumentType, DocumentTypeAttribute, IContentType>>(mocker.CreateInstance<ContentTypeFinder<DocumentType, DocumentTypeAttribute, IContentType>>());
 
             var documentTypeSynchronizer = mocker.CreateInstance<DocumentTypeSynchronizer>();
 

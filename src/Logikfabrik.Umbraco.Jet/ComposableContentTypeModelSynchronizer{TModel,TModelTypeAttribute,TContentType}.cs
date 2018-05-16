@@ -9,7 +9,6 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Linq;
     using Data;
     using global::Umbraco.Core.Models;
-    using Logging;
     using Mappings;
 
     /// <summary>
@@ -27,12 +26,17 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// Initializes a new instance of the <see cref="ComposableContentTypeModelSynchronizer{TModel,TModelTypeAttribute,TContentType}" /> class.
         /// </summary>
-        /// <param name="logService">The log service.</param>
-        /// <param name="typeRepository">The type repository.</param>
+        /// <param name="contentTypeFinder">The content type finder.</param>
+        /// <param name="propertyTypeFinder">The property type finder.</param>
         /// <param name="dataTypeDefinitionService">The data type definition service.</param>
+        /// <param name="typeRepository">The type repository.</param>
         // ReSharper disable once InheritdocConsiderUsage
-        protected ComposableContentTypeModelSynchronizer(ILogService logService, ITypeRepository typeRepository, IDataTypeDefinitionService dataTypeDefinitionService)
-            : base(logService, typeRepository, dataTypeDefinitionService)
+        protected ComposableContentTypeModelSynchronizer(
+            IContentTypeFinder<TModel, TModelTypeAttribute, TContentType> contentTypeFinder,
+            IPropertyTypeFinder propertyTypeFinder,
+            IDataTypeDefinitionService dataTypeDefinitionService,
+            ITypeRepository typeRepository)
+            : base(contentTypeFinder, propertyTypeFinder, dataTypeDefinitionService, typeRepository)
         {
         }
 

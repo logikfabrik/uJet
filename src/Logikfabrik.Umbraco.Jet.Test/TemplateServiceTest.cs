@@ -14,7 +14,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [Fact]
         public void CanGetTemplatePaths()
         {
-            var templates = TemplateService.Instance.TemplatePaths;
+            var service = new TemplateService();
+
+            var templates = service.TemplatePaths;
 
             templates.Count().ShouldBe(2);
         }
@@ -22,17 +24,21 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [Fact]
         public void CanGetContent()
         {
-            var templatePath = TemplateService.Instance.TemplatePaths.First();
+            var service = new TemplateService();
 
-            TemplateService.Instance.GetContent(templatePath).ShouldBe(File.ReadAllText(templatePath));
+            var templatePath = service.TemplatePaths.First();
+
+            service.GetContent(templatePath).ShouldBe(File.ReadAllText(templatePath));
         }
 
         [Fact]
         public void CanGetTemplate()
         {
-            var templatePath = TemplateService.Instance.TemplatePaths.First();
+            var service = new TemplateService();
 
-            TemplateService.Instance.GetTemplate(templatePath).ShouldNotBeNull();
+            var templatePath = service.TemplatePaths.First();
+
+            service.GetTemplate(templatePath).ShouldNotBeNull();
         }
     }
 }

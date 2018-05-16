@@ -30,15 +30,15 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// <summary>
         /// Initializes a new instance of the <see cref="PreviewTemplateSynchronizer" /> class.
         /// </summary>
-        /// <param name="logService">The log service.</param>
         /// <param name="contentTypeService">The content type service.</param>
         /// <param name="fileService">The file service.</param>
+        /// <param name="logService">The log service.</param>
         /// <param name="modelService">The model service.</param>
         /// <param name="typeRepository">The type repository.</param>
         public PreviewTemplateSynchronizer(
-            ILogService logService,
             IContentTypeService contentTypeService,
             IFileService fileService,
+            ILogService logService,
             IModelService modelService,
             ITypeRepository typeRepository)
         {

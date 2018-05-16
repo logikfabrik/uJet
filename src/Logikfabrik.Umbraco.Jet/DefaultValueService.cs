@@ -14,35 +14,35 @@ namespace Logikfabrik.Umbraco.Jet
     /// <summary>
     /// The <see cref="DefaultValueService" /> class.
     /// </summary>
-    public class DefaultValueService
+    public class DefaultValueService : IDefaultValueService
     {
-        private readonly IModelService _modelService;
         private readonly IContentTypeModelFinder<DocumentType, DocumentTypeAttribute, IContentType> _documentTypeModelFinder;
         private readonly IContentTypeModelFinder<MediaType, MediaTypeAttribute, IMediaType> _mediaTypeModelFinder;
         private readonly IContentTypeModelFinder<MemberType, MemberTypeAttribute, IMemberType> _memberTypeModelFinder;
+        private readonly IModelService _modelService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultValueService" /> class.
         /// </summary>
-        /// <param name="modelService">The model service.</param>
         /// <param name="documentTypeModelFinder">The document type model finder.</param>
         /// <param name="mediaTypeModelFinder">The media type model finder.</param>
         /// <param name="memberTypeModelFinder">The member type model finder.</param>
+        /// <param name="modelService">The model service.</param>
         public DefaultValueService(
-            IModelService modelService,
             IContentTypeModelFinder<DocumentType, DocumentTypeAttribute, IContentType> documentTypeModelFinder,
             IContentTypeModelFinder<MediaType, MediaTypeAttribute, IMediaType> mediaTypeModelFinder,
-            IContentTypeModelFinder<MemberType, MemberTypeAttribute, IMemberType> memberTypeModelFinder)
+            IContentTypeModelFinder<MemberType, MemberTypeAttribute, IMemberType> memberTypeModelFinder,
+            IModelService modelService)
         {
-            Ensure.That(modelService).IsNotNull();
             Ensure.That(documentTypeModelFinder).IsNotNull();
             Ensure.That(mediaTypeModelFinder).IsNotNull();
             Ensure.That(memberTypeModelFinder).IsNotNull();
+            Ensure.That(modelService).IsNotNull();
 
-            _modelService = modelService;
             _documentTypeModelFinder = documentTypeModelFinder;
             _mediaTypeModelFinder = mediaTypeModelFinder;
             _memberTypeModelFinder = memberTypeModelFinder;
+            _modelService = modelService;
         }
 
         /// <summary>

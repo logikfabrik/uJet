@@ -10,7 +10,6 @@ namespace Logikfabrik.Umbraco.Jet
     using EnsureThat;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
-    using Logging;
     using Mappings;
 
     /// <summary>
@@ -25,19 +24,21 @@ namespace Logikfabrik.Umbraco.Jet
         /// <summary>
         /// Initializes a new instance of the <see cref="MemberTypeSynchronizer" /> class.
         /// </summary>
-        /// <param name="logService">The log service.</param>
         /// <param name="memberTypeService">The member type service.</param>
+        /// <param name="contentTypeFinder">The content type finder.</param>
+        /// <param name="propertyTypeFinder">The property type finder.</param>
         /// <param name="modelService">The model service.</param>
-        /// <param name="typeRepository">The type repository.</param>
         /// <param name="dataTypeDefinitionService">The data type definition service.</param>
+        /// <param name="typeRepository">The type repository.</param>
         // ReSharper disable once InheritdocConsiderUsage
         public MemberTypeSynchronizer(
-            ILogService logService,
             IMemberTypeService memberTypeService,
+            IContentTypeFinder<MemberType, MemberTypeAttribute, IMemberType> contentTypeFinder,
+            IPropertyTypeFinder propertyTypeFinder,
             IModelService modelService,
-            ITypeRepository typeRepository,
-            IDataTypeDefinitionService dataTypeDefinitionService)
-            : base(logService, typeRepository, dataTypeDefinitionService)
+            IDataTypeDefinitionService dataTypeDefinitionService,
+            ITypeRepository typeRepository)
+            : base(contentTypeFinder, propertyTypeFinder, dataTypeDefinitionService, typeRepository)
         {
             Ensure.That(memberTypeService).IsNotNull();
             Ensure.That(modelService).IsNotNull();

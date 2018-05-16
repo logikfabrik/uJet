@@ -63,12 +63,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
                 {
                     var typeRepository = new TypeRepository(new ContentTypeRepository(new DatabaseWrapper(ApplicationContext.Current.DatabaseContext.Database, ResolverBase<LoggerResolver>.Current.Logger, ApplicationContext.Current.DatabaseContext.SqlSyntax)), new DataTypeRepository(new DatabaseWrapper(ApplicationContext.Current.DatabaseContext.Database, ResolverBase<LoggerResolver>.Current.Logger, ApplicationContext.Current.DatabaseContext.SqlSyntax)));
 
-                    new PreviewTemplateSynchronizer(
-                        logService,
-                        ApplicationContext.Current.Services.ContentTypeService,
-                        ApplicationContext.Current.Services.FileService,
-                        modelService,
-                        typeRepository).Run();
+                    new PreviewTemplateSynchronizer(ApplicationContext.Current.Services.ContentTypeService, ApplicationContext.Current.Services.FileService, logService, modelService, typeRepository).Run();
                 }
 
                 ModelBinders.Binders.DefaultBinder = new JetModelBinder(new DocumentService(), modelTypeService.DocumentTypes);
