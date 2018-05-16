@@ -2,19 +2,12 @@
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
-using Logikfabrik.Umbraco.Jet.Web.Data;
-
 namespace Logikfabrik.Umbraco.Jet.Web.Mvc
 {
-    using System;
     using System.Web.Mvc;
-    using Configuration;
+    using Data;
     using global::Umbraco.Core;
-    using global::Umbraco.Core.Logging;
-    using global::Umbraco.Core.ObjectResolution;
     using global::Umbraco.Web.Mvc;
-    using Jet.Data;
-    using Logging;
 
     /// <summary>
     /// The <see cref="JetMvcApplicationHandler" /> class.
@@ -54,19 +47,9 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
 
             lock (Lock)
             {
-                var logService = new LogService();
-                var modelTypeService = new ModelTypeService(logService, new AssemblyLoader(AppDomain.CurrentDomain, JetConfigurationManager.Assemblies));
-                var modelService = new ModelService(modelTypeService);
+                var container = new ContainerFactory(applicationContext).Create();
 
-                // Synchronize.
-                if (JetConfigurationManager.Synchronize.HasFlag(SynchronizationModes.DocumentTypes))
-                {
-                    var typeRepository = new TypeRepository(new ContentTypeRepository(new DatabaseWrapper(ApplicationContext.Current.DatabaseContext.Database, ResolverBase<LoggerResolver>.Current.Logger, ApplicationContext.Current.DatabaseContext.SqlSyntax)), new DataTypeRepository(new DatabaseWrapper(ApplicationContext.Current.DatabaseContext.Database, ResolverBase<LoggerResolver>.Current.Logger, ApplicationContext.Current.DatabaseContext.SqlSyntax)));
-
-                    new PreviewTemplateSynchronizer(ApplicationContext.Current.Services.ContentTypeService, ApplicationContext.Current.Services.FileService, logService, modelService, typeRepository).Run();
-                }
-
-                ModelBinders.Binders.DefaultBinder = new JetModelBinder(new DocumentService(), modelTypeService.DocumentTypes);
+                ModelBinders.Binders.DefaultBinder = new JetModelBinder(new DocumentService(), container.Resolve<IModelTypeService>().DocumentTypes);
 
                 // Adds the Jet view engine. The Jet view engine allows views to be structured using the ASP.NET MVC convention.
                 ViewEngines.Engines.Insert(0, new JetViewEngine());

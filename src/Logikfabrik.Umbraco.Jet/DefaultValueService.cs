@@ -45,10 +45,7 @@ namespace Logikfabrik.Umbraco.Jet
             _modelService = modelService;
         }
 
-        /// <summary>
-        /// Sets the default values.
-        /// </summary>
-        /// <param name="content">The content to set default values for.</param>
+        /// <inheritdoc />
         public void SetDefaultValues(IEnumerable<IContent> content)
         {
             Ensure.That(content).IsNotNull();
@@ -59,10 +56,7 @@ namespace Logikfabrik.Umbraco.Jet
             }
         }
 
-        /// <summary>
-        /// Sets the default values.
-        /// </summary>
-        /// <param name="content">The content to set default values for.</param>
+        /// <inheritdoc />
         public void SetDefaultValues(IContent content)
         {
             Ensure.That(content).IsNotNull();
@@ -77,10 +71,7 @@ namespace Logikfabrik.Umbraco.Jet
             SetDefaultValues(content, model);
         }
 
-        /// <summary>
-        /// Sets the default values.
-        /// </summary>
-        /// <param name="content">The content to set default values for.</param>
+        /// <inheritdoc />
         public void SetDefaultValues(IEnumerable<IMedia> content)
         {
             Ensure.That(content).IsNotNull();
@@ -91,10 +82,7 @@ namespace Logikfabrik.Umbraco.Jet
             }
         }
 
-        /// <summary>
-        /// Sets the default values.
-        /// </summary>
-        /// <param name="content">The content to set default values for.</param>
+        /// <inheritdoc />
         public void SetDefaultValues(IMedia content)
         {
             Ensure.That(content).IsNotNull();
@@ -109,10 +97,7 @@ namespace Logikfabrik.Umbraco.Jet
             SetDefaultValues(content, model);
         }
 
-        /// <summary>
-        /// Sets the default values.
-        /// </summary>
-        /// <param name="content">The content to set default values for.</param>
+        /// <inheritdoc />
         public void SetDefaultValues(IEnumerable<IMember> content)
         {
             Ensure.That(content).IsNotNull();
@@ -123,10 +108,7 @@ namespace Logikfabrik.Umbraco.Jet
             }
         }
 
-        /// <summary>
-        /// Sets the default values.
-        /// </summary>
-        /// <param name="content">The content to set default values for.</param>
+        /// <inheritdoc />
         public void SetDefaultValues(IMember content)
         {
             Ensure.That(content).IsNotNull();

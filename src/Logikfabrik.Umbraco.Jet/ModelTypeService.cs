@@ -1,4 +1,4 @@
-﻿// <copyright file="TypeService.cs" company="Logikfabrik">
+﻿// <copyright file="ModelTypeService.cs" company="Logikfabrik">
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 

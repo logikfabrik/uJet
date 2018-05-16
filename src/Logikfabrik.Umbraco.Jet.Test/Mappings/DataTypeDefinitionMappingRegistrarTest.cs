@@ -10,7 +10,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Mappings
     using Shouldly;
     using Xunit;
 
-    public class DataTypeDefinitionMappingRegistrarTest : IDisposable
+    public sealed class DataTypeDefinitionMappingRegistrarTest : IDisposable
     {
         [Fact]
         public void CanRegisterAndGetDataTypeDefinition()

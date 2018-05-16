@@ -9,7 +9,7 @@ namespace Logikfabrik.Umbraco.Jet.Test.Mappings
     using Shouldly;
     using Xunit;
 
-    public class BuiltInDataTypeDefinitionMappingsRegistrarTest : IDisposable
+    public sealed class BuiltInDataTypeDefinitionMappingsRegistrarTest : IDisposable
     {
         [Theory]
         [InlineData(typeof(bool))]

@@ -18,8 +18,9 @@ namespace Logikfabrik.Umbraco.Jet
     // ReSharper disable once InheritdocConsiderUsage
     public class TemplateService : ITemplateService
     {
-        private static ITemplateService _instance;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TemplateService" /> class.
+        /// </summary>
         public TemplateService()
         {
             TemplatePaths = GetTemplatePaths();

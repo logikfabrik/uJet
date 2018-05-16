@@ -1,4 +1,8 @@
-﻿namespace Logikfabrik.Umbraco.Jet.Web.Mvc
+﻿// <copyright file="RouteDataTokenKey.cs" company="Logikfabrik">
+//   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
+// </copyright>
+
+namespace Logikfabrik.Umbraco.Jet.Web.Mvc
 {
     public static class RouteDataTokenKey
     {

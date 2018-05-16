@@ -1,8 +1,12 @@
-﻿using System.Collections.Generic;
-using Umbraco.Core.Models;
+﻿// <copyright file="IDefaultValueService.cs" company="Logikfabrik">
+//   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
+// </copyright>
 
 namespace Logikfabrik.Umbraco.Jet
 {
+    using System.Collections.Generic;
+    using global::Umbraco.Core.Models;
+
     public interface IDefaultValueService
     {
         /// <summary>

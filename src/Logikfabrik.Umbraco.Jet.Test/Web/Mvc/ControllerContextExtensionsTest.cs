@@ -1,4 +1,8 @@
-﻿namespace Logikfabrik.Umbraco.Jet.Test.Web.Mvc
+﻿// <copyright file="ControllerContextExtensionsTest.cs" company="Logikfabrik">
+//   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
+// </copyright>
+
+namespace Logikfabrik.Umbraco.Jet.Test.Web.Mvc
 {
     using System.Web.Mvc;
     using global::Umbraco.Web.Models;

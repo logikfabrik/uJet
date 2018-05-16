@@ -2,8 +2,6 @@
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
-using Logikfabrik.Umbraco.Jet.Logging;
-
 namespace Logikfabrik.Umbraco.Jet
 {
     using System;
@@ -11,6 +9,7 @@ namespace Logikfabrik.Umbraco.Jet
     using Data;
     using EnsureThat;
     using global::Umbraco.Core.Models;
+    using Logging;
 
     /// <summary>
     /// The <see cref="DataTypeDefinitionFinder" /> class. Class for finding Umbraco data type definitions.
