@@ -10,7 +10,6 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     using System.Web.Mvc;
     using Data;
     using EnsureThat;
-    using global::Umbraco.Web.Models;
 
     /// <summary>
     /// The <see cref="JetModelBinder" /> class.

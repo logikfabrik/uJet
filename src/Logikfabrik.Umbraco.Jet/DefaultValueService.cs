@@ -14,6 +14,7 @@ namespace Logikfabrik.Umbraco.Jet
     /// <summary>
     /// The <see cref="DefaultValueService" /> class.
     /// </summary>
+    // ReSharper disable once InheritdocConsiderUsage
     public class DefaultValueService : IDefaultValueService
     {
         private readonly IContentTypeModelFinder<DocumentType, DocumentTypeAttribute, IContentType> _documentTypeModelFinder;

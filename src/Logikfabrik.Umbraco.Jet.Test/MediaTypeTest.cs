@@ -180,8 +180,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [ClassAutoData(typeof(ModelPropertyClassData))]
         public void CanNotGetPublicPropertyWithScaffoldingDisabled(Type propertyType, string propertyName, MediaTypeModelTypeBuilder builder)
         {
-            // ReSharper disable once AssignNullToNotNullAttribute
-            builder.AddProperty(Scope.Public, Accessors.GetSet, propertyName, propertyType, new[] { new CustomAttributeBuilder(typeof(ScaffoldColumnAttribute).GetConstructor(new[] { typeof(bool) }), new object[] { false }) });
+            builder.AddProperty(propertyName, propertyType, false);
 
             var modelType = builder.Create(Scope.Public);
 

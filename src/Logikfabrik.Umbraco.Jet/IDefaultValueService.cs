@@ -7,6 +7,9 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Collections.Generic;
     using global::Umbraco.Core.Models;
 
+    /// <summary>
+    /// The <see cref="IDefaultValueService" /> interface.
+    /// </summary>
     public interface IDefaultValueService
     {
         /// <summary>

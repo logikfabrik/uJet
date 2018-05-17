@@ -327,6 +327,7 @@
     <Compile Include="Utilities\Accessors.cs" />
     <Compile Include="Utilities\MediaTypeModelTypeBuilder.cs" />
     <Compile Include="Utilities\MemberTypeModelTypeBuilder.cs" />
+    <Compile Include="Utilities\ModelTypeBuilderExtensions.cs" />
     <Compile Include="Utilities\ModelTypeBuilder{TModelAttribute}.cs" />
     <Compile Include="Utilities\Scope.cs" />
     <Compile Include="Web\Data\Converters\FloatingDecimalPointPropertyValueConverterTest.cs" />

@@ -7,6 +7,11 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Collections.Generic;
     using global::Umbraco.Core.Models.EntityBase;
 
+    /// <summary>
+    /// The <see cref="EntityTypeComparer{TEntityType}" /> class.
+    /// </summary>
+    /// <typeparam name="TEntityType">The entity type.</typeparam>
+    // ReSharper disable once InheritdocConsiderUsage
     public class EntityTypeComparer<TEntityType> : IEqualityComparer<TEntityType>
         where TEntityType : IEntity
     {
