@@ -5,9 +5,7 @@
 namespace Logikfabrik.Umbraco.Jet.Test
 {
     using System;
-    using System.ComponentModel.DataAnnotations;
     using System.Linq;
-    using System.Reflection.Emit;
     using Shouldly;
     using SpecimenBuilders;
     using Utilities;

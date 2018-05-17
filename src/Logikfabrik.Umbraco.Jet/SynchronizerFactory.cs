@@ -9,10 +9,17 @@ namespace Logikfabrik.Umbraco.Jet
     using EnsureThat;
     using Web.Mvc;
 
+    /// <summary>
+    /// The <see cref="SynchronizerFactory" /> class.
+    /// </summary>
     public class SynchronizerFactory
     {
         private readonly IContainer _container;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SynchronizerFactory" /> class.
+        /// </summary>
+        /// <param name="container">The container.</param>
         public SynchronizerFactory(IContainer container)
         {
             Ensure.That(container).IsNotNull();

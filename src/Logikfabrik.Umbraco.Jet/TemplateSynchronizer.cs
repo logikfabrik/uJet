@@ -27,6 +27,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="fileService">The file service.</param>
         /// <param name="templateService">The template service.</param>
+        // ReSharper disable once UnusedMember.Global
         public TemplateSynchronizer(
             IFileService fileService,
             ITemplateService templateService)

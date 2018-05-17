@@ -31,6 +31,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="dataTypeDefinitionFinder">The data type definition finder.</param>
         /// <param name="modelService">The model service.</param>
         /// <param name="typeRepository">The type repository.</param>
+        // ReSharper disable once UnusedMember.Global
         public DataTypeSynchronizer(
             IDataTypeService dataTypeService,
             IDataTypeDefinitionFinder dataTypeDefinitionFinder,

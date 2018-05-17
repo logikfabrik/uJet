@@ -26,6 +26,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <param name="database">The database.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="syntaxProvider">The syntax provider.</param>
+        // ReSharper disable once UnusedMember.Global
         public DatabaseWrapper(Database database, ILogger logger, ISqlSyntaxProvider syntaxProvider)
         {
             Ensure.That(database).IsNotNull();

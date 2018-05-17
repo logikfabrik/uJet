@@ -288,7 +288,9 @@
     <Compile Include="Data\TypeRepository.cs" />
     <Compile Include="IAssemblyLoader.cs" />
     <Compile Include="IContainer.cs" />
-    <Compile Include="IContentTypeFinder{TModel,TModelTypeAttribute,TContentType}.cs" />
+    <Compile Include="IContentTypeFinder{TModel,TModelTypeAttribute,TContentType}.cs">
+      <SonarQubeExclude>true</SonarQubeExclude>
+    </Compile>
     <Compile Include="IContentTypeModelFinder{TModel,TModelTypeAttribute,TContentType}.cs">
       <SonarQubeExclude>true</SonarQubeExclude>
     </Compile>
@@ -348,7 +350,9 @@
     <Compile Include="ModelService.cs" />
     <Compile Include="SynchronizerFactory.cs" />
     <Compile Include="Web\Data\ContentMapper.cs" />
-    <Compile Include="Web\Data\ContentService{TModelTypeAttribute}.cs" />
+    <Compile Include="Web\Data\ContentService{TModelTypeAttribute}.cs">
+      <SonarQubeExclude>true</SonarQubeExclude>
+    </Compile>
     <Compile Include="Web\Data\Converters\FloatingBinaryPointPropertyValueConverter.cs" />
     <Compile Include="Web\Data\Converters\FloatingDecimalPointPropertyValueConverter.cs" />
     <Compile Include="Web\Data\Converters\HtmlStringPropertyValueConverter.cs" />

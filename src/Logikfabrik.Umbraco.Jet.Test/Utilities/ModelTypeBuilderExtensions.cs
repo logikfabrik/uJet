@@ -1,4 +1,8 @@
-﻿namespace Logikfabrik.Umbraco.Jet.Test.Utilities
+﻿// <copyright file="ModelTypeBuilderExtensions.cs" company="Logikfabrik">
+//   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
+// </copyright>
+
+namespace Logikfabrik.Umbraco.Jet.Test.Utilities
 {
     using System;
     using System.ComponentModel;
@@ -19,7 +23,7 @@
             var attributeBuilders = new[]
             {
                 // ReSharper disable once AssignNullToNotNullAttribute
-                new CustomAttributeBuilder(typeof(DefaultValueAttribute).GetConstructor(new[] { typeof(Type), typeof(string) }),new object[] { type, defaultValue })
+                new CustomAttributeBuilder(typeof(DefaultValueAttribute).GetConstructor(new[] { typeof(Type), typeof(string) }), new[] { type, defaultValue })
             };
 
             builder.AddProperty(scope, accessors, name, type, attributeBuilders);

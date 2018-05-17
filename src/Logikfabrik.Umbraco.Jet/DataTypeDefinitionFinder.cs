@@ -25,6 +25,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="logService">The log service.</param>
         /// <param name="typeRepository">The type repository.</param>
+        // ReSharper disable once UnusedMember.Global
         public DataTypeDefinitionFinder(ILogService logService, ITypeRepository typeRepository)
         {
             Ensure.That(logService).IsNotNull();

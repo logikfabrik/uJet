@@ -31,6 +31,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="logService">The log service.</param>
         /// <param name="assemblyLoader">The assembly loader.</param>
+        // ReSharper disable once UnusedMember.Global
         public ModelTypeService(ILogService logService, IAssemblyLoader assemblyLoader)
         {
             Ensure.That(logService).IsNotNull();

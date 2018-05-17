@@ -31,6 +31,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="dataTypeDefinitionService">The data type definition service.</param>
         /// <param name="typeRepository">The type repository.</param>
         // ReSharper disable once InheritdocConsiderUsage
+        // ReSharper disable once UnusedMember.Global
         public MediaTypeSynchronizer(
             IContentTypeService contentTypeService,
             IContentTypeFinder<MediaType, MediaTypeAttribute, IMediaType> contentTypeFinder,

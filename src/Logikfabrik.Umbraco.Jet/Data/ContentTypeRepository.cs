@@ -24,6 +24,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// Initializes a new instance of the <see cref="ContentTypeRepository" /> class.
         /// </summary>
         /// <param name="databaseWrapper">The database wrapper.</param>
+        // ReSharper disable once UnusedMember.Global
         public ContentTypeRepository(IDatabaseWrapper databaseWrapper)
         {
             Ensure.That(databaseWrapper).IsNotNull();

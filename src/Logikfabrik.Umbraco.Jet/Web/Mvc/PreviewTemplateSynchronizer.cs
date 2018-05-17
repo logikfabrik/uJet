@@ -35,6 +35,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// <param name="logService">The log service.</param>
         /// <param name="modelService">The model service.</param>
         /// <param name="typeRepository">The type repository.</param>
+        // ReSharper disable once UnusedMember.Global
         public PreviewTemplateSynchronizer(
             IContentTypeService contentTypeService,
             IFileService fileService,

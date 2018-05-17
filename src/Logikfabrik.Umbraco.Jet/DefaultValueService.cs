@@ -29,6 +29,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="mediaTypeModelFinder">The media type model finder.</param>
         /// <param name="memberTypeModelFinder">The member type model finder.</param>
         /// <param name="modelService">The model service.</param>
+        // ReSharper disable once UnusedMember.Global
         public DefaultValueService(
             IContentTypeModelFinder<DocumentType, DocumentTypeAttribute, IContentType> documentTypeModelFinder,
             IContentTypeModelFinder<MediaType, MediaTypeAttribute, IMediaType> mediaTypeModelFinder,

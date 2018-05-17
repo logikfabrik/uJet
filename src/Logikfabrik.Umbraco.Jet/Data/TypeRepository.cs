@@ -21,6 +21,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// </summary>
         /// <param name="contentTypeRepository">The content type repository.</param>
         /// <param name="dataTypeRepository">The data type repository.</param>
+        // ReSharper disable once UnusedMember.Global
         public TypeRepository(
             IContentTypeRepository contentTypeRepository,
             IDataTypeRepository dataTypeRepository)
