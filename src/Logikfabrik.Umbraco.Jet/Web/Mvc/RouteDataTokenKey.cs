@@ -4,6 +4,9 @@
 
 namespace Logikfabrik.Umbraco.Jet.Web.Mvc
 {
+    /// <summary>
+    /// The <see cref="RouteDataTokenKey" /> class.
+    /// </summary>
     public static class RouteDataTokenKey
     {
         /// <summary>

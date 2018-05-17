@@ -6,6 +6,9 @@ namespace Logikfabrik.Umbraco.Jet
 {
     using global::Umbraco.Core.Models;
 
+    /// <summary>
+    /// The <see cref="IDataTypeDefinitionFinder" /> interface.
+    /// </summary>
     public interface IDataTypeDefinitionFinder
     {
         /// <summary>

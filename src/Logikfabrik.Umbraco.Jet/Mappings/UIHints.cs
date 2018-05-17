@@ -4,6 +4,10 @@
 
 namespace Logikfabrik.Umbraco.Jet.Mappings
 {
+    /// <summary>
+    /// The <see cref="UIHints" /> class.
+    /// </summary>
+    // ReSharper disable once InconsistentNaming
     public static class UIHints
     {
         public const string ListViewMembers = "ListViewMembers";

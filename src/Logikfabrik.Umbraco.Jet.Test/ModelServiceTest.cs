@@ -19,7 +19,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var modelTypeServiceMock = mocker.GetMock<IModelTypeService>();
 
-            var _ = modelService.DocumentTypes;
+            // ReSharper disable once UnusedVariable
+            var documentTypes = modelService.DocumentTypes;
 
             modelTypeServiceMock.Verify(m => m.DocumentTypes, Times.Once);
         }
@@ -33,7 +34,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var modelTypeServiceMock = mocker.GetMock<IModelTypeService>();
 
-            var _ = modelService.MediaTypes;
+            // ReSharper disable once UnusedVariable
+            var mediaTypes = modelService.MediaTypes;
 
             modelTypeServiceMock.Verify(m => m.MediaTypes, Times.Once);
         }
@@ -47,7 +49,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var modelTypeServiceMock = mocker.GetMock<IModelTypeService>();
 
-            var _ = modelService.MemberTypes;
+            // ReSharper disable once UnusedVariable
+            var memberTypes = modelService.MemberTypes;
 
             modelTypeServiceMock.Verify(m => m.MemberTypes, Times.Once);
         }
@@ -61,7 +64,8 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             var modelTypeServiceMock = mocker.GetMock<IModelTypeService>();
 
-            var _ = modelService.DataTypes;
+            // ReSharper disable once UnusedVariable
+            var dataTypes = modelService.DataTypes;
 
             modelTypeServiceMock.Verify(m => m.DataTypes, Times.Once);
         }

@@ -7,6 +7,12 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
     using global::Umbraco.Core.Models;
 
+    /// <summary>
+    /// The <see cref="IContentTypeFinder{TModel, TModelTypeAttribute, TContentType}" /> interface.
+    /// </summary>
+    /// <typeparam name="TModel">The model type.</typeparam>
+    /// <typeparam name="TModelTypeAttribute">The model type attribute type.</typeparam>
+    /// <typeparam name="TContentType">The content type.</typeparam>
     public interface IContentTypeFinder<in TModel, TModelTypeAttribute, TContentType>
         where TModel : ContentTypeModel<TModelTypeAttribute>
         where TModelTypeAttribute : ContentTypeModelTypeAttribute
