@@ -6,13 +6,13 @@ namespace Logikfabrik.Umbraco.Jet
 {
     using System;
     using EnsureThat;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// The <see cref="DataTypeAttribute" /> class. Attribute for model type annotation.
     /// </summary>
-    [AttributeUsage(
-        AttributeTargets.Class,
-        Inherited = false)]
+    [AttributeUsage(AttributeTargets.Class, Inherited = false)]
+    [PublicAPI]
 
     // ReSharper disable once InheritdocConsiderUsage
     public class DataTypeAttribute : ModelTypeAttribute
@@ -23,7 +23,6 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="type">The type.</param>
         /// <param name="editor">The editor.</param>
         // ReSharper disable once InheritdocConsiderUsage
-        // ReSharper disable once UnusedMember.Global
         public DataTypeAttribute(Type type, string editor)
         {
             Ensure.That(type).IsNotNull();
@@ -40,7 +39,6 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="type">The type.</param>
         /// <param name="editor">The editor.</param>
         // ReSharper disable once InheritdocConsiderUsage
-        // ReSharper disable once UnusedMember.Global
         public DataTypeAttribute(string id, Type type, string editor)
             : base(id)
         {

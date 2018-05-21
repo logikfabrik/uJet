@@ -6,10 +6,13 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
 {
     using EnsureThat;
     using global::Umbraco.Core.Models;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// The <see cref="MemberService" /> class. Service for mapping instances of <see cref="IPublishedContent" /> to member models.
     /// </summary>
+    [PublicAPI]
+
     // ReSharper disable once InheritdocConsiderUsage
     public class MemberService : ContentService<MemberTypeAttribute>
     {
@@ -17,8 +20,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MemberService" /> class.
-        /// </summary>
-        // ReSharper disable once UnusedMember.Global
+        /// </summary>        
         // ReSharper disable once InheritdocConsiderUsage
         public MemberService()
             : this(new UmbracoHelperWrapper())

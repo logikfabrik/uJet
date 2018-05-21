@@ -21,13 +21,6 @@ namespace Logikfabrik.Umbraco.Jet
         IEnumerable<string> TemplatePaths { get; }
 
         /// <summary>
-        /// Gets the template content.
-        /// </summary>
-        /// <param name="templatePath">The template path.</param>
-        /// <returns>The template content.</returns>
-        string GetContent(string templatePath);
-
-        /// <summary>
         /// Gets the template.
         /// </summary>
         /// <param name="templatePath">The template path.</param>

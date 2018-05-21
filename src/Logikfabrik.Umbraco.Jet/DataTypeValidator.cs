@@ -7,7 +7,6 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using EnsureThat;
 
     /// <summary>
     /// The <see cref="DataTypeValidator" /> class.
@@ -18,9 +17,8 @@ namespace Logikfabrik.Umbraco.Jet
         /// <inheritdoc />
         public override void Validate(DataType[] models)
         {
-            Ensure.That(models).IsNotNull();
+            base.Validate(models);
 
-            ValidateById(models);
             ValidateByName(models);
         }
 

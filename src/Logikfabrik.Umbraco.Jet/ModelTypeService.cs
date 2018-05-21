@@ -11,6 +11,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Reflection;
     using EnsureThat;
     using Extensions;
+    using JetBrains.Annotations;
     using Logging;
 
     /// <summary>
@@ -31,7 +32,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="logService">The log service.</param>
         /// <param name="assemblyLoader">The assembly loader.</param>
-        // ReSharper disable once UnusedMember.Global
+        [UsedImplicitly]
         public ModelTypeService(ILogService logService, IAssemblyLoader assemblyLoader)
         {
             Ensure.That(logService).IsNotNull();

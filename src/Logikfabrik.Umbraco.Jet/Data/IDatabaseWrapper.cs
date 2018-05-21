@@ -7,10 +7,12 @@ namespace Logikfabrik.Umbraco.Jet.Data
     using System;
     using global::Umbraco.Core.Persistence;
     using global::Umbraco.Core.Persistence.SqlSyntax;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// The <see cref="IDatabaseWrapper" /> interface.
     /// </summary>
+    [PublicAPI]
     public interface IDatabaseWrapper
     {
         /// <summary>
@@ -32,7 +34,6 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// Creates the table for the specified object type.
         /// </summary>
         /// <param name="type">The object type.</param>
-        // ReSharper disable once UnusedMember.Global
         void CreateTable(Type type);
 
         /// <summary>
@@ -77,7 +78,6 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// <returns>
         ///   <c>true</c> if a table of for the specified object type exists; otherwise, <c>false</c>.
         /// </returns>
-        // ReSharper disable once UnusedMember.Global
         bool TableExists(Type type);
     }
 }

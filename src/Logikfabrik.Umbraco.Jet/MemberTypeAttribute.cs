@@ -5,13 +5,13 @@
 namespace Logikfabrik.Umbraco.Jet
 {
     using System;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// The <see cref="MemberTypeAttribute" /> class. Attribute for model type annotation.
     /// </summary>
-    [AttributeUsage(
-        AttributeTargets.Class,
-        Inherited = false)]
+    [AttributeUsage(AttributeTargets.Class, Inherited = false)]
+    [PublicAPI]
 
     // ReSharper disable once InheritdocConsiderUsage
     public class MemberTypeAttribute : ContentTypeModelTypeAttribute
@@ -21,7 +21,6 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="name">The name.</param>
         // ReSharper disable once InheritdocConsiderUsage
-        // ReSharper disable once UnusedMember.Global
         public MemberTypeAttribute(string name)
             : base(name)
         {
@@ -33,7 +32,6 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="id">The identifier.</param>
         /// <param name="name">The name.</param>
         // ReSharper disable once InheritdocConsiderUsage
-        // ReSharper disable once UnusedMember.Global
         public MemberTypeAttribute(string id, string name)
             : base(id, name)
         {

@@ -7,7 +7,6 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using EnsureThat;
 
     /// <summary>
     /// The <see cref="ContentTypeModelValidator{TModel,TModelTypeAttribute}" /> class.
@@ -22,9 +21,8 @@ namespace Logikfabrik.Umbraco.Jet
         /// <inheritdoc />
         public override void Validate(TModel[] models)
         {
-            Ensure.That(models).IsNotNull();
+            base.Validate(models);
 
-            ValidateById(models);
             ValidateByAlias(models);
             ValidatePropertiesById(models);
             ValidatePropertiesByAlias(models);

@@ -6,10 +6,12 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
 {
     using System;
     using global::Umbraco.Core.Models;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// The <see cref="IContentService" /> interface.
     /// </summary>
+    [PublicAPI]
     public interface IContentService
     {
         /// <summary>

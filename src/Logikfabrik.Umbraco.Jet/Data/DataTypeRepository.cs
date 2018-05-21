@@ -9,6 +9,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
     using System.Linq;
     using EnsureThat;
     using global::Umbraco.Core.Persistence;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// The <see cref="DataTypeRepository" /> class.
@@ -23,7 +24,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// Initializes a new instance of the <see cref="DataTypeRepository" /> class.
         /// </summary>
         /// <param name="databaseWrapper">The database wrapper.</param>
-        // ReSharper disable once UnusedMember.Global
+        [UsedImplicitly]
         public DataTypeRepository(IDatabaseWrapper databaseWrapper)
         {
             Ensure.That(databaseWrapper).IsNotNull();

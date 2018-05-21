@@ -5,6 +5,7 @@
 namespace Logikfabrik.Umbraco.Jet
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using Data;
     using EnsureThat;
@@ -17,6 +18,7 @@ namespace Logikfabrik.Umbraco.Jet
     /// <typeparam name="TModel">The model type.</typeparam>
     /// <typeparam name="TModelTypeAttribute">The model type attribute type.</typeparam>
     /// <typeparam name="TContentType">The content type.</typeparam>
+    // ReSharper disable once InheritdocConsiderUsage
     public class ContentTypeFinder<TModel, TModelTypeAttribute, TContentType> : IContentTypeFinder<TModel, TModelTypeAttribute, TContentType>
         where TModel : ContentTypeModel<TModelTypeAttribute>
         where TModelTypeAttribute : ContentTypeModelTypeAttribute
@@ -24,6 +26,7 @@ namespace Logikfabrik.Umbraco.Jet
     {
         private readonly ILogService _logService;
         private readonly ITypeRepository _typeRepository;
+        private readonly IContentTypeModelFinder<TModel, TModelTypeAttribute, TContentType> _contentTypeModelFinder;
         private readonly EntityTypeComparer<TContentType> _comparer;
 
         /// <summary>
@@ -38,6 +41,7 @@ namespace Logikfabrik.Umbraco.Jet
 
             _logService = logService;
             _typeRepository = typeRepository;
+            _contentTypeModelFinder = new ContentTypeModelFinder<TModel, TModelTypeAttribute, TContentType>(logService, typeRepository);
             _comparer = new EntityTypeComparer<TContentType>();
         }
 
@@ -58,7 +62,7 @@ namespace Logikfabrik.Umbraco.Jet
             Ensure.That(modelsHaystack).IsNotNull();
             Ensure.That(contentTypesHaystack).IsNotNull();
 
-            var modelNeedles = new ContentTypeModelFinder<TModel, TModelTypeAttribute, TContentType>(_logService, _typeRepository).Find(modelTypeNeedle, modelsHaystack);
+            var modelNeedles = _contentTypeModelFinder.Find(modelTypeNeedle, modelsHaystack);
 
             return Find(modelNeedles, contentTypesHaystack).Distinct(_comparer).ToArray();
         }
@@ -71,27 +75,6 @@ namespace Logikfabrik.Umbraco.Jet
             Ensure.That(contentTypesHaystack).IsNotNull();
 
             return modelTypeNeedles.SelectMany(needle => FindAll(needle, modelsHaystack, contentTypesHaystack)).Distinct(_comparer).ToArray();
-        }
-
-        /// <inheritdoc />
-        public TContentType[] FindAll(Type modelTypeNeedle, TModel[] modelsHaystack, TContentType[] contentTypesHaystack)
-        {
-            Ensure.That(modelTypeNeedle).IsNotNull();
-            Ensure.That(modelsHaystack).IsNotNull();
-            Ensure.That(contentTypesHaystack).IsNotNull();
-
-            var modelNeedles = new ContentTypeModelFinder<TModel, TModelTypeAttribute, TContentType>(_logService, _typeRepository).FindAll(modelTypeNeedle, modelsHaystack);
-
-            return Find(modelNeedles, contentTypesHaystack).Distinct(_comparer).ToArray();
-        }
-
-        /// <inheritdoc />
-        public TContentType[] Find(TModel[] modelNeedles, TContentType[] contentTypesHaystack)
-        {
-            Ensure.That(modelNeedles).IsNotNull();
-            Ensure.That(contentTypesHaystack).IsNotNull();
-
-            return modelNeedles.SelectMany(needle => Find(needle, contentTypesHaystack)).Distinct(_comparer).ToArray();
         }
 
         /// <inheritdoc />
@@ -118,6 +101,18 @@ namespace Logikfabrik.Umbraco.Jet
             }
 
             return contentTypesHaystack.Where(contentType => contentType.Alias != null && contentType.Alias.Equals(modelNeedle.Alias, StringComparison.InvariantCultureIgnoreCase)).ToArray();
+        }
+
+        private IEnumerable<TContentType> FindAll(Type modelTypeNeedle, TModel[] modelsHaystack, TContentType[] contentTypesHaystack)
+        {
+            var modelNeedles = _contentTypeModelFinder.FindAll(modelTypeNeedle, modelsHaystack);
+
+            return Find(modelNeedles, contentTypesHaystack).Distinct(_comparer).ToArray();
+        }
+
+        private IEnumerable<TContentType> Find(IEnumerable<TModel> modelNeedles, TContentType[] contentTypesHaystack)
+        {
+            return modelNeedles.SelectMany(needle => Find(needle, contentTypesHaystack)).Distinct(_comparer).ToArray();
         }
     }
 }

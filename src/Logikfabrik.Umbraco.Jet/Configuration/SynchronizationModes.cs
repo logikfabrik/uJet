@@ -5,17 +5,18 @@
 namespace Logikfabrik.Umbraco.Jet.Configuration
 {
     using System;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// The <see cref="SynchronizationModes" /> enumeration.
     /// </summary>
     [Flags]
+    [PublicAPI]
     public enum SynchronizationModes
     {
         /// <summary>
         /// Do not scan or synchronize any model types.
         /// </summary>
-        // ReSharper disable once UnusedMember.Global
         None = 0,
 
         /// <summary>

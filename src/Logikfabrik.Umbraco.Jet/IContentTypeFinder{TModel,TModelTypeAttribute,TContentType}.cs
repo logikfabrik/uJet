@@ -46,23 +46,6 @@ namespace Logikfabrik.Umbraco.Jet
         TContentType[] FindAll(Type[] modelTypeNeedles, TModel[] modelsHaystack, TContentType[] contentTypesHaystack);
 
         /// <summary>
-        /// Finds all models with a model type matching the specified model type, and then the content types matching any of those models.
-        /// </summary>
-        /// <param name="modelTypeNeedle">The model type to find the content types for.</param>
-        /// <param name="modelsHaystack">The haystack of models.</param>
-        /// <param name="contentTypesHaystack">The haystack of content types.</param>
-        /// <returns>The content types found.</returns>
-        TContentType[] FindAll(Type modelTypeNeedle, TModel[] modelsHaystack, TContentType[] contentTypesHaystack);
-
-        /// <summary>
-        /// Finds the content types matching any of the specified models.
-        /// </summary>
-        /// <param name="modelNeedles">The models to find the content types for.</param>
-        /// <param name="contentTypesHaystack">The haystack of content types.</param>
-        /// <returns>The content types found.</returns>
-        TContentType[] Find(TModel[] modelNeedles, TContentType[] contentTypesHaystack);
-
-        /// <summary>
         /// Finds the content types matching the specified model.
         /// </summary>
         /// <param name="modelNeedle">The model to find the content types for.</param>

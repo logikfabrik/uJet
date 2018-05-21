@@ -12,6 +12,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
     using Jet.Data;
+    using JetBrains.Annotations;
     using Logging;
 
     /// <summary>
@@ -35,7 +36,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// <param name="logService">The log service.</param>
         /// <param name="modelService">The model service.</param>
         /// <param name="typeRepository">The type repository.</param>
-        // ReSharper disable once UnusedMember.Global
+        [UsedImplicitly]
         public PreviewTemplateSynchronizer(
             IContentTypeService contentTypeService,
             IFileService fileService,

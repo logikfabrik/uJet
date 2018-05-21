@@ -6,10 +6,13 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
 {
     using EnsureThat;
     using global::Umbraco.Core.Models;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// The <see cref="DocumentService" /> class. Service for mapping instances of <see cref="IPublishedContent" /> to document models.
     /// </summary>
+    [PublicAPI]
+
     // ReSharper disable once InheritdocConsiderUsage
     public class DocumentService : ContentService<DocumentTypeAttribute>
     {
@@ -18,7 +21,6 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="DocumentService" /> class.
         /// </summary>
-        // ReSharper disable once UnusedMember.Global
         // ReSharper disable once InheritdocConsiderUsage
         public DocumentService()
             : this(new UmbracoHelperWrapper())

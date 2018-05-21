@@ -7,6 +7,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using EnsureThat;
 
     /// <summary>
     /// The <see cref="ModelValidator{TModel,TModelTypeAttribute}" /> class.
@@ -21,13 +22,14 @@ namespace Logikfabrik.Umbraco.Jet
         /// Validates the specified models.
         /// </summary>
         /// <param name="models">The models.</param>
-        public abstract void Validate(TModel[] models);
+        public virtual void Validate(TModel[] models)
+        {
+            Ensure.That(models).IsNotNull();
 
-        /// <summary>
-        /// Validates the specified models by identifier.
-        /// </summary>
-        /// <param name="models">The models.</param>
-        protected void ValidateById(TModel[] models)
+            ValidateById(models);
+        }
+
+        private static void ValidateById(TModel[] models)
         {
             var set = new HashSet<Guid>();
 

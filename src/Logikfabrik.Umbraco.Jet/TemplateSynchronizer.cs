@@ -12,6 +12,7 @@ namespace Logikfabrik.Umbraco.Jet
     using EnsureThat;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// The <see cref="TemplateSynchronizer" /> class. Adds and updates templates (Razor views).
@@ -27,7 +28,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="fileService">The file service.</param>
         /// <param name="templateService">The template service.</param>
-        // ReSharper disable once UnusedMember.Global
+        [UsedImplicitly]
         public TemplateSynchronizer(
             IFileService fileService,
             ITemplateService templateService)

@@ -6,12 +6,13 @@ namespace Logikfabrik.Umbraco.Jet
 {
     using System;
     using EnsureThat;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// The <see cref="AliasAttribute" /> class.
     /// </summary>
-    [AttributeUsage(
-        AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Property)]
+    [PublicAPI]
 
     // ReSharper disable once InheritdocConsiderUsage
     public class AliasAttribute : Attribute
@@ -21,7 +22,6 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="alias">The alias.</param>
         // ReSharper disable once InheritdocConsiderUsage
-        // ReSharper disable once UnusedMember.Global
         public AliasAttribute(string alias)
         {
             Ensure.That(alias).IsNotNullOrWhiteSpace();

@@ -6,6 +6,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
 {
     using System;
     using EnsureThat;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// The <see cref="TypeRepository" /> class.
@@ -21,7 +22,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// </summary>
         /// <param name="contentTypeRepository">The content type repository.</param>
         /// <param name="dataTypeRepository">The data type repository.</param>
-        // ReSharper disable once UnusedMember.Global
+        [UsedImplicitly]
         public TypeRepository(
             IContentTypeRepository contentTypeRepository,
             IDataTypeRepository dataTypeRepository)

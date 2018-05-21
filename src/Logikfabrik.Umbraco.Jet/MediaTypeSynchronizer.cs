@@ -10,6 +10,7 @@ namespace Logikfabrik.Umbraco.Jet
     using EnsureThat;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
+    using JetBrains.Annotations;
     using Mappings;
 
     /// <summary>
@@ -30,8 +31,9 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="modelService">The model service.</param>
         /// <param name="dataTypeDefinitionService">The data type definition service.</param>
         /// <param name="typeRepository">The type repository.</param>
+        [UsedImplicitly]
+
         // ReSharper disable once InheritdocConsiderUsage
-        // ReSharper disable once UnusedMember.Global
         public MediaTypeSynchronizer(
             IContentTypeService contentTypeService,
             IContentTypeFinder<MediaType, MediaTypeAttribute, IMediaType> contentTypeFinder,

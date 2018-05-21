@@ -5,10 +5,12 @@
 namespace Logikfabrik.Umbraco.Jet
 {
     using System.Collections.Generic;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// The <see cref="IDataType" /> interface. Optional interface for defining pre-values.
     /// </summary>
+    [PublicAPI]
     public interface IDataType
     {
         /// <summary>
@@ -17,7 +19,6 @@ namespace Logikfabrik.Umbraco.Jet
         /// <value>
         /// The pre-values.
         /// </value>
-        // ReSharper disable once UnusedMember.Global
         Dictionary<string, string> PreValues { get; }
     }
 }

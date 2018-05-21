@@ -8,6 +8,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Linq;
     using Data;
     using EnsureThat;
+    using JetBrains.Annotations;
     using Logging;
 
     /// <summary>
@@ -24,7 +25,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="logService">The log service.</param>
         /// <param name="typeRepository">The type repository.</param>
-        // ReSharper disable once UnusedMember.Global
+        [UsedImplicitly]
         public PropertyTypeFinder(ILogService logService, ITypeRepository typeRepository)
         {
             Ensure.That(logService).IsNotNull();

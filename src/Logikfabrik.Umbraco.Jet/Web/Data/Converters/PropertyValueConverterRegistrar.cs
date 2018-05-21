@@ -8,10 +8,12 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
     using System.Collections.Generic;
     using System.Linq;
     using EnsureThat;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// The <see cref="PropertyValueConverterRegistrar" /> class. Utility class for registering property value converters.
     /// </summary>
+    [PublicAPI]
     public static class PropertyValueConverterRegistrar
     {
         /// <summary>
@@ -19,7 +21,6 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data.Converters
         /// </summary>
         /// <typeparam name="T">The <see cref="Type" /> to register the specified property value converter for.</typeparam>
         /// <param name="propertyValueConverter">The property value converter to register.</param>
-        // ReSharper disable once UnusedMember.Global
         public static void Register<T>(IPropertyValueConverter propertyValueConverter)
         {
             Ensure.That(propertyValueConverter).IsNotNull();

@@ -2,6 +2,8 @@
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
+using JetBrains.Annotations;
+
 namespace Logikfabrik.Umbraco.Jet.Data
 {
     using System;
@@ -24,7 +26,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
         /// Initializes a new instance of the <see cref="ContentTypeRepository" /> class.
         /// </summary>
         /// <param name="databaseWrapper">The database wrapper.</param>
-        // ReSharper disable once UnusedMember.Global
+        [UsedImplicitly]
         public ContentTypeRepository(IDatabaseWrapper databaseWrapper)
         {
             Ensure.That(databaseWrapper).IsNotNull();

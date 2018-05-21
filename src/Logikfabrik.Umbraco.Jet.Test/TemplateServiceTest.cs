@@ -4,7 +4,7 @@
 
 namespace Logikfabrik.Umbraco.Jet.Test
 {
-    using System.IO;
+    using System;
     using System.Linq;
     using Shouldly;
     using Xunit;
@@ -14,7 +14,7 @@ namespace Logikfabrik.Umbraco.Jet.Test
         [Fact]
         public void CanGetTemplatePaths()
         {
-            var service = new TemplateService();
+            var service = new TemplateService(AppDomain.CurrentDomain);
 
             var templates = service.TemplatePaths;
 
@@ -22,19 +22,9 @@ namespace Logikfabrik.Umbraco.Jet.Test
         }
 
         [Fact]
-        public void CanGetContent()
-        {
-            var service = new TemplateService();
-
-            var templatePath = service.TemplatePaths.First();
-
-            service.GetContent(templatePath).ShouldBe(File.ReadAllText(templatePath));
-        }
-
-        [Fact]
         public void CanGetTemplate()
         {
-            var service = new TemplateService();
+            var service = new TemplateService(AppDomain.CurrentDomain);
 
             var templatePath = service.TemplatePaths.First();
 

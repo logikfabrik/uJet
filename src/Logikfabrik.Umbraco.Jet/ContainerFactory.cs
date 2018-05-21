@@ -41,7 +41,7 @@ namespace Logikfabrik.Umbraco.Jet
             container.Register(_applicationContext.Services.DataTypeService);
             container.Register(_applicationContext.Services.FileService);
             container.Register<ILogService, LogService>();
-            container.Register(new AssemblyLoader(AppDomain.CurrentDomain, JetConfigurationManager.Assemblies));
+            container.Register<IAssemblyLoader>(new AssemblyLoader(AppDomain.CurrentDomain, JetConfigurationManager.Assemblies));
             container.Register<IModelTypeService, ModelTypeService>();
             container.Register<IModelService, ModelService>();
             container.Register(_applicationContext.DatabaseContext.Database);
@@ -53,7 +53,7 @@ namespace Logikfabrik.Umbraco.Jet
             container.Register<ITypeRepository, TypeRepository>();
             container.Register(new DataTypeDefinitionService(container.Resolve<IDataTypeService>(), UmbracoConfig.For.UmbracoSettings().Content.EnablePropertyValueConverters));
             container.Register<IDefaultValueService, DefaultValueService>();
-            container.Register<ITemplateService, TemplateService>();
+            container.Register<ITemplateService>(new TemplateService(AppDomain.CurrentDomain));
         }
     }
 }

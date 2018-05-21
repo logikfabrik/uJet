@@ -7,11 +7,14 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     using System.Web.Mvc;
     using global::Umbraco.Web.Models;
     using global::Umbraco.Web.Mvc;
+    using JetBrains.Annotations;
     using Utilities;
 
     /// <summary>
     /// The <see cref="JetController" /> class.
     /// </summary>
+    [PublicAPI]
+
     // ReSharper disable once InheritdocConsiderUsage
     public abstract class JetController : Controller, IRenderMvcController
     {
@@ -26,7 +29,6 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// Redirects to the current page.
         /// </summary>
         /// <returns>A redirect result.</returns>
-        // ReSharper disable once UnusedMember.Global
         protected RedirectResult RedirectToPage()
         {
             return RedirectToPage(GetCurrentPageId());
@@ -37,7 +39,6 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
         /// </summary>
         /// <param name="query">The query.</param>
         /// <returns>A redirect result.</returns>
-        // ReSharper disable once UnusedMember.Global
         protected RedirectResult RedirectToPage(object query)
         {
             return RedirectToPage(GetCurrentPageId(), query);

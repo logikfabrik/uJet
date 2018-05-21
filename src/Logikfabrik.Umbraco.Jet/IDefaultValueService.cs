@@ -22,30 +22,12 @@ namespace Logikfabrik.Umbraco.Jet
         /// Sets the default values.
         /// </summary>
         /// <param name="content">The content to set default values for.</param>
-        void SetDefaultValues(IContent content);
-
-        /// <summary>
-        /// Sets the default values.
-        /// </summary>
-        /// <param name="content">The content to set default values for.</param>
         void SetDefaultValues(IEnumerable<IMedia> content);
 
         /// <summary>
         /// Sets the default values.
         /// </summary>
         /// <param name="content">The content to set default values for.</param>
-        void SetDefaultValues(IMedia content);
-
-        /// <summary>
-        /// Sets the default values.
-        /// </summary>
-        /// <param name="content">The content to set default values for.</param>
         void SetDefaultValues(IEnumerable<IMember> content);
-
-        /// <summary>
-        /// Sets the default values.
-        /// </summary>
-        /// <param name="content">The content to set default values for.</param>
-        void SetDefaultValues(IMember content);
     }
 }

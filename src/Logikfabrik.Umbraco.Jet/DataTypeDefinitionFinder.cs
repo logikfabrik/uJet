@@ -9,6 +9,7 @@ namespace Logikfabrik.Umbraco.Jet
     using Data;
     using EnsureThat;
     using global::Umbraco.Core.Models;
+    using JetBrains.Annotations;
     using Logging;
 
     /// <summary>
@@ -25,7 +26,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// </summary>
         /// <param name="logService">The log service.</param>
         /// <param name="typeRepository">The type repository.</param>
-        // ReSharper disable once UnusedMember.Global
+        [UsedImplicitly]
         public DataTypeDefinitionFinder(ILogService logService, ITypeRepository typeRepository)
         {
             Ensure.That(logService).IsNotNull();

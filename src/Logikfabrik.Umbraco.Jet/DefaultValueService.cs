@@ -10,6 +10,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Reflection;
     using EnsureThat;
     using global::Umbraco.Core.Models;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// The <see cref="DefaultValueService" /> class.
@@ -29,7 +30,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// <param name="mediaTypeModelFinder">The media type model finder.</param>
         /// <param name="memberTypeModelFinder">The member type model finder.</param>
         /// <param name="modelService">The model service.</param>
-        // ReSharper disable once UnusedMember.Global
+        [UsedImplicitly]
         public DefaultValueService(
             IContentTypeModelFinder<DocumentType, DocumentTypeAttribute, IContentType> documentTypeModelFinder,
             IContentTypeModelFinder<MediaType, MediaTypeAttribute, IMediaType> mediaTypeModelFinder,
@@ -59,21 +60,6 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <inheritdoc />
-        public void SetDefaultValues(IContent content)
-        {
-            Ensure.That(content).IsNotNull();
-
-            var model = _documentTypeModelFinder.Find(content.ContentType, _modelService.DocumentTypes.ToArray()).SingleOrDefault();
-
-            if (model == null)
-            {
-                return;
-            }
-
-            SetDefaultValues(content, model);
-        }
-
-        /// <inheritdoc />
         public void SetDefaultValues(IEnumerable<IMedia> content)
         {
             Ensure.That(content).IsNotNull();
@@ -85,21 +71,6 @@ namespace Logikfabrik.Umbraco.Jet
         }
 
         /// <inheritdoc />
-        public void SetDefaultValues(IMedia content)
-        {
-            Ensure.That(content).IsNotNull();
-
-            var model = _mediaTypeModelFinder.Find(content.ContentType, _modelService.MediaTypes.ToArray()).SingleOrDefault();
-
-            if (model == null)
-            {
-                return;
-            }
-
-            SetDefaultValues(content, model);
-        }
-
-        /// <inheritdoc />
         public void SetDefaultValues(IEnumerable<IMember> content)
         {
             Ensure.That(content).IsNotNull();
@@ -108,21 +79,6 @@ namespace Logikfabrik.Umbraco.Jet
             {
                 SetDefaultValues(c);
             }
-        }
-
-        /// <inheritdoc />
-        public void SetDefaultValues(IMember content)
-        {
-            Ensure.That(content).IsNotNull();
-
-            var model = _memberTypeModelFinder.Find(content.ContentType, _modelService.MemberTypes.ToArray()).SingleOrDefault();
-
-            if (model == null)
-            {
-                return;
-            }
-
-            SetDefaultValues(content, model);
         }
 
         private static void SetDefaultValues<T>(IContentBase content, ContentTypeModel<T> model)
@@ -182,6 +138,42 @@ namespace Logikfabrik.Umbraco.Jet
                           m.Name == "op_Explicit"));
 
             return methods.Any();
+        }
+
+        private void SetDefaultValues(IContent content)
+        {
+            var model = _documentTypeModelFinder.Find(content.ContentType, _modelService.DocumentTypes.ToArray()).SingleOrDefault();
+
+            if (model == null)
+            {
+                return;
+            }
+
+            SetDefaultValues(content, model);
+        }
+
+        private void SetDefaultValues(IMedia content)
+        {
+            var model = _mediaTypeModelFinder.Find(content.ContentType, _modelService.MediaTypes.ToArray()).SingleOrDefault();
+
+            if (model == null)
+            {
+                return;
+            }
+
+            SetDefaultValues(content, model);
+        }
+
+        private void SetDefaultValues(IMember content)
+        {
+            var model = _memberTypeModelFinder.Find(content.ContentType, _modelService.MemberTypes.ToArray()).SingleOrDefault();
+
+            if (model == null)
+            {
+                return;
+            }
+
+            SetDefaultValues(content, model);
         }
     }
 }

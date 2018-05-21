@@ -6,10 +6,13 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
 {
     using EnsureThat;
     using global::Umbraco.Core.Models;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// The <see cref="MediaService" /> class. Service for mapping instances of <see cref="IPublishedContent" /> to media models.
     /// </summary>
+    [PublicAPI]
+
     // ReSharper disable once InheritdocConsiderUsage
     public class MediaService : ContentService<MediaTypeAttribute>
     {
@@ -18,7 +21,6 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="MediaService" /> class.
         /// </summary>
-        // ReSharper disable once UnusedMember.Global
         // ReSharper disable once InheritdocConsiderUsage
         public MediaService()
             : this(new UmbracoHelperWrapper())

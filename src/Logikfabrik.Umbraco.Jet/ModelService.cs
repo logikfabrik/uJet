@@ -8,6 +8,7 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Collections.Generic;
     using System.Linq;
     using EnsureThat;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// The <see cref="ModelService" /> class.
@@ -24,7 +25,7 @@ namespace Logikfabrik.Umbraco.Jet
         /// Initializes a new instance of the <see cref="ModelService" /> class.
         /// </summary>
         /// <param name="modelTypeService">The model type service.</param>
-        // ReSharper disable once UnusedMember.Global
+        [UsedImplicitly]
         public ModelService(IModelTypeService modelTypeService)
         {
             Ensure.That(modelTypeService).IsNotNull();
