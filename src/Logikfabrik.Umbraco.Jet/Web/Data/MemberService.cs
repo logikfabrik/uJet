@@ -20,7 +20,7 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MemberService" /> class.
-        /// </summary>        
+        /// </summary>
         // ReSharper disable once InheritdocConsiderUsage
         public MemberService()
             : this(new UmbracoHelperWrapper())

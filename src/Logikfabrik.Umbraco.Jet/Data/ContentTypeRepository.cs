@@ -2,8 +2,6 @@
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
-using JetBrains.Annotations;
-
 namespace Logikfabrik.Umbraco.Jet.Data
 {
     using System;
@@ -11,6 +9,7 @@ namespace Logikfabrik.Umbraco.Jet.Data
     using System.Linq;
     using EnsureThat;
     using global::Umbraco.Core.Persistence;
+    using JetBrains.Annotations;
 
     /// <summary>
     /// The <see cref="ContentTypeRepository" /> class.

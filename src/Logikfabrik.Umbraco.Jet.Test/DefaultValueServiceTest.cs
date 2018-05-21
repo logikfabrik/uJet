@@ -21,35 +21,6 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
     public class DefaultValueServiceTest
     {
-        //[Theory]
-        //[ClassAutoData(typeof(CanSetPropertyDefaultValueClassData))]
-        //public void CanSetPropertyDefaultValueForDocumentType(Type propertyType, string propertyDefaultValue, string propertyName, DocumentTypeModelTypeBuilder builder)
-        //{
-        //    builder.AddProperty(propertyName, propertyType, (object)propertyDefaultValue);
-
-        //    var modelType = builder.Create(Scope.Public);
-
-        //    var model = new DocumentType(modelType);
-
-        //    var mocker = new AutoMocker();
-
-        //    var contentType = mocker.Get<global::Umbraco.Core.Models.IContentType>();
-
-        //    var contentMock = mocker.GetMock<global::Umbraco.Core.Models.IContent>();
-
-        //    contentMock.Setup(m => m.ContentType).Returns(contentType);
-
-        //    var documentTypeModelFinderMock = mocker.GetMock<IContentTypeModelFinder<DocumentType, DocumentTypeAttribute, global::Umbraco.Core.Models.IContentType>>();
-
-        //    documentTypeModelFinderMock.Setup(m => m.Find(contentType, It.IsAny<DocumentType[]>())).Returns(new[] { model });
-
-        //    var defaultValueService = mocker.CreateInstance<DefaultValueService>();
-
-        //    defaultValueService.SetDefaultValues(contentMock.Object);
-
-        //    contentMock.Verify(m => m.SetValue(propertyName.Alias(), It.Is<object>(value => value.ToString() == new DefaultValueAttribute(propertyType, propertyDefaultValue).Value.ToString())), Times.Once);
-        //}
-
         [Theory]
         [ClassAutoData(typeof(CanSetPropertyDefaultValueClassData))]
         public void CanSetPropertyDefaultValueForDocumentTypes(Type propertyType, string propertyDefaultValue, string propertyName, DocumentTypeModelTypeBuilder[] builders)
@@ -87,35 +58,6 @@ namespace Logikfabrik.Umbraco.Jet.Test
             mocker.VerifyAll();
         }
 
-        //[Theory]
-        //[ClassAutoData(typeof(CanSetPropertyDefaultValueClassData))]
-        //public void CanSetPropertyDefaultValueForMediaType(Type propertyType, string propertyDefaultValue, string propertyName, MediaTypeModelTypeBuilder builder)
-        //{
-        //    builder.AddProperty(propertyName, propertyType, (object)propertyDefaultValue);
-
-        //    var modelType = builder.Create(Scope.Public);
-
-        //    var model = new Jet.MediaType(modelType);
-
-        //    var mocker = new AutoMocker();
-
-        //    var contentType = mocker.Get<global::Umbraco.Core.Models.IMediaType>();
-
-        //    var contentMock = mocker.GetMock<global::Umbraco.Core.Models.IMedia>();
-
-        //    contentMock.Setup(m => m.ContentType).Returns(contentType);
-
-        //    var documentTypeModelFinderMock = mocker.GetMock<IContentTypeModelFinder<Jet.MediaType, MediaTypeAttribute, global::Umbraco.Core.Models.IMediaType>>();
-
-        //    documentTypeModelFinderMock.Setup(m => m.Find(contentType, It.IsAny<Jet.MediaType[]>())).Returns(new[] { model });
-
-        //    var defaultValueService = mocker.CreateInstance<DefaultValueService>();
-
-        //    defaultValueService.SetDefaultValues(contentMock.Object);
-
-        //    contentMock.Verify(m => m.SetValue(propertyName.Alias(), It.Is<object>(value => value.ToString() == new DefaultValueAttribute(propertyType, propertyDefaultValue).Value.ToString())), Times.Once);
-        //}
-
         [Theory]
         [ClassAutoData(typeof(CanSetPropertyDefaultValueClassData))]
         public void CanSetPropertyDefaultValueForMediaTypes(Type propertyType, string propertyDefaultValue, string propertyName, MediaTypeModelTypeBuilder[] builders)
@@ -152,35 +94,6 @@ namespace Logikfabrik.Umbraco.Jet.Test
 
             mocker.VerifyAll();
         }
-
-        //[Theory]
-        //[ClassAutoData(typeof(CanSetPropertyDefaultValueClassData))]
-        //public void CanSetPropertyDefaultValueForMemberType(Type propertyType, string propertyDefaultValue, string propertyName, MemberTypeModelTypeBuilder builder)
-        //{
-        //    builder.AddProperty(propertyName, propertyType, (object)propertyDefaultValue);
-
-        //    var modelType = builder.Create(Scope.Public);
-
-        //    var model = new Jet.MemberType(modelType);
-
-        //    var mocker = new AutoMocker();
-
-        //    var contentType = mocker.Get<global::Umbraco.Core.Models.IMemberType>();
-
-        //    var contentMock = mocker.GetMock<global::Umbraco.Core.Models.IMember>();
-
-        //    contentMock.Setup(m => m.ContentType).Returns(contentType);
-
-        //    var documentTypeModelFinderMock = mocker.GetMock<IContentTypeModelFinder<Jet.MemberType, MemberTypeAttribute, global::Umbraco.Core.Models.IMemberType>>();
-
-        //    documentTypeModelFinderMock.Setup(m => m.Find(contentType, It.IsAny<Jet.MemberType[]>())).Returns(new[] { model });
-
-        //    var defaultValueService = mocker.CreateInstance<DefaultValueService>();
-
-        //    defaultValueService.SetDefaultValues(contentMock.Object);
-
-        //    contentMock.Verify(m => m.SetValue(propertyName.Alias(), It.Is<object>(value => value.ToString() == new DefaultValueAttribute(propertyType, propertyDefaultValue).Value.ToString())), Times.Once);
-        //}
 
         [Theory]
         [ClassAutoData(typeof(CanSetPropertyDefaultValueClassData))]
