@@ -371,8 +371,8 @@
     <Compile Include="DocumentType.cs" />
     <Compile Include="DocumentTypeAttribute.cs" />
     <Compile Include="DocumentTypeSynchronizer.cs" />
-    <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Extensions\TypeExtensions.cs" />
+    <Compile Include="StringExtensions.cs" />
+    <Compile Include="TypeExtensions.cs" />
     <Compile Include="ISynchronizer.cs" />
     <Compile Include="IModelTypeService.cs" />
     <Compile Include="JetApplicationHandler.cs" />

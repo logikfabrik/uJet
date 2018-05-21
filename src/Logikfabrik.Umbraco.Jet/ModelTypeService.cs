@@ -10,7 +10,6 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Linq;
     using System.Reflection;
     using EnsureThat;
-    using Extensions;
     using JetBrains.Annotations;
     using Logging;
 

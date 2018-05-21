@@ -7,7 +7,6 @@ namespace Logikfabrik.Umbraco.Jet
     using System;
     using System.Linq;
     using EnsureThat;
-    using Extensions;
 
     /// <summary>
     /// The <see cref="ModelFinder{TModel,TModelTypeAttribute}" /> class. Class for finding models by model type.

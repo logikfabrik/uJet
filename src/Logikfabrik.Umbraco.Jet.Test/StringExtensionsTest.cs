@@ -2,9 +2,8 @@
 //   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
 // </copyright>
 
-namespace Logikfabrik.Umbraco.Jet.Test.Extensions
+namespace Logikfabrik.Umbraco.Jet.Test
 {
-    using Jet.Extensions;
     using Shouldly;
     using Xunit;
 

@@ -10,7 +10,6 @@ namespace Logikfabrik.Umbraco.Jet
     using System.Linq;
     using System.Reflection;
     using EnsureThat;
-    using Extensions;
 
     /// <summary>
     /// The <see cref="ContentTypeModel{TModelTypeAttribute}" /> class.

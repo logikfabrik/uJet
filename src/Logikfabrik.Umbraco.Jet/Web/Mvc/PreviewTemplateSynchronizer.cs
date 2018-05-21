@@ -8,7 +8,6 @@ namespace Logikfabrik.Umbraco.Jet.Web.Mvc
     using System.Collections.Generic;
     using System.Linq;
     using EnsureThat;
-    using Extensions;
     using global::Umbraco.Core.Models;
     using global::Umbraco.Core.Services;
     using Jet.Data;

@@ -7,7 +7,6 @@ namespace Logikfabrik.Umbraco.Jet.Web.Data
     using System;
     using System.Linq.Expressions;
     using EnsureThat;
-    using Extensions;
     using global::Umbraco.Core.Models;
 
     /// <summary>

@@ -41,6 +41,7 @@ namespace Logikfabrik.Umbraco.Jet
 
             _logService = logService;
             _typeRepository = typeRepository;
+            // TODO: DI
             _contentTypeModelFinder = new ContentTypeModelFinder<TModel, TModelTypeAttribute, TContentType>(logService, typeRepository);
             _comparer = new EntityTypeComparer<TContentType>();
         }

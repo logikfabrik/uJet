@@ -12,7 +12,6 @@ namespace Logikfabrik.Umbraco.Jet.Test
     using System.Linq;
     using AutoFixture;
     using global::Umbraco.Core.Models;
-    using Logikfabrik.Umbraco.Jet.Extensions;
     using Moq;
     using Moq.AutoMock;
     using SpecimenBuilders;

@@ -9,7 +9,6 @@ namespace Logikfabrik.Umbraco.Jet
     using System.ComponentModel.DataAnnotations;
     using System.Reflection;
     using EnsureThat;
-    using Extensions;
 
     /// <summary>
     /// The <see cref="PropertyTypeModel" /> class.

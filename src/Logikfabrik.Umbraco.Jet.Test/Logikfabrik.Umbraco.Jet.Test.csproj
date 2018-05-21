@@ -296,8 +296,8 @@
     <Compile Include="DocumentTypeTest.cs" />
     <Compile Include="DataTypeSynchronizerTest.cs" />
     <Compile Include="DocumentTypeSynchronizerTest.cs" />
-    <Compile Include="Extensions\StringExtensionsTest.cs" />
-    <Compile Include="Extensions\TypeExtensionsTest.cs" />
+    <Compile Include="StringExtensionsTest.cs" />
+    <Compile Include="TypeExtensionsTest.cs" />
     <Compile Include="Mappings\BuiltInDataTypeDefinitionMappingsRegistrarTest.cs" />
     <Compile Include="Mappings\DataTypeDefinitionMappingRegistrarTest.cs" />
     <Compile Include="Mappings\DataTypeDefinitionServiceTest.cs" />

@@ -9,7 +9,6 @@ namespace Logikfabrik.Umbraco.Jet
     using System.IO;
     using System.Linq;
     using EnsureThat;
-    using Extensions;
     using global::Umbraco.Core.Models;
 
     /// <summary>

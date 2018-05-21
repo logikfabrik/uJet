@@ -4,7 +4,6 @@
 
 namespace Logikfabrik.Umbraco.Jet.Test.Web.Mvc
 {
-    using Jet.Extensions;
     using Jet.Web.Mvc;
     using Shouldly;
     using Xunit;
