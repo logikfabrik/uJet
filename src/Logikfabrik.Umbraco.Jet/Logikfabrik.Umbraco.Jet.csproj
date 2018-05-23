@@ -301,7 +301,9 @@
     <Compile Include="AliasAttribute.cs" />
     <Compile Include="IDataTypeDefinitionFinder.cs" />
     <Compile Include="IDefaultValueService.cs" />
-    <Compile Include="IModelFinder{TModel,TModelTypeAttribute}.cs" />
+    <Compile Include="IModelFinder{TModel,TModelTypeAttribute}.cs">
+      <SonarQubeExclude>true</SonarQubeExclude>
+    </Compile>
     <Compile Include="IPropertyTypeFinder.cs" />
     <Compile Include="Logging\ILogService.cs" />
     <Compile Include="IModelService.cs" />
