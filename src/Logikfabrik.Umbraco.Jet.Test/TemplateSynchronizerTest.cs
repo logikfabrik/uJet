@@ -1,84 +1,65 @@
-﻿//// <copyright file="TemplateSynchronizerTest.cs" company="Logikfabrik">
-////   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
-//// </copyright>
+﻿// <copyright file="TemplateSynchronizerTest.cs" company="Logikfabrik">
+//   Copyright (c) 2016 anton(at)logikfabrik.se. Licensed under the MIT license.
+// </copyright>
 
-//namespace Logikfabrik.Umbraco.Jet.Test
-//{
-//    using System;
-//    using System.IO;
-//    using System.Linq;
-//    using global::Umbraco.Core.Models;
-//    using global::Umbraco.Core.Services;
-//    using Moq;
-//    using Shouldly;
-//    using Xunit;
+namespace Logikfabrik.Umbraco.Jet.Test
+{
+    using System.Collections.Generic;
+    using global::Umbraco.Core.Models;
+    using global::Umbraco.Core.Services;
+    using Moq;
+    using Moq.AutoMock;
+    using Xunit;
 
-//    public class TemplateSynchronizerTest
-//    {
-//        [Fact]
-//        public void CanGetTemplatesToAdd()
-//        {
-//            var service = GetTemplateSynchronizer();
+    public class TemplateSynchronizerTest
+    {
+        [Fact]
+        public void CanAddNewTemplates()
+        {
+            const string templatePath = "template.cshtml";
 
-//            var templatesToAdd = service.GetTemplatesToAdd(service.GetTemplatesToAdd());
+            var mocker = new AutoMocker();
 
-//            templatesToAdd.Count().ShouldBe(2);
-//        }
+            var templateServiceMock = mocker.GetMock<ITemplateService>();
 
-//        [Fact]
-//        public void CanGetLayoutForTemplateWithLayout()
-//        {
-//            var service = GetTemplateSynchronizer();
+            templateServiceMock.Setup(m => m.TemplatePaths).Returns(new[] { templatePath });
+            templateServiceMock.Setup(m => m.GetTemplate(templatePath)).Returns(Mock.Of<ITemplate>());
 
-//            var template = GetTemplateMock(GetTemplatePath("Template1.cshtml"));
+            var fileServiceMock = mocker.GetMock<IFileService>();
 
-//            service.GetLayout(template).ShouldBe("Template1Master");
-//        }
+            fileServiceMock.Setup(m => m.GetTemplates()).Returns(new List<ITemplate>());
+            fileServiceMock.Setup(m => m.SaveTemplate(It.IsAny<ITemplate[]>(), 0)).Verifiable();
 
-//        [Fact]
-//        public void CannotGetLayoutForTemplateWithoutLayout()
-//        {
-//            var service = GetTemplateSynchronizer();
+            var templateSynchronizer = mocker.CreateInstance<TemplateSynchronizer>();
 
-//            var template = GetTemplateMock(GetTemplatePath("Template2.cshtml"));
+            templateSynchronizer.Run();
 
-//            service.GetLayout(template).ShouldBeNull();
-//        }
+            mocker.VerifyAll();
+        }
 
-//        [Fact]
-//        public void CanGetPathsToTemplatesToAdd()
-//        {
-//            var service = GetTemplateSynchronizer();
+        [Fact]
+        public void CanUpdateTemplates()
+        {
+            var mocker = new AutoMocker();
 
-//            var templatesToAdd = service.GetTemplatesToAdd();
+            var templateMock = new Mock<ITemplate>();
 
-//            GetTemplatePath("Template1.cshtml").ShouldBe(templatesToAdd.First());
-//        }
+            templateMock.Setup(m => m.Content).Returns("@{Layout=\"master.cshtml\";}");
 
-//        private static string GetTemplatePath(string fileName)
-//        {
-//            return string.Format("{0}{1}Views{1}{2}", AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar, fileName);
-//        }
+            var masterTemplateMock = new Mock<ITemplate>();
 
-//        private static ITemplate GetTemplateMock(string templatePath)
-//        {
-//            var templateMock = new Mock<ITemplate>();
+            templateMock.Setup(m => m.Alias).Returns("master");
 
-//            templateMock.Setup(m => m.Path).Returns(templatePath);
-//            templateMock.Setup(m => m.Content).Returns(System.IO.File.ReadAllText(templatePath));
+            var fileServiceMock = mocker.GetMock<IFileService>();
 
-//            return templateMock.Object;
-//        }
+            fileServiceMock.Setup(m => m.GetTemplates()).Returns(new List<ITemplate> { templateMock.Object, masterTemplateMock.Object });
+            fileServiceMock.Setup(m => m.SaveTemplate(It.IsAny<ITemplate[]>(), 0)).Verifiable();
 
-//        private static TemplateSynchronizer GetTemplateSynchronizer()
-//        {
-//            var fileServiceMock = new Mock<IFileService>();
-//            var templateServiceMock = new Mock<ITemplateService>();
+            var templateSynchronizer = mocker.CreateInstance<TemplateSynchronizer>();
 
-//            templateServiceMock.Setup(m => m.TemplatePaths).Returns(TemplateService.Instance.TemplatePaths);
-//            templateServiceMock.Setup(m => m.GetTemplate(It.IsAny<string>())).Returns<string>(GetTemplateMock);
+            templateSynchronizer.Run();
 
-//            return new TemplateSynchronizer(fileServiceMock.Object, templateServiceMock.Object);
-//        }
-//    }
-//}
+            mocker.VerifyAll();
+        }
+    }
+}

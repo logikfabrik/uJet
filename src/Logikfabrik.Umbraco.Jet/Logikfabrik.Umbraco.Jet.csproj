@@ -352,6 +352,7 @@
     <Compile Include="MemberTypeSynchronizer.cs" />
     <Compile Include="ModelService.cs" />
     <Compile Include="SynchronizerFactory.cs" />
+    <Compile Include="TemplateExtensions.cs" />
     <Compile Include="Web\Data\ContentMapper.cs" />
     <Compile Include="Web\Data\ContentService{TModelTypeAttribute}.cs">
       <SonarQubeExclude>true</SonarQubeExclude>
